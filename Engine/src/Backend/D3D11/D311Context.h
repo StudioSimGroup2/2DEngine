@@ -43,7 +43,7 @@ namespace Engine
 		ID3D11DepthStencilState* mDepthStencilState;
 		ID3D11DepthStencilView* mDepthStencilView;
 		ID3D11RasterizerState* mRasterState;
-		
+
 		XMMATRIX mWorldMatrix;
 		XMMATRIX mOrthoMatrix;
 

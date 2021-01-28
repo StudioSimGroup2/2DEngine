@@ -20,6 +20,8 @@ struct PS_INPUT
     float2 Tex : TEXCOORD0;
 };
 
+SamplerState linearSampler : register(s0);
+
 //--------------------------------------------------------------------------------------
 // Vertex Shader
 //--------------------------------------------------------------------------------------
@@ -34,6 +36,7 @@ PS_INPUT VS(VS_INPUT input)
     output.Pos = mul(input.Pos, worldMatrix);
     output.Pos = mul(output.Pos, viewMatrix);
     output.Pos = mul(output.Pos, projectionMatrix);
+    //output.Pos = input.Pos;
    
     output.Tex = input.Tex;
 	
@@ -43,6 +46,8 @@ PS_INPUT VS(VS_INPUT input)
 float4 PS(PS_INPUT IN) : SV_TARGET
 {
     float4 vColor;
+    
+    vColor = tx.Sample(linearSampler, IN.Tex);
     
     return vColor;
 }
