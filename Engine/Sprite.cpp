@@ -15,6 +15,10 @@ Sprite::Sprite(ID3D11Device* device, const wchar_t* name)
 	mWidth = 32;
 	mHeight = 32;
 
+	Camera* cam = CameraManager::Get()->Cameras(0);
+
+
+
 	// TODO: Error checking
 
 	hr = CreateDDSTextureFromFile(device, name, nullptr, &mTexture);
@@ -77,20 +81,25 @@ Sprite::~Sprite()
 
 void Sprite::Render(ID3D11DeviceContext* devCon)
 {
-	XMFLOAT4 mEyePosition = XMFLOAT4(0.0f, 0.0f, -5.0f, 1.0f);
+	//XMFLOAT4 mEyePosition = XMFLOAT4(0.0f, 0.0f, -5.0f, 1.0f);
+	//
+	//XMVECTOR Eye = XMLoadFloat4(&mEyePosition);
+	//XMVECTOR At = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+	//XMVECTOR Up = XMVectorSet(0.0f, 1.0f, 0.0f, 1.0f);
 	
-	XMVECTOR Eye = XMLoadFloat4(&mEyePosition);
-	XMVECTOR At = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-	XMVECTOR Up = XMVectorSet(0.0f, 1.0f, 0.0f, 1.0f);
-	
-	
+	CameraManager::Get()->Add(new Camera(XMFLOAT4(0.0f, 0.0f, -5.0f, 1.0f)));
+	Camera* cam = CameraManager::Get()->Cameras(1); // First camera
+
+	cam->Update();
 
 	//mWorldMatrix = XMMatrixIdentity();
-	mViewMatrix = XMMatrixLookAtLH(Eye, At, Up);
+	//mViewMatrix = XMMatrixLookAtLH(Eye, At, Up);
+	mViewMatrix = cam->GetViewMatrix();
 
 	// 16 & 12 derived from 16:9 aspect ratio, tweeked slightly
 	// the higher values = smaller texture size. Lower value = bigger texture size.
-	mProjectionMatrix = XMMatrixOrthographicLH(16, 12, 0.1, 100);
+	//mProjectionMatrix = XMMatrixOrthographicLH(16, 12, 0.1, 100);
+	mProjectionMatrix = cam->GetProjectionMatrix();
 
 
 	// Temp translation
