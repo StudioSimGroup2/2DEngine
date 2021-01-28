@@ -15,7 +15,8 @@ Sprite::Sprite(ID3D11Device* device, const wchar_t* name)
 	mWidth = 32;
 	mHeight = 32;
 
-	Camera* cam = CameraManager::Get()->Cameras(0);
+	CameraManager::Get()->Add(new Camera(XMFLOAT4(0.0f, 0.0f, -5.0f, 1.0f)));
+	//std::vector<Camera*> cams = CameraManager::Get()->Cameras(); // First camera
 
 
 
@@ -87,8 +88,7 @@ void Sprite::Render(ID3D11DeviceContext* devCon)
 	//XMVECTOR At = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
 	//XMVECTOR Up = XMVectorSet(0.0f, 1.0f, 0.0f, 1.0f);
 	
-	CameraManager::Get()->Add(new Camera(XMFLOAT4(0.0f, 0.0f, -5.0f, 1.0f)));
-	Camera* cam = CameraManager::Get()->Cameras(1); // First camera
+	Camera* cam = CameraManager::Get()->Cameras(0); // Get First camera
 
 	cam->Update();
 

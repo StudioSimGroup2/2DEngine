@@ -22,7 +22,7 @@ CameraManager::~CameraManager()
 
 Camera* CameraManager::Cameras(size_t index) const
 {
-	ASSERT(index > mCameras.size() || index < 0, "Index supplied was out of range");
+	ASSERT(!(index >= mCameras.size()), "Index supplied was out of range");
 	return mCameras[index];
 }
 
