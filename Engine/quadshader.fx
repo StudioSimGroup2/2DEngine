@@ -36,7 +36,6 @@ PS_INPUT VS(VS_INPUT input)
     output.Pos = mul(input.Pos, worldMatrix);
     output.Pos = mul(output.Pos, viewMatrix);
     output.Pos = mul(output.Pos, projectionMatrix);
-    //output.Pos = input.Pos;
    
     output.Tex = input.Tex;
 	

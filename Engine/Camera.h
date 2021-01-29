@@ -21,12 +21,16 @@ public:
 	inline const XMFLOAT4 GetUp() const { return mUp; }
 	inline const XMMATRIX GetViewMatrix() const { return mView; }
 	inline const XMMATRIX GetProjectionMatrix() const { return mProjection; }
+	inline const bool IsPrimary() const { return mPrimary; }
 
 	inline void SetEye(XMFLOAT4 Eye) { mEye = Eye; }
 	inline void SetAt(XMFLOAT4 At) { mAt = At; }
 	inline void SetUp(XMFLOAT4 Up) { mUp = Up; }
+	inline void SetPrimary(bool flag) { mPrimary = flag; }
+
 
 private:
 	XMFLOAT4 mEye, mAt, mUp;
 	XMMATRIX mView, mProjection;
+	bool mPrimary; // Is this the main camera
 };

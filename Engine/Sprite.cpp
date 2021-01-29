@@ -16,7 +16,8 @@ Sprite::Sprite(ID3D11Device* device, const wchar_t* name)
 	mHeight = 32;
 
 	CameraManager::Get()->Add(new Camera(XMFLOAT4(0.0f, 0.0f, -5.0f, 1.0f)));
-	//std::vector<Camera*> cams = CameraManager::Get()->Cameras(); // First camera
+	CameraManager::Get()->Add(new Camera(XMFLOAT4(3.0f, 0.0f, -5.0f, 1.0f)));
+	CameraManager::Get()->GetCameraByIndex(0)->SetPrimary(true);
 
 
 
@@ -82,23 +83,16 @@ Sprite::~Sprite()
 
 void Sprite::Render(ID3D11DeviceContext* devCon)
 {
-	//XMFLOAT4 mEyePosition = XMFLOAT4(0.0f, 0.0f, -5.0f, 1.0f);
-	//
-	//XMVECTOR Eye = XMLoadFloat4(&mEyePosition);
-	//XMVECTOR At = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-	//XMVECTOR Up = XMVectorSet(0.0f, 1.0f, 0.0f, 1.0f);
-	
-	Camera* cam = CameraManager::Get()->Cameras(0); // Get First camera
+	CameraManager::Get()->Update();
 
-	cam->Update();
+	// Cycle cameras on A & D keypresses 
+	if (GetAsyncKeyState(0x41)) // A key
+		CameraManager::Get()->CyclePrevious();
+	if (GetAsyncKeyState(0x44)) // D key
+		CameraManager::Get()->CycleNext();
 
-	//mWorldMatrix = XMMatrixIdentity();
-	//mViewMatrix = XMMatrixLookAtLH(Eye, At, Up);
+	Camera* cam = CameraManager::Get()->GetPrimaryCamera();
 	mViewMatrix = cam->GetViewMatrix();
-
-	// 16 & 12 derived from 16:9 aspect ratio, tweeked slightly
-	// the higher values = smaller texture size. Lower value = bigger texture size.
-	//mProjectionMatrix = XMMatrixOrthographicLH(16, 12, 0.1, 100);
 	mProjectionMatrix = cam->GetProjectionMatrix();
 
 
@@ -112,7 +106,7 @@ void Sprite::Render(ID3D11DeviceContext* devCon)
 	XMMATRIX worldMatrix = XMMatrixMultiply(mViewMatrix, mProjectionMatrix);
 	mWorldMatrix = XMMatrixMultiply(WVP, worldMatrix);
 
-
+	//mWorldMatrix = XMMatrixIdentity();
 	ConstantBuffer cb;
 	cb.mProjection = XMMatrixTranspose(mProjectionMatrix);
 	cb.mView = XMMatrixTranspose(mViewMatrix);
@@ -151,33 +145,57 @@ void Sprite::CreateBuffers(ID3D11Device* dev)
 	left = (float)((1280 / 2) * -1) + (float)0;
 
 	// Calculate the screen coordinates of the right side of the bitmap.
-	right = left + (float)32;
+	right = left + (float)512;
 
 	// Calculate the screen coordinates of the top of the bitmap.
 	top = (float)(1280 / 2) - (float)0;
 
 	// Calculate the screen coordinates of the bottom of the bitmap.
-	bottom = top - (float)32;
+	bottom = top - (float)512;
 
 	// Swaped over to unit quad from 2 unit quad
 	vertices[0].position = XMFLOAT3(-0.5f, 0.5f, 0.0f);  // Top left.
 	vertices[0].texture = XMFLOAT2(0.0f, 0.0f);
-
+	
 	vertices[1].position = XMFLOAT3(0.5f, -0.5f, 0.0f);  // Bottom right.
 	vertices[1].texture = XMFLOAT2(1.0f, 1.0f);
-
+	
 	vertices[2].position = XMFLOAT3(-0.5f, -0.5f, 0.0f);  // Bottom left.
 	vertices[2].texture = XMFLOAT2(0.0f, 1.0f);
-
+	
 	// Second triangle.
 	vertices[3].position = XMFLOAT3(-0.5f, 0.5f, 0.0f);  // Top left.
 	vertices[3].texture = XMFLOAT2(0.0f, 0.0f);
-
+	
 	vertices[4].position = XMFLOAT3(0.5f, 0.5f, 0.0f);  // Top right.
 	vertices[4].texture = XMFLOAT2(1.0f, 0.0f);
-
+	
 	vertices[5].position = XMFLOAT3(0.5f, -0.5f, 0.0f);  // Bottom right.
 	vertices[5].texture = XMFLOAT2(1.0f, 1.0f);
+
+
+	//vertices[0].position = XMFLOAT3(top, bottom, 0.0f);  // Top left.
+	//vertices[0].texture = XMFLOAT2(0.0f, 0.0f);
+	//
+	//vertices[1].position = XMFLOAT3(right, bottom, 0.0f);  // Bottom right.
+	//vertices[1].texture = XMFLOAT2(1.0f, 1.0f);
+	//
+	//vertices[2].position = XMFLOAT3(left, bottom, 0.0f);  // Bottom left.
+	//vertices[2].texture = XMFLOAT2(0.0f, 1.0f);
+	//
+	//// Second triangle.
+	//vertices[3].position = XMFLOAT3(left,top, 0.0f);  // Top left.
+	//vertices[3].texture = XMFLOAT2(0.0f, 0.0f);
+	//
+	//vertices[4].position = XMFLOAT3(right, top, 0.0f);  // Top right.
+	//vertices[4].texture = XMFLOAT2(1.0f, 0.0f);
+	//
+	//vertices[5].position = XMFLOAT3(right, bottom, 0.0f);  // Bottom right.
+	//vertices[5].texture = XMFLOAT2(1.0f, 1.0f);
+
+
+
+
 
 	D3D11_BUFFER_DESC bd = {};
 	bd.Usage = D3D11_USAGE_DEFAULT;
