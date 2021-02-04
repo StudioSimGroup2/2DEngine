@@ -320,6 +320,15 @@ namespace Engine
 		viewport.TopLeftX = 0.0f;
 		viewport.TopLeftY = 0.0f;
 
+		// Setup ImGUI
+		IMGUI_CHECKVERSION();
+		ImGui::CreateContext();
+		//ImGuiIO& io = ImGui::GetIO(); // Currently dont need IO so commented out...
+		ImGui_ImplWin32_Init(mHWND);
+		ImGui_ImplDX11_Init(mDevice, mDeviceContext);
+		ImGui::StyleColorsDark();
+
+
 		// Create the viewport.
 		mDeviceContext->RSSetViewports(1, &viewport);
 
@@ -339,6 +348,19 @@ namespace Engine
 
 		
 		mTempSprite->Render(mDeviceContext);
+
+
+		// ImGui rendering below (Move to seperate UI rendering function later
+		ImGui_ImplDX11_NewFrame();
+		ImGui_ImplWin32_NewFrame();
+		ImGui::NewFrame();
+
+		ImGui::Begin("Temp ImGui window!");
+		ImGui::Text("Hello world!");
+		ImGui::End();
+
+		ImGui::Render();
+		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
 		mSwapChain->Present(0, 0);
 	}

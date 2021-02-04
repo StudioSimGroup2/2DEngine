@@ -150,6 +150,12 @@
     <ClCompile Include="src\Engine\Renderer\Swapchain.cpp" />
     <ClCompile Include="PNGLoader.cpp" />
     <ClCompile Include="vendor\DDSTextureLoader.cpp" />
+    <ClCompile Include="vendor\ImGui\imgui.cpp" />
+    <ClCompile Include="vendor\ImGui\imgui_draw.cpp" />
+    <ClCompile Include="vendor\ImGui\imgui_impl_dx11.cpp" />
+    <ClCompile Include="vendor\ImGui\imgui_impl_win32.cpp" />
+    <ClCompile Include="vendor\ImGui\imgui_tables.cpp" />
+    <ClCompile Include="vendor\ImGui\imgui_widgets.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sprite.h" />
@@ -163,6 +169,14 @@
     <ClInclude Include="src\Engine\Renderer\Swapchain.h" />
     <ClInclude Include="PNGLoader.h" />
     <ClInclude Include="vendor\DDSTextureLoader.h" />
+    <ClInclude Include="vendor\ImGui\imconfig.h" />
+    <ClInclude Include="vendor\ImGui\imgui.h" />
+    <ClInclude Include="vendor\ImGui\imgui_impl_dx11.h" />
+    <ClInclude Include="vendor\ImGui\imgui_impl_win32.h" />
+    <ClInclude Include="vendor\ImGui\imgui_internal.h" />
+    <ClInclude Include="vendor\ImGui\imstb_rectpack.h" />
+    <ClInclude Include="vendor\ImGui\imstb_textedit.h" />
+    <ClInclude Include="vendor\ImGui\imstb_truetype.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
