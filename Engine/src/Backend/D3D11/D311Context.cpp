@@ -333,6 +333,11 @@ namespace Engine
 		mDeviceContext->Release();
 	}
 
+	void D311Context::OnUpdate(float deltaTime)
+	{
+
+	}
+
 	void D311Context::SwapBuffers()
 	{
 		mDeviceContext->ClearRenderTargetView(mRenderTargetView, DirectX::Colors::SeaGreen);
@@ -340,7 +345,7 @@ namespace Engine
 		
 		mTempSprite->Render(mDeviceContext);
 
-		mSwapChain->Present(0, 0);
+		mSwapChain->Present(1, 0);
 	}
 }
 
