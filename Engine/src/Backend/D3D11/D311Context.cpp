@@ -340,6 +340,9 @@ namespace Engine
 		
 		mTempSprite->Render(mDeviceContext);
 
+		TileMap testMap;
+		testMap = LevelMap::LoadLevelMap((char*)"TileMaps/FirstTest.txt");
+
 		mSwapChain->Present(0, 0);
 	}
 }

@@ -10,6 +10,11 @@
 #include <d3d11.h>
 #include <directxmath.h>
 
+//Can be removed added for testing
+#include "../../../LevelMap.h"
+#include "../../../Common.h"
+//----------------------------------
+
 using namespace DirectX;
 
 namespace Engine

@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="LevelMap.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="src\Engine\Renderer\Renderer2D.cpp" />
     <ClCompile Include="src\Engine\Renderer\Device.cpp" />
@@ -152,6 +153,7 @@
     <ClCompile Include="vendor\DDSTextureLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="LevelMap.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="src\Engine\Renderer\Renderer2D.h" />
     <ClInclude Include="src\Engine\Renderer\Device.h" />
@@ -162,6 +164,7 @@
     <ClInclude Include="src\Entry\WindowsSystem.h" />
     <ClInclude Include="src\Engine\Renderer\Swapchain.h" />
     <ClInclude Include="PNGLoader.h" />
+    <ClInclude Include="Common.h" />
     <ClInclude Include="vendor\DDSTextureLoader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
