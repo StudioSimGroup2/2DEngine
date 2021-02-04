@@ -345,7 +345,7 @@ namespace Engine
 		
 		mTempSprite->Render(mDeviceContext);
 
-		mSwapChain->Present(1, 0);
+		mSwapChain->Present(0, 0);
 	}
 }
 
