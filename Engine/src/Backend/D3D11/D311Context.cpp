@@ -43,6 +43,12 @@ namespace Engine
 		D3D11_VIEWPORT viewport;
 		float fieldOfView, screenAspect;
 
+		// Need client rect insted of window res
+		RECT rc;
+		GetClientRect(mHWND, &rc);
+		UINT width = rc.right - rc.left;
+		UINT height = rc.bottom - rc.top;
+
 		// Create a DirectX graphics interface factory.
 		hr = CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&factory);
 		if (FAILED(hr))
@@ -140,8 +146,8 @@ namespace Engine
 		swapChainDesc.BufferCount = 1;
 
 		// Set the width and height of the back buffer.
-		swapChainDesc.BufferDesc.Width = mScreenWidth;
-		swapChainDesc.BufferDesc.Height = mScreenHeight;
+		swapChainDesc.BufferDesc.Width = width;
+		swapChainDesc.BufferDesc.Height = height;
 
 		// Set regular 32-bit surface for the back buffer.
 		swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -219,8 +225,8 @@ namespace Engine
 		ZeroMemory(&depthBufferDesc, sizeof(depthBufferDesc));
 
 		// Set up the description of the depth buffer.
-		depthBufferDesc.Width = mScreenWidth;
-		depthBufferDesc.Height = mScreenHeight;
+		depthBufferDesc.Width = width;
+		depthBufferDesc.Height = height;
 		depthBufferDesc.MipLevels = 1;
 		depthBufferDesc.ArraySize = 1;
 		depthBufferDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
@@ -261,6 +267,7 @@ namespace Engine
 		depthStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
 		depthStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
 		depthStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
 
 		// Create the depth stencil state.
 		hr = mDevice->CreateDepthStencilState(&depthStencilDesc, &mDepthStencilState);
@@ -313,8 +320,8 @@ namespace Engine
 		mDeviceContext->RSSetState(mRasterState);
 
 		// Setup the viewport for rendering.
-		viewport.Width = (float)mScreenWidth;
-		viewport.Height = (float)mScreenHeight;
+		viewport.Width = (float)width;
+		viewport.Height = (float)height;
 		viewport.MinDepth = 0.0f;
 		viewport.MaxDepth = 1.0f;
 		viewport.TopLeftX = 0.0f;
@@ -323,7 +330,7 @@ namespace Engine
 		// Setup ImGUI
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
-		//ImGuiIO& io = ImGui::GetIO(); // Currently dont need IO so commented out...
+		ImGuiIO& io = ImGui::GetIO(); // Currently dont need IO so commented out...
 		ImGui_ImplWin32_Init(mHWND);
 		ImGui_ImplDX11_Init(mDevice, mDeviceContext);
 		ImGui::StyleColorsDark();
@@ -407,6 +414,10 @@ namespace Engine
 
 		ImGui::Begin("Temp ImGui window!");
 		ImGui::Text("Hello world!");
+		ImGui::End();
+
+		ImGui::Begin("Framerate");
+		ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		ImGui::End();
 
 		ImGui::Render();
