@@ -1,5 +1,5 @@
+#include "../../pch.h"
 #include "D311Context.h"
-
 #include <directxcolors.h>
 
 namespace Engine
@@ -347,6 +347,8 @@ namespace Engine
 
 
 		testMap = LevelMap::LoadLevelMap((char*)"TileMaps/FirstTest.txt");
+
+
 
 
 		for (int X = 0; X <testMap.size(); X++)
