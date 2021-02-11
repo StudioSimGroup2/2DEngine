@@ -14,7 +14,7 @@ public:
 	Camera(XMFLOAT4 Eye, XMFLOAT4 At = XMFLOAT4(0,0,0,1), XMFLOAT4 Up = XMFLOAT4(0, 1, 0, 1), float ViewWidth = 1280, float ViewHeight= 720);
 	~Camera() = default;
 
-	void Update(); // Updates the view and projection matrices // TODO: Requires DeltaTime
+	void Update(float deltaTime);  // Updates the view and projection matrices
 
 	inline const XMFLOAT4 GetEye() const { return mEye; }
 	inline const XMFLOAT4 GetAt() const { return mAt; }
@@ -44,5 +44,5 @@ private:
 	bool mPrimary;			// Is this the main camera
 	bool mStatic = false;	// Can the camera move? 
 
-	void UpdateMovement(); // TODO: Requires DeltaTime
+	void UpdateMovement(float deltaTime); // TODO: Requires DeltaTime
 };

@@ -16,10 +16,6 @@ Sprite::Sprite(ID3D11Device* device, const wchar_t* name, int PosX, int PosY) : 
 	mWidth = 32;
 	mHeight = 32;
 
-	// Create two cameras
-	CameraManager::Get()->Add(new Camera(XMFLOAT4(0.0f, 0.0f, -5.0f, 1.0f)));
-	CameraManager::Get()->Add(new Camera(XMFLOAT4(0.0f, 0.0f, 5.0f, 1.0f)));
-
 	// TODO: Error checking
 
 	hr = CreateDDSTextureFromFile(device, name, nullptr, &mTexture);
@@ -82,18 +78,6 @@ Sprite::~Sprite()
 
 void Sprite::Render(ID3D11DeviceContext* devCon)
 {
-	CameraManager::Get()->Update(); // Belongs in core scene update loop
-	
-
-	// Doesn't belong here btw, just temp demo
-	// Belongs in core scene update loop
-	// Cycle cameras on A & D keypresses 
-	if (GetAsyncKeyState(0x51)) // Q key
-		CameraManager::Get()->CyclePrevious();
-	if (GetAsyncKeyState(0x45)) // E key
-		CameraManager::Get()->CycleNext();
-
-
 	// Get cameras get matries from primary camera
 	Camera* cam = CameraManager::Get()->GetPrimaryCamera();
 	mViewMatrix = cam->GetViewMatrix();

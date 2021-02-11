@@ -332,7 +332,15 @@ namespace Engine
 		// Create the viewport.
 		mDeviceContext->RSSetViewports(1, &viewport);
 
+
+		// Create two cameras
+		CameraManager::Get()->Add(new Camera(XMFLOAT4(0.0f, 0.0f, -1.0f, 1.0f)));
+		CameraManager::Get()->Add(new Camera(XMFLOAT4(-964.0f, 94.0f, -1.0f, 1.0f)));
+
+
+
 		testMap = LevelMap::LoadLevelMap((char*)"TileMaps/FirstTest.txt");
+
 
 		for (int X = 0; X <testMap.size(); X++)
 		{
@@ -373,7 +381,13 @@ namespace Engine
 
 	void D311Context::OnUpdate(float deltaTime)
 	{
+		CameraManager::Get()->Update(deltaTime); // Belongs in core scene update loop
 
+		// Cycle cameras on A & D keypresses 
+		if (GetAsyncKeyState(0x51)) // Q key
+			CameraManager::Get()->CyclePrevious();
+		if (GetAsyncKeyState(0x45)) // E key
+			CameraManager::Get()->CycleNext();
 	}
 
 	void D311Context::SwapBuffers()
