@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="LevelMap.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="Sprite.cpp" />
@@ -160,6 +161,7 @@
     <ClCompile Include="vendor\ImGui\imgui_widgets.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="LevelMap.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraManager.h" />
     <ClInclude Include="Sprite.h" />
@@ -172,6 +174,7 @@
     <ClInclude Include="src\Entry\WindowsSystem.h" />
     <ClInclude Include="src\Engine\Renderer\Swapchain.h" />
     <ClInclude Include="PNGLoader.h" />
+    <ClInclude Include="Common.h" />
     <ClInclude Include="vendor\DDSTextureLoader.h" />
     <ClInclude Include="vendor\ImGui\imconfig.h" />
     <ClInclude Include="vendor\ImGui\imgui.h" />
