@@ -5,7 +5,7 @@
 
 using namespace DirectX;
 
-Sprite::Sprite(ID3D11Device* device, const wchar_t* name)
+Sprite::Sprite(ID3D11Device* device, const wchar_t* name, int PosX, int PosY) : mPosX(PosX), mPosY(PosY)
 {
 	auto hr = S_OK;
 
@@ -86,6 +86,7 @@ void Sprite::Render(ID3D11DeviceContext* devCon)
 {
 	CameraManager::Get()->Update(); // Belongs in core scene update loop
 	
+
 	// Doesn't belong here btw, just temp demo
 	// Belongs in core scene update loop
 	// Cycle cameras on A & D keypresses 
