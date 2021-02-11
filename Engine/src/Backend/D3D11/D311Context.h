@@ -26,6 +26,7 @@ namespace Engine
 		
 		virtual void Init() override;
 		virtual void Shutdown() override;
+		virtual void OnUpdate(float deltaTime) override;
 		virtual void SwapBuffers() override;
 
 		virtual int GetCardMemory() override { return mMemorySize; }

@@ -33,8 +33,14 @@ namespace Engine
 	{
 		MSG msg = {};
 
+		mCurrentTime = std::chrono::high_resolution_clock::now();
+
 		while (WM_QUIT != msg.message)
 		{
+			mNewTime = std::chrono::high_resolution_clock::now();
+			mFrameTime = mNewTime - mCurrentTime;
+			mCurrentTime = mNewTime;
+
 			if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
 			{
 				TranslateMessage(&msg);
@@ -42,6 +48,7 @@ namespace Engine
 			}
 			else
 			{
+				mRenderer->OnUpdate(mFrameTime.count());
 				mRenderer->SwapBuffers();
 			}
 		}
