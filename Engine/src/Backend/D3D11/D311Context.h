@@ -58,8 +58,11 @@ namespace Engine
 
 		XMMATRIX mWorldMatrix;
 		XMMATRIX mOrthoMatrix;
-
+		
+		//TODO change name 
 		std::vector<Sprite*> ThingsToRender;
 		Sprite* mTempSprite;
+
+		TileMap testMap;
 	};
 }
