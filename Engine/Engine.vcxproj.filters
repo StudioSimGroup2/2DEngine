@@ -48,6 +48,7 @@
     <ClCompile Include="vendor\DDSTextureLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LevelMap.cpp">
     <ClCompile Include="vendor\ImGui\imgui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -69,7 +70,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
-
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -107,6 +107,10 @@
     <ClInclude Include="vendor\DDSTextureLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="LevelMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common.h">
     <ClInclude Include="vendor\ImGui\imconfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>

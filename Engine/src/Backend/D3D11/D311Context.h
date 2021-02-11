@@ -16,6 +16,11 @@
 #include <directxmath.h>
 #include <vector>
 
+//Can be removed added for testing
+#include "../../../LevelMap.h"
+#include "../../../Common.h"
+//----------------------------------
+
 using namespace DirectX;
 
 namespace Engine

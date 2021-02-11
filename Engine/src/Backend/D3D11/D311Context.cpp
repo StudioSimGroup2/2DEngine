@@ -374,6 +374,9 @@ namespace Engine
 		ImGui::Render();
 		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
+		TileMap testMap;
+		testMap = LevelMap::LoadLevelMap((char*)"TileMaps/FirstTest.txt");
+
 		mSwapChain->Present(0, 0);
 	}
 }
