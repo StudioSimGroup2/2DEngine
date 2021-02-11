@@ -5,7 +5,7 @@
 
 using namespace DirectX;
 
-Sprite::Sprite(ID3D11Device* device, const wchar_t* name)
+Sprite::Sprite(ID3D11Device* device, const wchar_t* name, int PosX, int PosY) : mPosX(PosX), mPosY(PosY)
 {
 	auto hr = S_OK;
 
@@ -94,9 +94,7 @@ void Sprite::Render(ID3D11DeviceContext* devCon)
 
 
 	// Temp translation
-	static float posX, posY;
-	posX = posY = 0;
-	XMMATRIX translation = XMMatrixTranslation(posX, posY, 0);
+	XMMATRIX translation = XMMatrixTranslation(mPosX, mPosY, 0);
 	XMMATRIX rotation = XMMatrixRotationZ(0.0f);
 	XMMATRIX scale = XMMatrixScaling(1.0f * mWidth, 1.0f * mHeight, 1.0f);
 	XMMATRIX WVP = scale * rotation * translation;

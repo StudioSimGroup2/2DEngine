@@ -9,6 +9,7 @@
 
 #include <d3d11.h>
 #include <directxmath.h>
+#include <vector>
 
 using namespace DirectX;
 
@@ -47,6 +48,7 @@ namespace Engine
 		XMMATRIX mWorldMatrix;
 		XMMATRIX mOrthoMatrix;
 
+		std::vector<Sprite*> ThingsToRender;
 		Sprite* mTempSprite;
 	};
 }
