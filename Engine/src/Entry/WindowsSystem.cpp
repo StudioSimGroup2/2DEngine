@@ -2,6 +2,8 @@
 
 #include "../Backend/D3D11/D311Context.h"
 
+extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam); // Extern from IMGUI (used to get input data)
+
 namespace Engine
 {
 	LRESULT CALLBACK WndProc(HWND hwnd, UINT uMSG, WPARAM wParam, LPARAM lParam);
@@ -90,6 +92,9 @@ namespace Engine
 
 	LRESULT CALLBACK WndProc(HWND hwnd, UINT uMSG, WPARAM wParam, LPARAM lParam)
 	{	
+		if (ImGui_ImplWin32_WndProcHandler(hwnd, uMSG, wParam, lParam))
+			return true;
+
 		Window* window = reinterpret_cast<Window*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
 
 		switch (uMSG)
@@ -117,7 +122,8 @@ namespace Engine
 
 	void WindowsSystem::Shutdown()
 	{
+		ImGui_ImplWin32_Shutdown();
+		ImGui_ImplDX11_Shutdown();
+		ImGui::DestroyContext();
 	}
 }
-
-
