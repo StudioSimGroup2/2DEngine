@@ -4,6 +4,7 @@
 #include "../Engine/Renderer/Context.h"
 
 #include <Windows.h>
+#include <chrono>
 
 namespace Engine
 {
@@ -34,6 +35,11 @@ namespace Engine
 		unsigned int mHeight;
 
 		Context* mRenderer;
+
+		// DeltaTime calculations
+		std::chrono::time_point<std::chrono::high_resolution_clock> mCurrentTime;
+		std::chrono::time_point<std::chrono::high_resolution_clock> mNewTime;
+		std::chrono::duration<double, std::milli> mFrameTime;	// Frame time is measured in millseconds
 	};
 }
 
