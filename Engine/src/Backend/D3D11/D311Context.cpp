@@ -332,12 +332,36 @@ namespace Engine
 		// Create the viewport.
 		mDeviceContext->RSSetViewports(1, &viewport);
 
+		testMap = LevelMap::LoadLevelMap((char*)"TileMaps/FirstTest.txt");
 
-		Sprite* TSprite = new Sprite(mDevice, L"stone.dds", 0, 0);
+		for (int X = 0; X <testMap.size(); X++)
+		{
+			for (int Y = 0; Y < testMap[0].size(); Y++)
+			{
+				switch (testMap[X][Y])
+				{
+				case 0:
+				{
+					break;
+				}
+				case 1:
+				{
+					Sprite* MapItem = new Sprite(mDevice, L"stone.dds", Y*TILEWIDTH, -X*TILEHEIGHT);
+					ThingsToRender.push_back(MapItem);
+					break;
+				}
+				default:
+					break;
+				}
+			}
+		}
+
+
+		/*Sprite* TSprite = new Sprite(mDevice, L"stone.dds", 0, 0);
 		ThingsToRender.push_back(TSprite);
 
 		Sprite* TSprite2 = new Sprite(mDevice, L"stone.dds", 50, -50);				
-		ThingsToRender.push_back(TSprite2);
+		ThingsToRender.push_back(TSprite2);*/
 	}
 
 	void D311Context::Shutdown()
@@ -373,9 +397,6 @@ namespace Engine
 
 		ImGui::Render();
 		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
-
-		TileMap testMap;
-		testMap = LevelMap::LoadLevelMap((char*)"TileMaps/FirstTest.txt");
 
 		mSwapChain->Present(0, 0);
 	}
