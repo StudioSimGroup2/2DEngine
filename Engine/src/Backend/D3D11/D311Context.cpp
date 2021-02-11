@@ -336,7 +336,7 @@ namespace Engine
 		Sprite* TSprite = new Sprite(mDevice, L"stone.dds", 0, 0);
 		ThingsToRender.push_back(TSprite);
 
-		Sprite* TSprite2 = new Sprite(mDevice, L"stone.dds", 20, 20);				
+		Sprite* TSprite2 = new Sprite(mDevice, L"stone.dds", 50, -50);				
 		ThingsToRender.push_back(TSprite2);
 	}
 

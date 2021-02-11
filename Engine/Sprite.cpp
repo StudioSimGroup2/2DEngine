@@ -20,8 +20,6 @@ Sprite::Sprite(ID3D11Device* device, const wchar_t* name, int PosX, int PosY) : 
 	CameraManager::Get()->Add(new Camera(XMFLOAT4(0.0f, 0.0f, -5.0f, 1.0f)));
 	CameraManager::Get()->Add(new Camera(XMFLOAT4(0.0f, 0.0f, 5.0f, 1.0f)));
 
-
-
 	// TODO: Error checking
 
 	hr = CreateDDSTextureFromFile(device, name, nullptr, &mTexture);
@@ -104,7 +102,7 @@ void Sprite::Render(ID3D11DeviceContext* devCon)
 	// Obj transforms
 	XMMATRIX mScale = XMMatrixScaling(1,1,1);
 	XMMATRIX mRotate = XMMatrixRotationX(0) * XMMatrixRotationY(0) * XMMatrixRotationZ(0);
-	XMMATRIX mTranslate = XMMatrixTranslation(mPreviousPosX, mPreviousPosY, 0);
+	XMMATRIX mTranslate = XMMatrixTranslation(mPosX, mPosY, 0);
 	XMMATRIX world = mScale * mRotate * mTranslate;
 	mWorldMatrix = world;
 
