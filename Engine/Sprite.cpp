@@ -12,8 +12,15 @@ Sprite::Sprite(ID3D11Device* device, const wchar_t* name, int PosX, int PosY) : 
 	mScreenHeight = 720;
 	mScreenWidth = 1280;
 
+	// Texture size
 	mWidth = 32;
 	mHeight = 32;
+
+	// Create two cameras
+	CameraManager::Get()->Add(new Camera(XMFLOAT4(0.0f, 0.0f, -5.0f, 1.0f)));
+	CameraManager::Get()->Add(new Camera(XMFLOAT4(0.0f, 0.0f, 5.0f, 1.0f)));
+
+
 
 	// TODO: Error checking
 
@@ -77,30 +84,29 @@ Sprite::~Sprite()
 
 void Sprite::Render(ID3D11DeviceContext* devCon)
 {
-	XMFLOAT4 mEyePosition = XMFLOAT4(0.0f, 0.0f, -5.0f, 1.0f);
-	
-	XMVECTOR Eye = XMLoadFloat4(&mEyePosition);
-	XMVECTOR At = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-	XMVECTOR Up = XMVectorSet(0.0f, 1.0f, 0.0f, 1.0f);
-	
+	CameraManager::Get()->Update(); // Belongs in core scene update loop
 	
 
-	//mWorldMatrix = XMMatrixIdentity();
-	mViewMatrix = XMMatrixLookAtLH(Eye, At, Up);
+	// Doesn't belong here btw, just temp demo
+	// Belongs in core scene update loop
+	// Cycle cameras on A & D keypresses 
+	if (GetAsyncKeyState(0x51)) // Q key
+		CameraManager::Get()->CyclePrevious();
+	if (GetAsyncKeyState(0x45)) // E key
+		CameraManager::Get()->CycleNext();
 
-	// 16 & 12 derived from 16:9 aspect ratio, tweeked slightly
-	// the higher values = smaller texture size. Lower value = bigger texture size.
-	mProjectionMatrix = XMMatrixOrthographicLH(16, 12, 0.1, 100);
 
+	// Get cameras get matries from primary camera
+	Camera* cam = CameraManager::Get()->GetPrimaryCamera();
+	mViewMatrix = cam->GetViewMatrix();
+	mProjectionMatrix = cam->GetProjectionMatrix();
 
-	// Temp translation
-	XMMATRIX translation = XMMatrixTranslation(mPosX, mPosY, 0);
-	XMMATRIX rotation = XMMatrixRotationZ(0.0f);
-	XMMATRIX scale = XMMatrixScaling(1.0f * mWidth, 1.0f * mHeight, 1.0f);
-	XMMATRIX WVP = scale * rotation * translation;
-	XMMATRIX worldMatrix = XMMatrixMultiply(mViewMatrix, mProjectionMatrix);
-	mWorldMatrix = XMMatrixMultiply(WVP, worldMatrix);
-
+	// Obj transforms
+	XMMATRIX mScale = XMMatrixScaling(1,1,1);
+	XMMATRIX mRotate = XMMatrixRotationX(0) * XMMatrixRotationY(0) * XMMatrixRotationZ(0);
+	XMMATRIX mTranslate = XMMatrixTranslation(mPreviousPosX, mPreviousPosY, 0);
+	XMMATRIX world = mScale * mRotate * mTranslate;
+	mWorldMatrix = world;
 
 	ConstantBuffer cb;
 	cb.mProjection = XMMatrixTranspose(mProjectionMatrix);
@@ -118,6 +124,7 @@ void Sprite::Render(ID3D11DeviceContext* devCon)
 	devCon->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	devCon->IASetInputLayout(mInputLayout);
 	devCon->IASetVertexBuffers(0, 1, &mVertexBuffer, &stride, &offset);
+	devCon->IASetIndexBuffer(mIndexBuffer, DXGI_FORMAT_R16_UINT, 0);
 
 	
 	devCon->VSSetShader(mVertexShader, NULL, 0);
@@ -133,40 +140,42 @@ void Sprite::Render(ID3D11DeviceContext* devCon)
 
 void Sprite::CreateBuffers(ID3D11Device* dev)
 {
+	HRESULT hr = S_OK;
 	VertexType vertices[6];
 	float left, right, top, bottom;
 
 	// Calculate the screen coordinates of the left side of the bitmap.
-	left = (float)((1280 / 2) * -1) + (float)0;
+	left = (float)((1280 / 2) * -1) + (float)mPreviousPosX; // 0 = X position
 
 	// Calculate the screen coordinates of the right side of the bitmap.
-	right = left + (float)32;
+	right = left + (float)mWidth;
 
 	// Calculate the screen coordinates of the top of the bitmap.
-	top = (float)(1280 / 2) - (float)0;
+	top = (float)(720 / 2) - (float)mPreviousPosY; // 0 = Y position
 
 	// Calculate the screen coordinates of the bottom of the bitmap.
-	bottom = top - (float)32;
+	bottom = top - (float)mHeight;
 
-	// Swaped over to unit quad from 2 unit quad
-	vertices[0].position = XMFLOAT3(-0.5f, 0.5f, 0.0f);  // Top left.
+	// Bad triangle
+	vertices[0].position = XMFLOAT3(left, top, 0.0f);  // Top left.
 	vertices[0].texture = XMFLOAT2(0.0f, 0.0f);
-
-	vertices[1].position = XMFLOAT3(0.5f, -0.5f, 0.0f);  // Bottom right.
-	vertices[1].texture = XMFLOAT2(1.0f, 1.0f);
-
-	vertices[2].position = XMFLOAT3(-0.5f, -0.5f, 0.0f);  // Bottom left.
-	vertices[2].texture = XMFLOAT2(0.0f, 1.0f);
-
-	// Second triangle.
-	vertices[3].position = XMFLOAT3(-0.5f, 0.5f, 0.0f);  // Top left.
+	
+	vertices[1].position = XMFLOAT3(left, bottom, 0.0f);  // Bottom left.
+	vertices[1].texture = XMFLOAT2(0.0f, 1.0f);
+	
+	vertices[2].position = XMFLOAT3(right, bottom, 0.0f);  // Bottom left.
+	vertices[2].texture = XMFLOAT2(1.0f, 1.0f);
+	
+	// Second triangle. Good triangle
+	vertices[3].position = XMFLOAT3(left, top, 0.0f);  // Top left.
 	vertices[3].texture = XMFLOAT2(0.0f, 0.0f);
-
-	vertices[4].position = XMFLOAT3(0.5f, 0.5f, 0.0f);  // Top right.
+	
+	vertices[4].position = XMFLOAT3(right, top, 0.0f);  // Top right.
 	vertices[4].texture = XMFLOAT2(1.0f, 0.0f);
-
-	vertices[5].position = XMFLOAT3(0.5f, -0.5f, 0.0f);  // Bottom right.
+	
+	vertices[5].position = XMFLOAT3(right, bottom, 0.0f);  // Bottom right.
 	vertices[5].texture = XMFLOAT2(1.0f, 1.0f);
+
 
 	D3D11_BUFFER_DESC bd = {};
 	bd.Usage = D3D11_USAGE_DEFAULT;
@@ -176,12 +185,13 @@ void Sprite::CreateBuffers(ID3D11Device* dev)
 
 	D3D11_SUBRESOURCE_DATA InitData = {};
 	InitData.pSysMem = vertices;
-	dev->CreateBuffer(&bd, &InitData, &mVertexBuffer);
+	hr = dev->CreateBuffer(&bd, &InitData, &mVertexBuffer);
+	ASSERT(!FAILED(hr), "Error creating vertex buffer");
 
+	// I dont think these are working corretly
 	WORD indices[] = {
-		// Front Face
-		0, 1, 2,
-		0, 2, 3,
+		2, 1, 0,
+		5, 4, 3,
 	};
 
 	bd.Usage = D3D11_USAGE_DEFAULT;
@@ -189,14 +199,17 @@ void Sprite::CreateBuffers(ID3D11Device* dev)
 	bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	bd.CPUAccessFlags = 0;
 	InitData.pSysMem = indices;
-	dev->CreateBuffer(&bd, &InitData, &mIndexBuffer);
+	hr = dev->CreateBuffer(&bd, &InitData, &mIndexBuffer);
+	ASSERT(!FAILED(hr), "Error creating Index buffer");
 
 	bd.Usage = D3D11_USAGE_DEFAULT;
 	bd.ByteWidth = sizeof(ConstantBuffer);
 	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	bd.CPUAccessFlags = 0;
 
-	dev->CreateBuffer(&bd, nullptr, &mConstantBuffer);
+	hr = dev->CreateBuffer(&bd, nullptr, &mConstantBuffer);
+	ASSERT(!FAILED(hr), "Error creating Constant buffer");
+
 }
 
 HRESULT Sprite::CompileShaderFromFile(const WCHAR* szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel,

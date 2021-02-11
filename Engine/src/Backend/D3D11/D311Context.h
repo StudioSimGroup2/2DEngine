@@ -3,6 +3,11 @@
 #include "../../Engine/Renderer/Context.h"
 #include "../../../Sprite.h"
 
+// TODO: add compiler include path later or Precompiled Header
+#include "../../../vendor/ImGui/imgui.h"
+#include "../../../vendor/ImGui/imgui_impl_win32.h"
+#include "../../../vendor/ImGui/imgui_impl_dx11.h"
+
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "dxgi.lib")
 #pragma comment(lib, "d3dcompiler.lib")
@@ -22,6 +27,7 @@ namespace Engine
 		
 		virtual void Init() override;
 		virtual void Shutdown() override;
+		virtual void OnUpdate(float deltaTime) override;
 		virtual void SwapBuffers() override;
 
 		virtual int GetCardMemory() override { return mMemorySize; }
