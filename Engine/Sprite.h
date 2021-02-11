@@ -1,6 +1,9 @@
 #pragma once
 #include <d3d11.h>
 #include <DirectXMath.h>
+
+#include "CameraManager.h"
+
 //#include "PNGLoader.h"
 
 using namespace DirectX;
@@ -8,7 +11,7 @@ using namespace DirectX;
 class Sprite
 {
 public:
-	Sprite(ID3D11Device* device, const wchar_t* name);
+	Sprite(ID3D11Device* device, const wchar_t* name, int PosX, int PosY);
 	~Sprite();
 
 	void Render(ID3D11DeviceContext* devCon);
@@ -34,6 +37,7 @@ private:
 
 	int mScreenWidth, mScreenHeight;
 	int mWidth, mHeight;
+	float mPosX, mPosY;
 	int mPreviousPosX, mPreviousPosY;
 
 	struct VertexType

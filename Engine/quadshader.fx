@@ -36,7 +36,6 @@ PS_INPUT VS(VS_INPUT input)
     output.Pos = mul(input.Pos, worldMatrix);
     output.Pos = mul(output.Pos, viewMatrix);
     output.Pos = mul(output.Pos, projectionMatrix);
-    //output.Pos = input.Pos;
    
     output.Tex = input.Tex;
 	
@@ -45,7 +44,7 @@ PS_INPUT VS(VS_INPUT input)
 
 float4 PS(PS_INPUT IN) : SV_TARGET
 {
-    float4 vColor;
+    float4 vColor = float4(1, 1, 1, 1);
     
     vColor = tx.Sample(linearSampler, IN.Tex);
     

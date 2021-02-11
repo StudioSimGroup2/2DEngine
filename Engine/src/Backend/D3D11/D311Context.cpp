@@ -320,10 +320,24 @@ namespace Engine
 		viewport.TopLeftX = 0.0f;
 		viewport.TopLeftY = 0.0f;
 
+		// Setup ImGUI
+		IMGUI_CHECKVERSION();
+		ImGui::CreateContext();
+		//ImGuiIO& io = ImGui::GetIO(); // Currently dont need IO so commented out...
+		ImGui_ImplWin32_Init(mHWND);
+		ImGui_ImplDX11_Init(mDevice, mDeviceContext);
+		ImGui::StyleColorsDark();
+
+
 		// Create the viewport.
 		mDeviceContext->RSSetViewports(1, &viewport);
 
-		mTempSprite = new Sprite(mDevice, L"stone.dds");
+
+		Sprite* TSprite = new Sprite(mDevice, L"stone.dds", 0, 0);
+		ThingsToRender.push_back(TSprite);
+
+		Sprite* TSprite2 = new Sprite(mDevice, L"stone.dds", 20, 20);				
+		ThingsToRender.push_back(TSprite2);
 	}
 
 	void D311Context::Shutdown()
@@ -333,12 +347,32 @@ namespace Engine
 		mDeviceContext->Release();
 	}
 
+	void D311Context::OnUpdate(float deltaTime)
+	{
+
+	}
+
 	void D311Context::SwapBuffers()
 	{
 		mDeviceContext->ClearRenderTargetView(mRenderTargetView, DirectX::Colors::SeaGreen);
 
-		
-		mTempSprite->Render(mDeviceContext);
+		for (auto Thing : ThingsToRender)
+		{
+			Thing->Render(mDeviceContext);
+		}
+
+
+		// ImGui rendering below (Move to seperate UI rendering function later
+		ImGui_ImplDX11_NewFrame();
+		ImGui_ImplWin32_NewFrame();
+		ImGui::NewFrame();
+
+		ImGui::Begin("Temp ImGui window!");
+		ImGui::Text("Hello world!");
+		ImGui::End();
+
+		ImGui::Render();
+		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
 		TileMap testMap;
 		testMap = LevelMap::LoadLevelMap((char*)"TileMaps/FirstTest.txt");
