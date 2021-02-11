@@ -3,6 +3,7 @@
 #include <DirectXMath.h>
 
 #include "CameraManager.h"
+#include "Common.h"
 
 //#include "PNGLoader.h"
 

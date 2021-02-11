@@ -16,6 +16,12 @@ Sprite::Sprite(ID3D11Device* device, const wchar_t* name, int PosX, int PosY) : 
 	mWidth = 32;
 	mHeight = 32;
 
+	//Tiles per screen = 22.5 X 40
+
+	// Create two cameras
+	CameraManager::Get()->Add(new Camera(XMFLOAT4(0.0f, 0.0f, -5.0f, 1.0f)));
+	CameraManager::Get()->Add(new Camera(XMFLOAT4(0.0f, 0.0f, 5.0f, 1.0f)));
+
 	// TODO: Error checking
 
 	hr = CreateDDSTextureFromFile(device, name, nullptr, &mTexture);
@@ -78,6 +84,7 @@ Sprite::~Sprite()
 
 void Sprite::Render(ID3D11DeviceContext* devCon)
 {
+	
 	// Get cameras get matries from primary camera
 	Camera* cam = CameraManager::Get()->GetPrimaryCamera();
 	mViewMatrix = cam->GetViewMatrix();
@@ -130,13 +137,13 @@ void Sprite::CreateBuffers(ID3D11Device* dev)
 	left = (float)((1280 / 2) * -1) + (float)mPreviousPosX; // 0 = X position
 
 	// Calculate the screen coordinates of the right side of the bitmap.
-	right = left + (float)mWidth;
+	right = left + (float)TILEWIDTH;
 
 	// Calculate the screen coordinates of the top of the bitmap.
 	top = (float)(720 / 2) - (float)mPreviousPosY; // 0 = Y position
 
 	// Calculate the screen coordinates of the bottom of the bitmap.
-	bottom = top - (float)mHeight;
+	bottom = top - (float)TILEHEIGHT;
 
 	// Bad triangle
 	vertices[0].position = XMFLOAT3(left, top, 0.0f);  // Top left.
