@@ -332,7 +332,12 @@ namespace Engine
 		// Create the viewport.
 		mDeviceContext->RSSetViewports(1, &viewport);
 
-		mTempSprite = new Sprite(mDevice, L"stone.dds");
+
+		Sprite* TSprite = new Sprite(mDevice, L"stone.dds", 0, 0);
+		ThingsToRender.push_back(TSprite);
+
+		Sprite* TSprite2 = new Sprite(mDevice, L"stone.dds", 20, 20);				
+		ThingsToRender.push_back(TSprite2);
 	}
 
 	void D311Context::Shutdown()
@@ -351,8 +356,10 @@ namespace Engine
 	{
 		mDeviceContext->ClearRenderTargetView(mRenderTargetView, DirectX::Colors::SeaGreen);
 
-		
-		mTempSprite->Render(mDeviceContext);
+		for (auto Thing : ThingsToRender)
+		{
+			Thing->Render(mDeviceContext);
+		}
 
 
 		// ImGui rendering below (Move to seperate UI rendering function later
