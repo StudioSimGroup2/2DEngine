@@ -348,7 +348,6 @@ namespace Engine
 
 		testMap = LevelMap::LoadLevelMap((char*)"TileMaps/FirstTest.txt");
 
-
 		for (int X = 0; X <testMap.size(); X++)
 		{
 			for (int Y = 0; Y < testMap[0].size(); Y++)
@@ -361,7 +360,8 @@ namespace Engine
 				}
 				case 1:
 				{
-					Sprite* MapItem = new Sprite(mDevice, L"stone.dds", Y*TILEWIDTH, -X*TILEHEIGHT);
+					Vector2D Position = Vector2D(Y * TILEWIDTH, X * TILEHEIGHT);
+					Sprite* MapItem = new Sprite(mDevice, L"Textures/stone.dds", Position);
 					ThingsToRender.push_back(MapItem);
 					break;
 				}
@@ -370,6 +370,9 @@ namespace Engine
 				}
 			}
 		}
+
+		TestSprite = new Sprite(mDevice, L"Textures/Mario.dds", Vector2D(32, 32));
+		TestCharacter = new Character(TestSprite, Vector2D(0, 0));
 
 
 		/*Sprite* TSprite = new Sprite(mDevice, L"stone.dds", 0, 0);
@@ -395,6 +398,8 @@ namespace Engine
 			CameraManager::Get()->CyclePrevious();
 		if (GetAsyncKeyState(0x45)) // E key
 			CameraManager::Get()->CycleNext();
+
+		TestCharacter->Update(deltaTime);
 	}
 
 	void D311Context::SwapBuffers()
@@ -405,7 +410,8 @@ namespace Engine
 		{
 			Thing->Render(mDeviceContext);
 		}
-
+		//TestSprite->Render(mDeviceContext);
+		TestCharacter->render(mDeviceContext);
 
 		// ImGui rendering below (Move to seperate UI rendering function later
 		ImGui_ImplDX11_NewFrame();

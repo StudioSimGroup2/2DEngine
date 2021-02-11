@@ -19,6 +19,7 @@
 //Can be removed added for testing
 #include "../../../LevelMap.h"
 #include "../../../Common.h"
+#include "../../../Character.h"
 //----------------------------------
 
 using namespace DirectX;
@@ -62,6 +63,10 @@ namespace Engine
 		//TODO change name 
 		std::vector<Sprite*> ThingsToRender;
 		Sprite* mTempSprite;
+
+		//Remove
+		Sprite* TestSprite;
+		Character* TestCharacter;
 
 		TileMap testMap;
 	};
