@@ -32,16 +32,16 @@ void CameraManager::Delete(size_t index)
 	mCameras.erase(mCameras.begin() + index);
 }
 
-void CameraManager::Update(bool forceUpdate)
+void CameraManager::Update(float deltaTime, bool forceUpdate)
 {
 	// Only update the primary camera
 	for (Camera* c : mCameras) {
 		if (forceUpdate) {
-			c->Update();
+			c->Update(deltaTime);
 			continue;
 		} 
 		else if (c->IsPrimary()) {
-			c->Update();
+			c->Update(deltaTime);
 			break; // Break out of the loop as we can only have one primary camera
 		}
 	}

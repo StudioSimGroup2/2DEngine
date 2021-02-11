@@ -16,7 +16,7 @@ public:
 
 	void Add(Camera* camera);
 	void Delete(size_t index);
-	void Update(bool forceUpdate=false); // force update, will force all the cameras to be updated, not just the primary camera
+	void Update(float deltaTime, bool forceUpdate=false); // force update, will force all the cameras to be updated, not just the primary camera
 
 	// Returns and sets the next active camera to be either the next or previous camera.
 	Camera* CycleNext();
