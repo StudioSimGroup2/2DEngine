@@ -26,4 +26,26 @@ struct Vector2D
 		Y = initalY;
 	}
 };
+
+struct Rect2D
+{
+	Vector2D Position; //Top right of rectangle
+	float width;
+	float Height;
+
+	Rect2D()
+	{
+		Position = Vector2D();
+		width = 0;
+		Height = 0;
+	}
+	Rect2D(Vector2D Pos, float W, float H)
+	{
+		Position = Pos;
+		width = W;
+		Height = H;
+	}
+
+};
+
 typedef std::vector<std::vector<int>> TileMap;
