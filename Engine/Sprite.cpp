@@ -5,7 +5,7 @@
 
 using namespace DirectX;
 
-Sprite::Sprite(ID3D11Device* device, const wchar_t* name, int PosX, int PosY) : mPosX(PosX), mPosY(PosY)
+Sprite::Sprite(ID3D11Device* device, const wchar_t* name, Vector2D Position) : mPosition(Position)
 {
 	auto hr = S_OK;
 
@@ -17,10 +17,6 @@ Sprite::Sprite(ID3D11Device* device, const wchar_t* name, int PosX, int PosY) : 
 	mHeight = 32;
 
 	//Tiles per screen = 22.5 X 40
-
-	// Create two cameras
-	CameraManager::Get()->Add(new Camera(XMFLOAT4(0.0f, 0.0f, -5.0f, 1.0f)));
-	CameraManager::Get()->Add(new Camera(XMFLOAT4(0.0f, 0.0f, 5.0f, 1.0f)));
 
 	// TODO: Error checking
 
@@ -82,9 +78,13 @@ Sprite::~Sprite()
 	mTexture->Release();
 }
 
-void Sprite::Render(ID3D11DeviceContext* devCon)
+void Sprite::Update(float deltaTime)
 {
-	
+
+}
+
+void Sprite::Render(ID3D11DeviceContext* devCon)
+{	
 	// Get cameras get matries from primary camera
 	Camera* cam = CameraManager::Get()->GetPrimaryCamera();
 	mViewMatrix = cam->GetViewMatrix();
@@ -93,7 +93,7 @@ void Sprite::Render(ID3D11DeviceContext* devCon)
 	// Obj transforms
 	XMMATRIX mScale = XMMatrixScaling(1,1,1);
 	XMMATRIX mRotate = XMMatrixRotationX(0) * XMMatrixRotationY(0) * XMMatrixRotationZ(0);
-	XMMATRIX mTranslate = XMMatrixTranslation(mPosX, mPosY, 0);
+	XMMATRIX mTranslate = XMMatrixTranslation(mPosition.X, -mPosition.Y, 0);
 	XMMATRIX world = mScale * mRotate * mTranslate;
 	mWorldMatrix = world;
 
@@ -125,6 +125,11 @@ void Sprite::Render(ID3D11DeviceContext* devCon)
 
 
 	devCon->Draw(6, 0);
+}
+
+void Sprite::SetPosition(Vector2D Pos)
+{
+	mPosition = Pos;
 }
 
 void Sprite::CreateBuffers(ID3D11Device* dev)
