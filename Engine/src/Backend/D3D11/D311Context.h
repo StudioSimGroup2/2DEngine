@@ -55,6 +55,7 @@ namespace Engine
 		ID3D11Texture2D* mDepthStencilBuffer;
 		ID3D11DepthStencilState* mDepthStencilState;
 		ID3D11DepthStencilView* mDepthStencilView;
+		ID3D11BlendState* mTransparant;
 		ID3D11RasterizerState* mRasterState;
 
 		XMMATRIX mWorldMatrix;

@@ -319,6 +319,28 @@ namespace Engine
 		// Now set the rasterizer state.
 		mDeviceContext->RSSetState(mRasterState);
 
+		
+		//---------------------------------
+		//blending
+		D3D11_BLEND_DESC omDesc;
+		ZeroMemory(&omDesc, sizeof(D3D11_BLEND_DESC));
+		omDesc.RenderTarget[0].BlendEnable = true;
+		omDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+		omDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+		omDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+		omDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+		omDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+		omDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+		omDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+
+		mDevice->CreateBlendState(&omDesc, &mTransparant);
+
+
+		float blendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+		UINT sampleMask = 0xffffffff;
+		mDeviceContext->OMSetBlendState(mTransparant, blendFactor, sampleMask);
+		//----------------------------------
+
 		// Setup the viewport for rendering.
 		viewport.Width = (float)width;
 		viewport.Height = (float)height;
@@ -372,14 +394,7 @@ namespace Engine
 		}
 
 		TestSprite = new Sprite(mDevice, L"Textures/Mario.dds", Vector2D(32, 32));
-		TestCharacter = new Character(TestSprite, Vector2D(0, 0));
-
-
-		/*Sprite* TSprite = new Sprite(mDevice, L"stone.dds", 0, 0);
-		ThingsToRender.push_back(TSprite);
-
-		Sprite* TSprite2 = new Sprite(mDevice, L"stone.dds", 50, -50);				
-		ThingsToRender.push_back(TSprite2);*/
+		TestCharacter = new Character(TestSprite, Vector2D(0, 0), 200.0f, 1.0f);
 	}
 
 	void D311Context::Shutdown()
@@ -399,6 +414,24 @@ namespace Engine
 		if (GetAsyncKeyState(0x45)) // E key
 			CameraManager::Get()->CycleNext();
 
+		if (GetAsyncKeyState(0x27)) //Right arrow
+		{
+			TestCharacter->setMovingRight(true);
+		}
+		else 
+		{
+			TestCharacter->setMovingRight(false);
+		}	
+
+		if (GetAsyncKeyState(0x25)) //Left arrow
+		{
+			TestCharacter->setMovingLeft(true);
+		}
+		else
+		{
+			TestCharacter->setMovingLeft(false);
+		}
+
 		TestCharacter->Update(deltaTime);
 	}
 
@@ -410,7 +443,6 @@ namespace Engine
 		{
 			Thing->Render(mDeviceContext);
 		}
-		//TestSprite->Render(mDeviceContext);
 		TestCharacter->render(mDeviceContext);
 
 		// ImGui rendering below (Move to seperate UI rendering function later

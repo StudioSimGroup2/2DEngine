@@ -1,6 +1,10 @@
 #include "Character.h"
+Character::Character(Sprite* sprite, Vector2D Position, float Speed) : mSprite(sprite), mPosition(Position), mSpeed(Speed)
+{
+	mSpeedModifier = 1;
+}
 
-Character::Character(Sprite* sprite, Vector2D Position) : mSprite(sprite), mPosition(Position)
+Character::Character(Sprite* sprite, Vector2D Position, float Speed, float SpeedMod) : mSprite(sprite), mPosition(Position), mSpeed(Speed), mSpeedModifier(SpeedMod)
 {
 
 }
@@ -11,8 +15,27 @@ Character::~Character()
 
 void Character::Update(float deltaTime)
 {
+	deltaTime /= 1000;
 	//Add physcics etc.
-	Vector2D Pos = mPosition;
+	
+	if (mMovingRight)
+	{
+		mPosition.X += (mSpeed * mSpeedModifier) * deltaTime;
+	}
+	if (mMovingLeft)
+	{
+		mPosition.X -= (mSpeed * mSpeedModifier)* deltaTime;
+	}
+	if (mMovingUp)
+	{
+		mPosition.Y += (mSpeed * mSpeedModifier)* deltaTime;
+	}
+	if (mMovingDown)
+	{
+		mPosition.Y -= (mSpeed * mSpeedModifier)* deltaTime;
+	}
+
+
 
 	mSprite->SetPosition(mPosition);
 	mSprite->Update(deltaTime);

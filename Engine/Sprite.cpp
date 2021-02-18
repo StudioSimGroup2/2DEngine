@@ -18,10 +18,6 @@ Sprite::Sprite(ID3D11Device* device, const wchar_t* name, Vector2D Position) : m
 
 	//Tiles per screen = 22.5 X 40
 
-	// Create two cameras
-	CameraManager::Get()->Add(new Camera(XMFLOAT4(0.0f, 0.0f, -5.0f, 1.0f)));
-	CameraManager::Get()->Add(new Camera(XMFLOAT4(0.0f, 0.0f, 5.0f, 1.0f)));
-
 	// TODO: Error checking
 
 	hr = CreateDDSTextureFromFile(device, name, nullptr, &mTexture);
@@ -88,8 +84,7 @@ void Sprite::Update(float deltaTime)
 }
 
 void Sprite::Render(ID3D11DeviceContext* devCon)
-{
-	
+{	
 	// Get cameras get matries from primary camera
 	Camera* cam = CameraManager::Get()->GetPrimaryCamera();
 	mViewMatrix = cam->GetViewMatrix();
