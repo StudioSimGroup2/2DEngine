@@ -397,6 +397,8 @@ namespace Engine
 			CameraManager::Get()->CyclePrevious();
 		if (GetAsyncKeyState(0x45)) // E key
 			CameraManager::Get()->CycleNext();
+
+		std::cout << "DT: " << deltaTime << std::endl;
 	}
 
 	void D311Context::SwapBuffers()
