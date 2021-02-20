@@ -22,11 +22,11 @@ public:
 
 private:
 
-	void UpdateForces();
+	void UpdateForces(float dT);
 	void UpdateAcceleration();
 	void ResetForces();
 
-	void Update();
+	void Update(float dT);
 
 };
 

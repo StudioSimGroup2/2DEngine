@@ -24,9 +24,9 @@ Physics::~Physics()
 
 }
 
-void Physics::UpdateForces()
+void Physics::UpdateForces(float dT)
 {
-	currentVelocity = currentVelocity + (netAcceleration * deltaTime);
+	//currentVelocity = currentVelocity + (netAcceleration * dT);
 
 	if (grounded)
 	{
@@ -42,7 +42,7 @@ void Physics::UpdateForces()
 
 void Physics::UpdateAcceleration()
 {
-	netAcceleration = netForce / weight;
+	//netAcceleration = netForce / weight;
 }
 
 void Physics::ResetForces()
@@ -52,7 +52,7 @@ void Physics::ResetForces()
 	netForce.Y = 0.0f;
 }
 
-void Physics::Update()
+void Physics::Update(float dT)
 {
 	for (int i = 0; i < actingForces.size(); i++)
 	{
@@ -61,5 +61,5 @@ void Physics::Update()
 	}
 
 	UpdateAcceleration();
-	UpdateForces();
+	UpdateForces(dT);
 }
