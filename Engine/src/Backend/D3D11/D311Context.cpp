@@ -350,6 +350,7 @@ namespace Engine
 		viewport.TopLeftY = 0.0f;
 
 		// Setup ImGUI
+
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
 		ImGuiIO& io = ImGui::GetIO(); // Currently dont need IO so commented out...

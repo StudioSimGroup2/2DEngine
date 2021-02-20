@@ -13,7 +13,7 @@ void Character::Update(float deltaTime)
 {
 	deltaTime /= 1000;
 	//Add physcics etc.
-	
+
 	if (mMovingRight)
 	{
 		PhysicsObject::mPhysics->AddThrust(Vector2D (1,0) * (mSpeed * mSpeedModifier));
@@ -30,6 +30,9 @@ void Character::Update(float deltaTime)
 	{
 		PhysicsObject::mPhysics->AddThrust(Vector2D(0, 1) * (mSpeed * mSpeedModifier));
 	}
+
+	PhysicsObject::Update(deltaTime);
+
 }
 
 void Character::Render(ID3D11DeviceContext* devCon)
