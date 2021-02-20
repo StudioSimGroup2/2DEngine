@@ -1,12 +1,8 @@
 #include "Character.h"
-Character::Character(Sprite* sprite, Vector2D Position, float Speed) : mSprite(sprite), mPosition(Position), mSpeed(Speed)
+Character::Character(ID3D11Device* device, const wchar_t* name, Vector2D Position) : PhysicsObject(device, name, Position)
 {
+	mSpeed = 20;
 	mSpeedModifier = 1;
-}
-
-Character::Character(Sprite* sprite, Vector2D Position, float Speed, float SpeedMod) : mSprite(sprite), mPosition(Position), mSpeed(Speed), mSpeedModifier(SpeedMod)
-{
-
 }
 
 Character::~Character()
@@ -34,14 +30,9 @@ void Character::Update(float deltaTime)
 	{
 		mPosition.Y -= (mSpeed * mSpeedModifier)* deltaTime;
 	}
-
-
-
-	mSprite->SetPosition(mPosition);
-	mSprite->Update(deltaTime);
 }
 
-void Character::render(ID3D11DeviceContext* devCon)
+void Character::Render(ID3D11DeviceContext* devCon)
 {
-	mSprite->Render(devCon);
+	PhysicsObject::Render(devCon);
 }

@@ -23,6 +23,7 @@
     <ClCompile Include="vendor\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Character.cpp" />
+    <ClCompile Include="PhysicsObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LevelMap.h" />
@@ -50,5 +51,6 @@
     <ClInclude Include="vendor\ImGui\imstb_truetype.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="Character.h" />
+    <ClInclude Include="PhysicsObject.h" />
   </ItemGroup>
 </Project>

@@ -1,15 +1,15 @@
 #pragma once
 #include "Sprite.h"
 #include "Common.h"
+#include "PhysicsObject.h"
 
-class Character
+class Character : PhysicsObject
 {
 public:
-	Character(Sprite* sprite, Vector2D Position, float Speed);
-	Character(Sprite* sprite, Vector2D Position, float Speed, float SpeedMod);
+	Character(ID3D11Device* device, const wchar_t* name, Vector2D Position);
 	~Character();
 	void Update(float deltaTime);
-	void render(ID3D11DeviceContext* devCon);
+	void Render(ID3D11DeviceContext* devCon);
 
 	void setMovingUp(bool State) { mMovingUp = State; }
 	void setMovingRight(bool State) { mMovingRight = State; }
@@ -17,7 +17,6 @@ public:
 	void setMovingLeft(bool State) { mMovingLeft = State; }
 
 private:
-	Sprite* mSprite;
 	Vector2D mPosition;
 
 	bool mMovingUp = false;

@@ -393,8 +393,7 @@ namespace Engine
 			}
 		}
 
-		TestSprite = new Sprite(mDevice, L"Textures/Mario.dds", Vector2D(32, 32));
-		TestCharacter = new Character(TestSprite, Vector2D(0, 0), 200.0f, 1.0f);
+		TestCharacter = new Character(mDevice, L"Textures/Mario.dds", Vector2D(32, 32));
 	}
 
 	void D311Context::Shutdown()
@@ -414,23 +413,23 @@ namespace Engine
 		if (GetAsyncKeyState(0x45)) // E key
 			CameraManager::Get()->CycleNext();
 
-		if (GetAsyncKeyState(0x27)) //Right arrow
-		{
-			TestCharacter->setMovingRight(true);
-		}
-		else 
-		{
-			TestCharacter->setMovingRight(false);
-		}	
+		//if (GetAsyncKeyState(0x27)) //Right arrow
+		//{
+		//	TestCharacter->setMovingRight(true);
+		//}
+		//else 
+		//{
+		//	TestCharacter->setMovingRight(false);
+		//}	
 
-		if (GetAsyncKeyState(0x25)) //Left arrow
-		{
-			TestCharacter->setMovingLeft(true);
-		}
-		else
-		{
-			TestCharacter->setMovingLeft(false);
-		}
+		//if (GetAsyncKeyState(0x25)) //Left arrow
+		//{
+		//	TestCharacter->setMovingLeft(true);
+		//}
+		//else
+		//{
+		//	TestCharacter->setMovingLeft(false);
+		//}
 
 		TestCharacter->Update(deltaTime);
 	}
@@ -443,7 +442,7 @@ namespace Engine
 		{
 			Thing->Render(mDeviceContext);
 		}
-		TestCharacter->render(mDeviceContext);
+		TestCharacter->Render(mDeviceContext);
 
 		// ImGui rendering below (Move to seperate UI rendering function later
 		ImGui_ImplDX11_NewFrame();

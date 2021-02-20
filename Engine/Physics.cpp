@@ -1,22 +1,22 @@
 #include "Physics.h"
 
-Physics::Physics()
+Physics::Physics() 
 {
-	grounded = true;
+	mGrounded = true;
 
 	//Initialize Net Forces
-	netForce.X = 0.0f;
-	netForce.Y = 0.0f;
+	mNetForce.X = 0.0f;
+	mNetForce.Y = 0.0f;
 
 	//Initialize Net Acceleration
-	netAcceleration.X = 0.0f;
-	netAcceleration.Y = 0.0f;
+	mNetAcceleration.X = 0.0f;
+	mNetAcceleration.Y = 0.0f;
 
 	//Initialize Velocity
-	currentVelocity.X = 0.0f;
-	currentVelocity.Y = 0.0f;
+	mCurrentVelocity.X = 0.0f;
+	mCurrentVelocity.Y = 0.0f;
 
-	weight = 100.0f;
+	mWeight = 100.0f;
 }
 
 Physics::~Physics()
@@ -26,15 +26,15 @@ Physics::~Physics()
 
 void Physics::UpdateForces(float dT)
 {
-	//currentVelocity = currentVelocity + (netAcceleration * dT);
+	//mCurrentVelocity = mCurrentVelocity + (mNetAcceleration * dT);
 
-	if (grounded)
+	if (mGrounded)
 	{
-		netForce.X += (currentVelocity.X * -FRICTIONCOEF);
+		mNetForce.X += (mCurrentVelocity.X * -FRICTIONCOEF);
 	}
 	else
 	{
-		netForce.Y += (weight * GRAVITY);
+		mNetForce.Y += (mWeight * GRAVITY);
 	}
 
 
@@ -42,22 +42,26 @@ void Physics::UpdateForces(float dT)
 
 void Physics::UpdateAcceleration()
 {
-	//netAcceleration = netForce / weight;
+	//mNetAcceleration = mNetForce / mWeight;
 }
 
 void Physics::ResetForces()
 {
 	actingForces.clear();
-	netForce.X = 0.0f;
-	netForce.Y = 0.0f;
+	mNetForce.X = 0.0f;
+	mNetForce.Y = 0.0f;
+}
+
+void Physics::AddThrust()
+{
 }
 
 void Physics::Update(float dT)
 {
 	for (int i = 0; i < actingForces.size(); i++)
 	{
-		netForce.X += actingForces[i].X;
-		netForce.Y += actingForces[i].Y;
+		mNetForce.X += actingForces[i].X;
+		mNetForce.Y += actingForces[i].Y;
 	}
 
 	UpdateAcceleration();

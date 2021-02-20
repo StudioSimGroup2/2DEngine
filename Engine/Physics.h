@@ -1,32 +1,34 @@
 #pragma once
 
-#include "Sprite.h"
 #include <vector>
+#include "Common.h"
 
 #define GRAVITY -0.98f
 #define FRICTIONCOEF 0.5f
 
-class Physics
+class Physics 
 {
 public:
 	Physics();
 	~Physics();
+	void Update(float dT);
+	void ResetForces();
 
-	bool grounded = true;
-	Vector2D netForce;
-	Vector2D netAcceleration;
-	Vector2D currentVelocity;
-	float weight;
+	void chageGrounded() { mGrounded != mGrounded; };
+	void AddThrust();
 
+	
 	std::vector<Vector2D> actingForces;
 
 private:
-
 	void UpdateForces(float dT);
 	void UpdateAcceleration();
-	void ResetForces();
 
-	void Update(float dT);
+	bool mGrounded = true;
+	Vector2D mNetForce;
+	Vector2D mNetAcceleration;
+	Vector2D mCurrentVelocity;
+	float mWeight;
 
 };
 
