@@ -6,7 +6,7 @@
 class Character : PhysicsObject
 {
 public:
-	Character(ID3D11Device* device, const wchar_t* name, Vector2D Position);
+	Character(ID3D11Device* device, const wchar_t* name, Vector2D* Position);
 	~Character();
 	void Update(float deltaTime);
 	void Render(ID3D11DeviceContext* devCon);

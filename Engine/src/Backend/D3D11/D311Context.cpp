@@ -383,7 +383,7 @@ namespace Engine
 				}
 				case 1:
 				{
-					Vector2D Position = Vector2D(Y * TILEWIDTH, X * TILEHEIGHT);
+					Vector2D* Position = new Vector2D(Y * TILEWIDTH, X * TILEHEIGHT);
 					Sprite* MapItem = new Sprite(mDevice, L"Textures/stone.dds", Position);
 					ThingsToRender.push_back(MapItem);
 					break;
@@ -394,7 +394,8 @@ namespace Engine
 			}
 		}
 
-		TestCharacter = new Character(mDevice, L"Textures/Mario.dds", Vector2D(32, 32));
+		Vector2D* Position = new Vector2D(32, 32);
+		TestCharacter = new Character(mDevice, L"Textures/Mario.dds", Position);
 	}
 
 	void D311Context::Shutdown()

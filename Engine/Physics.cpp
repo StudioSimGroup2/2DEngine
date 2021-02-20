@@ -1,6 +1,6 @@
 #include "Physics.h"
 
-Physics::Physics(Vector2D* position)
+Physics::Physics(Vector2D* position) : mPosition(position)
 {
 	mGrounded = true;
 
@@ -15,9 +15,6 @@ Physics::Physics(Vector2D* position)
 	//Initialize Velocity
 	mCurrentVelocity.X = 0.0f;
 	mCurrentVelocity.Y = 0.0f;
-
-	//Initialize Position (Inherited from Sprite)
-	mPosition = position;
 
 	mMass = 1.0f;
 	mWeight = mMass * GRAVITY;
@@ -63,8 +60,8 @@ void Physics::ResetForces()
 
 void Physics::AddThrust(Vector2D thrust)
 {
-	mThrust = mThrust + thrust;
-	actingForces.push_back(mThrust);
+	actingForces.push_back(thrust);
+
 }
 
 void Physics::Update(float dT)
@@ -82,5 +79,4 @@ void Physics::Update(float dT)
 	//Calculate new position using formula s = ut + 1/2at^2
 	mPosition->X = mPosition->X + (mCurrentVelocity.X * dT) + (mNetAcceleration.X * 0.5f * (dT * dT));
 	mPosition->Y = mPosition->Y + (mCurrentVelocity.Y * dT) + (mNetAcceleration.Y * 0.5f * (dT * dT));
-
 }

@@ -4,6 +4,7 @@
 #include "Common.h"
 
 
+
 #define GRAVITY 0.98f
 #define FRICTIONCOEF 0.5f
 
