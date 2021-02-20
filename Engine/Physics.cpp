@@ -26,7 +26,7 @@ Physics::~Physics()
 
 void Physics::UpdateForces(float dT)
 {
-	//mCurrentVelocity = mCurrentVelocity + (mNetAcceleration * dT);
+	mCurrentVelocity = mCurrentVelocity + (mNetAcceleration * dT);
 
 	if (mGrounded)
 	{
@@ -36,13 +36,11 @@ void Physics::UpdateForces(float dT)
 	{
 		mNetForce.Y += (mWeight * GRAVITY);
 	}
-
-
 }
 
 void Physics::UpdateAcceleration()
 {
-	//mNetAcceleration = mNetForce / mWeight;
+	mNetAcceleration = mNetForce / mWeight;
 }
 
 void Physics::ResetForces()
@@ -52,8 +50,9 @@ void Physics::ResetForces()
 	mNetForce.Y = 0.0f;
 }
 
-void Physics::AddThrust()
+void Physics::AddThrust(Vector2D thrust)
 {
+	mThrust = mThrust + thrust;
 }
 
 void Physics::Update(float dT)

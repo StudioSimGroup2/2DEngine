@@ -413,23 +413,23 @@ namespace Engine
 		if (GetAsyncKeyState(0x45)) // E key
 			CameraManager::Get()->CycleNext();
 
-		//if (GetAsyncKeyState(0x27)) //Right arrow
-		//{
-		//	TestCharacter->setMovingRight(true);
-		//}
-		//else 
-		//{
-		//	TestCharacter->setMovingRight(false);
-		//}	
+		if (GetAsyncKeyState(0x27)) //Right arrow
+		{
+			TestCharacter->setMovingRight(true);
+		}
+		else 
+		{
+			TestCharacter->setMovingRight(false);
+		}	
 
-		//if (GetAsyncKeyState(0x25)) //Left arrow
-		//{
-		//	TestCharacter->setMovingLeft(true);
-		//}
-		//else
-		//{
-		//	TestCharacter->setMovingLeft(false);
-		//}
+		if (GetAsyncKeyState(0x25)) //Left arrow
+		{
+			TestCharacter->setMovingLeft(true);
+		}
+		else
+		{
+			TestCharacter->setMovingLeft(false);
+		}
 
 		TestCharacter->Update(deltaTime);
 	}

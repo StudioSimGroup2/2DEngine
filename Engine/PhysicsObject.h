@@ -8,8 +8,8 @@ public:
     ~PhysicsObject();
     void Update(float deltaTime);
     void Render(ID3D11DeviceContext* devCon);
-    void SetPosition(Vector2D Pos);
-private:
+protected:
     Physics* mPhysics;  
+private:
 };
 

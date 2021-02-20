@@ -16,19 +16,19 @@ void Character::Update(float deltaTime)
 	
 	if (mMovingRight)
 	{
-		mPosition.X += (mSpeed * mSpeedModifier) * deltaTime;
+		PhysicsObject::mPhysics->AddThrust(Vector2D (1,0) * (mSpeed * mSpeedModifier));
 	}
 	if (mMovingLeft)
 	{
-		mPosition.X -= (mSpeed * mSpeedModifier)* deltaTime;
+		PhysicsObject::mPhysics->AddThrust(Vector2D(-1, 0) * (mSpeed * mSpeedModifier));
 	}
 	if (mMovingUp)
 	{
-		mPosition.Y += (mSpeed * mSpeedModifier)* deltaTime;
+		PhysicsObject::mPhysics->AddThrust(Vector2D(0, -1) * (mSpeed * mSpeedModifier));
 	}
 	if (mMovingDown)
 	{
-		mPosition.Y -= (mSpeed * mSpeedModifier)* deltaTime;
+		PhysicsObject::mPhysics->AddThrust(Vector2D(0, 1) * (mSpeed * mSpeedModifier));
 	}
 }
 

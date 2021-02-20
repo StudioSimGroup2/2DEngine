@@ -15,7 +15,8 @@ public:
 	void ResetForces();
 
 	void chageGrounded() { mGrounded != mGrounded; };
-	void AddThrust();
+	void AddThrust(Vector2D thrust);
+
 
 	
 	std::vector<Vector2D> actingForces;
@@ -26,6 +27,7 @@ private:
 
 	bool mGrounded = true;
 	Vector2D mNetForce;
+	Vector2D mThrust;
 	Vector2D mNetAcceleration;
 	Vector2D mCurrentVelocity;
 	float mWeight;

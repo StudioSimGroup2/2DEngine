@@ -22,7 +22,3 @@ void PhysicsObject::Render(ID3D11DeviceContext* devCon)
 {
 	Sprite::Render(devCon);
 }
-
-void PhysicsObject::SetPosition(Vector2D Pos)
-{
-}

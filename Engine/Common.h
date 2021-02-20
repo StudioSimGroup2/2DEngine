@@ -25,6 +25,33 @@ struct Vector2D
 		X = initalX;
 		Y = initalY;
 	}
+	
+	Vector2D operator /(float a)
+	{
+		return Vector2D(X / a, Y / a);
+	}
+
+	Vector2D operator *(float a)
+	{
+		return Vector2D(X * a, Y * a);
+	}
+
+	Vector2D operator +(Vector2D a)
+	{
+		return Vector2D(X + a.X, Y + a.Y);
+	}
+
+	Vector2D operator -(Vector2D a)
+	{
+		return Vector2D(X - a.X, Y - a.Y);
+	}
+
+	Vector2D operator =(Vector2D a)
+	{
+		X = a.X;
+		Y = a.Y;
+		return a;
+	}
 };
 
 struct Rect2D
