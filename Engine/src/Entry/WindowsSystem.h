@@ -1,6 +1,14 @@
 #pragma once
+
 #include "../Engine/Window.h"
 #include "../Engine/Renderer/Context.h"
+
+#include "../../vendor/ImGui/imgui.h"
+#include "../../vendor/ImGui/imgui_impl_win32.h"
+#include "../../vendor/ImGui/imgui_impl_dx11.h"
+
+#include <Windows.h>
+#include <chrono>
 
 namespace Engine
 {
@@ -35,7 +43,7 @@ namespace Engine
 		// DeltaTime calculations
 		std::chrono::time_point<std::chrono::high_resolution_clock> mCurrentTime;
 		std::chrono::time_point<std::chrono::high_resolution_clock> mNewTime;
-		std::chrono::duration<double> mFrameTime;	
+		std::chrono::duration<double, std::milli> mFrameTime;	// Frame time is measured in millseconds
 	};
 }
 

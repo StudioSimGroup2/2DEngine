@@ -1,5 +1,10 @@
 #pragma once
-
+// TODO: REALLY move to a PCH later...
+#include <d3d11_1.h>
+#include <d3dcompiler.h>
+#include <directxmath.h>
+#include <directxcolors.h>
+#include <DirectXCollision.h>
 using namespace DirectX;
 
 class Camera

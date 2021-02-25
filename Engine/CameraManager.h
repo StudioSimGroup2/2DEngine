@@ -1,5 +1,11 @@
 #pragma once
 #include "Camera.h"
+#include <vector>
+#include <assert.h>
+#include <iostream>
+
+// [TEMP] Simple assert macro, move to pch file or smth later plz <3
+#define ASSERT(cond, msg) if (!cond) { std::cerr << "Assert failed: " << msg << ".\nFile: " << __FILE__ << ", line: " << __LINE__ << std::endl; abort(); }
 
 /** Singleton design pattern */
 class CameraManager

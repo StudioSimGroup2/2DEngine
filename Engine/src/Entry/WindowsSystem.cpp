@@ -1,4 +1,3 @@
-#include "../pch.h"
 #include "WindowsSystem.h"
 
 #include "../Backend/D3D11/D311Context.h"

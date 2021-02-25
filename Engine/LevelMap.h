@@ -1,4 +1,9 @@
 #pragma once
+#include <vector>
+#include <iostream>
+#include <istream>
+#include <fstream>
+#include <sstream>
 #include "Common.h"
 
 using namespace std;
