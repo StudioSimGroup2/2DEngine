@@ -1,6 +1,5 @@
 #pragma once
 
-using namespace DirectX;
 
 class Camera
 {

@@ -1,3 +1,4 @@
+#include "src/pch.h"
 #include "Character.h"
 Character::Character(ID3D11Device* device, const wchar_t* name, Vector2D* Position) : PhysicsObject(device, name, Position)
 {
@@ -11,9 +12,6 @@ Character::~Character()
 
 void Character::Update(float deltaTime)
 {
-	deltaTime /= 1000;
-	//Add physcics etc.
-
 	if (mMovingRight)
 	{
 		PhysicsObject::mPhysics->AddThrust(Vector2D (1,0) * (mSpeed * mSpeedModifier));

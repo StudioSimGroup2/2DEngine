@@ -23,6 +23,8 @@
 #include "../vendor/ImGui/imgui_impl_win32.h"
 #include "../vendor/ImGui/imgui_impl_dx11.h"
 
+using namespace DirectX;
+
 // Macros
 #define ASSERT(cond, msg) if (!cond) { std::cerr << "Assert failed: " << msg << ".\nFile: " << __FILE__ << ", line: " << __LINE__ << std::endl; abort(); }
 
