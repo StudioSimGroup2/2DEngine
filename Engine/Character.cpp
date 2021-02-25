@@ -1,7 +1,7 @@
 #include "Character.h"
 Character::Character(ID3D11Device* device, const wchar_t* name, Vector2D* Position) : PhysicsObject(device, name, Position)
 {
-	mSpeed = 2;
+	mSpeed = 200;
 	mSpeedModifier = 1;
 }
 
@@ -38,4 +38,8 @@ void Character::Update(float deltaTime)
 void Character::Render(ID3D11DeviceContext* devCon)
 {
 	PhysicsObject::Render(devCon);
+}
+
+void Character::DoAttack()
+{
 }

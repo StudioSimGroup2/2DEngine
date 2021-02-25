@@ -465,4 +465,3 @@ namespace Engine
 		mSwapChain->Present(0, 0);
 	}
 }
-

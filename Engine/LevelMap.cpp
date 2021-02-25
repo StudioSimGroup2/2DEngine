@@ -15,13 +15,13 @@ TileMap LevelMap::LoadLevelMap(char* FilePath)
 
 		for (int i = 0; i < Height; i++)
 		{
-			vector<int> HELP2;
+			vector<int> Row;
 			for (int j = 0; j < Width; j++)
 			{
 				InFile >> tile;
-				HELP2.push_back(tile);
+				Row.push_back(tile);
 			}
-			tilemap.push_back(HELP2);
+			tilemap.push_back(Row);
 		}
 	}
 	return tilemap;
