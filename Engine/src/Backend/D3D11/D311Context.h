@@ -10,6 +10,7 @@
 //Can be removed added for testing
 #include "../../../LevelMap.h"
 #include "../../../Common.h"
+#include "../../../Character.h"
 //----------------------------------
 
 using namespace DirectX;
@@ -45,14 +46,19 @@ namespace Engine
 		ID3D11Texture2D* mDepthStencilBuffer;
 		ID3D11DepthStencilState* mDepthStencilState;
 		ID3D11DepthStencilView* mDepthStencilView;
+		ID3D11BlendState* mTransparant;
 		ID3D11RasterizerState* mRasterState;
 
 		XMMATRIX mWorldMatrix;
 		XMMATRIX mOrthoMatrix;
-		
+
 		//TODO change name 
 		std::vector<Sprite*> ThingsToRender;
 		Sprite* mTempSprite;
+
+		//Remove
+		Sprite* TestSprite;
+		Character* TestCharacter;
 
 		TileMap testMap;
 	};

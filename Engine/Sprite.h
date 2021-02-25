@@ -9,10 +9,14 @@ using namespace DirectX;
 class Sprite
 {
 public:
-	Sprite(ID3D11Device* device, const wchar_t* name, int PosX, int PosY);
+	Sprite(ID3D11Device* device, const wchar_t* name, Vector2D* Position);
 	~Sprite();
 
+	void Update(float deltaTime);
 	void Render(ID3D11DeviceContext* devCon);
+	void SetPosition(Vector2D Pos);
+
+	Vector2D GetPosition() { return *mPosition; };
 
 private:
 	void CreateBuffers(ID3D11Device* dev);
@@ -32,6 +36,8 @@ private:
 	XMMATRIX mProjectionMatrix;
 
 	ID3D11Buffer* mConstantBuffer;
+
+	Vector2D* mPosition;
 
 	int mScreenWidth, mScreenHeight;
 	int mWidth, mHeight;
