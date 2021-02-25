@@ -1,3 +1,4 @@
+#include "src/pch.h"
 #include "Sprite.h"
 #include "vendor/DDSTextureLoader.h"
 

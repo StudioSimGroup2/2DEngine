@@ -1,3 +1,4 @@
+#include "src/pch.h"
 #include "CameraManager.h"
 CameraManager* CameraManager::mInstance = nullptr;
 

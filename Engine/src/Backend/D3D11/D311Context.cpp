@@ -1,5 +1,5 @@
+#include "../../pch.h"
 #include "D311Context.h"
-
 #include <directxcolors.h>
 
 namespace Engine
@@ -371,6 +371,7 @@ namespace Engine
 
 		testMap = LevelMap::LoadLevelMap((char*)"TileMaps/FirstTest.txt");
 
+
 		for (int X = 0; X <testMap.size(); X++)
 		{
 			for (int Y = 0; Y < testMap[0].size(); Y++)
@@ -414,6 +415,7 @@ namespace Engine
 			CameraManager::Get()->CyclePrevious();
 		if (GetAsyncKeyState(0x45)) // E key
 			CameraManager::Get()->CycleNext();
+
 
 		if (GetAsyncKeyState(0x27)) //Right arrow
 		{
