@@ -349,11 +349,51 @@ namespace Engine
 		viewport.TopLeftX = 0.0f;
 		viewport.TopLeftY = 0.0f;
 
-		// Setup ImGUI
+		//---------------------------------
+		//Render to texture (for ImGUI viewport)
+		D3D11_TEXTURE2D_DESC textureDesc;
+		ZeroMemory(&textureDesc, sizeof(textureDesc));  
+		textureDesc.Width = width;
+		textureDesc.Height = height;
+		textureDesc.MipLevels = 1;
+		textureDesc.ArraySize = 1;
+		textureDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+		textureDesc.SampleDesc.Count = 1;
+		textureDesc.SampleDesc.Quality = 0;
+		textureDesc.Usage = D3D11_USAGE_DEFAULT;
+		textureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+		textureDesc.CPUAccessFlags = 0;
+		textureDesc.MiscFlags = 0;
+		mDevice->CreateTexture2D(&textureDesc, NULL, &mRTTRrenderTargetTexture);
+		
+		// Setup the description of the render target view.
+		D3D11_RENDER_TARGET_VIEW_DESC renderTargetViewDesc;
+		ZeroMemory(&renderTargetViewDesc, sizeof(renderTargetViewDesc));
+		renderTargetViewDesc.Format = textureDesc.Format;
+		renderTargetViewDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+		renderTargetViewDesc.Texture2D.MipSlice = 0;
+		mDevice->CreateRenderTargetView(mRTTRrenderTargetTexture, &renderTargetViewDesc, &mRTTRenderTargetView);
 
+		// Setup the description of the shader resource view.
+		D3D11_SHADER_RESOURCE_VIEW_DESC shaderResourceViewDesc;
+		ZeroMemory(&shaderResourceViewDesc, sizeof(shaderResourceViewDesc));
+		shaderResourceViewDesc.Format = textureDesc.Format;
+		shaderResourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+		shaderResourceViewDesc.Texture2D.MostDetailedMip = 0;
+		shaderResourceViewDesc.Texture2D.MipLevels = 1;
+		mDevice->CreateShaderResourceView(mRTTRrenderTargetTexture, &shaderResourceViewDesc, &mRTTShaderResourceView);
+		//---------------------------------
+
+		// Setup ImGUI
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
-		ImGuiIO& io = ImGui::GetIO(); // Currently dont need IO so commented out...
+		ImGuiIO& io = ImGui::GetIO();
+		io.DisplaySize = ImVec2(mScreenWidth, mScreenHeight);
+		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+		io.ConfigDockingWithShift = true;
+		//io.IniFilename = "..\\ImGui\\imgui.ini";
 		ImGui_ImplWin32_Init(mHWND);
 		ImGui_ImplDX11_Init(mDevice, mDeviceContext);
 		ImGui::StyleColorsDark();
@@ -366,6 +406,7 @@ namespace Engine
 		// Create two cameras
 		CameraManager::Get()->Add(new Camera(XMFLOAT4(0.0f, 0.0f, -1.0f, 1.0f)));
 		CameraManager::Get()->Add(new Camera(XMFLOAT4(-964.0f, 94.0f, -1.0f, 1.0f)));
+		CameraManager::Get()->GetCameraByIndex(1)->SetStatic(true);
 
 
 
@@ -436,9 +477,9 @@ namespace Engine
 		TestCharacter->Update(deltaTime);
 	}
 
-	void D311Context::SwapBuffers()
-	{
-		mDeviceContext->ClearRenderTargetView(mRenderTargetView, DirectX::Colors::SeaGreen);
+	void D311Context::RenderScene() {
+		
+		//mDeviceContext->ClearRenderTargetView(mRenderTargetView, DirectX::Colors::SeaGreen);
 
 		for (auto Thing : ThingsToRender)
 		{
@@ -446,13 +487,125 @@ namespace Engine
 		}
 		TestCharacter->Render(mDeviceContext);
 
+	}
+
+	void D311Context::SwapBuffers()
+	{
+		mDeviceContext->OMSetRenderTargets(1, &mRTTRenderTargetView, mDepthStencilView);
+		mDeviceContext->ClearRenderTargetView(mRTTRenderTargetView, DirectX::Colors::SeaGreen);
+		RenderScene();
+
+	
+		mDeviceContext->OMSetRenderTargets(1, &mRenderTargetView, mDepthStencilView); // Set back to back buffer
+		mDeviceContext->ClearDepthStencilView(mDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0u);
+		RenderScene();
+		
+		RenderImGui();
+
+		mSwapChain->Present(0, 0);
+	}
+
+	void D311Context::RenderImGui()
+	{
 		// ImGui rendering below (Move to seperate UI rendering function later
 		ImGui_ImplDX11_NewFrame();
 		ImGui_ImplWin32_NewFrame();
 		ImGui::NewFrame();
 
-		ImGui::Begin("Temp ImGui window!");
-		ImGui::Text("Hello world!");
+		// Create core dockspace
+		ImGui::SetNextWindowBgAlpha(1);
+		ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
+		
+		// Menu
+		if (ImGui::BeginMainMenuBar())
+		{
+			if (ImGui::BeginMenu("File"))
+			{
+				if (ImGui::MenuItem("New")) {
+					// No Impl
+				}
+				if (ImGui::MenuItem("Open...")) {
+					// No Impl
+				}
+				if (ImGui::MenuItem("Save As...")) {
+					// No Impl
+				}
+				ImGui::EndMenu();
+			}
+
+			if (ImGui::BeginMenu("Add"))
+			{
+				if (ImGui::MenuItem("Sprite")) {
+					// No Impl
+				}
+				ImGui::EndMenu();
+			}
+
+			ImGui::EndMainMenuBar();
+		}
+
+
+		// Viewport
+		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.180392161f, 0.5450980663f, 0.3411764801f, 1.0f));  // THIS IS BECAUSE THERES TRANSPARENCY ISSUES ATM! NOT PERMANENT
+		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.180392161f, 0.5450980663f, 0.3411764801f, 1.0f)); 	 // THIS IS BECAUSE THERES TRANSPARENCY ISSUES ATM! NOT PERMANENT
+		ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 0.0f);
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
+		ImGui::Begin("Viewport", 0, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+		ImVec2 pos = ImGui::GetCursorScreenPos();
+		ImGui::Image(mRTTShaderResourceView, ImGui::GetWindowContentRegionMax()); // render texture 
+		ImGui::End();
+		ImGui::PopStyleVar(2);
+		ImGui::PopStyleColor(2);
+
+		//
+		// TEMP
+		//
+		ImGui::Begin("Scene Hierarchy");
+
+		ImGui::Separator();
+		ImGui::Text("Scene");
+		ImGui::Separator();
+
+		ImGui::Text("MARIO AND TILE MAP WILL GO HERE LATER!");
+		ImGui::Text("REQUIRES OTHERS TO EXPOSE DATA FOR ME");
+
+
+		ImGui::Separator();
+		ImGui::Text("Cameras");
+		ImGui::Separator();
+
+		int index = 0;
+		for (Camera* c : CameraManager::Get()->AllCameras()) {
+			char label[10] = { 0 };
+			sprintf_s(label, "Camera %d", index);
+			if (ImGui::TreeNode(label)) {
+				ImGui::Columns(2, "locations");
+				ImGui::Text("Position");
+				ImGui::Spacing();
+				ImGui::Text("At"); 
+				ImGui::Spacing();
+				ImGui::Text("Up");
+				ImGui::Spacing();
+				ImGui::Text("Near plane");
+				ImGui::Spacing();
+				ImGui::Text("Far plane"); 
+				ImGui::Spacing();
+				ImGui::Text("Static camera"); 
+		
+				ImGui::NextColumn();
+
+				ImGui::DragFloat3("##Pos", &c->GetEye().x, 1);
+				ImGui::DragFloat3("##At", &c->GetAt().x, 1);
+				ImGui::DragFloat3("##Up", &c->GetUp().x, 1);
+				ImGui::SliderFloat("##Near plane", &c->GetNearPlane(), 0, 10, "%.1f");
+				ImGui::SliderFloat("##Far plane", &c->GetFarPlane(), 1, 200, "%.1f");
+				ImGui::Checkbox("##Static camera", &c->IsStatic());
+
+				ImGui::TreePop();
+				ImGui::Columns();
+			}
+			index++;
+		}
 		ImGui::End();
 
 		ImGui::Begin("Framerate");
@@ -461,7 +614,7 @@ namespace Engine
 
 		ImGui::Render();
 		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
-
-		mSwapChain->Present(0, 0);
+		ImGui::UpdatePlatformWindows();
+		ImGui::RenderPlatformWindowsDefault();
 	}
 }

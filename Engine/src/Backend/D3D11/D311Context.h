@@ -38,6 +38,9 @@ namespace Engine
 
 		virtual int GetCardMemory() override { return mMemorySize; }
 		virtual std::string GetCardName() override  { return mName; }
+
+		void RenderImGui();
+		void RenderScene();
 		
 	private:
 		unsigned int mMemorySize;
@@ -70,5 +73,12 @@ namespace Engine
 		Character* TestCharacter;
 
 		TileMap testMap;
+
+
+		// Render to texture for imgui
+		ID3D11Texture2D* mRTTRrenderTargetTexture = nullptr;			// Texture to render to 
+		ID3D11RenderTargetView* mRTTRenderTargetView = nullptr;		// Render target
+		ID3D11ShaderResourceView* mRTTShaderResourceView = nullptr;	// Shader resource view for the texture
+
 	};
 }
