@@ -13,8 +13,9 @@ namespace Engine
 	class AssetManager
 	{
 	public:
-		static void LoadShader(const std::string& name, const std::string& path);
-		static void LoadTexture(const std::string& name, const std::string& path);
+		static void LoadShader(Device* device, const std::string& name, const std::string& path);
+		//static void LoadTexture(Device* device, const std::string& name, const std::string& path);
+		static Texture* LoadTexture(Device* device, const std::string& name, const std::string& path);
 		static void LoadSound(const std::string& name, const std::string& path);
 
 		static AssetManager* GetInstance();
@@ -27,19 +28,16 @@ namespace Engine
 		static void RemoveTexture(const std::string& name);
 		static void RemoveSound(const std::string& name);
 
-		void SetDevice(Device* dev) { mDevice = dev; }
-
 		static void ClearAll();
 	private:
-		AssetManager() { };
-
-		Device* mDevice;
+		AssetManager() { idCount = 0; }
 
 		std::vector<Shader*> mShaders;
 		std::vector<Texture*> mTextures;
 		std::vector<Sound*> mSounds;
 
 		static AssetManager* mInstance;
+
+		int idCount;
 	};
 }
-

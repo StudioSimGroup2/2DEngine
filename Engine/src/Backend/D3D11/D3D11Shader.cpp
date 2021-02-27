@@ -1,11 +1,11 @@
 #include "D3D11Shader.h"
 
 #include <d3dcompiler.h>
-#include <Utils/StringToWString.h>
+#include <Utils/StringHelper.h>
 
 namespace Engine
 {
-	D3D11Shader::D3D11Shader(D3D11Device* device, const std::string& path, const std::string name)
+	D3D11Shader::D3D11Shader(D3D11Device* device, const std::string& name, const std::string path)
 	{
 		mName = name;
 		mDeviceContext = device->GetDeviceContext();
@@ -15,8 +15,8 @@ namespace Engine
 		ID3DBlob* blobVS = nullptr;
 		ID3DBlob* blobPS = nullptr;
 
-		hr = CompileShaderFromFile(utf8ToUtf16(path).c_str(), "VS", "vs_4_0", &blobVS);
-		hr = static_cast<D3D11Device*>(device)->GetDevice()->CreateVertexShader(blobVS->GetBufferPointer(), blobVS->GetBufferSize(), nullptr, &mVertexShader);
+		hr = CompileShaderFromFile(StringHelper::StringToWide(path).c_str(), "VS", "vs_4_0", &blobVS);
+		hr = dev->CreateVertexShader(blobVS->GetBufferPointer(), blobVS->GetBufferSize(), nullptr, &mVertexShader);
 
 		D3D11_INPUT_ELEMENT_DESC layout[] =
 		{
@@ -31,7 +31,7 @@ namespace Engine
 
 		blobVS->Release();
 
-		hr = CompileShaderFromFile(utf8ToUtf16(path).c_str(), "PS", "ps_4_0", &blobPS);
+		hr = CompileShaderFromFile(StringHelper::StringToWide(path).c_str(), "PS", "ps_4_0", &blobPS);
 		hr = dev->CreatePixelShader(blobPS->GetBufferPointer(), blobPS->GetBufferSize(), nullptr, &mPixelShader);
 
 		blobPS->Release();
@@ -69,6 +69,9 @@ namespace Engine
 		
 		mDeviceContext->VSSetShader(mVertexShader, NULL, 0);
 		mDeviceContext->PSSetShader(mPixelShader, NULL, 0);
+
+		mDeviceContext->VSSetSamplers(0, 1, &mSamplerState);
+		mDeviceContext->PSSetSamplers(0, 1, &mSamplerState);
 	}
 
 	void D3D11Shader::Unload() const

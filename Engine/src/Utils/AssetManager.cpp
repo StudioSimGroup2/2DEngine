@@ -3,6 +3,7 @@
 #if GRAPHICS_LIBRARY == 0
 #include "Backend/D3D11/D3D11Shader.h"
 #include "Backend/D3D11/D3D11Device.h"
+#include "Backend/D3D11/D3D11Texture.h"
 #elif GRAPHICS_LIBRARY == 1
 #include "Backend/OGL/OGLShader.h"
 #endif
@@ -10,21 +11,24 @@
 namespace Engine
 {
 	AssetManager* AssetManager::mInstance = nullptr;
+	
 
-	void AssetManager::LoadShader(const std::string& name, const std::string& path)
+	void AssetManager::LoadShader(Device* device, const std::string& name, const std::string& path)
 	{
 #if GRAPHICS_LIBRARY == 0
-		mInstance->mShaders.push_back(new D3D11Shader(static_cast<D3D11Device*>(mInstance->mDevice), path, name));
+		mInstance->mShaders.push_back(new D3D11Shader(static_cast<D3D11Device*>(device), name, path));
 #elif GRAPHICS_LIBRARY == 1
 #endif
 	}
 
-	void AssetManager::LoadTexture(const std::string& name, const std::string& path)
+	Texture* AssetManager::LoadTexture(Device* device, const std::string& name, const std::string& path)
 	{
+		mInstance->idCount++;
 #if GRAPHICS_LIBRARY == 0
-		//mInstance->mTextures.push_back
+		mInstance->mTextures.push_back(new D3D11Texture(static_cast<D3D11Device*>(device), name, path, mInstance->idCount));
 #elif GRAPHICS_LIBRARY == 1
 #endif
+		return mInstance->mTextures.back();
 	}
 
 	void AssetManager::LoadSound(const std::string& name, const std::string& path)
@@ -41,16 +45,24 @@ namespace Engine
 
 	Shader* AssetManager::GetShaderByName(const std::string& name)
 	{
-		return nullptr;
+		auto index = std::find_if(mInstance->mShaders.begin(), mInstance->mShaders.end(),
+			[&name](const Shader* s) {return s->GetName() == name; });
+
+		return mInstance->mShaders.at(std::distance(mInstance->mShaders.begin(), index));
 	}
 
 	Texture* AssetManager::GetTextureByName(const std::string& name)
 	{
-		return nullptr;
+		auto index = std::find_if(mInstance->mTextures.begin(), mInstance->mTextures.end(),
+			[&name](const Texture* s) {return s->GetName() == name; });
+
+		return mInstance->mTextures.at(std::distance(mInstance->mTextures.begin(), index));
 	}
 
 	Sound* AssetManager::GetSoundByName(const std::string& name)
 	{
+		/*auto match = std::find_if(mInstance->mShaders.begin(), mInstance->mShaders.begin(), [](const Sound* s) { return s->GetNa(); });
+		return mInstance->mShaders.at(std::distance(mInstance->mShaders.begin(), match));*/
 		return nullptr;
 	}
 

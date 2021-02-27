@@ -143,6 +143,7 @@
     <ClInclude Include="src\Backend\D3D11\D3D11Device.h" />
     <ClInclude Include="src\Backend\D3D11\D3D11Texture.h" />
     <ClInclude Include="src\Backend\D3D11\D3D11Renderer2D.h" />
+    <ClInclude Include="src\Utils\StringHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ext\DDSTextureLoader.cpp">
@@ -224,6 +225,6 @@
     <ClCompile Include="src\Backend\D3D11\D3D11Device.cpp" />
     <ClCompile Include="src\Backend\D3D11\D3D11Texture.cpp" />
     <ClCompile Include="src\Backend\D3D11\D3D11Renderer2D.cpp" />
-    <ClCompile Include="src\Utils\StringToWString.h" />
+    <ClCompile Include="src\Utils\StringHelper.cpp" />
   </ItemGroup>
 </Project>

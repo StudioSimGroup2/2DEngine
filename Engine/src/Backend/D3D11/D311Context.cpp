@@ -1,4 +1,5 @@
 #include "D311Context.h"
+#include "D3D11Renderer2D.h"
 
 #include <directxcolors.h>
 
@@ -361,6 +362,7 @@ namespace Engine
 		// Create the viewport.
 		mDeviceContext->RSSetViewports(1, &viewport);
 
+		AssetManager::GetInstance();
 
 		// Create two cameras
 		CameraManager::Get()->Add(new Camera(XMFLOAT4(0.0f, 0.0f, -1.0f, 1.0f)));
@@ -370,9 +372,6 @@ namespace Engine
 
 		/*mDeviceMGR->SetDevice(mDevice);
 		mDeviceMGR->SetDeviceContext(mDeviceContext);*/
-
-		AssetManager::GetInstance()->SetDevice(mDeviceMGR);
-
 
 		//testMap = LevelMap::LoadLevelMap((char*)"TileMaps/FirstTest.txt");
 
@@ -400,10 +399,11 @@ namespace Engine
 		//	}
 		//}
 
-		Vector2D* Position = new Vector2D(32, 32);
-		mTempSprite = new Sprite(mDeviceMGR, L"Textures/Mario.dds", Position);
+ 		AssetManager::GetInstance()->LoadShader(mDeviceMGR, std::string("Default"), std::string("quadshader.fx"));
 
-
+		mTempSprite = new Sprite(mDeviceMGR, std::string("Mario"), std::string("Textures/Mario.dds"), vec2f(32.0f));
+		D3D11Renderer2D* renderer = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDeviceMGR);
+		mTempSprite->AddRendererComponent(renderer);
 	}
 
 	void D311Context::Shutdown()
@@ -423,36 +423,38 @@ namespace Engine
 		if (GetAsyncKeyState(0x45)) // E key
 			CameraManager::Get()->CycleNext();
 
-		if (GetAsyncKeyState(0x27)) //Right arrow
-		{
-			TestCharacter->setMovingRight(true);
-		}
-		else
-		{
-			TestCharacter->setMovingRight(false);
-		}
+		//if (GetAsyncKeyState(0x27)) //Right arrow
+		//{
+		//	TestCharacter->setMovingRight(true);
+		//}
+		//else
+		//{
+		//	TestCharacter->setMovingRight(false);
+		//}
 
-		if (GetAsyncKeyState(0x25)) //Left arrow
-		{
-			TestCharacter->setMovingLeft(true);
-		}
-		else
-		{
-			TestCharacter->setMovingLeft(false);
-		}
+		//if (GetAsyncKeyState(0x25)) //Left arrow
+		//{
+		//	TestCharacter->setMovingLeft(true);
+		//}
+		//else
+		//{
+		//	TestCharacter->setMovingLeft(false);
+		//}
 
-		TestCharacter->Update(deltaTime);
+		//TestCharacter->Update(deltaTime);
 	}
 
 	void D311Context::Render()
 	{
 		mDeviceContext->ClearRenderTargetView(mRenderTargetView, DirectX::Colors::SeaGreen);
 
-		for (auto Thing : ThingsToRender)
-		{
-			Thing->Render(mDeviceContext);
-		}
-		TestCharacter->Render(mDeviceContext);
+		mTempSprite->Draw();
+
+		//for (auto Thing : ThingsToRender)
+		//{
+		//	Thing->Render(mDeviceContext);
+		//}
+		//TestCharacter->Render(mDeviceContext);
 
 		// ImGui rendering below (Move to seperate UI rendering function later
 		ImGui_ImplDX11_NewFrame();

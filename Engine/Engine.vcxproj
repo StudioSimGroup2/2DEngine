@@ -142,6 +142,7 @@
     <ClInclude Include="src\Sprite.h" />
     <ClInclude Include="src\Utils\Math.h" />
     <ClInclude Include="src\Utils\Texture.h" />
+    <ClInclude Include="src\Utils\StringHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Backend\D3D11\D3D11Renderer2D.cpp" />
@@ -176,8 +177,8 @@
     <ClCompile Include="src\PNGLoader.cpp" />
     <ClCompile Include="src\Physics.cpp" />
     <ClCompile Include="src\Sprite.cpp" />
-    <ClCompile Include="src\Utils\StringToWString.h" />
     <ClCompile Include="src\Utils\Texture.cpp" />
+    <ClCompile Include="src\Utils\StringHelper.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

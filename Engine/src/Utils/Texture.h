@@ -8,10 +8,10 @@ namespace Engine
 	public:
 		virtual ~Texture() = default;
 
-		virtual void Load(int pos) const = 0;
-		virtual void Unload(int pos) const = 0;
+		virtual void Load(int pos = 1) const = 0;
+		virtual void Unload(int pos = 1) const = 0;
 
-		const std::string& GetName() { return mName; }
+		virtual const std::string& GetName() const = 0;
 
 	protected:
 		std::string mName;

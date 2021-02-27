@@ -9,20 +9,21 @@ namespace Engine
 	{
 		mShader = static_cast<Shader*>(shader);
 
+		mDeviceContext = dev->GetDeviceContext();
+
 		InitBuffers(dev->GetDevice());
 	}
 
-
-	void D3D11Renderer2D::Draw(vec2f position)
+	void D3D11Renderer2D::Draw(vec2f position, Texture* textureToRender) const
 	{
-		mShader->Load();
-
 		Camera* camera = CameraManager::Get()->GetPrimaryCamera();
 
 		XMMATRIX mScale = XMMatrixScaling(1, 1, 1);
 		XMMATRIX mRotate = XMMatrixRotationX(0) * XMMatrixRotationY(0) * XMMatrixRotationZ(0);
 		XMMATRIX mTranslate = XMMatrixTranslation(position.x, position.y, 0);
 		XMMATRIX world = mScale * mRotate * mTranslate;
+
+		world.r[3].m128_f32[1] = -32.0f; // UHM YEAH I DONT KNOW WHATS GOING ON SOMEONE PL;EASE HELP
 
 		ConstantBuffer cb;
 		cb.mProjection = XMMatrixTranspose(camera->GetProjectionMatrix());
@@ -39,7 +40,9 @@ namespace Engine
 		mDeviceContext->IASetVertexBuffers(0, 1, &mVertexBuffer, &stride, &offset);
 		mDeviceContext->IASetIndexBuffer(mIndexBuffer, DXGI_FORMAT_R16_UINT, 0);
 
-		mTexture->Load(0);
+		mShader->Load();
+
+		textureToRender->Load();
 
 		mDeviceContext->Draw(6, 0);
 	}
@@ -82,7 +85,6 @@ namespace Engine
 		vertices[5].position = XMFLOAT3(right, bottom, 0.0f);  // Bottom right.
 		vertices[5].texture = XMFLOAT2(1.0f, 1.0f);
 
-
 		D3D11_BUFFER_DESC bd = {};
 		bd.Usage = D3D11_USAGE_DEFAULT;
 		bd.ByteWidth = sizeof(VertexType) * 6;
@@ -116,5 +118,4 @@ namespace Engine
 		hr = dev->CreateBuffer(&bd, nullptr, &mConstantBuffer);
 		ASSERT(!FAILED(hr), "Error creating Constant buffer");
 	}
-
 }

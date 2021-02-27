@@ -13,11 +13,14 @@ namespace Engine
 {
 	class D3D11Texture : public Texture
 	{
-		D3D11Texture(D3D11Device* device, const std::string& path, const std::string name, int ID);
+	public:
+		D3D11Texture(D3D11Device* device, const std::string& name, const std::string path, int ID);
 		~D3D11Texture();
 
 		virtual void Load(int pos) const override;
 		virtual void Unload(int pos) const override;
+
+		virtual const std::string& GetName() const override { return mName; }
 
 	private:
 		unsigned int mID, mBoundSlot = -1;

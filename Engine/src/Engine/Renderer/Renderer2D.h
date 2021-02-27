@@ -15,10 +15,9 @@ namespace Engine
 	public:
 		virtual ~Renderer2D();
 
-		virtual void Draw(vec2f position) const = 0;
+		virtual void Draw(vec2f position, Texture* textureToRender) const = 0;
 	protected:
 		Shader* mShader;
-		Texture* mTexture;
 	};
 }
 
