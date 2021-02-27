@@ -2,6 +2,8 @@
 
 #include <string>
 
+#include "Core.h"
+
 namespace Engine
 {
 	struct WindowData
@@ -15,7 +17,7 @@ namespace Engine
 		}
 	};
 
-	class Window
+	class ENGINE_API Window
 	{
 	public:
 		virtual ~Window() {}

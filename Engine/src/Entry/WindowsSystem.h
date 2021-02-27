@@ -3,10 +3,6 @@
 #include "../Engine/Window.h"
 #include "../Engine/Renderer/Context.h"
 
-#include "../../vendor/ImGui/imgui.h"
-#include "../../vendor/ImGui/imgui_impl_win32.h"
-#include "../../vendor/ImGui/imgui_impl_dx11.h"
-
 #include <Windows.h>
 #include <chrono>
 

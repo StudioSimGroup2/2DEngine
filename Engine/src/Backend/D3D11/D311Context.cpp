@@ -18,7 +18,6 @@ namespace Engine
 		mHWND = hwnd;
 		mScreenHeight = screenHeight;
 		mScreenWidth = screenWidth;
-		vSync = vSync;
 	}
 
 	void D311Context::Init()
@@ -300,7 +299,7 @@ namespace Engine
 		// Setup the raster description which will determine how and what polygons will be drawn.
 		rasterDesc.AntialiasedLineEnable = false;
 		rasterDesc.CullMode = D3D11_CULL_NONE;
-		rasterDesc.DepthBias = 0; 
+		rasterDesc.DepthBias = 0;
 		rasterDesc.DepthBiasClamp = 0.0f;
 		rasterDesc.DepthClipEnable = true;
 		rasterDesc.FillMode = D3D11_FILL_SOLID;
@@ -319,7 +318,7 @@ namespace Engine
 		// Now set the rasterizer state.
 		mDeviceContext->RSSetState(mRasterState);
 
-		
+
 		//---------------------------------
 		//blending
 		D3D11_BLEND_DESC omDesc;
@@ -367,35 +366,44 @@ namespace Engine
 		CameraManager::Get()->Add(new Camera(XMFLOAT4(0.0f, 0.0f, -1.0f, 1.0f)));
 		CameraManager::Get()->Add(new Camera(XMFLOAT4(-964.0f, 94.0f, -1.0f, 1.0f)));
 
+		mDeviceMGR = new D3D11Device(mDevice, mDeviceContext);
+
+		/*mDeviceMGR->SetDevice(mDevice);
+		mDeviceMGR->SetDeviceContext(mDeviceContext);*/
+
+		AssetManager::GetInstance()->SetDevice(mDeviceMGR);
 
 
-		testMap = LevelMap::LoadLevelMap((char*)"TileMaps/FirstTest.txt");
+		//testMap = LevelMap::LoadLevelMap((char*)"TileMaps/FirstTest.txt");
 
-		for (int X = 0; X <testMap.size(); X++)
-		{
-			for (int Y = 0; Y < testMap[0].size(); Y++)
-			{
-				switch (testMap[X][Y])
-				{
-				case 0:
-				{
-					break;
-				}
-				case 1:
-				{
-					Vector2D* Position = new Vector2D(Y * TILEWIDTH, X * TILEHEIGHT);
-					Sprite* MapItem = new Sprite(mDevice, L"Textures/stone.dds", Position);
-					ThingsToRender.push_back(MapItem);
-					break;
-				}
-				default:
-					break;
-				}
-			}
-		}
+		//for (int X = 0; X < testMap.size(); X++)
+		//{
+		//	for (int Y = 0; Y < testMap[0].size(); Y++)
+		//	{
+		//		switch (testMap[X][Y])
+		//		{
+		//		case 0:
+		//		{
+		//			break;
+		//		}
+		//		case 1:
+		//		{
+		//			Vector2D* Position = new Vector2D(Y * TILEWIDTH, X * TILEHEIGHT);
+		//			Sprite* MapItem = new Sprite(mDevice, L"Textures/stone.dds", Position);
+
+		//			ThingsToRender.push_back(MapItem);
+		//			break;
+		//		}
+		//		default:
+		//			break;
+		//		}
+		//	}
+		//}
 
 		Vector2D* Position = new Vector2D(32, 32);
-		TestCharacter = new Character(mDevice, L"Textures/Mario.dds", Position);
+		mTempSprite = new Sprite(mDeviceMGR, L"Textures/Mario.dds", Position);
+
+
 	}
 
 	void D311Context::Shutdown()
@@ -419,10 +427,10 @@ namespace Engine
 		{
 			TestCharacter->setMovingRight(true);
 		}
-		else 
+		else
 		{
 			TestCharacter->setMovingRight(false);
-		}	
+		}
 
 		if (GetAsyncKeyState(0x25)) //Left arrow
 		{
@@ -436,7 +444,7 @@ namespace Engine
 		TestCharacter->Update(deltaTime);
 	}
 
-	void D311Context::SwapBuffers()
+	void D311Context::Render()
 	{
 		mDeviceContext->ClearRenderTargetView(mRenderTargetView, DirectX::Colors::SeaGreen);
 
@@ -465,4 +473,3 @@ namespace Engine
 		mSwapChain->Present(0, 0);
 	}
 }
-

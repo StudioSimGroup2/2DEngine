@@ -1,56 +1,229 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="LevelMap.cpp" />
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="CameraManager.cpp" />
-    <ClCompile Include="Sprite.cpp" />
-    <ClCompile Include="src\Engine\Renderer\Renderer2D.cpp" />
-    <ClCompile Include="src\Engine\Renderer\Device.cpp" />
-    <ClCompile Include="src\Backend\D3D11\D311Context.cpp" />
-    <ClCompile Include="src\Engine\Renderer\Context.cpp" />
-    <ClCompile Include="src\Engine\Application.cpp" />
-    <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\Entry\WindowsSystem.cpp" />
-    <ClCompile Include="src\Engine\Renderer\Swapchain.cpp" />
-    <ClCompile Include="PNGLoader.cpp" />
-    <ClCompile Include="vendor\DDSTextureLoader.cpp" />
-    <ClCompile Include="vendor\ImGui\imgui.cpp" />
-    <ClCompile Include="vendor\ImGui\imgui_draw.cpp" />
-    <ClCompile Include="vendor\ImGui\imgui_impl_dx11.cpp" />
-    <ClCompile Include="vendor\ImGui\imgui_impl_win32.cpp" />
-    <ClCompile Include="vendor\ImGui\imgui_tables.cpp" />
-    <ClCompile Include="vendor\ImGui\imgui_widgets.cpp" />
-    <ClCompile Include="Physics.cpp" />
-    <ClCompile Include="Character.cpp" />
-    <ClCompile Include="PhysicsObject.cpp" />
+    <Filter Include="ext">
+      <UniqueIdentifier>{7670880B-E279-887C-6BF5-9E7CD7FD937C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ext\Glad">
+      <UniqueIdentifier>{1D710AD9-093E-65E4-3257-538C1E839A72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ext\ImGui">
+      <UniqueIdentifier>{20E67CFA-8C50-3171-D58E-E21641380FC6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ext\KHR">
+      <UniqueIdentifier>{EAC9B282-56A9-311E-5FC1-BCF4CB1F987F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{2DAB880B-99B4-887C-2230-9F7C8E38947C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Backend">
+      <UniqueIdentifier>{E48EFDCE-5044-76C4-D938-709B45ED6CC8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Backend\D3D11">
+      <UniqueIdentifier>{D040DC27-3C57-DABD-85CE-65DFF123AB45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Engine">
+      <UniqueIdentifier>{12A1320E-FE58-745B-6760-4DB753370F4C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Engine\Renderer">
+      <UniqueIdentifier>{F838018B-649A-DE98-ED07-254B59681558}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Entry">
+      <UniqueIdentifier>{8EF7DAB2-FA61-8F29-43A0-40CFAF496D7E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Utils">
+      <UniqueIdentifier>{4D9AFFB3-B904-B42A-0243-65D06EEC917F}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="LevelMap.h" />
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="CameraManager.h" />
-    <ClInclude Include="Sprite.h" />
-    <ClInclude Include="src\Engine\Renderer\Renderer2D.h" />
-    <ClInclude Include="src\Engine\Renderer\Device.h" />
-    <ClInclude Include="src\Backend\D3D11\D311Context.h" />
-    <ClInclude Include="src\Engine\Renderer\Context.h" />
-    <ClInclude Include="src\Engine\Application.h" />
-    <ClInclude Include="src\Engine\Window.h" />
-    <ClInclude Include="src\Entry\WindowsSystem.h" />
-    <ClInclude Include="src\Engine\Renderer\Swapchain.h" />
-    <ClInclude Include="PNGLoader.h" />
-    <ClInclude Include="Common.h" />
-    <ClInclude Include="vendor\DDSTextureLoader.h" />
-    <ClInclude Include="vendor\ImGui\imconfig.h" />
-    <ClInclude Include="vendor\ImGui\imgui.h" />
-    <ClInclude Include="vendor\ImGui\imgui_impl_dx11.h" />
-    <ClInclude Include="vendor\ImGui\imgui_impl_win32.h" />
-    <ClInclude Include="vendor\ImGui\imgui_internal.h" />
-    <ClInclude Include="vendor\ImGui\imstb_rectpack.h" />
-    <ClInclude Include="vendor\ImGui\imstb_textedit.h" />
-    <ClInclude Include="vendor\ImGui\imstb_truetype.h" />
-    <ClInclude Include="Physics.h" />
-    <ClInclude Include="Character.h" />
-    <ClInclude Include="PhysicsObject.h" />
+    <ClInclude Include="ext\DDSTextureLoader.h">
+      <Filter>ext</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\Glad\glad.h">
+      <Filter>ext\Glad</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\ImGui\imconfig.h">
+      <Filter>ext\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\ImGui\imgui.h">
+      <Filter>ext\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\ImGui\imgui_impl_dx11.h">
+      <Filter>ext\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\ImGui\imgui_impl_win32.h">
+      <Filter>ext\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\ImGui\imgui_internal.h">
+      <Filter>ext\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\ImGui\imstb_rectpack.h">
+      <Filter>ext\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\ImGui\imstb_textedit.h">
+      <Filter>ext\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\ImGui\imstb_truetype.h">
+      <Filter>ext\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\KHR\khrplatform.h">
+      <Filter>ext\KHR</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Backend\D3D11\D311Context.h">
+      <Filter>src\Backend\D3D11</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Camera.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CameraManager.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Character.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Common.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Application.h">
+      <Filter>src\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Core.h">
+      <Filter>src\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\EntryPoint.h">
+      <Filter>src\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Renderer\Context.h">
+      <Filter>src\Engine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Renderer\Device.h">
+      <Filter>src\Engine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Renderer\Renderer2D.h">
+      <Filter>src\Engine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Renderer\Swapchain.h">
+      <Filter>src\Engine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Window.h">
+      <Filter>src\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entry\WindowsSystem.h">
+      <Filter>src\Entry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LevelMap.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PNGLoader.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Physics.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sprite.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utils\Math.h">
+      <Filter>src\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\ImGui\imgui_impl_opengl3.h" />
+    <ClInclude Include="src\Backend\OGL\OpenGLContext.h">
+      <Filter>src\Backend\D3D11</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utils\AssetManager.h" />
+    <ClInclude Include="src\Utils\Shader.h" />
+    <ClInclude Include="src\Utils\Sound.h" />
+    <ClInclude Include="src\Utils\Texture.h" />
+    <ClInclude Include="src\Backend\D3D11\D3D11Shader.h" />
+    <ClInclude Include="src\Backend\OGL\OGLShader.h" />
+    <ClInclude Include="src\Engine\Defines.h" />
+    <ClInclude Include="src\Backend\D3D11\D3D11Device.h" />
+    <ClInclude Include="src\Backend\D3D11\D3D11Texture.h" />
+    <ClInclude Include="src\Backend\D3D11\D3D11Renderer2D.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ext\DDSTextureLoader.cpp">
+      <Filter>ext</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\Glad\glad.c">
+      <Filter>ext\Glad</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\ImGui\imgui.cpp">
+      <Filter>ext\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\ImGui\imgui_draw.cpp">
+      <Filter>ext\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\ImGui\imgui_impl_dx11.cpp">
+      <Filter>ext\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\ImGui\imgui_impl_win32.cpp">
+      <Filter>ext\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\ImGui\imgui_tables.cpp">
+      <Filter>ext\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\ImGui\imgui_widgets.cpp">
+      <Filter>ext\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Backend\D3D11\D311Context.cpp">
+      <Filter>src\Backend\D3D11</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Camera.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CameraManager.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Character.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Application.cpp">
+      <Filter>src\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Renderer\Context.cpp">
+      <Filter>src\Engine\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Renderer\Device.cpp">
+      <Filter>src\Engine\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Renderer\Renderer2D.cpp">
+      <Filter>src\Engine\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Renderer\Swapchain.cpp">
+      <Filter>src\Engine\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Entry\WindowsSystem.cpp">
+      <Filter>src\Entry</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LevelMap.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PNGLoader.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Physics.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sprite.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\ImGui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="src\Backend\OGL\OpenGLContext.cpp">
+      <Filter>src\Backend\D3D11</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utils\AssetManager.cpp" />
+    <ClCompile Include="src\Utils\Shader.cpp" />
+    <ClCompile Include="src\Utils\Sound.cpp" />
+    <ClCompile Include="src\Utils\Texture.cpp" />
+    <ClCompile Include="src\Backend\D3D11\D3D11Shader.cpp" />
+    <ClCompile Include="src\Backend\OGL\OGLShader.cpp" />
+    <ClCompile Include="src\Backend\D3D11\D3D11Device.cpp" />
+    <ClCompile Include="src\Backend\D3D11\D3D11Texture.cpp" />
+    <ClCompile Include="src\Backend\D3D11\D3D11Renderer2D.cpp" />
+    <ClCompile Include="src\Utils\StringToWString.h" />
   </ItemGroup>
 </Project>
