@@ -18,14 +18,14 @@ namespace Engine
 #if GRAPHICS_LIBRARY == 0
 		mInstance->mShaders.push_back(new D3D11Shader(static_cast<D3D11Device*>(device), name, path));
 #elif GRAPHICS_LIBRARY == 1
+		mInstance->mShaders.push_back(new OGLShader(name, path));
 #endif
 	}
 
 	Texture* AssetManager::LoadTexture(Device* device, const std::string& name, const std::string& path)
 	{
-		mInstance->idCount++;
 #if GRAPHICS_LIBRARY == 0
-		mInstance->mTextures.push_back(new D3D11Texture(static_cast<D3D11Device*>(device), name, path, mInstance->idCount));
+		mInstance->mTextures.push_back(new D3D11Texture(static_cast<D3D11Device*>(device), name, path));
 #elif GRAPHICS_LIBRARY == 1
 #endif
 		return mInstance->mTextures.back();

@@ -10,6 +10,11 @@
 #include "ImGui/imgui_impl_win32.h"
 #include "ImGui/imgui_impl_opengl3.h"
 
+#include <Glad/glad.h>
+
+#include <Common.h>
+#include "Sprite.h"
+
 namespace Engine
 {
 	class OpenGLContext : public Context
@@ -29,6 +34,8 @@ namespace Engine
 		unsigned int mMemorySize;
 		std::string mName;
 
+		unsigned int mVAO;
+
 		UINT32 mScreenWidth;
 		UINT32 mScreenHeight;
 
@@ -37,6 +44,9 @@ namespace Engine
 		HDC deviceContext;
 		HGLRC renderContext;
 
+		TileMap testMap;
+		std::vector<Sprite*> ThingsToRender;
+		Sprite* mTempSprite;
 	};
 }
 

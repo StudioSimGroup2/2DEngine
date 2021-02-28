@@ -10,9 +10,12 @@
 
 #include "OpenGLContext.h"
 
-#include <Glad/glad.h>
+
 #include <iostream>
 #include <windows.h>
+#include <Utils/AssetManager.h>
+#include <LevelMap.h>
+#include "OGLRenderer2D.h"
 
 #define WGL_CONTEXT_MAJOR_VERSION_ARB     0x2091
 #define WGL_CONTEXT_MINOR_VERSION_ARB     0x2092
@@ -90,6 +93,8 @@ namespace Engine
 		UINT height = rc.bottom - rc.top;
 
 		glViewport(0, 0, width, height);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		// Setup ImGUI
 
@@ -99,6 +104,43 @@ namespace Engine
 		ImGui_ImplWin32_Init(mHWND);
 		ImGui_ImplOpenGL3_Init();
 		ImGui::StyleColorsDark();
+
+		AssetManager::GetInstance()->LoadShader(nullptr, std::string("Default"), std::string("default.glsl"));
+
+		testMap = LevelMap::LoadLevelMap((char*)"TileMaps/FirstTest.txt");
+
+		return; // Texture loading needs to be implemented !!!!!
+
+		for (int X = 0; X < testMap.size(); X++)
+		{
+			for (int Y = 0; Y < testMap[0].size(); Y++)
+			{
+				switch (testMap[X][Y])
+				{
+				case 0:
+				{
+
+					break;
+				}
+				case 1:
+				{
+					Sprite* mapItem = new Sprite(nullptr, std::string("Tile ") + std::string(X + "" + Y) + std::string("]"),
+						std::string("Textures/stone.dds"), vec2f(32.0f * Y, 32.0f * X)); // someone got their x and y coords wrong, i'll fix it later
+					OGLRenderer2D* re = new OGLRenderer2D(static_cast<OGLShader*>(AssetManager::GetInstance()->GetShaderByName("Default")));
+					mapItem->AddRendererComponent(re);
+
+					ThingsToRender.push_back(mapItem);
+					break;
+				}
+				default:
+					break;
+				}
+			}
+		}
+
+		mTempSprite = new Sprite(nullptr, std::string("Mario"), std::string("Textures/Mario.png"), vec2f(32.0f));
+		OGLRenderer2D* renderer = new OGLRenderer2D(static_cast<OGLShader*>(AssetManager::GetInstance()->GetShaderByName("Default")));
+		mTempSprite->AddRendererComponent(renderer);
 	}
 
 	void OpenGLContext::Shutdown()
@@ -112,8 +154,12 @@ namespace Engine
 
 	void OpenGLContext::Render()
 	{
-		glClearColor(0.180392161f, 0.545098066f, 0.341176480f, 1.000000000f);
+		//glClearColor(0.180392161f, 0.545098066f, 0.341176480f, 1.000000000f);
+		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
+
+		for (auto Thing : ThingsToRender)
+			Thing->Draw();
 
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplWin32_NewFrame();

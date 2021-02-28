@@ -1,6 +1,7 @@
 #include "D311Context.h"
 #include "D3D11Renderer2D.h"
 
+#include <Utils/AssetManager.h>
 #include <directxcolors.h>
 
 namespace Engine
@@ -370,36 +371,35 @@ namespace Engine
 
 		mDeviceMGR = new D3D11Device(mDevice, mDeviceContext);
 
-		/*mDeviceMGR->SetDevice(mDevice);
-		mDeviceMGR->SetDeviceContext(mDeviceContext);*/
-
-		//testMap = LevelMap::LoadLevelMap((char*)"TileMaps/FirstTest.txt");
-
-		//for (int X = 0; X < testMap.size(); X++)
-		//{
-		//	for (int Y = 0; Y < testMap[0].size(); Y++)
-		//	{
-		//		switch (testMap[X][Y])
-		//		{
-		//		case 0:
-		//		{
-		//			break;
-		//		}
-		//		case 1:
-		//		{
-		//			Vector2D* Position = new Vector2D(Y * TILEWIDTH, X * TILEHEIGHT);
-		//			Sprite* MapItem = new Sprite(mDevice, L"Textures/stone.dds", Position);
-
-		//			ThingsToRender.push_back(MapItem);
-		//			break;
-		//		}
-		//		default:
-		//			break;
-		//		}
-		//	}
-		//}
-
  		AssetManager::GetInstance()->LoadShader(mDeviceMGR, std::string("Default"), std::string("quadshader.fx"));
+
+		testMap = LevelMap::LoadLevelMap((char*)"TileMaps/FirstTest.txt");
+
+		for (int X = 0; X < testMap.size(); X++)
+		{
+			for (int Y = 0; Y < testMap[0].size(); Y++)
+			{
+				switch (testMap[X][Y])
+				{
+				case 0:
+				{
+					break;
+				}
+				case 1:
+				{
+					Sprite* mapItem = new Sprite(mDeviceMGR, std::string("Tile ") + std::string(X + "" + Y) + std::string("]"), 
+						std::string("Textures/stone.dds"), vec2f(32.0f * Y, 32.0f * X)); // someone got their x and y coords wrong, i'll fix it later
+					D3D11Renderer2D* re = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDeviceMGR);
+					mapItem->AddRendererComponent(re);
+
+					ThingsToRender.push_back(mapItem);
+					break;
+				}
+				default:
+					break;
+				}
+			}
+		}
 
 		mTempSprite = new Sprite(mDeviceMGR, std::string("Mario"), std::string("Textures/Mario.dds"), vec2f(32.0f));
 		D3D11Renderer2D* renderer = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDeviceMGR);
@@ -448,12 +448,11 @@ namespace Engine
 	{
 		mDeviceContext->ClearRenderTargetView(mRenderTargetView, DirectX::Colors::SeaGreen);
 
+		for (auto Thing : ThingsToRender)
+		{
+			Thing->Draw();
+		}
 		mTempSprite->Draw();
-
-		//for (auto Thing : ThingsToRender)
-		//{
-		//	Thing->Render(mDeviceContext);
-		//}
 		//TestCharacter->Render(mDeviceContext);
 
 		// ImGui rendering below (Move to seperate UI rendering function later

@@ -30,7 +30,7 @@ namespace Engine
 
 		static void ClearAll();
 	private:
-		AssetManager() { idCount = 0; }
+		AssetManager() { }
 
 		std::vector<Shader*> mShaders;
 		std::vector<Texture*> mTextures;
@@ -38,6 +38,5 @@ namespace Engine
 
 		static AssetManager* mInstance;
 
-		int idCount;
 	};
 }

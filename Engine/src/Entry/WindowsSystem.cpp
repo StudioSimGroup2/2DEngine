@@ -103,6 +103,8 @@ namespace Engine
 		ShowWindow(mHWND, SW_SHOW);
 		UpdateWindow(mHWND);
 
+		// Inject RenderDoc here before continuing
+
 		mRenderer->Init();
 	}
 

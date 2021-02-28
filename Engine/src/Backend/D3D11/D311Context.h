@@ -22,7 +22,6 @@
 #include "LevelMap.h"
 #include "Common.h"
 #include "Character.h"
-#include <Utils/AssetManager.h>
 #include <Backend/D3D11/D3D11Device.h>
 //----------------------------------
 

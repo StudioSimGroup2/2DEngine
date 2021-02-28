@@ -20,10 +20,8 @@ namespace Engine
 
 		XMMATRIX mScale = XMMatrixScaling(1, 1, 1);
 		XMMATRIX mRotate = XMMatrixRotationX(0) * XMMatrixRotationY(0) * XMMatrixRotationZ(0);
-		XMMATRIX mTranslate = XMMatrixTranslation(position.x, position.y, 0);
+		XMMATRIX mTranslate = XMMatrixTranslation(position.x, -position.y, 0);
 		XMMATRIX world = mScale * mRotate * mTranslate;
-
-		world.r[3].m128_f32[1] = -32.0f; // UHM YEAH I DONT KNOW WHATS GOING ON SOMEONE PL;EASE HELP
 
 		ConstantBuffer cb;
 		cb.mProjection = XMMatrixTranspose(camera->GetProjectionMatrix());

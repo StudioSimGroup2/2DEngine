@@ -99,6 +99,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Backend\OGL\OGLTexture.h" />
+    <ClInclude Include="src\Backend\OGL\OGLRenderer2D.h" />
     <ClInclude Include="src\Backend\D3D11\D3D11Renderer2D.h" />
     <ClInclude Include="src\Backend\D3D11\D3D11Texture.h" />
     <ClInclude Include="src\Backend\D3D11\D3D11Device.h" />
@@ -145,6 +147,8 @@
     <ClInclude Include="src\Utils\StringHelper.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Backend\OGL\OGLTexture.cpp" />
+    <ClCompile Include="src\Backend\OGL\OGLRenderer2D.cpp" />
     <ClCompile Include="src\Backend\D3D11\D3D11Renderer2D.cpp" />
     <ClCompile Include="src\Backend\D3D11\D3D11Texture.cpp" />
     <ClCompile Include="src\Backend\D3D11\D3D11Device.cpp" />
