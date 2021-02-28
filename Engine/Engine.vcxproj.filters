@@ -22,6 +22,9 @@
     <Filter Include="src\Backend\D3D11">
       <UniqueIdentifier>{D040DC27-3C57-DABD-85CE-65DFF123AB45}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Backend\OGL">
+      <UniqueIdentifier>{35804D1F-A10B-BBE3-AA1C-3ED8162717E4}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Engine">
       <UniqueIdentifier>{12A1320E-FE58-745B-6760-4DB753370F4C}</UniqueIdentifier>
     </Filter>
@@ -51,6 +54,9 @@
     <ClInclude Include="ext\ImGui\imgui_impl_dx11.h">
       <Filter>ext\ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="ext\ImGui\imgui_impl_opengl3.h">
+      <Filter>ext\ImGui</Filter>
+    </ClInclude>
     <ClInclude Include="ext\ImGui\imgui_impl_win32.h">
       <Filter>ext\ImGui</Filter>
     </ClInclude>
@@ -72,6 +78,30 @@
     <ClInclude Include="src\Backend\D3D11\D311Context.h">
       <Filter>src\Backend\D3D11</Filter>
     </ClInclude>
+    <ClInclude Include="src\Backend\D3D11\D3D11Device.h">
+      <Filter>src\Backend\D3D11</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Backend\D3D11\D3D11Renderer2D.h">
+      <Filter>src\Backend\D3D11</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Backend\D3D11\D3D11Shader.h">
+      <Filter>src\Backend\D3D11</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Backend\D3D11\D3D11Texture.h">
+      <Filter>src\Backend\D3D11</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Backend\OGL\OGLRenderer2D.h">
+      <Filter>src\Backend\OGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Backend\OGL\OGLShader.h">
+      <Filter>src\Backend\OGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Backend\OGL\OGLTexture.h">
+      <Filter>src\Backend\OGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Backend\OGL\OpenGLContext.h">
+      <Filter>src\Backend\OGL</Filter>
+    </ClInclude>
     <ClInclude Include="src\Camera.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -91,6 +121,9 @@
       <Filter>src\Engine</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\Core.h">
+      <Filter>src\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Defines.h">
       <Filter>src\Engine</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\EntryPoint.h">
@@ -123,29 +156,30 @@
     <ClInclude Include="src\Physics.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\PhysicsObject.h">
+      <Filter>src</Filter>
+    </ClInclude>
     <ClInclude Include="src\Sprite.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utils\AssetManager.h">
+      <Filter>src\Utils</Filter>
     </ClInclude>
     <ClInclude Include="src\Utils\Math.h">
       <Filter>src\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="ext\ImGui\imgui_impl_opengl3.h" />
-    <ClInclude Include="src\Backend\OGL\OpenGLContext.h">
-      <Filter>src\Backend\D3D11</Filter>
+    <ClInclude Include="src\Utils\Shader.h">
+      <Filter>src\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="src\Utils\AssetManager.h" />
-    <ClInclude Include="src\Utils\Shader.h" />
-    <ClInclude Include="src\Utils\Sound.h" />
-    <ClInclude Include="src\Utils\Texture.h" />
-    <ClInclude Include="src\Backend\D3D11\D3D11Shader.h" />
-    <ClInclude Include="src\Backend\OGL\OGLShader.h" />
-    <ClInclude Include="src\Engine\Defines.h" />
-    <ClInclude Include="src\Backend\D3D11\D3D11Device.h" />
-    <ClInclude Include="src\Backend\D3D11\D3D11Texture.h" />
-    <ClInclude Include="src\Backend\D3D11\D3D11Renderer2D.h" />
-    <ClInclude Include="src\Utils\StringHelper.h" />
-    <ClInclude Include="src\Backend\OGL\OGLRenderer2D.h" />
-    <ClInclude Include="src\Backend\OGL\OGLTexture.h" />
+    <ClInclude Include="src\Utils\Sound.h">
+      <Filter>src\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utils\StringHelper.h">
+      <Filter>src\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utils\Texture.h">
+      <Filter>src\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ext\DDSTextureLoader.cpp">
@@ -163,6 +197,9 @@
     <ClCompile Include="ext\ImGui\imgui_impl_dx11.cpp">
       <Filter>ext\ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="ext\ImGui\imgui_impl_opengl3.cpp">
+      <Filter>ext\ImGui</Filter>
+    </ClCompile>
     <ClCompile Include="ext\ImGui\imgui_impl_win32.cpp">
       <Filter>ext\ImGui</Filter>
     </ClCompile>
@@ -174,6 +211,30 @@
     </ClCompile>
     <ClCompile Include="src\Backend\D3D11\D311Context.cpp">
       <Filter>src\Backend\D3D11</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Backend\D3D11\D3D11Device.cpp">
+      <Filter>src\Backend\D3D11</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Backend\D3D11\D3D11Renderer2D.cpp">
+      <Filter>src\Backend\D3D11</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Backend\D3D11\D3D11Shader.cpp">
+      <Filter>src\Backend\D3D11</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Backend\D3D11\D3D11Texture.cpp">
+      <Filter>src\Backend\D3D11</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Backend\OGL\OGLRenderer2D.cpp">
+      <Filter>src\Backend\OGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Backend\OGL\OGLShader.cpp">
+      <Filter>src\Backend\OGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Backend\OGL\OGLTexture.cpp">
+      <Filter>src\Backend\OGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Backend\OGL\OpenGLContext.cpp">
+      <Filter>src\Backend\OGL</Filter>
     </ClCompile>
     <ClCompile Include="src\Camera.cpp">
       <Filter>src</Filter>
@@ -211,24 +272,26 @@
     <ClCompile Include="src\Physics.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\PhysicsObject.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
     <ClCompile Include="src\Sprite.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="ext\ImGui\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="src\Backend\OGL\OpenGLContext.cpp">
-      <Filter>src\Backend\D3D11</Filter>
+    <ClCompile Include="src\Utils\AssetManager.cpp">
+      <Filter>src\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="src\Utils\AssetManager.cpp" />
-    <ClCompile Include="src\Utils\Shader.cpp" />
-    <ClCompile Include="src\Utils\Sound.cpp" />
-    <ClCompile Include="src\Utils\Texture.cpp" />
-    <ClCompile Include="src\Backend\D3D11\D3D11Shader.cpp" />
-    <ClCompile Include="src\Backend\OGL\OGLShader.cpp" />
-    <ClCompile Include="src\Backend\D3D11\D3D11Device.cpp" />
-    <ClCompile Include="src\Backend\D3D11\D3D11Texture.cpp" />
-    <ClCompile Include="src\Backend\D3D11\D3D11Renderer2D.cpp" />
-    <ClCompile Include="src\Utils\StringHelper.cpp" />
-    <ClCompile Include="src\Backend\OGL\OGLRenderer2D.cpp" />
-    <ClCompile Include="src\Backend\OGL\OGLTexture.cpp" />
+    <ClCompile Include="src\Utils\Shader.cpp">
+      <Filter>src\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utils\Sound.cpp">
+      <Filter>src\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utils\StringHelper.cpp">
+      <Filter>src\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utils\Texture.cpp">
+      <Filter>src\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

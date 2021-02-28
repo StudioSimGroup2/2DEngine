@@ -99,30 +99,26 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Backend\OGL\OGLTexture.h" />
-    <ClInclude Include="src\Backend\OGL\OGLRenderer2D.h" />
-    <ClInclude Include="src\Backend\D3D11\D3D11Renderer2D.h" />
-    <ClInclude Include="src\Backend\D3D11\D3D11Texture.h" />
-    <ClInclude Include="src\Backend\D3D11\D3D11Device.h" />
-    <ClInclude Include="src\Backend\OGL\OGLShader.h" />
-    <ClInclude Include="src\Backend\D3D11\D3D11Shader.h" />
     <ClInclude Include="ext\DDSTextureLoader.h" />
     <ClInclude Include="ext\Glad\glad.h" />
     <ClInclude Include="ext\ImGui\imconfig.h" />
     <ClInclude Include="ext\ImGui\imgui.h" />
     <ClInclude Include="ext\ImGui\imgui_impl_dx11.h" />
+    <ClInclude Include="ext\ImGui\imgui_impl_opengl3.h" />
     <ClInclude Include="ext\ImGui\imgui_impl_win32.h" />
     <ClInclude Include="ext\ImGui\imgui_internal.h" />
     <ClInclude Include="ext\ImGui\imstb_rectpack.h" />
     <ClInclude Include="ext\ImGui\imstb_textedit.h" />
     <ClInclude Include="ext\ImGui\imstb_truetype.h" />
     <ClInclude Include="ext\KHR\khrplatform.h" />
-    <ClInclude Include="ext\ImGui\imgui_impl_opengl3.h" />
-    <ClInclude Include="src\Engine\Defines.h" />
-    <ClInclude Include="src\Utils\Shader.h" />
-    <ClInclude Include="src\Utils\Sound.h" />
-    <ClInclude Include="src\Utils\AssetManager.h" />
     <ClInclude Include="src\Backend\D3D11\D311Context.h" />
+    <ClInclude Include="src\Backend\D3D11\D3D11Device.h" />
+    <ClInclude Include="src\Backend\D3D11\D3D11Renderer2D.h" />
+    <ClInclude Include="src\Backend\D3D11\D3D11Shader.h" />
+    <ClInclude Include="src\Backend\D3D11\D3D11Texture.h" />
+    <ClInclude Include="src\Backend\OGL\OGLRenderer2D.h" />
+    <ClInclude Include="src\Backend\OGL\OGLShader.h" />
+    <ClInclude Include="src\Backend\OGL\OGLTexture.h" />
     <ClInclude Include="src\Backend\OGL\OpenGLContext.h" />
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\CameraManager.h" />
@@ -131,6 +127,7 @@
     <ClInclude Include="src\Engine.h" />
     <ClInclude Include="src\Engine\Application.h" />
     <ClInclude Include="src\Engine\Core.h" />
+    <ClInclude Include="src\Engine\Defines.h" />
     <ClInclude Include="src\Engine\EntryPoint.h" />
     <ClInclude Include="src\Engine\Renderer\Context.h" />
     <ClInclude Include="src\Engine\Renderer\Device.h" />
@@ -141,32 +138,33 @@
     <ClInclude Include="src\LevelMap.h" />
     <ClInclude Include="src\PNGLoader.h" />
     <ClInclude Include="src\Physics.h" />
+    <ClInclude Include="src\PhysicsObject.h" />
     <ClInclude Include="src\Sprite.h" />
+    <ClInclude Include="src\Utils\AssetManager.h" />
     <ClInclude Include="src\Utils\Math.h" />
-    <ClInclude Include="src\Utils\Texture.h" />
+    <ClInclude Include="src\Utils\Shader.h" />
+    <ClInclude Include="src\Utils\Sound.h" />
     <ClInclude Include="src\Utils\StringHelper.h" />
+    <ClInclude Include="src\Utils\Texture.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Backend\OGL\OGLTexture.cpp" />
-    <ClCompile Include="src\Backend\OGL\OGLRenderer2D.cpp" />
-    <ClCompile Include="src\Backend\D3D11\D3D11Renderer2D.cpp" />
-    <ClCompile Include="src\Backend\D3D11\D3D11Texture.cpp" />
-    <ClCompile Include="src\Backend\D3D11\D3D11Device.cpp" />
-    <ClCompile Include="src\Backend\OGL\OGLShader.cpp" />
-    <ClCompile Include="src\Backend\D3D11\D3D11Shader.cpp" />
     <ClCompile Include="ext\DDSTextureLoader.cpp" />
     <ClCompile Include="ext\Glad\glad.c" />
     <ClCompile Include="ext\ImGui\imgui.cpp" />
     <ClCompile Include="ext\ImGui\imgui_draw.cpp" />
     <ClCompile Include="ext\ImGui\imgui_impl_dx11.cpp" />
+    <ClCompile Include="ext\ImGui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="ext\ImGui\imgui_impl_win32.cpp" />
     <ClCompile Include="ext\ImGui\imgui_tables.cpp" />
     <ClCompile Include="ext\ImGui\imgui_widgets.cpp" />
-    <ClCompile Include="ext\ImGui\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="src\Utils\Shader.cpp" />
-    <ClCompile Include="src\Utils\Sound.cpp" />
-    <ClCompile Include="src\Utils\AssetManager.cpp" />
     <ClCompile Include="src\Backend\D3D11\D311Context.cpp" />
+    <ClCompile Include="src\Backend\D3D11\D3D11Device.cpp" />
+    <ClCompile Include="src\Backend\D3D11\D3D11Renderer2D.cpp" />
+    <ClCompile Include="src\Backend\D3D11\D3D11Shader.cpp" />
+    <ClCompile Include="src\Backend\D3D11\D3D11Texture.cpp" />
+    <ClCompile Include="src\Backend\OGL\OGLRenderer2D.cpp" />
+    <ClCompile Include="src\Backend\OGL\OGLShader.cpp" />
+    <ClCompile Include="src\Backend\OGL\OGLTexture.cpp" />
     <ClCompile Include="src\Backend\OGL\OpenGLContext.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\CameraManager.cpp" />
@@ -180,9 +178,13 @@
     <ClCompile Include="src\LevelMap.cpp" />
     <ClCompile Include="src\PNGLoader.cpp" />
     <ClCompile Include="src\Physics.cpp" />
+    <ClCompile Include="src\PhysicsObject.cpp" />
     <ClCompile Include="src\Sprite.cpp" />
-    <ClCompile Include="src\Utils\Texture.cpp" />
+    <ClCompile Include="src\Utils\AssetManager.cpp" />
+    <ClCompile Include="src\Utils\Shader.cpp" />
+    <ClCompile Include="src\Utils\Sound.cpp" />
     <ClCompile Include="src\Utils\StringHelper.cpp" />
+    <ClCompile Include="src\Utils\Texture.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
