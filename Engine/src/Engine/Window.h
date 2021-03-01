@@ -25,7 +25,7 @@ namespace Engine
 		virtual void OnUpdate() = 0;
 		virtual void EnableVSync(bool option) = 0;
 		virtual void EnableFullScreen(bool option) = 0;
-
+		virtual void Shutdown() = 0;
 		virtual unsigned int GetWidth() const = 0;
 		virtual unsigned int GetHeight() const = 0;
 

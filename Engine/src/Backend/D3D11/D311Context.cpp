@@ -22,6 +22,11 @@ namespace Engine
 		mScreenWidth = screenWidth;
 	}
 
+	D311Context::~D311Context()
+	{
+		Shutdown();
+	}
+
 	void D311Context::Init()
 	{
 		HRESULT hr;
@@ -408,9 +413,45 @@ namespace Engine
 
 	void D311Context::Shutdown()
 	{
-		mSwapChain->Release();
-		mDevice->Release();
-		mDeviceContext->Release();
+		if (ThingsToRender.size() >= 1)
+		{
+			ThingsToRender.clear();
+		}
+
+		if (mTempSprite)
+		{
+			delete mTempSprite;
+			mTempSprite = nullptr;
+		}
+
+		if (mAssetManager)
+		{
+			mAssetManager->ClearAll();
+			mAssetManager->Shutdown();
+			mAssetManager = nullptr;
+		}
+
+		if (mDeviceMGR)
+		{
+			delete mDeviceMGR;
+			mDeviceMGR = nullptr;
+		}
+			
+
+		if (mRasterState)
+			mRasterState->Release();
+		if (mDepthStencilView)
+			mDepthStencilView->Release();
+		if (mDepthStencilBuffer)
+			mDepthStencilBuffer->Release();
+		if (mRenderTargetView)
+			mRenderTargetView->Release();
+		if (mDevice)
+			mDevice->Release();
+		if (mDeviceContext)
+			mDeviceContext->Release();
+		if (mSwapChain)
+			mSwapChain->Release();
 	}
 
 	void D311Context::OnUpdate(float deltaTime)

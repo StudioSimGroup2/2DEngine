@@ -17,6 +17,7 @@ namespace Engine
 		void OnUpdate() override;
 		void EnableVSync(bool option) override;
 		void EnableFullScreen(bool option) override;
+		void Shutdown() override;
 
 		inline unsigned int GetWidth() const override { return mWidth; }
 		inline unsigned int GetHeight() const override { return mHeight; }
@@ -26,7 +27,6 @@ namespace Engine
 
 	private:
 		virtual void Init(const WindowData& data);
-		virtual void Shutdown();
 
 		// TODO: Window Events
 

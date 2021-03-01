@@ -1,10 +1,5 @@
 #pragma once
 
-#include <wincodec.h>
-
-#pragma comment(lib, "windowscodecs.lib")
-
-
 class PNGLoader
 {
 public:

@@ -44,6 +44,8 @@ namespace Engine
 		HDC deviceContext;
 		HGLRC renderContext;
 
+		GLuint mRequiredVAO;
+
 		TileMap testMap;
 		std::vector<Sprite*> ThingsToRender;
 		Sprite* mTempSprite;

@@ -56,6 +56,24 @@ namespace Engine
 		//glUseProgram(0);
 	}
 
+	void OGLShader::SetInt(const std::string& name, int value)
+	{
+		Load();
+		glUniform1i(glGetUniformLocation(mID, (name).c_str()), value);
+	}
+
+	void OGLShader::SetVector3(const std::string& name, const glm::vec3& value)
+	{
+		Load();
+		glUniform3f(glGetUniformLocation(mID, (name).c_str()), value.x, value.y, value.z);
+	}
+
+	void OGLShader::SetMatrix(const std::string& name, const glm::mat4& matrix)
+	{
+		Load();
+		glUniformMatrix4fv(glGetUniformLocation(mID, (name).c_str()), 1, false, glm::value_ptr(matrix));
+	}
+
 	bool OGLShader::CompileShaderFromFile(const std::string& path, bool isVertex, int blob)
 	{
 		std::ifstream ifs(path.c_str(), std::ios::in);

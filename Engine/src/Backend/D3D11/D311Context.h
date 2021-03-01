@@ -33,6 +33,7 @@ namespace Engine
 	{
 	public:
 		D311Context(HWND hwnd, UINT32 screenWidth, UINT32 screenHeight, bool vSync, bool fullscreen);
+		~D311Context();
 		
 		virtual void Init() override;
 		virtual void Shutdown() override;
@@ -51,15 +52,15 @@ namespace Engine
 
 		HWND mHWND;
 
-		IDXGISwapChain* mSwapChain;
-		ID3D11Device* mDevice;
-		ID3D11DeviceContext* mDeviceContext;
-		ID3D11RenderTargetView* mRenderTargetView;
-		ID3D11Texture2D* mDepthStencilBuffer;
-		ID3D11DepthStencilState* mDepthStencilState;
-		ID3D11DepthStencilView* mDepthStencilView;
-		ID3D11BlendState* mTransparant;
-		ID3D11RasterizerState* mRasterState;
+		IDXGISwapChain* mSwapChain = nullptr;
+		ID3D11Device* mDevice = nullptr;
+		ID3D11DeviceContext* mDeviceContext = nullptr;
+		ID3D11RenderTargetView* mRenderTargetView = nullptr;
+		ID3D11Texture2D* mDepthStencilBuffer = nullptr;
+		ID3D11DepthStencilState* mDepthStencilState = nullptr;
+		ID3D11DepthStencilView* mDepthStencilView = nullptr;
+		ID3D11BlendState* mTransparant = nullptr;
+		ID3D11RasterizerState* mRasterState = nullptr;
 
 		XMMATRIX mWorldMatrix;
 		XMMATRIX mOrthoMatrix;

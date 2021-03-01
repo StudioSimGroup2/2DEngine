@@ -96,6 +96,9 @@ namespace Engine
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+		glGenVertexArrays(1, &mRequiredVAO);
+		glBindVertexArray(mRequiredVAO);
+
 		// Setup ImGUI
 
 		IMGUI_CHECKVERSION();
@@ -108,8 +111,6 @@ namespace Engine
 		AssetManager::GetInstance()->LoadShader(nullptr, std::string("Default"), std::string("default.glsl"));
 
 		testMap = LevelMap::LoadLevelMap((char*)"TileMaps/FirstTest.txt");
-
-		return; // Texture loading needs to be implemented !!!!!
 
 		for (int X = 0; X < testMap.size(); X++)
 		{
@@ -124,8 +125,8 @@ namespace Engine
 				}
 				case 1:
 				{
-					Sprite* mapItem = new Sprite(nullptr, std::string("Tile ") + std::string(X + "" + Y) + std::string("]"),
-						std::string("Textures/stone.dds"), vec2f(32.0f * Y, 32.0f * X)); // someone got their x and y coords wrong, i'll fix it later
+					Sprite* mapItem = new Sprite(nullptr, std::string("Tile ") + std::string(X + "" + Y) + std::string("]"),		// stop creating the same texture multiple times smh
+						std::string("Textures/mario.png"), vec2f(32.0f * Y, 32.0f * X)); // someone got their x and y coords wrong, i'll fix it later
 					OGLRenderer2D* re = new OGLRenderer2D(static_cast<OGLShader*>(AssetManager::GetInstance()->GetShaderByName("Default")));
 					mapItem->AddRendererComponent(re);
 
@@ -138,7 +139,7 @@ namespace Engine
 			}
 		}
 
-		mTempSprite = new Sprite(nullptr, std::string("Mario"), std::string("Textures/Mario.png"), vec2f(32.0f));
+		mTempSprite = new Sprite(nullptr, std::string("Mario"), std::string("Textures/mario.png"), vec2f(32.0f));
 		OGLRenderer2D* renderer = new OGLRenderer2D(static_cast<OGLShader*>(AssetManager::GetInstance()->GetShaderByName("Default")));
 		mTempSprite->AddRendererComponent(renderer);
 	}
@@ -154,27 +155,28 @@ namespace Engine
 
 	void OpenGLContext::Render()
 	{
-		//glClearColor(0.180392161f, 0.545098066f, 0.341176480f, 1.000000000f);
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClearColor(0.180392161f, 0.545098066f, 0.341176480f, 1.000000000f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		for (auto Thing : ThingsToRender)
 			Thing->Draw();
 
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplWin32_NewFrame();
-		ImGui::NewFrame();
+		mTempSprite->Draw();
 
-		ImGui::Begin("Temp ImGui window!");
-		ImGui::Text("Hello world!");
-		ImGui::End();
+		//ImGui_ImplOpenGL3_NewFrame();
+		//ImGui_ImplWin32_NewFrame();
+		//ImGui::NewFrame();
 
-		ImGui::Begin("Framerate");
-		ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-		ImGui::End();
+		//ImGui::Begin("Temp ImGui window!");
+		//ImGui::Text("Hello world!");
+		//ImGui::End();
 
-		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		//ImGui::Begin("Framerate");
+		//ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+		//ImGui::End();
+
+		//ImGui::Render();
+		//ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 		SwapBuffers(deviceContext);
 	}

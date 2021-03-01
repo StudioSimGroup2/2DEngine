@@ -2,6 +2,8 @@
 
 #include <Glad/glad.h>
 
+#include <stb/stb_image.h>
+
 namespace Engine
 {
 	OGLTexture::OGLTexture(const std::string& name, const std::string& path)
@@ -28,12 +30,25 @@ namespace Engine
 
 	bool OGLTexture::CreateTextureFromFile(const std::string& path)
 	{
-		glBindTexture(GL_TEXTURE_2D, mID);
+		int nrChannels;
 
-		// Load Image data !!!
+		unsigned char* source = stbi_load(path.c_str(), &mWidth, &mHeight, &nrChannels, 0);
+
+		glBindTexture(GL_TEXTURE_2D, mID);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, mWidth, mHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, source);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 		glBindTexture(GL_TEXTURE_2D, 0);
-		
-		return false;
+
+		stbi_image_free(source);
+
+		if (mID)
+		{
+			return true;
+		}
 	}
 }

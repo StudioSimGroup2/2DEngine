@@ -6,6 +6,8 @@
 #include <iostream>
 #include <Utils/StringHelper.h>
 
+#include <stb/stb_image.h>
+
 #define ASSERT(cond, msg) if (!cond) { std::cerr << "Assert failed: " << msg << ".\nFile: " << __FILE__ << ", line: " << __LINE__ << std::endl; abort(); }
 
 namespace Engine
@@ -20,7 +22,7 @@ namespace Engine
 		mWidth = 32;
 		mHeight = 32;
 
-		hr = DirectX::CreateDDSTextureFromFile(device->GetDevice(), StringHelper::StringToWide(path).c_str(), nullptr, &mTexture);
+		hr = DirectX::CreateDDSTextureFromFile(device->GetDevice(), StringHelper::StringToWide(path).c_str(), nullptr, &mTextureView);
 	}
 
 	D3D11Texture::~D3D11Texture()
@@ -29,8 +31,8 @@ namespace Engine
 
 	void D3D11Texture::Load(int pos = 1) const
 	{
-		mDeviceContext->VSSetShaderResources(0, pos, &mTexture);
-		mDeviceContext->PSSetShaderResources(0, pos, &mTexture);
+		mDeviceContext->VSSetShaderResources(0, pos, &mTextureView);
+		mDeviceContext->PSSetShaderResources(0, pos, &mTextureView);
 	}
 
 	void D3D11Texture::Unload(int pos = 1) const

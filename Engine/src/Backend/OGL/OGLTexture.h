@@ -19,7 +19,6 @@ namespace Engine
 		bool CreateTextureFromFile(const std::string& path);
 
 		unsigned int mID, mBoundSlot = -1;
-		unsigned int mWidth, mHeight;
 	};
 }
 

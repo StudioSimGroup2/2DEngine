@@ -4,13 +4,14 @@ layout (location = 0) in vec4 vertex;
 
 out vec2 TexCoords;
 
-uniform mat4 model;
-uniform mat4 projection;
+uniform mat4 Projection;
+uniform mat4 View;
+uniform mat4 World;
 
 void main()
-{
+{    
     TexCoords = vertex.zw;
-    gl_Position = projection * model * vec4(vertex.xy, 0.0, 1.0);
+	gl_Position = Model * View * Projection * vec4(vertex.xy, 0.0, 1.0);
 }
 #endif
 #ifdef PIXEL_SHADER
@@ -18,11 +19,10 @@ void main()
 in vec2 TexCoords;
 out vec4 color;
 
-uniform sampler2D image;
-uniform vec3 spriteColor;
+uniform sampler2D Image;
 
 void main()
 {
-	color = vec4(spriteColor, 1.0) * texture(image, TexCoords);
+	color = texture(Image, TexCoords);
 }
 #endif

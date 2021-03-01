@@ -21,7 +21,7 @@ private:
 	std::string mName;
 	vec2f mPosition;
 
-	Texture2D* mSprTexture = nullptr;
+	Texture* mSprTexture = nullptr;
 	Renderer2D* mRenderer = nullptr;
 
 	AssetManager* mAssetManager;

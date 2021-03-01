@@ -29,6 +29,8 @@ namespace Engine
 		static void RemoveSound(const std::string& name);
 
 		static void ClearAll();
+
+		static void Shutdown();
 	private:
 		AssetManager() { }
 

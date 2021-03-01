@@ -25,6 +25,7 @@ project "Engine"
         "%{prj.name}/src/**.cpp",
 		"%{prj.name}/ext/**.h",
 		"%{prj.name}/ext/**.c",
+		"%{prj.name}/ext/**.hpp",
 		"%{prj.name}/ext/**.cpp"
     }
 

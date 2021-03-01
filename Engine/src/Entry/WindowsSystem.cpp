@@ -38,6 +38,7 @@ namespace Engine
 
 	WindowsSystem::~WindowsSystem()
 	{
+		Shutdown();
 	}
 
 	void WindowsSystem::OnUpdate()
@@ -59,8 +60,11 @@ namespace Engine
 			}
 			else
 			{
-				mRenderer->OnUpdate(mFrameTime.count());
-				mRenderer->Render();
+				if (mRenderer)
+				{
+					mRenderer->OnUpdate(mFrameTime.count());
+					mRenderer->Render();
+				}
 			}
 		}
 	}
@@ -71,6 +75,27 @@ namespace Engine
 
 	void WindowsSystem::EnableFullScreen(bool option)
 	{
+	}
+
+	void WindowsSystem::Shutdown()
+	{
+		ImGui_ImplWin32_Shutdown();
+
+#if GRAPHICS_LIBRARY == 1
+		ImGui_ImplOpenGL3_Shutdown();
+#else
+		ImGui_ImplDX11_Shutdown();
+#endif
+
+		ImGui::DestroyContext();
+		
+		if (mRenderer)
+		{
+			delete mRenderer;
+			mRenderer = nullptr;
+		}
+
+		exit(0);
 	}
 
 	void WindowsSystem::Init(const WindowData& data)
@@ -128,6 +153,7 @@ namespace Engine
 		{
 			Window* window = (Window*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
 			::PostQuitMessage(0);
+			window->Shutdown();
 			break;
 		}
 
@@ -136,18 +162,5 @@ namespace Engine
 		}
 
 		return NULL;
-	}
-
-	void WindowsSystem::Shutdown()
-	{
-		ImGui_ImplWin32_Shutdown();
-
-#if GRAPHICS_LIBRARY == 1
-		ImGui_ImplOpenGL3_Shutdown();
-#else
-		ImGui_ImplDX11_Shutdown();
-#endif
-		
-		ImGui::DestroyContext();
 	}
 }

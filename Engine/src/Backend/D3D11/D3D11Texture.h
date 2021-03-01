@@ -7,6 +7,8 @@
 #include <d3d11.h>
 #include <DirectXColors.h>
 
+#define STB_IMAGE_IMPLEMENTATION
+
 using namespace DirectX;
 
 namespace Engine
@@ -24,9 +26,8 @@ namespace Engine
 
 	private:
 		unsigned int mID, mBoundSlot = -1;
-		unsigned int mWidth, mHeight;
 
-		ID3D11ShaderResourceView* mTexture = nullptr;
+		ID3D11ShaderResourceView* mTextureView = nullptr;
 
 		ID3D11DeviceContext* mDeviceContext;
 	};

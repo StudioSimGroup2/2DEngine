@@ -12,10 +12,12 @@ namespace Engine
 		virtual void Unload(int pos = 1) const = 0;
 
 		virtual const std::string& GetName() const = 0;
+		virtual int GetWidth() { return mWidth; }
+		virtual int GetHeight() { return mHeight; }
 
 	protected:
 		std::string mName;
-	};
 
-	typedef Texture Texture2D; // :shrug:
+		int mWidth, mHeight;
+	};
 }

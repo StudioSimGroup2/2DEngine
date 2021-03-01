@@ -6,6 +6,7 @@
 #include "Backend/D3D11/D3D11Texture.h"
 #elif GRAPHICS_LIBRARY == 1
 #include "Backend/OGL/OGLShader.h"
+#include "Backend/OGL/OGLTexture.h"
 #endif
 
 namespace Engine
@@ -27,6 +28,7 @@ namespace Engine
 #if GRAPHICS_LIBRARY == 0
 		mInstance->mTextures.push_back(new D3D11Texture(static_cast<D3D11Device*>(device), name, path));
 #elif GRAPHICS_LIBRARY == 1
+		mInstance->mTextures.push_back(new OGLTexture(name, path));
 #endif
 		return mInstance->mTextures.back();
 	}
@@ -80,5 +82,10 @@ namespace Engine
 
 	void AssetManager::ClearAll()
 	{
+	}
+
+	void AssetManager::Shutdown()
+	{
+		delete mInstance;
 	}
 }
