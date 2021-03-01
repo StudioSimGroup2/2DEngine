@@ -419,6 +419,7 @@
     <ClInclude Include="src\Engine\Window.h" />
     <ClInclude Include="src\Entry\WindowsSystem.h" />
     <ClInclude Include="src\LevelMap.h" />
+    <ClInclude Include="src\PNGLoader.h" />
     <ClInclude Include="src\Physics.h" />
     <ClInclude Include="src\PhysicsObject.h" />
     <ClInclude Include="src\Sprite.h" />
@@ -428,6 +429,7 @@
     <ClInclude Include="src\Utils\Sound.h" />
     <ClInclude Include="src\Utils\StringHelper.h" />
     <ClInclude Include="src\Utils\Texture.h" />
+    <ClInclude Include="src\Utils\Windows\WindowsTextureCompiler.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ext\DDSTextureLoader.cpp" />
@@ -459,6 +461,7 @@
     <ClCompile Include="src\Engine\Renderer\Swapchain.cpp" />
     <ClCompile Include="src\Entry\WindowsSystem.cpp" />
     <ClCompile Include="src\LevelMap.cpp" />
+    <ClCompile Include="src\PNGLoader.cpp" />
     <ClCompile Include="src\Physics.cpp" />
     <ClCompile Include="src\PhysicsObject.cpp" />
     <ClCompile Include="src\Sprite.cpp" />
@@ -467,6 +470,7 @@
     <ClCompile Include="src\Utils\Sound.cpp" />
     <ClCompile Include="src\Utils\StringHelper.cpp" />
     <ClCompile Include="src\Utils\Texture.cpp" />
+    <ClCompile Include="src\Utils\Windows\WindowsTextureCompiler.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

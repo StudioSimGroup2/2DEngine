@@ -31,6 +31,9 @@
     <Filter Include="ext\KHR">
       <UniqueIdentifier>{EAC9B282-56A9-311E-5FC1-BCF4CB1F987F}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ext\stb">
+      <UniqueIdentifier>{CE79B382-3A59-321E-4371-BDF4AFCF987F}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src">
       <UniqueIdentifier>{2DAB880B-99B4-887C-2230-9F7C8E38947C}</UniqueIdentifier>
     </Filter>
@@ -942,6 +945,9 @@
     <ClInclude Include="ext\KHR\khrplatform.h">
       <Filter>ext\KHR</Filter>
     </ClInclude>
+    <ClInclude Include="ext\stb\stb_image.h">
+      <Filter>ext\stb</Filter>
+    </ClInclude>
     <ClInclude Include="src\Backend\D3D11\D311Context.h">
       <Filter>src\Backend\D3D11</Filter>
     </ClInclude>
@@ -1017,6 +1023,9 @@
     <ClInclude Include="src\LevelMap.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\PNGLoader.h">
+      <Filter>src</Filter>
+    </ClInclude>
     <ClInclude Include="src\Physics.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -1044,7 +1053,9 @@
     <ClInclude Include="src\Utils\Texture.h">
       <Filter>src\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="ext\stb\stb_image.h" />
+    <ClInclude Include="src\Utils\Windows\WindowsTextureCompiler.h">
+      <Filter>src\Utils\Windows</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ext\DDSTextureLoader.cpp">
@@ -1134,6 +1145,9 @@
     <ClCompile Include="src\LevelMap.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\PNGLoader.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
     <ClCompile Include="src\Physics.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -1157,6 +1171,9 @@
     </ClCompile>
     <ClCompile Include="src\Utils\Texture.cpp">
       <Filter>src\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utils\Windows\WindowsTextureCompiler.cpp">
+      <Filter>src\Utils\Windows</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

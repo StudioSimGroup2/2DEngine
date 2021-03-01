@@ -1,6 +1,6 @@
 workspace "StudioSimGroup2"
     architecture "x64"
-    startproject "Sandbox"
+    startproject "Game"
 
     configurations
     {
