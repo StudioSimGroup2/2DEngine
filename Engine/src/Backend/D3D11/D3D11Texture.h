@@ -7,8 +7,6 @@
 #include <d3d11.h>
 #include <DirectXColors.h>
 
-#define STB_IMAGE_IMPLEMENTATION
-
 using namespace DirectX;
 
 namespace Engine

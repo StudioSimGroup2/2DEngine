@@ -12,7 +12,6 @@
 namespace Engine
 {
 	AssetManager* AssetManager::mInstance = nullptr;
-	
 
 	void AssetManager::LoadShader(Device* device, const std::string& name, const std::string& path)
 	{

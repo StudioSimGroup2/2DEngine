@@ -1,5 +1,5 @@
 //===================================
-// Code based off Handes-On C++ Game Animation Programming - Gabor Szauer
+// Code based off Hands-On C++ Game Animation Programming - Gabor Szauer
 // (c) 2020 Packt Publishing
 // https://store.tutorialspoint.com/1212/9781800207967.pdf
 //===============================
@@ -108,6 +108,11 @@ namespace Engine
 		ImGui_ImplOpenGL3_Init();
 		ImGui::StyleColorsDark();
 
+		CameraManager::Get()->Add(new Camera(glm::vec4(0.0f, 0.0f, -1.0f, 1.0f)));
+		CameraManager::Get()->Add(new Camera(glm::vec4(-964.0f, 94.0f, -1.0f, 1.0f)));
+
+		Camera* cam = CameraManager::Get()->GetPrimaryCamera();
+
 		AssetManager::GetInstance()->LoadShader(nullptr, std::string("Default"), std::string("default.glsl"));
 
 		testMap = LevelMap::LoadLevelMap((char*)"TileMaps/FirstTest.txt");
@@ -126,7 +131,7 @@ namespace Engine
 				case 1:
 				{
 					Sprite* mapItem = new Sprite(nullptr, std::string("Tile ") + std::string(X + "" + Y) + std::string("]"),		// stop creating the same texture multiple times smh
-						std::string("Textures/mario.png"), vec2f(32.0f * Y, 32.0f * X)); // someone got their x and y coords wrong, i'll fix it later
+						std::string("Textures/stone.png"), vec2f(32.0f * Y, 32.0f * X)); // someone got their x and y coords wrong, i'll fix it later
 					OGLRenderer2D* re = new OGLRenderer2D(static_cast<OGLShader*>(AssetManager::GetInstance()->GetShaderByName("Default")));
 					mapItem->AddRendererComponent(re);
 
@@ -146,16 +151,33 @@ namespace Engine
 
 	void OpenGLContext::Shutdown()
 	{
+		if (ThingsToRender.size() >= 1)
+		{
+			ThingsToRender.clear();
+		}
 
+		if (mTempSprite)
+		{
+			delete mTempSprite;
+			mTempSprite = nullptr;
+		}
 	}
 
 	void OpenGLContext::OnUpdate(float deltaTime)
 	{
+		CameraManager::Get()->Update(deltaTime); // Belongs in core scene update loop
+
+		// Cycle cameras on A & D keypresses 
+		if (GetAsyncKeyState(0x51)) // Q key
+			CameraManager::Get()->CyclePrevious();
+		if (GetAsyncKeyState(0x45)) // E key
+			CameraManager::Get()->CycleNext();
 	}
 
 	void OpenGLContext::Render()
 	{
 		glClearColor(0.180392161f, 0.545098066f, 0.341176480f, 1.000000000f);
+		//glClearColor(0.0f, 0.4f, 0.4f, 1.000000000f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		for (auto Thing : ThingsToRender)

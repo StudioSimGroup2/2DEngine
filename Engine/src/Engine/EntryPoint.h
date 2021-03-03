@@ -2,8 +2,6 @@
 
 #ifdef WINDOWS_PLATFORM
 
-#define USE_OPENGL
-
 extern Engine::Application* Engine::CreateApplication();
 
 int main(int argc, char** argv)

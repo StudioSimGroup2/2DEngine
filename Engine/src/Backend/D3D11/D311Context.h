@@ -71,7 +71,6 @@ namespace Engine
 
 		//Remove
 		Sprite* TestSprite;
-		Character* TestCharacter;
 		AssetManager* mAssetManager;
 		D3D11Device* mDeviceMGR;
 

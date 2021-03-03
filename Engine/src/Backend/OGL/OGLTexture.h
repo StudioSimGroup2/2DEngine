@@ -2,6 +2,8 @@
 
 #include "Utils/Texture.h"
 
+#define STB_IMAGE_IMPLEMENTATION
+
 namespace Engine
 {
 	class OGLTexture : public Texture

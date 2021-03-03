@@ -1,5 +1,14 @@
 #pragma once
-#include "Camera.h"
+
+#include "Engine/Defines.h"
+
+#if GRAPHICS_LIBRARY == 0 //DX11
+#include "Backend/D3D11/D3D11Camera.h"
+#elif GRAPHICS_LIBRARY == 1 // OpenGL
+#include "Backend/OGL/OpenGLCamera.h"
+
+#endif
+
 #include <vector>
 #include <assert.h>
 #include <iostream>
@@ -14,11 +23,11 @@ public:
 	static CameraManager* Get();
 	~CameraManager();
 
-	void Add(Camera* camera);
+	void Add(Camera* Camera);
 	void Delete(size_t index);
-	void Update(float deltaTime, bool forceUpdate=false); // force update, will force all the cameras to be updated, not just the primary camera
+	void Update(float deltaTime, bool forceUpdate=false); // force update, will force all the Cameras to be updated, not just the primary Camera
 
-	// Returns and sets the next active camera to be either the next or previous camera.
+	// Returns and sets the next active Camera to be either the next or previous Camera.
 	Camera* CycleNext();
 	Camera* CyclePrevious();
 
@@ -30,7 +39,7 @@ public:
 	void SetPrimaryCamera(size_t index);
 
 private:
-	CameraManager() = default; // Create atleast 1 ortho camera by default
+	CameraManager() = default; // Create atleast 1 ortho Camera by default
 
 	CameraManager(const CameraManager& other) = delete;
 	void operator=(const CameraManager& other) = delete;

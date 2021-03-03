@@ -18,7 +18,7 @@ namespace Engine
 	{
 		Camera* camera = CameraManager::Get()->GetPrimaryCamera();
 
-		XMMATRIX mScale = XMMatrixScaling(1, 1, 1);
+		XMMATRIX mScale = XMMatrixScaling(1, 1.05f, 1);
 		XMMATRIX mRotate = XMMatrixRotationX(0) * XMMatrixRotationY(0) * XMMatrixRotationZ(0);
 		XMMATRIX mTranslate = XMMatrixTranslation(position.x, -position.y, 0);
 		XMMATRIX world = mScale * mRotate * mTranslate;

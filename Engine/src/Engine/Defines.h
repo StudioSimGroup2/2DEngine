@@ -1,7 +1,8 @@
 #pragma once
 
-///
-/// D3D11 = 0
-/// OpenGL 4.6 = 1
-/// 
+#ifdef ENGINE_DEBUG_OGL || ENGINE_RELEASE_OGL
 #define GRAPHICS_LIBRARY 1
+#endif
+#ifdef ENGINE_DEBUG_D3D11 || ENGINE_RELEASE_D3D11
+#define GRAPHICS_LIBRARY 0
+#endif

@@ -6,7 +6,7 @@
 #include <iostream>
 #include <Utils/StringHelper.h>
 
-#include <stb/stb_image.h>
+//#include <stb/stb_image.h>
 
 #define ASSERT(cond, msg) if (!cond) { std::cerr << "Assert failed: " << msg << ".\nFile: " << __FILE__ << ", line: " << __LINE__ << std::endl; abort(); }
 

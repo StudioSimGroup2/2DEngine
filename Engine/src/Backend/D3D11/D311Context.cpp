@@ -4,6 +4,8 @@
 #include <Utils/AssetManager.h>
 #include <directxcolors.h>
 
+#include <Backend/D3D11/D3D11Camera.h>
+
 namespace Engine
 {
 	D311Context::D311Context(HWND hwnd, UINT32 screenWidth, UINT32 screenHeight, bool vSync, bool fullscreen)
@@ -374,6 +376,8 @@ namespace Engine
 		CameraManager::Get()->Add(new Camera(XMFLOAT4(0.0f, 0.0f, -1.0f, 1.0f)));
 		CameraManager::Get()->Add(new Camera(XMFLOAT4(-964.0f, 94.0f, -1.0f, 1.0f)));
 
+		Camera* cam = CameraManager::Get()->GetPrimaryCamera();
+
 		mDeviceMGR = new D3D11Device(mDevice, mDeviceContext);
 
  		AssetManager::GetInstance()->LoadShader(mDeviceMGR, std::string("Default"), std::string("quadshader.fx"));
@@ -422,13 +426,6 @@ namespace Engine
 		{
 			delete mTempSprite;
 			mTempSprite = nullptr;
-		}
-
-		if (mAssetManager)
-		{
-			mAssetManager->ClearAll();
-			mAssetManager->Shutdown();
-			mAssetManager = nullptr;
 		}
 
 		if (mDeviceMGR)
@@ -494,7 +491,6 @@ namespace Engine
 			Thing->Draw();
 		}
 		mTempSprite->Draw();
-		//TestCharacter->Render(mDeviceContext);
 
 		// ImGui rendering below (Move to seperate UI rendering function later
 		ImGui_ImplDX11_NewFrame();

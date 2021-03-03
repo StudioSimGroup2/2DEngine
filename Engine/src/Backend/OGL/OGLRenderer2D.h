@@ -7,6 +7,8 @@
 #include <GLM/ext/matrix_transform.hpp>
 #include <GLM/gtc/type_ptr.hpp>
 
+#include "OpenGLCamera.h"
+
 namespace Engine
 {
 	class OGLRenderer2D : public Renderer2D
@@ -20,13 +22,6 @@ namespace Engine
 		void InitBuffers();
 
 		unsigned int mVAO;
-
-		struct ConstantBuffer
-		{
-			glm::mat4 mWorld;
-			glm::mat4 mView;
-			glm::mat4 mProjection;
-		};
 
 		struct VertexType
 		{

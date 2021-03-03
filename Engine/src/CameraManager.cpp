@@ -19,16 +19,16 @@ CameraManager::~CameraManager()
 		delete mInstance;
 }
 
-void CameraManager::Add(Camera* camera)
+void CameraManager::Add(Camera* Camera)
 {
-	mCameras.push_back(camera);
+	mCameras.push_back(Camera);
 	if (mCameras.size() == 1) 
-		mCameras[0]->SetPrimary(true); // If this is the first camera added, set it to be the primary camera
+		mCameras[0]->SetPrimary(true); // If this is the first Camera added, set it to be the primary Camera
 }
 
 void CameraManager::Delete(size_t index)
 {
-	ASSERT(!(index >= mCameras.size()), "Deleting camera, Index supplied was out of range");
+	ASSERT(!(index >= mCameras.size()), "Deleting Camera, Index supplied was out of range");
 	mCameras.erase(mCameras.begin() + index);
 }
 
@@ -39,7 +39,7 @@ void CameraManager::Update(float deltaTime, bool forceUpdate)
 		if (forceUpdate) {
 			c->Update(deltaTime);
 			continue;
-		} 
+		}
 		else if (c->IsPrimary()) {
 			c->Update(deltaTime);
 			break; // Break out of the loop as we can only have one primary camera
@@ -50,27 +50,27 @@ void CameraManager::Update(float deltaTime, bool forceUpdate)
 Camera* CameraManager::CycleNext()
 {
 	size_t range = mCameras.size();
-	int currentCam = CameraManager::Get()->GetPrimaryCameraIndex();
-	if (++currentCam >= range)
-		currentCam = 0;	// Wrap around when out of range
+	int currentCamera = CameraManager::Get()->GetPrimaryCameraIndex();
+	if (++currentCamera >= range)
+		currentCamera = 0;	// Wrap around when out of range
 
-	CameraManager::Get()->SetPrimaryCamera(currentCam);
-	return mCameras[currentCam];
+	CameraManager::Get()->SetPrimaryCamera(currentCamera);
+	return mCameras[currentCamera];
 }
 
 Camera* CameraManager::CyclePrevious()
 {
-	int currentCam = CameraManager::Get()->GetPrimaryCameraIndex();
-	if (--currentCam < 0)
-		currentCam = mCameras.size() - 1; // Wrap around when out of range
+	int currentCamera = CameraManager::Get()->GetPrimaryCameraIndex();
+	if (--currentCamera < 0)
+		currentCamera = mCameras.size() - 1; // Wrap around when out of range
 
-	CameraManager::Get()->SetPrimaryCamera(currentCam);
-	return mCameras[currentCam];
+	CameraManager::Get()->SetPrimaryCamera(currentCamera);
+	return mCameras[currentCamera];
 }
 
 Camera* CameraManager::GetCameraByIndex(size_t index) const
 {
-	ASSERT(!(index >= mCameras.size()), "Getting camera, Index supplied was out of range");
+	ASSERT(!(index >= mCameras.size()), "Getting Camera, Index supplied was out of range");
 	return mCameras[index];
 }
 

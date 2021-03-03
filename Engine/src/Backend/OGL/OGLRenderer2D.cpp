@@ -3,6 +3,7 @@
 #include <GLM/glm.hpp>
 #include <GLM/ext/matrix_transform.hpp>
 #include <GLM/gtc/type_ptr.hpp>
+#include <CameraManager.h>
 
 namespace Engine
 {
@@ -17,17 +18,27 @@ namespace Engine
 	{
 		mShader->Load();
 
-		// Todo:
-		// weird mvp stuff
+		Camera* camera = CameraManager::Get()->GetPrimaryCamera();
 
-		ConstantBuffer cb;
-		cb.mProjection = glm::mat4(1.0f);
-		cb.mView = glm::mat4(1.0f);
-		cb.mWorld = glm::mat4(1.0f);
+		//// Todo:
+		//// weird mvp stuff
 
-		static_cast<OGLShader*>(mShader)->SetMatrix("Projection", cb.mProjection);
-		static_cast<OGLShader*>(mShader)->SetMatrix("View", cb.mView);
-		static_cast<OGLShader*>(mShader)->SetMatrix("World", cb.mWorld);
+		//glm::mat4 Model = glm::mat4(1.0f);
+		//Model = glm::rotate(Model, 0.0f, glm::vec3(1, 0, 0)) * glm::rotate(Model, 0.0f, glm::vec3(0, 1, 0)) * glm::rotate(Model, 0.0f, glm::vec3(0, 0, 1));
+		//Model = glm::scale(Model, glm::vec3(1.0f, 1.0f, 1.0f));
+		//Model = glm::translate(Model, glm::vec3(position.x, position.y, 0));
+		//glm::mat4 mvp = camera->GetProjectionMatrix() * camera->GetViewMatrix() * Model;
+
+		glm::mat4 model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(position.x, position.y, 0.0f));
+		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+
+		model = glm::scale(model, glm::vec3(33.0f, 34.0f, 0.0f)); // fix for sprites rendering at 32x32
+
+		static_cast<OGLShader*>(mShader)->SetMatrix("model", model);
+		static_cast<OGLShader*>(mShader)->SetMatrix("projection", camera->GetProjectionMatrix());
+		//static_cast<OGLShader*>(mShader)->SetMatrix("View", camera->GetViewMatrix());
+		//static_cast<OGLShader*>(mShader)->SetMatrix("World", Model);
 
 		glActiveTexture(GL_TEXTURE0);
 		textureToRender->Load();
@@ -39,39 +50,18 @@ namespace Engine
 
 	void OGLRenderer2D::InitBuffers()
 	{
+		// configure VAO/VBO
 		unsigned int VBO;
-		VertexType vertices[6];
-		float left, right, top, bottom;
+		float vertices[] = {
+			// pos      // tex
+			0.0f, 1.0f, 0.0f, 1.0f,
+			1.0f, 0.0f, 1.0f, 0.0f,
+			0.0f, 0.0f, 0.0f, 0.0f,
 
-		// Calculate the screen coordinates of the left side of the bitmap.
-		left = (float)((1280 / 2) * -1); // 0 = X position
-
-		// Calculate the screen coordinates of the right side of the bitmap.
-		right = left + (float)32;
-
-		// Calculate the screen coordinates of the top of the bitmap.
-		top = (float)(720 / 2); // 0 = Y position
-
-		// Calculate the screen coordinates of the bottom of the bitmap.
-		bottom = top - (float)32;
-
-		vertices[0].position = glm::vec3(left, top, 0.0f);
-		vertices[0].texture = glm::vec2(0.0f, 0.0f);
-
-		vertices[1].position = glm::vec3(left, bottom, 0.0f);
-		vertices[1].texture = glm::vec2(0.0f, 1.0f);
-
-		vertices[2].position = glm::vec3(right, bottom, 0.0f);
-		vertices[2].texture = glm::vec2(1.0f, 1.0f);
-
-		vertices[3].position = glm::vec3(left, top, 0.0f);
-		vertices[3].texture = glm::vec2(0.0f, 0.0f);
-
-		vertices[4].position = glm::vec3(right, top, 0.0f);
-		vertices[4].texture = glm::vec2(1.0f, 0.0f);
-
-		vertices[5].position = glm::vec3(right, bottom, 0.0f);
-		vertices[5].texture = glm::vec2(1.0f, 1.0f);
+			0.0f, 1.0f, 0.0f, 1.0f,
+			1.0f, 1.0f, 1.0f, 1.0f,
+			1.0f, 0.0f, 1.0f, 0.0f
+		};
 
 		glGenVertexArrays(1, &mVAO);
 		glGenBuffers(1, &VBO);

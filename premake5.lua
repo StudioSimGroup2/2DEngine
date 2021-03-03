@@ -1,11 +1,13 @@
-workspace "StudioSimGroup2"
+workspace "Sleepy Engine"
     architecture "x64"
     startproject "Game"
 
     configurations
     {
-        "Debug",
-        "Release"
+        "DebugOGL",
+		"DebugD3D11",
+        "ReleaseOGL",
+		"ReleaseD3D11"
     }
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
@@ -51,13 +53,42 @@ project "Engine"
             ("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Game")
         }
 
-    filter "configurations:Debug"
-        defines "ENGINE_DEBUG"
+    filter "configurations:DebugOGL"
+        defines "ENGINE_DEBUG_OGL"
         symbols "On"
+		excludes
+		{
+			"%{prj.name}/src/Backend/D3D11/**.h",
+			"%{prj.name}/src/Backend/D3D11/**.cpp"
+		}
+		
+	filter "configurations:DebugD3D11"
+        defines "ENGINE_DEBUG_D3D11"
+        symbols "On"
+		excludes
+		{
+			"%{prj.name}/src/Backend/OGL/**.h",
+			"%{prj.name}/src/Backend/OGL/**.cpp"
+		}
+		
 
-    filter "configurations:Release"
-        defines "ENGINE_RELEASE"
-        optimize "On"    
+    filter "configurations:ReleaseOGL"
+        defines "ENGINE_RELEASE_OGL"
+        optimize "On"
+		excludes
+		{
+			"%{prj.name}/src/Backend/D3D11/**.h",
+			"%{prj.name}/src/Backend/D3D11/**.cpp"
+		}		
+		
+	filter "configurations:ReleaseD3D11"
+        defines "ENGINE_RELEASE_D3D11"
+        optimize "On"
+		excludes
+		{
+			"%{prj.name}/src/Backend/OGL/**.h",
+			"%{prj.name}/src/Backend/OGL/**.cpp"
+		}		    
 
 project "Game"
         location "Game"
@@ -94,9 +125,17 @@ project "Game"
 		}
 
 	filter "configurations:Debug"
-		defines "ENGINE_DEBUG"
+		defines "ENGINE_DEBUG_OGL"
+		symbols "On"
+
+	filter "configurations:Debug"
+		defines "ENGINE_DEBUG_D3D11"
 		symbols "On"
 
 	filter "configurations:Release"
-		defines "ENGINE_RELEASE"
+		defines "ENGINE_RELEASE_OGL"
+		optimize "On"
+		
+	filter "configurations:Release"
+		defines "ENGINE_RELEASE_D3D11"
 		optimize "On"
