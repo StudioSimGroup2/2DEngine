@@ -4,7 +4,53 @@ TileMap LevelMap::LoadLevelMap(char* FilePath)
 {
 	int tile;
 	TileMap tilemap;
-	ifstream InFile;
+
+
+	//Get the whole xml document.
+	TiXmlDocument doc;
+	if (!doc.LoadFile("TinyXML/XML_Test.xml"))
+	{
+		cerr << doc.ErrorDesc() << endl;
+	}
+
+	//Now get the root element.
+	TiXmlElement* root = doc.FirstChildElement();
+	if (!root)
+	{
+		cerr << "Failed to load file: No root element." << endl;
+		doc.Clear();
+	}
+	else
+	{
+		//We have the root - Get the dimensions and convert to integers.
+		int width = atoi(root->Attribute("width"));
+		int height = atoi(root->Attribute("height"));
+		int w = 0, h = 0;
+
+		for (TiXmlElement* TileMapElement = root->FirstChildElement("tilemap"); TileMapElement != NULL; TileMapElement = TileMapElement->NextSiblingElement())
+		{
+			int b = atoi(TileMapElement->Attribute("Test"));
+			vector<int> Row;
+			for (TiXmlElement* tileElement = TileMapElement->FirstChildElement("tile"); tileElement != NULL; tileElement = tileElement->NextSiblingElement())
+			{
+				//Populate this position in the array with the tile type.
+
+				Row.push_back(atoi(tileElement->Attribute("id")));
+				w++;
+				if (w >= width)
+				{
+					tilemap.push_back(Row);
+					Row.clear();
+					w = 0;
+				}
+			}
+		}
+	}
+
+
+
+	//old code for loading in tile map
+	/*ifstream InFile;
 	InFile.open(FilePath);
 	if (!InFile.good()) { cerr << "Can't open map file " << FilePath << endl; }
 
@@ -23,6 +69,8 @@ TileMap LevelMap::LoadLevelMap(char* FilePath)
 			}
 			tilemap.push_back(Row);
 		}
-	}
+	}*/
+
+
 	return tilemap;
 }

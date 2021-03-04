@@ -20,6 +20,7 @@
 #include "../../../LevelMap.h"
 #include "../../../Common.h"
 #include "../../../Character.h"
+#include "../../../TinyXML/tinyxml.h"
 //----------------------------------
 
 using namespace DirectX;

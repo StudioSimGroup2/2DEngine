@@ -24,6 +24,18 @@
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="PhysicsObject.cpp" />
+    <ClCompile Include="TinyXML\tinystr.cpp">
+      <Filter>TInyXML</Filter>
+    </ClCompile>
+    <ClCompile Include="TinyXML\tinyxml.cpp">
+      <Filter>TInyXML</Filter>
+    </ClCompile>
+    <ClCompile Include="TinyXML\tinyxmlerror.cpp">
+      <Filter>TInyXML</Filter>
+    </ClCompile>
+    <ClCompile Include="TinyXML\tinyxmlparser.cpp">
+      <Filter>TInyXML</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LevelMap.h" />
@@ -52,5 +64,21 @@
     <ClInclude Include="Physics.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="PhysicsObject.h" />
+    <ClInclude Include="TinyXML\tinystr.h">
+      <Filter>TInyXML</Filter>
+    </ClInclude>
+    <ClInclude Include="TinyXML\tinyxml.h">
+      <Filter>TInyXML</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="TInyXML">
+      <UniqueIdentifier>{44fc2362-be4a-4af7-99a4-6de6f74931e4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="TinyXML\XML_Test.xml">
+      <Filter>TInyXML</Filter>
+    </Xml>
   </ItemGroup>
 </Project>

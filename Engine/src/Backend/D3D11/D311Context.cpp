@@ -368,8 +368,7 @@ namespace Engine
 		CameraManager::Get()->Add(new Camera(XMFLOAT4(-964.0f, 94.0f, -1.0f, 1.0f)));
 
 
-
-		testMap = LevelMap::LoadLevelMap((char*)"TileMaps/FirstTest.txt");
+		testMap = LevelMap::LoadLevelMap((char*)"TinyXML/XML_Test.xml");
 
 		for (int X = 0; X <testMap.size(); X++)
 		{
