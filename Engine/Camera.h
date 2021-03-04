@@ -22,6 +22,8 @@ public:
 	inline XMFLOAT4& GetAt() { return mAt; }
 	inline const XMFLOAT4 GetUp() const { return mUp; }
 	inline XMFLOAT4& GetUp() { return mUp; }
+	inline float GetZDepth() const { return mZDepth; }
+	inline float& GetZDepth() { return mZDepth; }
 	inline const XMMATRIX GetViewMatrix() const { return mView; }
 	inline const XMMATRIX GetProjectionMatrix() const { return mProjection; }
 	inline const float GetViewWidth() const { return mViewWidth; }
@@ -50,6 +52,7 @@ public:
 
 private:
 	XMFLOAT4 mEye, mAt, mUp;
+	float mZDepth;	
 	XMMATRIX mView, mProjection;
 	float mViewWidth, mViewHeight;
 	float mNearPlane, mFarPlane;
