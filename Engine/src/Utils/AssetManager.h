@@ -16,7 +16,7 @@ namespace Engine
 		static void LoadShader(Device* device, const std::string& name, const std::string& path);
 		//static void LoadTexture(Device* device, const std::string& name, const std::string& path);
 		static Texture* LoadTexture(Device* device, const std::string& name, const std::string& path);
-		static void LoadSound(const std::string& name, const std::string& path);
+
 
 		static AssetManager* GetInstance();
 
@@ -26,7 +26,7 @@ namespace Engine
 
 		static void RemoveShader(const std::string& name);
 		static void RemoveTexture(const std::string& name);
-		static void RemoveSound(const std::string& name);
+
 
 		static void ClearAll();
 
@@ -36,9 +36,8 @@ namespace Engine
 
 		std::vector<Shader*> mShaders;
 		std::vector<Texture*> mTextures;
-		std::vector<Sound*> mSounds;
+		//std::vector<Sound*> mSounds;
 
 		static AssetManager* mInstance;
-
 	};
 }

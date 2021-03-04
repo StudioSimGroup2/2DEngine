@@ -31,6 +31,9 @@ public:
 	Camera* CycleNext();
 	Camera* CyclePrevious();
 
+	static void CBCycleNext();
+	static void CBCyclePrevious();
+
 	Camera* GetPrimaryCamera() const;
 	size_t GetPrimaryCameraIndex() const;
 	Camera* GetCameraByIndex(size_t index) const;

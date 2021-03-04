@@ -30,6 +30,11 @@ project "Engine"
 		"%{prj.name}/ext/**.hpp",
 		"%{prj.name}/ext/**.cpp"
     }
+	
+	links
+	{
+		"OpenAL32.lib"
+	}
 
     includedirs
     {
@@ -62,6 +67,11 @@ project "Engine"
 			"%{prj.name}/src/Backend/D3D11/**.cpp"
 		}
 		
+		libdirs
+		{
+			"%{prj.name}/ext/OpenAL-Soft/Debug"
+		}
+
 	filter "configurations:DebugD3D11"
         defines "ENGINE_DEBUG_D3D11"
         symbols "On"
@@ -71,6 +81,10 @@ project "Engine"
 			"%{prj.name}/src/Backend/OGL/**.cpp"
 		}
 		
+		libdirs
+		{
+			"%{prj.name}/ext/OpenAL-Soft/Debug"
+		}
 
     filter "configurations:ReleaseOGL"
         defines "ENGINE_RELEASE_OGL"
@@ -81,6 +95,11 @@ project "Engine"
 			"%{prj.name}/src/Backend/D3D11/**.cpp"
 		}		
 		
+		libdirs
+		{
+			"%{prj.name}/ext/OpenAL-Soft/Release"
+		}
+	
 	filter "configurations:ReleaseD3D11"
         defines "ENGINE_RELEASE_D3D11"
         optimize "On"
@@ -89,7 +108,12 @@ project "Engine"
 			"%{prj.name}/src/Backend/OGL/**.h",
 			"%{prj.name}/src/Backend/OGL/**.cpp"
 		}		    
-
+		
+		libdirs
+		{
+			"%{prj.name}/ext/OpenAL-Soft/Release"
+		}
+		
 project "Game"
         location "Game"
         kind "ConsoleApp"

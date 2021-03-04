@@ -31,6 +31,12 @@
     <Filter Include="ext\KHR">
       <UniqueIdentifier>{EAC9B282-56A9-311E-5FC1-BCF4CB1F987F}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ext\OpenAL-Soft">
+      <UniqueIdentifier>{8DA6F963-F931-6728-0243-EA1C6E4DC328}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ext\drwav">
+      <UniqueIdentifier>{490369FC-B56D-1D73-FEAB-CE186A55FBC7}</UniqueIdentifier>
+    </Filter>
     <Filter Include="ext\stb">
       <UniqueIdentifier>{CE79B382-3A59-321E-4371-BDF4AFCF987F}</UniqueIdentifier>
     </Filter>
@@ -48,6 +54,9 @@
     </Filter>
     <Filter Include="src\Engine">
       <UniqueIdentifier>{12A1320E-FE58-745B-6760-4DB753370F4C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Engine\Input">
+      <UniqueIdentifier>{915689A8-7D4F-A8FA-A681-8D7F92D98706}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Engine\Renderer">
       <UniqueIdentifier>{F838018B-649A-DE98-ED07-254B59681558}</UniqueIdentifier>
@@ -945,6 +954,27 @@
     <ClInclude Include="ext\KHR\khrplatform.h">
       <Filter>ext\KHR</Filter>
     </ClInclude>
+    <ClInclude Include="ext\OpenAL-Soft\al.h">
+      <Filter>ext\OpenAL-Soft</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\OpenAL-Soft\alc.h">
+      <Filter>ext\OpenAL-Soft</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\OpenAL-Soft\alext.h">
+      <Filter>ext\OpenAL-Soft</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\OpenAL-Soft\efx-creative.h">
+      <Filter>ext\OpenAL-Soft</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\OpenAL-Soft\efx-presets.h">
+      <Filter>ext\OpenAL-Soft</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\OpenAL-Soft\efx.h">
+      <Filter>ext\OpenAL-Soft</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\drwav\dr_wav.h">
+      <Filter>ext\drwav</Filter>
+    </ClInclude>
     <ClInclude Include="ext\stb\stb_image.h">
       <Filter>ext\stb</Filter>
     </ClInclude>
@@ -1008,6 +1038,9 @@
     <ClInclude Include="src\Engine\EntryPoint.h">
       <Filter>src\Engine</Filter>
     </ClInclude>
+    <ClInclude Include="src\Engine\Input\InputManager.h">
+      <Filter>src\Engine\Input</Filter>
+    </ClInclude>
     <ClInclude Include="src\Engine\Renderer\Context.h">
       <Filter>src\Engine\Renderer</Filter>
     </ClInclude>
@@ -1062,6 +1095,7 @@
     <ClInclude Include="src\Utils\Windows\WindowsTextureCompiler.h">
       <Filter>src\Utils\Windows</Filter>
     </ClInclude>
+    <ClInclude Include="src\Engine\Audio\AudioManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ext\DDSTextureLoader.cpp">
@@ -1093,6 +1127,9 @@
     </ClCompile>
     <ClCompile Include="ext\ImGui\imgui_widgets.cpp">
       <Filter>ext\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\drwav\dr_wav_impl.c">
+      <Filter>ext\drwav</Filter>
     </ClCompile>
     <ClCompile Include="src\Backend\D3D11\D311Context.cpp">
       <Filter>src\Backend\D3D11</Filter>
@@ -1138,6 +1175,9 @@
     </ClCompile>
     <ClCompile Include="src\Engine\Application.cpp">
       <Filter>src\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Input\InputManager.cpp">
+      <Filter>src\Engine\Input</Filter>
     </ClCompile>
     <ClCompile Include="src\Engine\Renderer\Context.cpp">
       <Filter>src\Engine\Renderer</Filter>
@@ -1187,5 +1227,6 @@
     <ClCompile Include="src\Utils\Windows\WindowsTextureCompiler.cpp">
       <Filter>src\Utils\Windows</Filter>
     </ClCompile>
+    <ClCompile Include="src\Engine\Audio\AudioManager.cpp" />
   </ItemGroup>
 </Project>

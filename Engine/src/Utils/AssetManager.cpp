@@ -32,10 +32,6 @@ namespace Engine
 		return mInstance->mTextures.back();
 	}
 
-	void AssetManager::LoadSound(const std::string& name, const std::string& path)
-	{
-	}
-
 	AssetManager* AssetManager::GetInstance()
 	{
 		if (mInstance == nullptr)
@@ -72,10 +68,6 @@ namespace Engine
 	}
 
 	void AssetManager::RemoveTexture(const std::string& name)
-	{
-	}
-
-	void Engine::AssetManager::RemoveSound(const std::string& name)
 	{
 	}
 

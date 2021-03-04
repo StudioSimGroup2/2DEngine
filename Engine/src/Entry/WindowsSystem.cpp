@@ -4,6 +4,7 @@
 #include "ImGui\imgui_impl_win32.h"
 
 #include "Engine/Defines.h"
+#include "Engine/Input/InputManager.h"
 
 #if GRAPHICS_LIBRARY == 0
 #include "Backend\D3D11\D311Context.h"
@@ -14,6 +15,11 @@
 #endif
 
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam); // Extern from IMGUI (used to get input data)
+
+void HelloWorld()
+{
+	std::cout << "Hello";
+}
 
 namespace Engine
 {
@@ -128,7 +134,7 @@ namespace Engine
 		ShowWindow(mHWND, SW_SHOW);
 		UpdateWindow(mHWND);
 
-		// Inject RenderDoc here before continuing
+		InputManager::GetInstance();
 
 		mRenderer->Init();
 	}
@@ -146,15 +152,26 @@ namespace Engine
 		{
 			window = (Window*)((LPCREATESTRUCT)lParam)->lpCreateParams;
 			SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR)window);
-			break;
+		break;
 		}
+		
+		case WM_KEYDOWN:
+		{
+			InputManager::GetInstance()->ProcessInput(wParam);
+		}
+		break;
+		case WM_KEYUP:
+		{
+			
+		}
+		break;
 
 		case WM_DESTROY:
 		{
 			Window* window = (Window*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
 			::PostQuitMessage(0);
 			window->Shutdown();
-			break;
+		break;
 		}
 
 		default:

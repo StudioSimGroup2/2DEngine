@@ -10,12 +10,13 @@
 
 #include "OpenGLContext.h"
 
-
 #include <iostream>
 #include <windows.h>
 #include <Utils/AssetManager.h>
+#include <Engine/Audio/AudioManager.h>
 #include <LevelMap.h>
 #include "OGLRenderer2D.h"
+#include <Engine/Input/InputManager.h>
 
 #define WGL_CONTEXT_MAJOR_VERSION_ARB     0x2091
 #define WGL_CONTEXT_MINOR_VERSION_ARB     0x2092
@@ -113,7 +114,29 @@ namespace Engine
 
 		Camera* cam = CameraManager::Get()->GetPrimaryCamera();
 
+		InputManager::GetInstance()->BindCommandToButton(KEY_Q, &CameraManager::Get()->CBCycleNext);
+		InputManager::GetInstance()->BindCommandToButton(KEY_E, &CameraManager::Get()->CBCyclePrevious);
+
+		//if (GetAsyncKeyState(0x57)) // W key
+//{
+//	mEye.y -= speed;
+//}
+//if (GetAsyncKeyState(0x53)) // S key
+//{
+//	mEye.y += speed;
+//}
+//if (GetAsyncKeyState(0x41)) // A key
+//{
+//	mEye.x += speed;
+//}
+//if (GetAsyncKeyState(0x44)) // D key
+//{
+//	mEye.x -= speed;
+//}
 		AssetManager::GetInstance()->LoadShader(nullptr, std::string("Default"), std::string("default.glsl"));
+
+		AudioManager::GetInstance()->LoadSound(std::string("TestFile"), std::string("Sounds/zip.wav"));
+		//AudioManager::GetInstance()->PlaySoundFile(std::string("TestFile"), -100.0f); // TODO: implement volume WARNING THE SOUND FILE IS EXTREMELY LOUD!!
 
 		testMap = LevelMap::LoadLevelMap((char*)"TileMaps/FirstTest.txt");
 
@@ -166,12 +189,6 @@ namespace Engine
 	void OpenGLContext::OnUpdate(float deltaTime)
 	{
 		CameraManager::Get()->Update(deltaTime); // Belongs in core scene update loop
-
-		// Cycle cameras on A & D keypresses 
-		if (GetAsyncKeyState(0x51)) // Q key
-			CameraManager::Get()->CyclePrevious();
-		if (GetAsyncKeyState(0x45)) // E key
-			CameraManager::Get()->CycleNext();
 	}
 
 	void OpenGLContext::Render()

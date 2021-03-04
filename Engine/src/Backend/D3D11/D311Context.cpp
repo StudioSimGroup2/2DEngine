@@ -2,9 +2,11 @@
 #include "D3D11Renderer2D.h"
 
 #include <Utils/AssetManager.h>
+#include <Engine/Audio/AudioManager.h>
 #include <directxcolors.h>
 
 #include <Backend/D3D11/D3D11Camera.h>
+#include <Engine/Input/InputManager.h>
 
 namespace Engine
 {
@@ -378,9 +380,15 @@ namespace Engine
 
 		Camera* cam = CameraManager::Get()->GetPrimaryCamera();
 
+		InputManager::GetInstance()->BindCommandToButton(KEY_Q, &CameraManager::Get()->CBCycleNext);
+		InputManager::GetInstance()->BindCommandToButton(KEY_E, &CameraManager::Get()->CBCyclePrevious);
+
 		mDeviceMGR = new D3D11Device(mDevice, mDeviceContext);
 
  		AssetManager::GetInstance()->LoadShader(mDeviceMGR, std::string("Default"), std::string("quadshader.fx"));
+
+		AudioManager::GetInstance()->LoadSound(std::string("TestFile"), std::string("Sounds/zip.wav"));
+		//AudioManager::GetInstance()->PlaySoundFile(std::string("TestFile"), -100.0f); // TODO: implement volume WARNING THE SOUND FILE IS EXTREMELY LOUD!!
 
 		testMap = LevelMap::LoadLevelMap((char*)"TileMaps/FirstTest.txt");
 
@@ -454,12 +462,6 @@ namespace Engine
 	void D311Context::OnUpdate(float deltaTime)
 	{
 		CameraManager::Get()->Update(deltaTime); // Belongs in core scene update loop
-
-		// Cycle cameras on A & D keypresses 
-		if (GetAsyncKeyState(0x51)) // Q key
-			CameraManager::Get()->CyclePrevious();
-		if (GetAsyncKeyState(0x45)) // E key
-			CameraManager::Get()->CycleNext();
 
 		//if (GetAsyncKeyState(0x27)) //Right arrow
 		//{

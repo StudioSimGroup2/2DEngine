@@ -81,6 +81,25 @@ void CameraManager::SetPrimaryCamera(size_t index)
 	mCameras[index]->SetPrimary(true);
 }
 
+void CameraManager::CBCycleNext()
+{
+	size_t range = mInstance->mCameras.size();
+	int currentCamera = CameraManager::Get()->GetPrimaryCameraIndex();
+	if (++currentCamera >= range)
+		currentCamera = 0;	// Wrap around when out of range
+
+	CameraManager::Get()->SetPrimaryCamera(currentCamera);
+}
+
+void CameraManager::CBCyclePrevious()
+{
+	int currentCamera = CameraManager::Get()->GetPrimaryCameraIndex();
+	if (--currentCamera < 0)
+		currentCamera = mInstance->mCameras.size() - 1; // Wrap around when out of range
+
+	CameraManager::Get()->SetPrimaryCamera(currentCamera);
+}
+
 Camera* CameraManager::GetPrimaryCamera() const
 {
 	for (Camera* c : mCameras) {

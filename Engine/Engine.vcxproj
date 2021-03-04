@@ -108,6 +108,8 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>OpenAL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>ext\OpenAL-Soft\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>..\bin\DebugOGL-windows-x86_64\Engine\Engine.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
@@ -128,6 +130,8 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>OpenAL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>ext\OpenAL-Soft\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>..\bin\DebugD3D11-windows-x86_64\Engine\Engine.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
@@ -152,6 +156,8 @@
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>OpenAL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>ext\OpenAL-Soft\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>..\bin\ReleaseOGL-windows-x86_64\Engine\Engine.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
@@ -176,6 +182,8 @@
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>OpenAL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>ext\OpenAL-Soft\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>..\bin\ReleaseD3D11-windows-x86_64\Engine\Engine.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
@@ -183,6 +191,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Engine\Audio\AudioManager.h" />
     <ClInclude Include="ext\DDSTextureLoader.h" />
     <ClInclude Include="ext\GLM\common.hpp" />
     <ClInclude Include="ext\GLM\detail\_features.hpp" />
@@ -477,6 +486,13 @@
     <ClInclude Include="ext\ImGui\imstb_textedit.h" />
     <ClInclude Include="ext\ImGui\imstb_truetype.h" />
     <ClInclude Include="ext\KHR\khrplatform.h" />
+    <ClInclude Include="ext\OpenAL-Soft\al.h" />
+    <ClInclude Include="ext\OpenAL-Soft\alc.h" />
+    <ClInclude Include="ext\OpenAL-Soft\alext.h" />
+    <ClInclude Include="ext\OpenAL-Soft\efx-creative.h" />
+    <ClInclude Include="ext\OpenAL-Soft\efx-presets.h" />
+    <ClInclude Include="ext\OpenAL-Soft\efx.h" />
+    <ClInclude Include="ext\drwav\dr_wav.h" />
     <ClInclude Include="ext\stb\stb_image.h" />
     <ClInclude Include="src\Backend\D3D11\D311Context.h" />
     <ClInclude Include="src\Backend\D3D11\D3D11Camera.h" />
@@ -498,6 +514,7 @@
     <ClInclude Include="src\Engine\Core.h" />
     <ClInclude Include="src\Engine\Defines.h" />
     <ClInclude Include="src\Engine\EntryPoint.h" />
+    <ClInclude Include="src\Engine\Input\InputManager.h" />
     <ClInclude Include="src\Engine\Renderer\Context.h" />
     <ClInclude Include="src\Engine\Renderer\Device.h" />
     <ClInclude Include="src\Engine\Renderer\Renderer2D.h" />
@@ -518,6 +535,7 @@
     <ClInclude Include="src\Utils\Windows\WindowsTextureCompiler.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Engine\Audio\AudioManager.cpp" />
     <ClCompile Include="ext\DDSTextureLoader.cpp" />
     <ClCompile Include="ext\GLM\detail\glm.cpp" />
     <ClCompile Include="ext\Glad\glad.c" />
@@ -528,6 +546,7 @@
     <ClCompile Include="ext\ImGui\imgui_impl_win32.cpp" />
     <ClCompile Include="ext\ImGui\imgui_tables.cpp" />
     <ClCompile Include="ext\ImGui\imgui_widgets.cpp" />
+    <ClCompile Include="ext\drwav\dr_wav_impl.c" />
     <ClCompile Include="src\Backend\D3D11\D311Context.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugOGL|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseOGL|x64'">true</ExcludedFromBuild>
@@ -576,6 +595,7 @@
     <ClCompile Include="src\CameraManager.cpp" />
     <ClCompile Include="src\Character.cpp" />
     <ClCompile Include="src\Engine\Application.cpp" />
+    <ClCompile Include="src\Engine\Input\InputManager.cpp" />
     <ClCompile Include="src\Engine\Renderer\Context.cpp" />
     <ClCompile Include="src\Engine\Renderer\Device.cpp" />
     <ClCompile Include="src\Engine\Renderer\Renderer2D.cpp" />
