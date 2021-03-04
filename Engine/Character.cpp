@@ -11,7 +11,6 @@ Character::~Character()
 
 void Character::Update(float deltaTime)
 {
-	deltaTime /= 1000;
 	//Add physcics etc.
 
 	if (mMovingRight)

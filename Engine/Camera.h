@@ -17,15 +17,27 @@ public:
 	void Update(float deltaTime);  // Updates the view and projection matrices
 
 	inline const XMFLOAT4 GetEye() const { return mEye; }
+	inline XMFLOAT4& GetEye() { return mEye; }
 	inline const XMFLOAT4 GetAt() const { return mAt; }
+	inline XMFLOAT4& GetAt() { return mAt; }
 	inline const XMFLOAT4 GetUp() const { return mUp; }
+	inline XMFLOAT4& GetUp() { return mUp; }
 	inline const XMMATRIX GetViewMatrix() const { return mView; }
 	inline const XMMATRIX GetProjectionMatrix() const { return mProjection; }
 	inline const float GetViewWidth() const { return mViewWidth; }
+	inline float& GetViewWidth() { return mViewWidth; }
 	inline const float GetViewHeight() const { return mViewHeight; }
+	inline float& GetViewHeight() { return mViewHeight; }
+	inline const float GetNearPlane() const { return mNearPlane; }
+	inline float& GetNearPlane() { return mNearPlane; }
+	inline const float GetFarPlane() const { return mFarPlane; }
+	inline float& GetFarPlane() { return mFarPlane; }
 	inline const float GetSpeed() const { return mMovementSpeed; }
+	inline float& GetSpeed() { return mMovementSpeed; }
 	inline const bool IsPrimary() const { return mPrimary; }
+	inline bool& IsPrimary() { return mPrimary; }
 	inline const bool IsStatic() const { return mStatic; }
+	inline bool& IsStatic() { return mStatic; }
 
 	inline void SetEye(XMFLOAT4 Eye) { mEye = Eye; }
 	inline void SetAt(XMFLOAT4 At) { mAt = At; }
@@ -40,9 +52,10 @@ private:
 	XMFLOAT4 mEye, mAt, mUp;
 	XMMATRIX mView, mProjection;
 	float mViewWidth, mViewHeight;
+	float mNearPlane, mFarPlane;
 	float mMovementSpeed;
 	bool mPrimary;			// Is this the main camera
-	bool mStatic = false;	// Can the camera move? 
+	bool mStatic;			// Can the camera move? 
 
 	void UpdateMovement(float deltaTime); // TODO: Requires DeltaTime
 };
