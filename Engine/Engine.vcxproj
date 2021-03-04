@@ -155,6 +155,10 @@
     <ClCompile Include="src\Entry\WindowsSystem.cpp" />
     <ClCompile Include="src\Engine\Renderer\Swapchain.cpp" />
     <ClCompile Include="PNGLoader.cpp" />
+    <ClCompile Include="TinyXML\tinystr.cpp" />
+    <ClCompile Include="TinyXML\tinyxml.cpp" />
+    <ClCompile Include="TinyXML\tinyxmlerror.cpp" />
+    <ClCompile Include="TinyXML\tinyxmlparser.cpp" />
     <ClCompile Include="vendor\DDSTextureLoader.cpp" />
     <ClCompile Include="vendor\ImGui\imgui.cpp" />
     <ClCompile Include="vendor\ImGui\imgui_draw.cpp" />
@@ -181,6 +185,8 @@
     <ClInclude Include="src\Engine\Renderer\Swapchain.h" />
     <ClInclude Include="PNGLoader.h" />
     <ClInclude Include="Common.h" />
+    <ClInclude Include="TinyXML\tinystr.h" />
+    <ClInclude Include="TinyXML\tinyxml.h" />
     <ClInclude Include="vendor\DDSTextureLoader.h" />
     <ClInclude Include="vendor\ImGui\imconfig.h" />
     <ClInclude Include="vendor\ImGui\imgui.h" />
@@ -190,6 +196,9 @@
     <ClInclude Include="vendor\ImGui\imstb_rectpack.h" />
     <ClInclude Include="vendor\ImGui\imstb_textedit.h" />
     <ClInclude Include="vendor\ImGui\imstb_truetype.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="TinyXML\XML_Test.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

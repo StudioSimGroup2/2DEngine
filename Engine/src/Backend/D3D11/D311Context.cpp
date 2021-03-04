@@ -409,8 +409,7 @@ namespace Engine
 		CameraManager::Get()->GetCameraByIndex(1)->SetStatic(true);
 
 
-
-		testMap = LevelMap::LoadLevelMap((char*)"TileMaps/FirstTest.txt");
+		testMap = LevelMap::LoadLevelMap((char*)"TinyXML/XML_Test.xml");
 
 		for (int X = 0; X <testMap.size(); X++)
 		{
