@@ -581,9 +581,7 @@ namespace Engine
 				ImGui::Columns(2, "locations");
 				ImGui::Text("Position");
 				ImGui::Spacing();
-				ImGui::Text("At"); 
-				ImGui::Spacing();
-				ImGui::Text("Up");
+				ImGui::Text("Z-Depth"); 
 				ImGui::Spacing();
 				ImGui::Text("Near plane");
 				ImGui::Spacing();
@@ -593,9 +591,8 @@ namespace Engine
 		
 				ImGui::NextColumn();
 
-				ImGui::DragFloat3("##Pos", &c->GetEye().x, 1);
-				ImGui::DragFloat3("##At", &c->GetAt().x, 1);
-				ImGui::DragFloat3("##Up", &c->GetUp().x, 1);
+				ImGui::DragFloat2("##Pos", &c->GetEye().x, 1);
+				ImGui::DragFloat("##Z-Depth", &c->GetZDepth(), 1, 0.0f);
 				ImGui::SliderFloat("##Near plane", &c->GetNearPlane(), 0, 10, "%.1f");
 				ImGui::SliderFloat("##Far plane", &c->GetFarPlane(), 1, 200, "%.1f");
 				ImGui::Checkbox("##Static camera", &c->IsStatic());
