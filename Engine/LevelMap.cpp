@@ -26,23 +26,17 @@ TileMap LevelMap::LoadLevelMap(char* FilePath)
 		int width = atoi(root->Attribute("width"));
 		int height = atoi(root->Attribute("height"));
 		int w = 0, h = 0;
-
-		for (TiXmlElement* TileMapElement = root->FirstChildElement("tilemap"); TileMapElement != NULL; TileMapElement = TileMapElement->NextSiblingElement())
+		vector<int> Row;
+		for (TiXmlElement* tileElement = root->FirstChildElement("tilemap")->FirstChildElement("tile"); tileElement != NULL; tileElement = tileElement->NextSiblingElement())
 		{
-			int b = atoi(TileMapElement->Attribute("Test"));
-			vector<int> Row;
-			for (TiXmlElement* tileElement = TileMapElement->FirstChildElement("tile"); tileElement != NULL; tileElement = tileElement->NextSiblingElement())
+			//Populate this position in the array with the tile type.
+			Row.push_back(atoi(tileElement->Attribute("id")));
+			w++;
+			if (w >= width)
 			{
-				//Populate this position in the array with the tile type.
-
-				Row.push_back(atoi(tileElement->Attribute("id")));
-				w++;
-				if (w >= width)
-				{
-					tilemap.push_back(Row);
-					Row.clear();
-					w = 0;
-				}
+				tilemap.push_back(Row);
+				Row.clear();
+				w = 0;
 			}
 		}
 	}
