@@ -5,7 +5,6 @@ TileMap LevelMap::LoadLevelMap(char* FilePath)
 	int tile;
 	TileMap tilemap;
 
-
 	//Get the whole xml document.
 	TiXmlDocument doc;
 	if (!doc.LoadFile("TinyXML/XML_Test.xml"))
@@ -40,9 +39,6 @@ TileMap LevelMap::LoadLevelMap(char* FilePath)
 			}
 		}
 	}
-
-
-
 	//old code for loading in tile map
 	/*ifstream InFile;
 	InFile.open(FilePath);
@@ -65,6 +61,45 @@ TileMap LevelMap::LoadLevelMap(char* FilePath)
 		}
 	}*/
 
+	SaveTileMap(tilemap);
 
 	return tilemap;
+}
+
+void LevelMap::SaveTileMap(TileMap Map)
+{
+	//------------------------------------------------------------------------
+	//Test for saving to XML file
+	TiXmlDocument TestDoc;
+	TiXmlDeclaration* Boo = new TiXmlDeclaration("1.0", "", "");
+	TestDoc.LinkEndChild(Boo);
+	TiXmlElement* TestRoot = new TiXmlElement("map");
+	TestRoot->SetAttribute("version", "1.0");
+	TestRoot->SetAttribute("width", Map[0].size());
+	TestRoot->SetAttribute("height", Map.size());
+	TestRoot->SetAttribute("tilewidth", "32");
+	TestRoot->SetAttribute("tileheight", "32");
+
+	TiXmlElement* TestElement = new TiXmlElement("tilemap");
+	TestElement->SetAttribute("id", "tilemap");
+	TestRoot->LinkEndChild(TestElement);
+
+	for (int i = 0; i < atoi(TestRoot->Attribute("height")); i++)
+	{
+		for (int j = 0; j < atoi(TestRoot->Attribute("width")); j++)
+		{
+			TiXmlElement* TestTile = new TiXmlElement("tile");
+			TestTile->SetAttribute("id", Map[i][j]);
+			TestElement->LinkEndChild(TestTile);
+		}
+		
+	}
+
+	
+	TestDoc.LinkEndChild(TestRoot);
+	if (!TestDoc.SaveFile("TinyXML/XML_SaveTest.xml"));
+	{
+		cerr << TestDoc.ErrorDesc() << endl;
+	}
+	//------------------------------------------------------------------------
 }
