@@ -6,7 +6,7 @@
 
 
 #define GRAVITY 0.98f
-#define FRICTIONCOEF 0.5f
+#define FRICTIONCOEF 0.8f
 
 class Physics 
 {
@@ -21,11 +21,14 @@ public:
 	
 	std::vector<Vector2D> actingForces;
 
+	Vector2D GetVelocity() { return mCurrentVelocity; }
+	Vector2D GetAccel() { return mNetAcceleration; }
+
 private:
 	void UpdateForces(float dT);
 	void UpdateAcceleration();
 
-	bool mGrounded = true;
+	bool mGrounded;
 	Vector2D mNetForce;
 	Vector2D mThrust;
 	Vector2D mNetAcceleration;

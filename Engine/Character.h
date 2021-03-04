@@ -3,7 +3,7 @@
 #include "Common.h"
 #include "PhysicsObject.h"
 
-class Character : PhysicsObject
+class Character : public PhysicsObject
 {
 public:
 	Character(ID3D11Device* device, const wchar_t* name, Vector2D* Position);

@@ -622,6 +622,13 @@ namespace Engine
 			}
 			index++;
 		}
+
+		ImGui::Separator();
+		ImGui::Text("Forces");
+		ImGui::Separator();
+
+		ImGui::Text("Velocity X: %.2f Velocity Y: %.2f", TestCharacter->GetPhysics()->GetVelocity().X, TestCharacter->GetPhysics()->GetVelocity().Y);
+
 		ImGui::End();
 
 		ImGui::Begin("Framerate");

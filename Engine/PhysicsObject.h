@@ -8,6 +8,8 @@ public:
     ~PhysicsObject();
     void Update(float deltaTime);
     void Render(ID3D11DeviceContext* devCon);
+
+    Physics* GetPhysics() { return mPhysics; }
 protected:
     Physics* mPhysics;  
 private:
