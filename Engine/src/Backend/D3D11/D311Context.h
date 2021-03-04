@@ -21,6 +21,7 @@
 #include "../../../Common.h"
 #include "../../../Character.h"
 #include "../../../TinyXML/tinyxml.h"
+#include <time.h>
 //----------------------------------
 
 using namespace DirectX;

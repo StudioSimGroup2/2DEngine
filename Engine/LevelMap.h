@@ -14,7 +14,7 @@ class LevelMap
 {
 public:
 	static TileMap LoadLevelMap(char* FilePath);
-	static void SaveTileMap(TileMap Map);
+	static void SaveTileMap(TileMap Map, string Address);
 	int getWidth() { return mWidth; };
 	int getHeight() { return mHeight; };
 private:

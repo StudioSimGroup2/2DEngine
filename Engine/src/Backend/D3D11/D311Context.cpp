@@ -409,8 +409,28 @@ namespace Engine
 		CameraManager::Get()->GetCameraByIndex(1)->SetStatic(true);
 
 
-		testMap = LevelMap::LoadLevelMap((char*)"TinyXML/XML_Test.xml");
 
+		//----------------------------------------------------------------------------
+		// Generate random map
+		// This can all be deleted and is here purely for testing purposes 
+		/*srand(time(NULL));
+		TileMap RandomMap;
+		int RWidth = rand() % 10 + 20, Rheight = rand() % 10 + 20;
+		for (int X = 0; X < Rheight; X++)
+		{
+			vector<int> Row;
+			for (int Y = 0; Y < RWidth; Y++)
+			{
+				Row.push_back(rand() % 2);
+			}
+			RandomMap.push_back(Row);
+			Row.clear();
+		}
+		LevelMap::SaveTileMap(RandomMap, "TinyXML/RandomMap.xml");
+		testMap = LevelMap::LoadLevelMap((char*)"TinyXML/RandomMap.xml");		*/
+		//----------------------------------------------------------------------------
+
+		testMap = LevelMap::LoadLevelMap((char*)"TinyXML/XML_Test.xml");
 		for (int X = 0; X <testMap.size(); X++)
 		{
 			for (int Y = 0; Y < testMap[0].size(); Y++)
