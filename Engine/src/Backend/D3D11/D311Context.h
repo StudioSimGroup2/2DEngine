@@ -2,6 +2,7 @@
 
 #include "../../Engine/Renderer/Context.h"
 #include "../../../Sprite.h"
+#include "../../../GameScreenManager.h"
 
 // TODO: add compiler include path later or Precompiled Header
 #include <imgui.h>
@@ -69,6 +70,8 @@ namespace Engine
 		//TODO change name 
 		std::vector<Sprite*> ThingsToRender;
 		Sprite* mTempSprite;
+
+		GameScreenManager* mGameScreenManager;
 
 		//Remove
 		Sprite* TestSprite;
