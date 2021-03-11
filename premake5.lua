@@ -72,7 +72,7 @@ project "Engine"
 		
 		libdirs
 		{
-			"%{prj.name}/ext/OpenAL-Soft/Debug"
+			"%{prj.name}/lib/OpenAL/Debug"
 		}
 
 	filter "configurations:DebugD3D11"
@@ -86,7 +86,7 @@ project "Engine"
 		
 		libdirs
 		{
-			"%{prj.name}/ext/OpenAL-Soft/Debug"
+			"%{prj.name}/lib/OpenAL/Debug"
 		}
 
     filter "configurations:ReleaseOGL"
@@ -100,7 +100,7 @@ project "Engine"
 		
 		libdirs
 		{
-			"%{prj.name}/ext/OpenAL-Soft/Release"
+			"%{prj.name}/lib/OpenAL/Release"
 		}
 	
 	filter "configurations:ReleaseD3D11"
@@ -114,7 +114,7 @@ project "Engine"
 		
 		libdirs
 		{
-			"%{prj.name}/ext/OpenAL-Soft/Release"
+			"%{prj.name}/lib/OpenAL/Release"
 		}
 		
 project "ImGui"
