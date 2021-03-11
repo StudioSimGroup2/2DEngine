@@ -30,6 +30,13 @@
     <ClCompile Include="TinyXML\tinyxmlparser.cpp">
       <Filter>TInyXML</Filter>
     </ClCompile>
+    <ClCompile Include="GameScreenManager.cpp" />
+    <ClCompile Include="GameScreen.cpp">
+      <Filter>GameScreens</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScreenTest.cpp">
+      <Filter>GameScreens</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LevelMap.h" />
@@ -56,10 +63,20 @@
     <ClInclude Include="TinyXML\tinyxml.h">
       <Filter>TInyXML</Filter>
     </ClInclude>
+    <ClInclude Include="GameScreenManager.h" />
+    <ClInclude Include="GameScreen.h">
+      <Filter>GameScreens</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScreenTest.h">
+      <Filter>GameScreens</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="TInyXML">
       <UniqueIdentifier>{44fc2362-be4a-4af7-99a4-6de6f74931e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameScreens">
+      <UniqueIdentifier>{b0a6f1df-b4d3-4f3a-b4a1-ca2404bc0e8e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

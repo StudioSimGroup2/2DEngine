@@ -9,16 +9,17 @@
 class GameScreenManager
 {
 public:
-	GameScreenManager(ID3D11DeviceContext* Context, SCREENS StartScreen);
+	GameScreenManager(ID3D11DeviceContext* Context, ID3D11Device* Device, SCREENS StartScreen);
 	~GameScreenManager();
 
 	void Render();
 	void Update(float deltatime);
 	
 	void changeScreens(SCREENS Selection);
-	bool Quit;
+	bool Quit = false;
 
 private:
+	ID3D11Device* mDevice;
 	ID3D11DeviceContext* mContext;
 	GameScreen* mCurrentScreen;
 };

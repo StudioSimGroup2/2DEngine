@@ -146,6 +146,7 @@
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="GameScreen.cpp" />
     <ClCompile Include="GameScreenManager.cpp" />
+    <ClCompile Include="GameScreenTest.cpp" />
     <ClCompile Include="LevelMap.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraManager.cpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="Character.h" />
     <ClInclude Include="GameScreen.h" />
     <ClInclude Include="GameScreenManager.h" />
+    <ClInclude Include="GameScreenTest.h" />
     <ClInclude Include="LevelMap.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraManager.h" />

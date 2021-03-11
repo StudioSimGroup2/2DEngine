@@ -5,12 +5,17 @@
 
 class GameScreen
 {
-	GameScreen(ID3D11DeviceContext* Context);
+public:
+	GameScreen(ID3D11DeviceContext* Context, ID3D11Device* Device);
 	~GameScreen();
 
-	virtual void Render();
 	virtual void Update(float deltaTime);
-	int ScreenSelection;
+	virtual void Render();
+	int ScreenSelection = 0;
+
+protected:
+	ID3D11Device* mDevice;
+	ID3D11DeviceContext* mContext;
 
 private:
 
