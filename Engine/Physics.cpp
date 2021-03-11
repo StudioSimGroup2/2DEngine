@@ -27,7 +27,6 @@ Physics::~Physics()
 
 void Physics::UpdateForces(float dT)
 {
-	
 	//Calculate new velocity using the formula v = u + at
 	mCurrentVelocity = mCurrentVelocity + (mNetAcceleration * dT);
 
@@ -35,7 +34,7 @@ void Physics::UpdateForces(float dT)
 	{
 		// When grounded, apply frictional force equal to the current velocity
 		// multiplied by a frictional coefficient
-		//mNetForce.X += (mCurrentVelocity.X * -FRICTIONCOEF);
+		mNetForce.X += (mCurrentVelocity.X * -FRICTIONCOEF);
 	}
 	else
 	{
@@ -43,8 +42,6 @@ void Physics::UpdateForces(float dT)
 		//the weight of the character multiplied by gravity
 		mNetForce.Y -= mWeight;
 	}
-	ResetForces();
-	//mNetForce = Vector2D(0, 0);
 }
 
 void Physics::UpdateAcceleration()

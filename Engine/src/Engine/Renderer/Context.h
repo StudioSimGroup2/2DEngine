@@ -1,4 +1,5 @@
 #pragma once
+
 #include <string>
 
 namespace Engine
@@ -20,14 +21,6 @@ namespace Engine
 
 		virtual int GetCardMemory() = 0;
 		virtual std::string GetCardName() = 0;
-
-		// GetDevice
-		// GetDeviceContext
-
-		// GetProjectionMatrix
-		// GetWorldMatrix
-
-		// GetAdapter
 
 		static API GetAPI() { return sAPI; }
 

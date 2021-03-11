@@ -9,6 +9,7 @@ namespace Engine
 
 	Application::~Application()
 	{
+		mWindow->Shutdown();
 	}
 
 	void Application::Run()

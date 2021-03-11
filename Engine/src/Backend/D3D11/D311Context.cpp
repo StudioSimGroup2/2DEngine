@@ -1,6 +1,12 @@
 #include "D311Context.h"
+#include "D3D11Renderer2D.h"
 
+#include <Utils/AssetManager.h>
+#include <Engine/Audio/AudioManager.h>
 #include <directxcolors.h>
+
+#include <Backend/D3D11/D3D11Camera.h>
+#include <Engine/Input/InputManager.h>
 
 namespace Engine
 {
@@ -18,7 +24,11 @@ namespace Engine
 		mHWND = hwnd;
 		mScreenHeight = screenHeight;
 		mScreenWidth = screenWidth;
-		vSync = vSync;
+	}
+
+	D311Context::~D311Context()
+	{
+		Shutdown();
 	}
 
 	void D311Context::Init()
@@ -300,7 +310,7 @@ namespace Engine
 		// Setup the raster description which will determine how and what polygons will be drawn.
 		rasterDesc.AntialiasedLineEnable = false;
 		rasterDesc.CullMode = D3D11_CULL_NONE;
-		rasterDesc.DepthBias = 0; 
+		rasterDesc.DepthBias = 0;
 		rasterDesc.DepthBiasClamp = 0.0f;
 		rasterDesc.DepthClipEnable = true;
 		rasterDesc.FillMode = D3D11_FILL_SOLID;
@@ -319,7 +329,7 @@ namespace Engine
 		// Now set the rasterizer state.
 		mDeviceContext->RSSetState(mRasterState);
 
-		
+
 		//---------------------------------
 		//blending
 		D3D11_BLEND_DESC omDesc;
@@ -402,35 +412,25 @@ namespace Engine
 		// Create the viewport.
 		mDeviceContext->RSSetViewports(1, &viewport);
 
+		AssetManager::GetInstance();
 
 		// Create two cameras
 		CameraManager::Get()->Add(new Camera(XMFLOAT4(0.0f, 0.0f, -1.0f, 1.0f)));
 		CameraManager::Get()->Add(new Camera(XMFLOAT4(-964.0f, 94.0f, -1.0f, 1.0f)));
 		CameraManager::Get()->GetCameraByIndex(1)->SetStatic(true);
 
+		Camera* cam = CameraManager::Get()->GetPrimaryCamera();
 
+		InputManager::GetInstance()->BindCommandToButton(KEY_Q, &CameraManager::Get()->CBCycleNext);
+		InputManager::GetInstance()->BindCommandToButton(KEY_E, &CameraManager::Get()->CBCyclePrevious);
+		mDeviceMGR = new D3D11Device(mDevice, mDeviceContext);
 
-		//----------------------------------------------------------------------------
-		// Generate random map
-		// This can all be deleted and is here purely for testing purposes 
-		/*srand(time(NULL));
-		TileMap RandomMap;
-		int RWidth = rand() % 10 + 20, Rheight = rand() % 10 + 20;
-		for (int X = 0; X < Rheight; X++)
-		{
-			vector<int> Row;
-			for (int Y = 0; Y < RWidth; Y++)
-			{
-				Row.push_back(rand() % 2);
-			}
-			RandomMap.push_back(Row);
-			Row.clear();
-		}
-		LevelMap::SaveTileMap(RandomMap, "TinyXML/RandomMap.xml");
-		testMap = LevelMap::LoadLevelMap((char*)"TinyXML/RandomMap.xml");		*/
-		//----------------------------------------------------------------------------
+ 		AssetManager::GetInstance()->LoadShader(mDeviceMGR, std::string("Default"), std::string("quadshader.fx"));
 
-		testMap = LevelMap::LoadLevelMap((char*)"TinyXML/XML_Test.xml");
+		AudioManager::GetInstance()->LoadSound(std::string("TestFile"), std::string("Sounds/zip.wav"));
+		//AudioManager::GetInstance()->PlaySoundFile(std::string("TestFile"), -100.0f); // TODO: implement volume WARNING THE SOUND FILE IS EXTREMELY LOUD!!
+
+		testMap = LevelMap::LoadLevelMap((char*)"Resources/TileMaps/XML_Test.xml");
 		for (int X = 0; X <testMap.size(); X++)
 		{
 			for (int Y = 0; Y < testMap[0].size(); Y++)
@@ -443,9 +443,12 @@ namespace Engine
 				}
 				case 1:
 				{
-					Vector2D* Position = new Vector2D(Y * TILEWIDTH, X * TILEHEIGHT);
-					Sprite* MapItem = new Sprite(mDevice, L"Textures/stone.dds", Position);
-					ThingsToRender.push_back(MapItem);
+					Sprite* mapItem = new Sprite(mDeviceMGR, std::string("Tile ") + std::string(X + "" + Y) + std::string("]"), 
+						std::string("Textures/stone.dds"), vec2f(32.0f * Y, 32.0f * X)); // someone got their x and y coords wrong, i'll fix it later
+					D3D11Renderer2D* re = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDeviceMGR);
+					mapItem->AddRendererComponent(re);
+
+					ThingsToRender.push_back(mapItem);
 					break;
 				}
 				default:
@@ -454,57 +457,63 @@ namespace Engine
 			}
 		}
 
-		Vector2D* Position = new Vector2D(32, 32);
-		TestCharacter = new Character(mDevice, L"Textures/Mario.dds", Position);
+		mTempSprite = new Sprite(mDeviceMGR, std::string("Mario"), std::string("Textures/Mario.dds"), vec2f(32.0f));
+		D3D11Renderer2D* renderer = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDeviceMGR);
+		mTempSprite->AddRendererComponent(renderer);
 	}
 
 	void D311Context::Shutdown()
 	{
-		mSwapChain->Release();
-		mDevice->Release();
-		mDeviceContext->Release();
+		if (ThingsToRender.size() >= 1)
+		{
+			ThingsToRender.clear();
+		}
+
+		if (mTempSprite)
+		{
+			delete mTempSprite;
+			mTempSprite = nullptr;
+		}
+
+		if (mDeviceMGR)
+		{
+			delete mDeviceMGR;
+			mDeviceMGR = nullptr;
+		}
+			
+
+		if (mRasterState)
+			mRasterState->Release();
+		if (mDepthStencilView)
+			mDepthStencilView->Release();
+		if (mDepthStencilBuffer)
+			mDepthStencilBuffer->Release();
+		if (mRenderTargetView)
+			mRenderTargetView->Release();
+		if (mDevice)
+			mDevice->Release();
+		if (mDeviceContext)
+			mDeviceContext->Release();
+		if (mSwapChain)
+			mSwapChain->Release();
 	}
 
 	void D311Context::OnUpdate(float deltaTime)
 	{
-		CameraManager::Get()->Update(deltaTime); // Belongs in core scene update loop
+		CameraManager::Get()->Update(deltaTime);
 
-		// Cycle cameras on A & D keypresses 
-		if (GetAsyncKeyState(0x51)) // Q key
-			CameraManager::Get()->CyclePrevious();
-		if (GetAsyncKeyState(0x45)) // E key
-			CameraManager::Get()->CycleNext();
-
-		if (GetAsyncKeyState(0x27)) //Right arrow
-		{
-			TestCharacter->setMovingRight(true);
-		}
-		else 
-		{
-			TestCharacter->setMovingRight(false);
-		}	
-
-		if (GetAsyncKeyState(0x25)) //Left arrow
-		{
-			TestCharacter->setMovingLeft(true);
-		}
-		else
-		{
-			TestCharacter->setMovingLeft(false);
-		}
-
-		TestCharacter->Update(deltaTime);
+		mTempSprite->Update(deltaTime);
 	}
 
-	void D311Context::RenderScene() {
-		
+	void D311Context::RenderScene()
+	{
 		//mDeviceContext->ClearRenderTargetView(mRenderTargetView, DirectX::Colors::SeaGreen);
 
 		for (auto Thing : ThingsToRender)
 		{
-			Thing->Render(mDeviceContext);
+			Thing->Draw();
 		}
-		TestCharacter->Render(mDeviceContext);
+		mTempSprite->Draw();
 
 	}
 

@@ -10,7 +10,6 @@ public:
 	~Character();
 	void Update(float deltaTime);
 	void Render(ID3D11DeviceContext* devCon);
-	void DoAttack();
 
 	void setMovingUp(bool State) { mMovingUp = State; }
 	void setMovingRight(bool State) { mMovingRight = State; }

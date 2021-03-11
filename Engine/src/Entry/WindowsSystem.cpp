@@ -1,8 +1,25 @@
 #include "WindowsSystem.h"
 
-#include "../Backend/D3D11/D311Context.h"
+#include "imgui.h"
+#include "imgui_impl_win32.h"
+
+#include "Engine/Defines.h"
+#include "Engine/Input/InputManager.h"
+
+#if GRAPHICS_LIBRARY == 0
+#include "Backend\D3D11\D311Context.h"
+#include "D3D11\imgui_impl_dx11.h"
+#elif GRAPHICS_LIBRARY == 1
+#include "Backend\OGL\OpenGLContext.h"
+#include "OpenGL\imgui_impl_opengl3.h"
+#endif
 
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam); // Extern from IMGUI (used to get input data)
+
+void HelloWorld()
+{
+	std::cout << "Hello";
+}
 
 namespace Engine
 {
@@ -27,6 +44,7 @@ namespace Engine
 
 	WindowsSystem::~WindowsSystem()
 	{
+		Shutdown();
 	}
 
 	void WindowsSystem::OnUpdate()
@@ -48,8 +66,11 @@ namespace Engine
 			}
 			else
 			{
-				mRenderer->OnUpdate(mFrameTime.count());
-				mRenderer->SwapBuffers();
+				if (mRenderer)
+				{
+					mRenderer->OnUpdate(mFrameTime.count());
+					mRenderer->SwapBuffers();
+				}
 			}
 		}
 	}
@@ -62,9 +83,31 @@ namespace Engine
 	{
 	}
 
+	void WindowsSystem::Shutdown()
+	{
+		ImGui_ImplWin32_Shutdown();
+
+#if GRAPHICS_LIBRARY == 1
+		ImGui_ImplOpenGL3_Shutdown();
+#else
+		ImGui_ImplDX11_Shutdown();
+#endif
+
+		ImGui::DestroyContext();
+		
+		if (mRenderer)
+		{
+			delete mRenderer;
+			mRenderer = nullptr;
+		}
+
+		exit(0);
+	}
+
 	void WindowsSystem::Init(const WindowData& data)
 	{
 		WNDCLASSEX wndclass;
+		ZeroMemory(&wndclass, sizeof(WNDCLASSEX));
 		wndclass.cbClsExtra = NULL;
 		wndclass.cbSize = sizeof(WNDCLASSEX);
 		wndclass.cbWndExtra = NULL;
@@ -72,21 +115,27 @@ namespace Engine
 		wndclass.hCursor = LoadCursor(NULL, IDC_ARROW);
 		wndclass.hIcon = LoadIcon(NULL, IDI_APPLICATION);
 		wndclass.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
-		wndclass.hInstance = NULL;
+		wndclass.hInstance = GetModuleHandle(NULL);
 		wndclass.lpszClassName = L"EngineWindowClass";
 		wndclass.lpszMenuName = L"";
-		wndclass.style = NULL;
+		wndclass.style = CS_OWNDC;
 		wndclass.lpfnWndProc = &WndProc;
 
 		// TODO: Error checking
 		RegisterClassEx(&wndclass);
 
-		mHWND = CreateWindowEx(WS_EX_OVERLAPPEDWINDOW, L"EngineWindowClass", L"Engine App", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, 1280, 720, NULL, NULL, NULL, this);
+		mHWND = CreateWindowEx(WS_EX_OVERLAPPEDWINDOW, L"EngineWindowClass", L"Sleepy Engine", WS_VISIBLE | WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, 1280, 720, NULL, NULL, wndclass.hInstance, this);
 
+#if GRAPHICS_LIBRARY == 1
+		mRenderer = new OpenGLContext(mHWND, mWidth, mHeight, true, false);
+#else
+		mRenderer = new D311Context(mHWND, mWidth, mHeight, true, false);
+#endif
 		ShowWindow(mHWND, SW_SHOW);
 		UpdateWindow(mHWND);
 
-		mRenderer = new D311Context(mHWND, mWidth, mHeight, true, false);
+		InputManager::GetInstance();
+
 		mRenderer->Init();
 	}
 
@@ -103,14 +152,26 @@ namespace Engine
 		{
 			window = (Window*)((LPCREATESTRUCT)lParam)->lpCreateParams;
 			SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR)window);
-			break;
+		break;
 		}
+		
+		case WM_KEYDOWN:
+		{
+			InputManager::GetInstance()->ProcessInput(wParam);
+		}
+		break;
+		case WM_KEYUP:
+		{
+			
+		}
+		break;
 
 		case WM_DESTROY:
 		{
 			Window* window = (Window*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
 			::PostQuitMessage(0);
-			break;
+			window->Shutdown();
+		break;
 		}
 
 		default:
@@ -118,12 +179,5 @@ namespace Engine
 		}
 
 		return NULL;
-	}
-
-	void WindowsSystem::Shutdown()
-	{
-		ImGui_ImplWin32_Shutdown();
-		ImGui_ImplDX11_Shutdown();
-		ImGui::DestroyContext();
 	}
 }

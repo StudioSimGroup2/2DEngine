@@ -1,12 +1,13 @@
 #pragma once
 
-#include "../../Engine/Renderer/Context.h"
-#include "../../../Sprite.h"
+#include "Engine\Renderer\Context.h"
+#include "Sprite.h"
 
 // TODO: add compiler include path later or Precompiled Header
-#include <imgui.h>
-#include <imgui_impl_win32.h>
-#include <imgui_impl_dx11.h>
+
+#include "imgui.h"
+#include "imgui_impl_win32.h"
+#include "D3D11/imgui_impl_dx11.h"
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "dxgi.lib")
@@ -17,10 +18,10 @@
 #include <vector>
 
 //Can be removed added for testing
-#include "../../../LevelMap.h"
-#include "../../../Common.h"
-#include "../../../Character.h"
-#include "../../../TinyXML/tinyxml.h"
+#include "LevelMap.h"
+#include "Common.h"
+#include "Character.h"
+#include <Backend/D3D11/D3D11Device.h>
 #include <time.h>
 //----------------------------------
 
@@ -32,6 +33,7 @@ namespace Engine
 	{
 	public:
 		D311Context(HWND hwnd, UINT32 screenWidth, UINT32 screenHeight, bool vSync, bool fullscreen);
+		~D311Context();
 		
 		virtual void Init() override;
 		virtual void Shutdown() override;
@@ -53,15 +55,15 @@ namespace Engine
 
 		HWND mHWND;
 
-		IDXGISwapChain* mSwapChain;
-		ID3D11Device* mDevice;
-		ID3D11DeviceContext* mDeviceContext;
-		ID3D11RenderTargetView* mRenderTargetView;
-		ID3D11Texture2D* mDepthStencilBuffer;
-		ID3D11DepthStencilState* mDepthStencilState;
-		ID3D11DepthStencilView* mDepthStencilView;
-		ID3D11BlendState* mTransparant;
-		ID3D11RasterizerState* mRasterState;
+		IDXGISwapChain* mSwapChain = nullptr;
+		ID3D11Device* mDevice = nullptr;
+		ID3D11DeviceContext* mDeviceContext = nullptr;
+		ID3D11RenderTargetView* mRenderTargetView = nullptr;
+		ID3D11Texture2D* mDepthStencilBuffer = nullptr;
+		ID3D11DepthStencilState* mDepthStencilState = nullptr;
+		ID3D11DepthStencilView* mDepthStencilView = nullptr;
+		ID3D11BlendState* mTransparant = nullptr;
+		ID3D11RasterizerState* mRasterState = nullptr;
 
 		XMMATRIX mWorldMatrix;
 		XMMATRIX mOrthoMatrix;
@@ -70,17 +72,14 @@ namespace Engine
 		std::vector<Sprite*> ThingsToRender;
 		Sprite* mTempSprite;
 
-		//Remove
-		Sprite* TestSprite;
-		Character* TestCharacter;
+		AssetManager* mAssetManager;
+		D3D11Device* mDeviceMGR;
 
 		TileMap testMap;
-
 
 		// Render to texture for imgui
 		ID3D11Texture2D* mRTTRrenderTargetTexture = nullptr;			// Texture to render to 
 		ID3D11RenderTargetView* mRTTRenderTargetView = nullptr;		// Render target
 		ID3D11ShaderResourceView* mRTTShaderResourceView = nullptr;	// Shader resource view for the texture
-
 	};
 }

@@ -1,66 +1,40 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="D3D11">
+      <UniqueIdentifier>{82A1EA0C-EEB5-12BE-B737-B61D230B0FEF}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="OpenGL">
+      <UniqueIdentifier>{8A864AC8-7628-759E-5FE3-88F24B24FCEE}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\imconfig.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\D3D11\imgui_impl_dx11.h">
+      <Filter>D3D11</Filter>
     </ClInclude>
-    <ClInclude Include="src\imgui.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\OpenGL\imgui_impl_opengl3.h">
+      <Filter>OpenGL</Filter>
     </ClInclude>
-    <ClInclude Include="src\imgui_impl_dx11.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\imgui_impl_win32.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\imgui_internal.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\imstb_rectpack.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\imstb_textedit.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\imstb_truetype.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClInclude Include="src\imconfig.h" />
+    <ClInclude Include="src\imgui.h" />
+    <ClInclude Include="src\imgui_impl_win32.h" />
+    <ClInclude Include="src\imgui_internal.h" />
+    <ClInclude Include="src\imstb_rectpack.h" />
+    <ClInclude Include="src\imstb_textedit.h" />
+    <ClInclude Include="src\imstb_truetype.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\imgui.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\D3D11\imgui_impl_dx11.cpp">
+      <Filter>D3D11</Filter>
     </ClCompile>
-    <ClCompile Include="src\imgui_demo.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\OpenGL\imgui_impl_opengl3.cpp">
+      <Filter>OpenGL</Filter>
     </ClCompile>
-    <ClCompile Include="src\imgui_draw.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\imgui_impl_dx11.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\imgui_impl_win32.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\imgui_tables.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\imgui_widgets.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <ClCompile Include="src\imgui.cpp" />
+    <ClCompile Include="src\imgui_demo.cpp" />
+    <ClCompile Include="src\imgui_draw.cpp" />
+    <ClCompile Include="src\imgui_impl_win32.cpp" />
+    <ClCompile Include="src\imgui_tables.cpp" />
+    <ClCompile Include="src\imgui_widgets.cpp" />
   </ItemGroup>
 </Project>

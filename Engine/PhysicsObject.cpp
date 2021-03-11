@@ -1,5 +1,6 @@
 #include "PhysicsObject.h"
 
+
 PhysicsObject::PhysicsObject(ID3D11Device* device, const wchar_t* name, Vector2D* Position) : Sprite(device, name, Position)
 {
 	mPhysics = new Physics(Position);

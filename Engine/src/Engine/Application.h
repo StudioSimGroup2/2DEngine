@@ -1,11 +1,12 @@
 #pragma once
 
+#include "Core.h"
 #include "Window.h"
 #include <memory>
 
 namespace Engine
 {
-	class Application
+	class ENGINE_API Application
 	{
 	public:
 		Application();
@@ -17,7 +18,7 @@ namespace Engine
 		bool mRunning = true;
 
 		std::unique_ptr<Window> mWindow;
-
-
 	};
+
+	Application* CreateApplication();
 }
