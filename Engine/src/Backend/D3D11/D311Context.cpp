@@ -413,6 +413,7 @@ namespace Engine
 		mDeviceContext->RSSetViewports(1, &viewport);
 
 		AssetManager::GetInstance();
+		mGameScreenManager = new GameScreenManager(mDeviceContext, mDevice, SCREEN_TEST);
 
 		// Create two cameras
 		CameraManager::Get()->Add(new Camera(XMFLOAT4(0.0f, 0.0f, -1.0f, 1.0f)));
@@ -464,56 +465,60 @@ namespace Engine
 
 	void D311Context::Shutdown()
 	{
-		if (ThingsToRender.size() >= 1)
-		{
-			ThingsToRender.clear();
-		}
-
-		if (mTempSprite)
-		{
-			delete mTempSprite;
-			mTempSprite = nullptr;
-		}
-
-		if (mDeviceMGR)
-		{
-			delete mDeviceMGR;
-			mDeviceMGR = nullptr;
-		}
-			
-
-		if (mRasterState)
-			mRasterState->Release();
-		if (mDepthStencilView)
-			mDepthStencilView->Release();
-		if (mDepthStencilBuffer)
-			mDepthStencilBuffer->Release();
-		if (mRenderTargetView)
-			mRenderTargetView->Release();
-		if (mDevice)
-			mDevice->Release();
-		if (mDeviceContext)
-			mDeviceContext->Release();
-		if (mSwapChain)
-			mSwapChain->Release();
+		mSwapChain->Release();
+		mDevice->Release();
+		mDeviceContext->Release();
 	}
 
 	void D311Context::OnUpdate(float deltaTime)
 	{
-		CameraManager::Get()->Update(deltaTime);
+		CameraManager::Get()->Update(deltaTime); // Belongs in core scene update loop
 
-		mTempSprite->Update(deltaTime);
+        if (mGameScreenManager->getScreen())
+            mGameScreenManager->Update(deltaTime);
+
+		// Cycle cameras on A & D keypresses 
+		if (GetAsyncKeyState(0x51)) // Q key
+			CameraManager::Get()->CyclePrevious();
+		if (GetAsyncKeyState(0x45)) // E key
+			CameraManager::Get()->CycleNext();
+
+		if (GetAsyncKeyState(0x27)) //Right arrow
+		{
+			TestCharacter->setMovingRight(true);
+		}
+		else 
+		{
+			TestCharacter->setMovingRight(false);
+		}	
+
+		if (GetAsyncKeyState(0x25)) //Left arrow
+		{
+			TestCharacter->setMovingLeft(true);
+		}
+		else
+		{
+			TestCharacter->setMovingLeft(false);
+		}
+
+        if (GetAsyncKeyState(0x46))
+            mGameScreenManager->changeScreens(SCREEN_MENU);
+
+		TestCharacter->Update(deltaTime);
 	}
 
-	void D311Context::RenderScene()
-	{
+	void D311Context::RenderScene() {
+		
 		//mDeviceContext->ClearRenderTargetView(mRenderTargetView, DirectX::Colors::SeaGreen);
+
+                if (mGameScreenManager->getScreen())
+            mGameScreenManager->Update(deltaTime);
 
 		for (auto Thing : ThingsToRender)
 		{
-			Thing->Draw();
+			Thing->Render(mDeviceContext);
 		}
-		mTempSprite->Draw();
+		TestCharacter->Render(mDeviceContext);
 
 	}
 

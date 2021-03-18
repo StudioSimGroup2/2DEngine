@@ -26,6 +26,7 @@ TileMap LevelMap::LoadLevelMap(char* FilePath)
 		int width = atoi(root->Attribute("width"));
 		int height = atoi(root->Attribute("height"));
 		int w = 0, h = 0;
+		TiXmlElement* HELP = root->FirstChildElement();
 		vector<int> Row;
 		for (TiXmlElement* tileElement = root->FirstChildElement("tilemap")->FirstChildElement("tile"); tileElement != NULL; tileElement = tileElement->NextSiblingElement())
 		{
