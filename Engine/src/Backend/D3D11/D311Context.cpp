@@ -460,6 +460,18 @@ namespace Engine
 		mTempSprite = new Sprite(mDeviceMGR, std::string("Mario"), std::string("Textures/Mario.dds"), vec2f(32.0f));
 		D3D11Renderer2D* renderer = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDeviceMGR);
 		mTempSprite->AddRendererComponent(renderer);
+
+
+		// Particle System Init
+		vec2f particlePos = vec2f(0, 0);	
+		Sprite* particleTex = new Sprite(mDeviceMGR, "Partical Texture", "Textures/stone.dds", particlePos);
+		D3D11Renderer2D* re = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDeviceMGR);
+		particleTex->AddRendererComponent(re);
+		ParticleProperties prop(vec2f(100, -100), 3, particleTex);
+
+		mParticleSystem = new ParticleSystem(mDeviceMGR, vec2f(300, 300), prop, 150, Emmitter::Box);
+		mParticleSystem->SetGravity(100);
+		mParticleSystem->SetRate(0.1); // Particles per second
 	}
 
 	void D311Context::Shutdown()
@@ -468,6 +480,8 @@ namespace Engine
 		{
 			ThingsToRender.clear();
 		}
+
+		delete mParticleSystem;
 
 		if (mTempSprite)
 		{
@@ -503,6 +517,7 @@ namespace Engine
 		CameraManager::Get()->Update(deltaTime);
 
 		mTempSprite->Update(deltaTime);
+		mParticleSystem->Update(deltaTime);
 	}
 
 	void D311Context::RenderScene()
@@ -514,6 +529,7 @@ namespace Engine
 			Thing->Draw();
 		}
 		mTempSprite->Draw();
+		mParticleSystem->Render();
 
 	}
 

@@ -21,6 +21,7 @@
 #include "LevelMap.h"
 #include "Common.h"
 #include "Character.h"
+#include "ParticalSystem.h"
 #include <Backend/D3D11/D3D11Device.h>
 #include <time.h>
 //----------------------------------
@@ -71,6 +72,7 @@ namespace Engine
 		//TODO change name 
 		std::vector<Sprite*> ThingsToRender;
 		Sprite* mTempSprite;
+		ParticleSystem* mParticleSystem;
 
 		AssetManager* mAssetManager;
 		D3D11Device* mDeviceMGR;

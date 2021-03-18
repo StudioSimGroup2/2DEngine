@@ -64,14 +64,13 @@ namespace Engine
 				TranslateMessage(&msg);
 				DispatchMessage(&msg);
 			}
-			else
+
+			if (mRenderer)
 			{
-				if (mRenderer)
-				{
-					mRenderer->OnUpdate(mFrameTime.count());
-					mRenderer->SwapBuffers();
-				}
+				mRenderer->OnUpdate(mFrameTime.count());
+				mRenderer->SwapBuffers();
 			}
+
 		}
 	}
 

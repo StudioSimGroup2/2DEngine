@@ -1080,6 +1080,7 @@
     <ClInclude Include="src\Utils\Windows\WindowsTextureCompiler.h">
       <Filter>src\Utils\Windows</Filter>
     </ClInclude>
+    <ClInclude Include="src\ParticalSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ext\DDSTextureLoader.cpp">
@@ -1205,5 +1206,6 @@
     <ClCompile Include="src\Utils\Windows\WindowsTextureCompiler.cpp">
       <Filter>src\Utils\Windows</Filter>
     </ClCompile>
+    <ClCompile Include="src\ParticalSystem.cpp" />
   </ItemGroup>
 </Project>
