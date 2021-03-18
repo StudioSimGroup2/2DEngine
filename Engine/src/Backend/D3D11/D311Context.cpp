@@ -410,53 +410,6 @@ namespace Engine
 		CameraManager::Get()->GetCameraByIndex(1)->SetStatic(true);
 
 
-
-		//----------------------------------------------------------------------------
-		// Generate random map
-		// This can all be deleted and is here purely for testing purposes 
-		/*srand(time(NULL));
-		TileMap RandomMap;
-		int RWidth = rand() % 10 + 20, Rheight = rand() % 10 + 20;
-		for (int X = 0; X < Rheight; X++)
-		{
-			vector<int> Row;
-			for (int Y = 0; Y < RWidth; Y++)
-			{
-				Row.push_back(rand() % 2);
-			}
-			RandomMap.push_back(Row);
-			Row.clear();
-		}
-		LevelMap::SaveTileMap(RandomMap, "TinyXML/RandomMap.xml");
-		testMap = LevelMap::LoadLevelMap((char*)"TinyXML/RandomMap.xml");		*/
-		//----------------------------------------------------------------------------
-
-		testMap = LevelMap::LoadLevelMap((char*)"TinyXML/XML_Test.xml");
-		for (int X = 0; X <testMap.size(); X++)
-		{
-			for (int Y = 0; Y < testMap[0].size(); Y++)
-			{
-				switch (testMap[X][Y])
-				{
-				case 0:
-				{
-					break;
-				}
-				case 1:
-				{
-					Vector2D* Position = new Vector2D(Y * TILEWIDTH, X * TILEHEIGHT);
-					Sprite* MapItem = new Sprite(mDevice, L"Textures/stone.dds", Position);
-					ThingsToRender.push_back(MapItem);
-					break;
-				}
-				default:
-					break;
-				}
-			}
-		}
-
-		Vector2D* Position = new Vector2D(32, 32);
-		TestCharacter = new Character(mDevice, L"Textures/Mario.dds", Position);
 	}
 
 	void D311Context::Shutdown()
@@ -469,44 +422,23 @@ namespace Engine
 	void D311Context::OnUpdate(float deltaTime)
 	{
 		CameraManager::Get()->Update(deltaTime); // Belongs in core scene update loop
+		if (mGameScreenManager->getScreen() != nullptr)
+			mGameScreenManager->Update(deltaTime);
 
 		// Cycle cameras on A & D keypresses 
 		if (GetAsyncKeyState(0x51)) // Q key
 			CameraManager::Get()->CyclePrevious();
 		if (GetAsyncKeyState(0x45)) // E key
 			CameraManager::Get()->CycleNext();
-
-		if (GetAsyncKeyState(0x27)) //Right arrow
-		{
-			TestCharacter->setMovingRight(true);
-		}
-		else 
-		{
-			TestCharacter->setMovingRight(false);
-		}	
-
-		if (GetAsyncKeyState(0x25)) //Left arrow
-		{
-			TestCharacter->setMovingLeft(true);
-		}
-		else
-		{
-			TestCharacter->setMovingLeft(false);
-		}
-
-		TestCharacter->Update(deltaTime);
+		if (GetAsyncKeyState(0x46))
+			mGameScreenManager->changeScreens(SCREEN_MENU);
 	}
 
 	void D311Context::RenderScene() {
 		
 		//mDeviceContext->ClearRenderTargetView(mRenderTargetView, DirectX::Colors::SeaGreen);
-
-		for (auto Thing : ThingsToRender)
-		{
-			Thing->Render(mDeviceContext);
-		}
-		TestCharacter->Render(mDeviceContext);
-
+		if (mGameScreenManager->getScreen() != nullptr)
+			mGameScreenManager->Render();
 	}
 
 	void D311Context::SwapBuffers()

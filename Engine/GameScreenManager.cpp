@@ -30,6 +30,7 @@ void GameScreenManager::changeScreens(SCREENS Selection)
 	if (mCurrentScreen != NULL)
 	{
 		delete mCurrentScreen;
+		mCurrentScreen = nullptr;
 	}
 
 	GameScreen* NewScreen;

@@ -16,6 +16,7 @@ public:
 	void Update(float deltatime);
 	
 	void changeScreens(SCREENS Selection);
+	GameScreen* getScreen() { return mCurrentScreen; };
 	bool Quit = false;
 
 private:

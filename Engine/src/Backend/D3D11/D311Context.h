@@ -67,18 +67,7 @@ namespace Engine
 		XMMATRIX mWorldMatrix;
 		XMMATRIX mOrthoMatrix;
 
-		//TODO change name 
-		std::vector<Sprite*> ThingsToRender;
-		Sprite* mTempSprite;
-
 		GameScreenManager* mGameScreenManager;
-
-		//Remove
-		Sprite* TestSprite;
-		Character* TestCharacter;
-
-		TileMap testMap;
-
 
 		// Render to texture for imgui
 		ID3D11Texture2D* mRTTRrenderTargetTexture = nullptr;			// Texture to render to 
