@@ -2,6 +2,7 @@
 
 #include <vector>
 #include "Common.h"
+#include "Collision.h"
 
 
 
@@ -23,6 +24,8 @@ public:
 
 	Vector2D GetVelocity() { return mCurrentVelocity; }
 	Vector2D GetAccel() { return mNetAcceleration; }
+
+	Collision collisionBox;
 
 private:
 	void UpdateForces(float dT);

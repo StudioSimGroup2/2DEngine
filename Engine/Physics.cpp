@@ -16,6 +16,10 @@ Physics::Physics(Vector2D* position) : mPosition(position)
 	mCurrentVelocity.X = 0.0f;
 	mCurrentVelocity.Y = 0.0f;
 
+	//Initialize Collision Box
+	collisionBox.SetBoxPosition(*mPosition);
+	collisionBox.SetBoxSize(32.0f, 32.0f);
+
 	mMass = 1.0f;
 	mWeight = mMass * GRAVITY;
 }
@@ -42,13 +46,13 @@ void Physics::UpdateForces(float dT)
 	{
 		// When grounded, apply frictional force equal to the current velocity
 		// multiplied by a frictional coefficient
-		mNetForce.X += (mCurrentVelocity.X * -FRICTIONCOEF);
+		actingForces.push_back(Vector2D(mCurrentVelocity.X * -FRICTIONCOEF, 0.0f));
 	}
 	else
 	{
 		//When not grounded, apply gravitational force equal to
 		//the weight of the character multiplied by gravity
-		mNetForce.Y += mWeight;
+		actingForces.push_back(Vector2D(0.0f, mWeight));
 	}
 }
 
@@ -87,4 +91,6 @@ void Physics::Update(float dT)
 	//Calculate new position using formula s = ut + 1/2at^2
 	mPosition->X = mPosition->X + (mCurrentVelocity.X * dT) + (mNetAcceleration.X * 0.5f * (dT * dT));
 	mPosition->Y = mPosition->Y + (mCurrentVelocity.Y * dT) + (mNetAcceleration.Y * 0.5f * (dT * dT));
+
+	collisionBox.SetBoxPosition(*mPosition);
 }
