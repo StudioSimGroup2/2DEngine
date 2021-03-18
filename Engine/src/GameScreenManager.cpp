@@ -1,10 +1,11 @@
 #include "GameScreenManager.h"
 #include "GameScreenTest.h"
 
-GameScreenManager::GameScreenManager(ID3D11DeviceContext* Context, ID3D11Device* Device, SCREENS StartScreen)
+
+GameScreenManager::GameScreenManager(Engine::D3D11Device* device, SCREENS StartScreen)
 {
-	mDevice = Device;
-	mContext = Context;
+	mDevice = device;
+	
 	mCurrentScreen = NULL;
 	changeScreens(StartScreen);
 }
@@ -12,10 +13,6 @@ GameScreenManager::GameScreenManager(ID3D11DeviceContext* Context, ID3D11Device*
 GameScreenManager::~GameScreenManager()
 {
 	//delete memeber variables
-	delete mDevice;
-	mDevice = nullptr;
-	delete mContext;
-	mContext = nullptr;
 	delete mCurrentScreen;
 	mCurrentScreen = nullptr;
 }
@@ -43,7 +40,7 @@ void GameScreenManager::changeScreens(SCREENS Selection)
 	switch (Selection)
 	{
 	case SCREEN_TEST:
-		NewScreen = new GameScreenTest(mContext, mDevice);
+		NewScreen = new GameScreenTest(mDevice);
 		mCurrentScreen = (GameScreen*)NewScreen;
 		break;
 	case SCREEN_LEVEL1:

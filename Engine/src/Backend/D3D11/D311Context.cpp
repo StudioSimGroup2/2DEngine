@@ -408,12 +408,13 @@ namespace Engine
 		ImGui_ImplDX11_Init(mDevice, mDeviceContext);
 		ImGui::StyleColorsDark();
 
+		mDeviceMGR = new D3D11Device(mDevice, mDeviceContext);
 
 		// Create the viewport.
 		mDeviceContext->RSSetViewports(1, &viewport);
 
 		AssetManager::GetInstance();
-		mGameScreenManager = new GameScreenManager(mDeviceContext, mDevice, SCREEN_TEST);
+
 
 		// Create two cameras
 		CameraManager::Get()->Add(new Camera(XMFLOAT4(0.0f, 0.0f, -1.0f, 1.0f)));
@@ -424,43 +425,44 @@ namespace Engine
 
 		InputManager::GetInstance()->BindCommandToButton(KEY_Q, &CameraManager::Get()->CBCycleNext);
 		InputManager::GetInstance()->BindCommandToButton(KEY_E, &CameraManager::Get()->CBCyclePrevious);
-		mDeviceMGR = new D3D11Device(mDevice, mDeviceContext);
 
  		AssetManager::GetInstance()->LoadShader(mDeviceMGR, std::string("Default"), std::string("quadshader.fx"));
+
+		mGameScreenManager = new GameScreenManager(mDeviceMGR, SCREEN_TEST);
 
 		AudioManager::GetInstance()->LoadSound(std::string("TestFile"), std::string("Sounds/zip.wav"));
 		//AudioManager::GetInstance()->PlaySoundFile(std::string("TestFile"), -100.0f); // TODO: implement volume WARNING THE SOUND FILE IS EXTREMELY LOUD!!
 
-		testMap = LevelMap::LoadLevelMap((char*)"Resources/TileMaps/XML_Test.xml");
-		for (int X = 0; X <testMap.size(); X++)
-		{
-			for (int Y = 0; Y < testMap[0].size(); Y++)
-			{
-				switch (testMap[X][Y])
-				{
-				case 0:
-				{
-					break;
-				}
-				case 1:
-				{
-					Sprite* mapItem = new Sprite(mDeviceMGR, std::string("Tile ") + std::string(X + "" + Y) + std::string("]"), 
-						std::string("Textures/stone.dds"), vec2f(32.0f * Y, 32.0f * X)); // someone got their x and y coords wrong, i'll fix it later
-					D3D11Renderer2D* re = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDeviceMGR);
-					mapItem->AddRendererComponent(re);
+		//testMap = LevelMap::LoadLevelMap((char*)"Resources/TileMaps/XML_Test.xml");
+		//for (int X = 0; X <testMap.size(); X++)
+		//{
+		//	for (int Y = 0; Y < testMap[0].size(); Y++)
+		//	{
+		//		switch (testMap[X][Y])
+		//		{
+		//		case 0:
+		//		{
+		//			break;
+		//		}
+		//		case 1:
+		//		{
+		//			Sprite* mapItem = new Sprite(mDeviceMGR, std::string("Tile ") + std::string(X + "" + Y) + std::string("]"), 
+		//				std::string("Textures/stone.dds"), vec2f(32.0f * Y, 32.0f * X)); // someone got their x and y coords wrong, i'll fix it later
+		//			D3D11Renderer2D* re = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDeviceMGR);
+		//			mapItem->AddRendererComponent(re);
 
-					ThingsToRender.push_back(mapItem);
-					break;
-				}
-				default:
-					break;
-				}
-			}
-		}
+		//			ThingsToRender.push_back(mapItem);
+		//			break;
+		//		}
+		//		default:
+		//			break;
+		//		}
+		//	}
+		//}
 
-		mTempSprite = new Sprite(mDeviceMGR, std::string("Mario"), std::string("Textures/Mario.dds"), vec2f(32.0f));
+		/*mTempSprite = new Sprite(mDeviceMGR, std::string("Mario"), std::string("Textures/Mario.dds"), vec2f(32.0f));
 		D3D11Renderer2D* renderer = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDeviceMGR);
-		mTempSprite->AddRendererComponent(renderer);
+		mTempSprite->AddRendererComponent(renderer);*/
 	}
 
 	void D311Context::Shutdown()
@@ -483,42 +485,37 @@ namespace Engine
 		if (GetAsyncKeyState(0x45)) // E key
 			CameraManager::Get()->CycleNext();
 
-		if (GetAsyncKeyState(0x27)) //Right arrow
-		{
-			TestCharacter->setMovingRight(true);
-		}
-		else 
-		{
-			TestCharacter->setMovingRight(false);
-		}	
+		//if (GetAsyncKeyState(0x27)) //Right arrow
+		//{
+		//	TestCharacter->setMovingRight(true);
+		//}
+		//else 
+		//{
+		//	TestCharacter->setMovingRight(false);
+		//}	
 
-		if (GetAsyncKeyState(0x25)) //Left arrow
-		{
-			TestCharacter->setMovingLeft(true);
-		}
-		else
-		{
-			TestCharacter->setMovingLeft(false);
-		}
+		//if (GetAsyncKeyState(0x25)) //Left arrow
+		//{
+		//	TestCharacter->setMovingLeft(true);
+		//}
+		//else
+		//{
+		//	TestCharacter->setMovingLeft(false);
+		//}
 
-        if (GetAsyncKeyState(0x46))
-            mGameScreenManager->changeScreens(SCREEN_MENU);
+  //      if (GetAsyncKeyState(0x46))
+  //          mGameScreenManager->changeScreens(SCREEN_MENU);
 
-		TestCharacter->Update(deltaTime);
+		//TestCharacter->Update(deltaTime);
 	}
 
 	void D311Context::RenderScene() {
 		
 		//mDeviceContext->ClearRenderTargetView(mRenderTargetView, DirectX::Colors::SeaGreen);
 
-                if (mGameScreenManager->getScreen())
-            mGameScreenManager->Update(deltaTime);
-
-		for (auto Thing : ThingsToRender)
-		{
-			Thing->Render(mDeviceContext);
-		}
-		TestCharacter->Render(mDeviceContext);
+        
+		if (mGameScreenManager->getScreen())
+			mGameScreenManager->Render();
 
 	}
 

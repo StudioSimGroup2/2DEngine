@@ -9,10 +9,12 @@
 #include "TinyXML/tinyxml.h"
 #include <time.h>
 
+#include <Backend/D3D11/D3D11Device.h>
+
 class GameScreen
 {
 public:
-	GameScreen(ID3D11DeviceContext* Context, ID3D11Device* Device);
+	GameScreen(Engine::D3D11Device* Device);
 	virtual ~GameScreen();
 
 	virtual void Update(float deltaTime);
@@ -20,8 +22,7 @@ public:
 	int ScreenSelection = 0;
 
 protected:
-	ID3D11Device* mDevice;
-	ID3D11DeviceContext* mContext;
+	Engine::D3D11Device* mDevice;
 
 private:
 

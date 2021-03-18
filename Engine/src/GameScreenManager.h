@@ -5,11 +5,13 @@
 #include "Common.h"
 #include "GameScreen.h"
 
+#include <Backend/D3D11/D3D11Device.h>
+
 
 class GameScreenManager
 {
 public:
-	GameScreenManager(ID3D11DeviceContext* Context, ID3D11Device* Device, SCREENS StartScreen);
+	GameScreenManager(Engine::D3D11Device* device, SCREENS StartScreen);
 	~GameScreenManager();
 
 	void Render();
@@ -20,8 +22,7 @@ public:
 	bool Quit = false;
 
 private:
-	ID3D11Device* mDevice;
-	ID3D11DeviceContext* mContext;
+	Engine::D3D11Device* mDevice;
 	GameScreen* mCurrentScreen;
 };
 

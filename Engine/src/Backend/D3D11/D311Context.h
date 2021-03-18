@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../Engine/Renderer/Context.h"
-#include "../../../Sprite.h"
+#include "Engine/Renderer/Context.h"
+#include "Sprite.h"
 #include "GameScreenManager.h"
 
 // TODO: add compiler include path later or Precompiled Header

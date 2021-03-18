@@ -1,9 +1,13 @@
 #pragma once
 #include "GameScreen.h"
+#include <Character.h>
+#include <Sprite.h>
+#include "Backend/D3D11/D3D11Device.h"
+
 class GameScreenTest : public GameScreen
 {
 public:
-	GameScreenTest(ID3D11DeviceContext* Context, ID3D11Device* Device);
+	GameScreenTest(D3D11Device* Device);
 	~GameScreenTest();
 
 	void Update(float deltaTime);
@@ -15,7 +19,7 @@ private:
 	Sprite* mTempSprite;
 	//Remove
 	Sprite* TestSprite;
-	Character* TestCharacter;
+	//Character* TestCharacter;
 	TileMap testMap;
 };
 

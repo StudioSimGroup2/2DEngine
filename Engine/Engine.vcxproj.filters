@@ -1080,6 +1080,9 @@
     <ClInclude Include="src\Utils\Windows\WindowsTextureCompiler.h">
       <Filter>src\Utils\Windows</Filter>
     </ClInclude>
+    <ClInclude Include="src\GameScreen.h" />
+    <ClInclude Include="src\GameScreenManager.h" />
+    <ClInclude Include="src\GameScreenTest.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ext\DDSTextureLoader.cpp">
@@ -1205,5 +1208,8 @@
     <ClCompile Include="src\Utils\Windows\WindowsTextureCompiler.cpp">
       <Filter>src\Utils\Windows</Filter>
     </ClCompile>
+    <ClCompile Include="src\GameScreen.cpp" />
+    <ClCompile Include="src\GameScreenManager.cpp" />
+    <ClCompile Include="src\GameScreenTest.cpp" />
   </ItemGroup>
 </Project>

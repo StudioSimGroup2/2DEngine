@@ -1,8 +1,7 @@
 #include "GameScreen.h"
 
-GameScreen::GameScreen(ID3D11DeviceContext* Context, ID3D11Device* Device)
+GameScreen::GameScreen(Engine::D3D11Device* Device)
 {
-	mContext = Context;
 	mDevice = Device;
 }
 
