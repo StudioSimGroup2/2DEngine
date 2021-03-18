@@ -72,12 +72,14 @@ namespace Engine
 		//TODO change name 
 		std::vector<Sprite*> ThingsToRender;
 		Sprite* mTempSprite;
-		ParticleSystem* mParticleSystem;
+		std::vector<ParticleSystem*> mParticleSystems;
 
 		AssetManager* mAssetManager;
 		D3D11Device* mDeviceMGR;
 
 		TileMap testMap;
+
+		bool mEnableEditor = true; // Very curde, will set up an ImGUi properties struct later - Joe
 
 		// Render to texture for imgui
 		ID3D11Texture2D* mRTTRrenderTargetTexture = nullptr;			// Texture to render to 

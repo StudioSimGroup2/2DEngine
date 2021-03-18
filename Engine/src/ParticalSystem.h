@@ -51,16 +51,17 @@ public:
 	void Update(float dt);
 	void Render();
 
-	inline void SetPosition(const vec2f& position) { mPosition = position; }
-	inline void SetGravity(float gravity) { mGravity = gravity; }
-	inline void SetRate(float rate) { mRate = rate; }
-	inline void SetSize(const vec2f& size) { mSize = size; }
+	void SetPosition(const vec2f& position) { mPosition = position; }
+	void SetGravity(float gravity) { mGravity = gravity; }
+	void SetRate(float rate) { mRate = rate; }
+	void SetSize(const vec2f& size) { mSize = size; }
 
-	inline const vec2f& GetPosition() const { return mPosition; }
-	inline float GetGravity() const { return mGravity; }
-	inline float GetRate() const { return mRate; }
-	inline const vec2f& GetSize() { return mSize; }
-
+	vec2f& GetPosition() { return mPosition; }
+	vec2f& GetSize() { return mSize; }
+	float& GetRate() { return mRate; }
+	float& GetGravity() { return mGravity; }
+	float& GetLifetime() { return mParticleProperties.Lifetime; }
+	vec2f& GetVelocity() { return mParticleProperties.Velocity; }
 
 private:
 	D3D11Device* mDevice;					/* Will need openGL device support too...*/

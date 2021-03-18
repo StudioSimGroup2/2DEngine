@@ -469,9 +469,9 @@ namespace Engine
 		ParticleProperties prop(vec2f(100, -100), 3, particleTex);
 
 		// Particle System Init
-		mParticleSystem = new ParticleSystem(mDeviceMGR, vec2f(300, 300), prop, 150, Emmitter::Box);
-		mParticleSystem->SetGravity(100);
-		mParticleSystem->SetRate(0.1); // Particles per second
+		mParticleSystems.emplace_back(new ParticleSystem(mDeviceMGR, vec2f(300, 300), prop, 150, Emmitter::Box));
+		mParticleSystems[0]->SetGravity(100);
+		mParticleSystems[0]->SetRate(0.1); // Particles per second
 	}
 
 	void D311Context::Shutdown()
@@ -481,10 +481,9 @@ namespace Engine
 			ThingsToRender.clear();
 		}
 
-		if (mParticleSystem) {
-			delete mParticleSystem;
-			mParticleSystem = nullptr;
-		}
+		for (ParticleSystem* ps : mParticleSystems)
+			delete ps;
+		mParticleSystems.clear();
 
 		if (mTempSprite)
 		{
@@ -520,7 +519,9 @@ namespace Engine
 		CameraManager::Get()->Update(deltaTime);
 
 		mTempSprite->Update(deltaTime);
-		mParticleSystem->Update(deltaTime);
+
+		for (ParticleSystem* ps : mParticleSystems)
+			ps->Update(deltaTime);
 	}
 
 	void D311Context::RenderScene()
@@ -532,7 +533,9 @@ namespace Engine
 			Thing->Draw();
 		}
 		mTempSprite->Draw();
-		mParticleSystem->Render();
+
+		for (ParticleSystem* ps : mParticleSystems)
+			ps->Render();
 
 	}
 
@@ -560,8 +563,20 @@ namespace Engine
 		ImGui::NewFrame();
 
 		// Create core dockspace
-		//ImGui::SetNextWindowBgAlpha(1);
-		ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
+		ImGui::SetNextWindowBgAlpha(0);
+		if (mEnableEditor) {
+			ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
+			ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.180392161f, 0.5450980663f, 0.3411764801f, 1.0f));  // THIS IS BECAUSE THERES TRANSPARENCY ISSUES ATM! NOT PERMANENT
+			ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.180392161f, 0.5450980663f, 0.3411764801f, 1.0f)); 	 // THIS IS BECAUSE THERES TRANSPARENCY ISSUES ATM! NOT PERMANENT
+			ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 0.0f);
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
+			ImGui::Begin("Viewport", 0, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+			ImVec2 pos = ImGui::GetCursorScreenPos();
+			ImGui::Image(mRTTShaderResourceView, ImGui::GetWindowContentRegionMax()); // render texture 
+			ImGui::End();
+			ImGui::PopStyleVar(2);
+			ImGui::PopStyleColor(2);
+		}
 		
 		// Menu
 		if (ImGui::BeginMainMenuBar())
@@ -580,10 +595,32 @@ namespace Engine
 				ImGui::EndMenu();
 			}
 
+			if (ImGui::BeginMenu("Edit"))
+			{
+				if (ImGui::MenuItem("Toggle Editor Layout")) {
+					mEnableEditor = !mEnableEditor;
+				}
+				ImGui::EndMenu();
+			}
+
 			if (ImGui::BeginMenu("Add"))
 			{
 				if (ImGui::MenuItem("Sprite")) {
 					// No Impl
+				}
+				if (ImGui::MenuItem("Particle system")) {
+					// Particle Props Init	
+					Sprite* particleTex = new Sprite(mDeviceMGR, "Partical Texture", "Resources\\Textures\\stone.dds", vec2f(0, 0));
+					D3D11Renderer2D* re = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDeviceMGR);
+					particleTex->AddRendererComponent(re);
+					ParticleProperties prop(vec2f(0, 0), 3, particleTex);
+
+					// Particle System Init
+					ParticleSystem* temp = new ParticleSystem(mDeviceMGR, vec2f(0, 0), prop, 150, Emmitter::Box);
+					temp->SetGravity(100);
+					temp->SetRate(0.1); // Particles per second
+					mParticleSystems.emplace_back(temp);
+	
 				}
 				ImGui::EndMenu();
 			}
@@ -593,16 +630,7 @@ namespace Engine
 
 
 		// Viewport
-		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.180392161f, 0.5450980663f, 0.3411764801f, 1.0f));  // THIS IS BECAUSE THERES TRANSPARENCY ISSUES ATM! NOT PERMANENT
-		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.180392161f, 0.5450980663f, 0.3411764801f, 1.0f)); 	 // THIS IS BECAUSE THERES TRANSPARENCY ISSUES ATM! NOT PERMANENT
-		ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 0.0f);
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
-		ImGui::Begin("Viewport", 0, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
-		ImVec2 pos = ImGui::GetCursorScreenPos();
-		ImGui::Image(mRTTShaderResourceView, ImGui::GetWindowContentRegionMax()); // render texture 
-		ImGui::End();
-		ImGui::PopStyleVar(2);
-		ImGui::PopStyleColor(2);
+	
 
 		//
 		// TEMP
@@ -616,12 +644,52 @@ namespace Engine
 		ImGui::Text("MARIO AND TILE MAP WILL GO HERE LATER!");
 		ImGui::Text("REQUIRES OTHERS TO EXPOSE DATA FOR ME");
 
+		int index = 0;
+		for (ParticleSystem* ps : mParticleSystems) {
+			char label[20] = { 0 };
+			sprintf_s(label, "Particle system %d", index);
+			if (ImGui::TreeNode(label)) {
+				ImGui::Columns(2, "locations");
+				ImGui::Text("Velocity");
+				ImGui::Spacing();
+				ImGui::Text("Emitter Position");
+				ImGui::Spacing();
+				ImGui::Spacing();
+				ImGui::Text("Emitter Size");
+				ImGui::Spacing();
+				ImGui::Spacing();
+				ImGui::Text("Emission Rate\n(seconds)");
+				ImGui::Spacing();
+				ImGui::Text("Gravity");
+				ImGui::Spacing();
+				ImGui::Text("Lifetime (seconds)");
+				ImGui::Spacing();
+				ImGui::Text("Texture");
+
+				ImGui::NextColumn();
+
+				ImGui::DragFloat2("##Velocity", &mParticleSystems[index]->GetVelocity().x, 1.0f);
+				ImGui::DragFloat2("##Pos", &mParticleSystems[index]->GetPosition().x, 1.0f);
+				ImGui::DragFloat2("##Size", &mParticleSystems[index]->GetSize().x, 1.0f);
+				ImGui::DragFloat("##Rate", &mParticleSystems[index]->GetRate(), .025f);
+				ImGui::Spacing();
+				ImGui::Spacing();
+				ImGui::Spacing();
+				ImGui::DragFloat("##Gravity", &mParticleSystems[index]->GetGravity(), 1.0f);
+				ImGui::DragFloat("##Lifetime", &mParticleSystems[index]->GetLifetime(), 0.25f);
+				//ImGui::Image(, ImVec2(32,32)); // Sprite used in particle system
+
+				ImGui::TreePop();
+				ImGui::Columns();
+			}
+			index++;
+		}
 
 		ImGui::Separator();
 		ImGui::Text("Cameras");
 		ImGui::Separator();
 
-		int index = 0;
+		index = 0;
 		for (Camera* c : CameraManager::Get()->AllCameras()) {
 			char label[10] = { 0 };
 			sprintf_s(label, "Camera %d", index);
