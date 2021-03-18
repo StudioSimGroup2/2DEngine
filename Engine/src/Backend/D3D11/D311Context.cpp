@@ -422,6 +422,7 @@ namespace Engine
 	void D311Context::OnUpdate(float deltaTime)
 	{
 		CameraManager::Get()->Update(deltaTime); // Belongs in core scene update loop
+
 		if (mGameScreenManager->getScreen() != nullptr)
 			mGameScreenManager->Update(deltaTime);
 
@@ -430,13 +431,12 @@ namespace Engine
 			CameraManager::Get()->CyclePrevious();
 		if (GetAsyncKeyState(0x45)) // E key
 			CameraManager::Get()->CycleNext();
+
 		if (GetAsyncKeyState(0x46))
 			mGameScreenManager->changeScreens(SCREEN_MENU);
 	}
 
 	void D311Context::RenderScene() {
-		
-		//mDeviceContext->ClearRenderTargetView(mRenderTargetView, DirectX::Colors::SeaGreen);
 		if (mGameScreenManager->getScreen() != nullptr)
 			mGameScreenManager->Render();
 	}

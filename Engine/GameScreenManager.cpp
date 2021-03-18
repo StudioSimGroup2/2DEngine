@@ -12,7 +12,12 @@ GameScreenManager::GameScreenManager(ID3D11DeviceContext* Context, ID3D11Device*
 GameScreenManager::~GameScreenManager()
 {
 	//delete memeber variables
-
+	delete mDevice;
+	mDevice = nullptr;
+	delete mContext;
+	mContext = nullptr;
+	delete mCurrentScreen;
+	mCurrentScreen = nullptr;
 }
 
 void GameScreenManager::Render()
