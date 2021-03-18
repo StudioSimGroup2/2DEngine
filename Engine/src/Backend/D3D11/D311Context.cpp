@@ -433,36 +433,6 @@ namespace Engine
 		AudioManager::GetInstance()->LoadSound(std::string("TestFile"), std::string("Sounds/zip.wav"));
 		//AudioManager::GetInstance()->PlaySoundFile(std::string("TestFile"), -100.0f); // TODO: implement volume WARNING THE SOUND FILE IS EXTREMELY LOUD!!
 
-		//testMap = LevelMap::LoadLevelMap((char*)"Resources/TileMaps/XML_Test.xml");
-		//for (int X = 0; X <testMap.size(); X++)
-		//{
-		//	for (int Y = 0; Y < testMap[0].size(); Y++)
-		//	{
-		//		switch (testMap[X][Y])
-		//		{
-		//		case 0:
-		//		{
-		//			break;
-		//		}
-		//		case 1:
-		//		{
-		//			Sprite* mapItem = new Sprite(mDeviceMGR, std::string("Tile ") + std::string(X + "" + Y) + std::string("]"), 
-		//				std::string("Textures/stone.dds"), vec2f(32.0f * Y, 32.0f * X)); // someone got their x and y coords wrong, i'll fix it later
-		//			D3D11Renderer2D* re = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDeviceMGR);
-		//			mapItem->AddRendererComponent(re);
-
-		//			ThingsToRender.push_back(mapItem);
-		//			break;
-		//		}
-		//		default:
-		//			break;
-		//		}
-		//	}
-		//}
-
-		/*mTempSprite = new Sprite(mDeviceMGR, std::string("Mario"), std::string("Textures/Mario.dds"), vec2f(32.0f));
-		D3D11Renderer2D* renderer = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDeviceMGR);
-		mTempSprite->AddRendererComponent(renderer);*/
 	}
 
 	void D311Context::Shutdown()
@@ -484,39 +454,15 @@ namespace Engine
 			CameraManager::Get()->CyclePrevious();
 		if (GetAsyncKeyState(0x45)) // E key
 			CameraManager::Get()->CycleNext();
-
-		//if (GetAsyncKeyState(0x27)) //Right arrow
-		//{
-		//	TestCharacter->setMovingRight(true);
-		//}
-		//else 
-		//{
-		//	TestCharacter->setMovingRight(false);
-		//}	
-
-		//if (GetAsyncKeyState(0x25)) //Left arrow
-		//{
-		//	TestCharacter->setMovingLeft(true);
-		//}
-		//else
-		//{
-		//	TestCharacter->setMovingLeft(false);
-		//}
-
-  //      if (GetAsyncKeyState(0x46))
-  //          mGameScreenManager->changeScreens(SCREEN_MENU);
-
-		//TestCharacter->Update(deltaTime);
 	}
 
 	void D311Context::RenderScene() {
 		
-		//mDeviceContext->ClearRenderTargetView(mRenderTargetView, DirectX::Colors::SeaGreen);
-
-        
+		//mDeviceContext->ClearRenderTargetView(mRenderTargetView, DirectX::Colors::SeaGreen);        
 		if (mGameScreenManager->getScreen())
+		{
 			mGameScreenManager->Render();
-
+		}
 	}
 
 	void D311Context::SwapBuffers()

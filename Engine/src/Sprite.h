@@ -12,16 +12,16 @@ using namespace Engine;
 class Sprite
 {
 public:
-	Sprite(Device* dev, const std::string& name, const std::string& path, vec2f position);
+	Sprite(Device* dev, const std::string& name, const std::string& path, vec2f* position);
 	~Sprite();
 
-	void AddRendererComponent(Renderer2D* renderer);
+	virtual void AddRendererComponent(Renderer2D* renderer);
 	void Update(float deltaTime);
 	void Draw();
 
 private:
 	std::string mName;
-	vec2f mPosition;
+	vec2f* mPosition;
 
 	Texture* mSprTexture = nullptr;
 	Renderer2D* mRenderer = nullptr;

@@ -19,7 +19,7 @@ private:
 	Sprite* mTempSprite;
 	//Remove
 	Sprite* TestSprite;
-	//Character* TestCharacter;
+	Character* TestCharacter;
 	TileMap testMap;
 };
 
