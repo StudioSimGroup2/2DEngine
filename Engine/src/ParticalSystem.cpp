@@ -101,7 +101,8 @@ void ParticleSystem::InitParticles(size_t count)
 		for (int i = 0; i < count; i++) {
 			ParticleProperties* p = new ParticleProperties(mParticleProperties);
 			p->Position = vec2f(rand() % (int)mSize.x + mPosition.x, rand() % (int)mSize.y + mPosition.y);
-			p->Texture = new Sprite(mDevice, "Partical system:", "Resources\\Textures\\stone.dds", p->Position);
+			//p->Texture = new Sprite(mDevice, "Partical system:", "Resources\\Textures\\stone.dds", p->Position); // Works
+			p->Texture = new Sprite(mDevice, "Partical system: ", "Resources\\Textures\\Particle System Inbuilt\\Circle.dds", p->Position);	// Doesn't work
 			D3D11Renderer2D* re = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDevice);
 			p->Texture->AddRendererComponent(re);
 			mParticles.push_back(p);
