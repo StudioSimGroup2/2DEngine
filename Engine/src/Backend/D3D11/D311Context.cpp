@@ -462,13 +462,13 @@ namespace Engine
 		mTempSprite->AddRendererComponent(renderer);
 
 
-		// Particle System Init
-		vec2f particlePos = vec2f(0, 0);	
-		Sprite* particleTex = new Sprite(mDeviceMGR, "Partical Texture", "Textures/stone.dds", particlePos);
+		// Particle Props Init	
+		Sprite* particleTex = new Sprite(mDeviceMGR, "Partical Texture", "Resources\\Textures\\stone.dds", vec2f(0, 0));
 		D3D11Renderer2D* re = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDeviceMGR);
 		particleTex->AddRendererComponent(re);
 		ParticleProperties prop(vec2f(100, -100), 3, particleTex);
 
+		// Particle System Init
 		mParticleSystem = new ParticleSystem(mDeviceMGR, vec2f(300, 300), prop, 150, Emmitter::Box);
 		mParticleSystem->SetGravity(100);
 		mParticleSystem->SetRate(0.1); // Particles per second
@@ -481,7 +481,10 @@ namespace Engine
 			ThingsToRender.clear();
 		}
 
-		delete mParticleSystem;
+		if (mParticleSystem) {
+			delete mParticleSystem;
+			mParticleSystem = nullptr;
+		}
 
 		if (mTempSprite)
 		{
@@ -522,7 +525,7 @@ namespace Engine
 
 	void D311Context::RenderScene()
 	{
-		//mDeviceContext->ClearRenderTargetView(mRenderTargetView, DirectX::Colors::SeaGreen);
+		mDeviceContext->ClearRenderTargetView(mRenderTargetView, DirectX::Colors::SeaGreen);
 
 		for (auto Thing : ThingsToRender)
 		{
@@ -557,7 +560,7 @@ namespace Engine
 		ImGui::NewFrame();
 
 		// Create core dockspace
-		ImGui::SetNextWindowBgAlpha(1);
+		//ImGui::SetNextWindowBgAlpha(1);
 		ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 		
 		// Menu

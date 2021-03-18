@@ -44,11 +44,13 @@ ParticleSystem::ParticleSystem(D3D11Device* device, const vec2f& position, const
 ParticleSystem::~ParticleSystem()
 {
 	for (ParticleProperties* p : mParticles) {
-		delete p;
+		if (p)
+			delete p->Texture;
 	}
 	mParticles.clear();
-
-	delete mParticleProperties.Texture;
+	
+	if (mParticleProperties.Texture)
+		delete mParticleProperties.Texture;
 }
 
 void ParticleSystem::Update(float dt)
@@ -87,8 +89,7 @@ void ParticleSystem::Render()
 {
 	for (ParticleProperties* p : mParticles) {
 		if (p->Alive)
-			p->Texture->Draw();
-			
+			p->Texture->Draw();	
 	}
 }
 
@@ -100,7 +101,7 @@ void ParticleSystem::InitParticles(size_t count)
 		for (int i = 0; i < count; i++) {
 			ParticleProperties* p = new ParticleProperties(mParticleProperties);
 			p->Position = vec2f(rand() % (int)mSize.x + mPosition.x, rand() % (int)mSize.y + mPosition.y);
-			p->Texture = new Sprite(mDevice, "Partical system:", "Textures/stone.dds", p->Position);
+			p->Texture = new Sprite(mDevice, "Partical system:", "Resources\\Textures\\stone.dds", p->Position);
 			D3D11Renderer2D* re = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDevice);
 			p->Texture->AddRendererComponent(re);
 			mParticles.push_back(p);

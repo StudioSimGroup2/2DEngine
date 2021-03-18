@@ -15,11 +15,10 @@ struct ParticleProperties
 	ParticleProperties() = default;
 	ParticleProperties(vec2f velocity, float lifetime, Sprite* texture)
 		: Velocity(velocity), Lifetime(lifetime), Texture(texture), Alive(false) {}
-	~ParticleProperties() { delete Texture; }
 
 	vec2f Position;		/* Local position of a single partical */
 	vec2f Velocity;
-	float Lifetime;			/* Measured in Seconds */
+	float Lifetime;		/* Measured in Seconds */
 	Sprite* Texture;
 	bool Alive;
 };
@@ -64,7 +63,7 @@ public:
 
 
 private:
-	D3D11Device* mDevice;					// Will need openGL device support too...
+	D3D11Device* mDevice;					/* Will need openGL device support too...*/
 	vec2f mPosition;						/* Position of the partical emmiter */
 	ParticleProperties mParticleProperties;
 	vec2f mSize;
