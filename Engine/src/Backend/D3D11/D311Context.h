@@ -25,6 +25,8 @@
 #include "ParticalSystem.h"
 #include <Backend/D3D11/D3D11Device.h>
 #include <time.h>
+
+#include "Utils\logger.h"
 //----------------------------------
 
 using namespace DirectX;

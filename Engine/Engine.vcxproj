@@ -524,6 +524,7 @@
     <ClInclude Include="src\PhysicsObject.h" />
     <ClInclude Include="src\Sprite.h" />
     <ClInclude Include="src\Utils\AssetManager.h" />
+    <ClInclude Include="src\Utils\Logger.h" />
     <ClInclude Include="src\Utils\Math.h" />
     <ClInclude Include="src\Utils\Shader.h" />
     <ClInclude Include="src\Utils\Sound.h" />
@@ -605,6 +606,7 @@
     <ClCompile Include="src\PhysicsObject.cpp" />
     <ClCompile Include="src\Sprite.cpp" />
     <ClCompile Include="src\Utils\AssetManager.cpp" />
+    <ClCompile Include="src\Utils\Logger.cpp" />
     <ClCompile Include="src\Utils\Shader.cpp" />
     <ClCompile Include="src\Utils\Sound.cpp" />
     <ClCompile Include="src\Utils\StringHelper.cpp" />
