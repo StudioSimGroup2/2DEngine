@@ -25,7 +25,7 @@ struct ParticleProperties
 
 enum class Emmitter
 {
-	Box = 0,
+	Square = 0,
 	Circle,
 	Cone
 };
@@ -44,8 +44,8 @@ class ParticleSystem
 {
 public:
 	ParticleSystem();
-	ParticleSystem(D3D11Device* device, const vec2f& position, const ParticleProperties& particle, size_t count, const Emmitter& emmiter = Emmitter::Box);
-	ParticleSystem(D3D11Device* device, const vec2f& position, const vec2f& size, const ParticleProperties& particle, size_t count, const Emmitter& emmiter = Emmitter::Box);
+	ParticleSystem(D3D11Device* device, const vec2f& emmitterPos, const ParticleProperties& particle, size_t count, const Emmitter& emmiter = Emmitter::Square);
+	ParticleSystem(D3D11Device* device, const vec2f& emmitterPos, const vec2f& emmitterSize, const ParticleProperties& particle, size_t count, const Emmitter& emmiter = Emmitter::Square);
 	~ParticleSystem();
 
 	void Update(float dt);

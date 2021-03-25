@@ -469,7 +469,7 @@ namespace Engine
 		ParticleProperties prop(vec2f(100, -100), 3, particleTex);
 
 		// Particle System Init
-		mParticleSystems.emplace_back(new ParticleSystem(mDeviceMGR, vec2f(300, 300), prop, 150, Emmitter::Box));
+		mParticleSystems.emplace_back(new ParticleSystem(mDeviceMGR, vec2f(300, 300), prop, 150, Emmitter::Circle));
 		mParticleSystems[0]->SetGravity(100);
 		mParticleSystems[0]->SetRate(0.1); // Particles per second
 	}
@@ -616,7 +616,7 @@ namespace Engine
 					ParticleProperties prop(vec2f(0, 0), 3, particleTex);
 
 					// Particle System Init
-					ParticleSystem* temp = new ParticleSystem(mDeviceMGR, vec2f(0, 0), prop, 150, Emmitter::Box);
+					ParticleSystem* temp = new ParticleSystem(mDeviceMGR, vec2f(0, 0), prop, 150, Emmitter::Square);
 					temp->SetGravity(100);
 					temp->SetRate(0.1); // Particles per second
 					mParticleSystems.emplace_back(temp);

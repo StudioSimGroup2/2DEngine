@@ -1,7 +1,7 @@
 #include "ParticalSystem.h"
 
 ParticleSystem::ParticleSystem()
-	: mDevice(nullptr), mPosition(vec2f(100, 100)), mSize(vec2f(100, 100)), mParticleProperties(), mParticleCount(0), mEmmiter(Emmitter::Box)
+	: mDevice(nullptr), mPosition(vec2f(100, 100)), mSize(vec2f(100, 100)), mParticleProperties(), mParticleCount(0), mEmmiter(Emmitter::Square)
 {
 	srand(time(NULL));
 	mGravity = 0.0f;
@@ -9,8 +9,8 @@ ParticleSystem::ParticleSystem()
 	mCurrentRate = 0.0f;
 }
 
-ParticleSystem::ParticleSystem(D3D11Device* device, const vec2f& position, const ParticleProperties& particle, size_t count, const Emmitter& emmiter)
-	: mDevice(device), mPosition(position), mParticleProperties(particle), mParticleCount(count), mEmmiter(emmiter)
+ParticleSystem::ParticleSystem(D3D11Device* device, const vec2f& emmitterPos, const ParticleProperties& particle, size_t count, const Emmitter& emmiter)
+	: mDevice(device), mPosition(emmitterPos), mParticleProperties(particle), mParticleCount(count), mEmmiter(emmiter)
 {
 	srand(time(NULL));
 	mGravity = 0.0f;
@@ -25,8 +25,8 @@ ParticleSystem::ParticleSystem(D3D11Device* device, const vec2f& position, const
 	InitParticles(mParticleCount);
 }
 
-ParticleSystem::ParticleSystem(D3D11Device* device, const vec2f& position, const vec2f& size, const ParticleProperties& particle, size_t count, const Emmitter& emmiter)
-	: mDevice(device), mPosition(position), mSize(size), mParticleProperties(particle), mParticleCount(count), mEmmiter(emmiter)
+ParticleSystem::ParticleSystem(D3D11Device* device, const vec2f& emmitterPos, const vec2f& emmitterSize, const ParticleProperties& particle, size_t count, const Emmitter& emmiter)
+	: mDevice(device), mPosition(emmitterPos), mSize(emmitterSize), mParticleProperties(particle), mParticleCount(count), mEmmiter(emmiter)
 {
 	srand(time(NULL));
 	mGravity = 0.0f;
@@ -72,7 +72,19 @@ void ParticleSystem::Update(float dt)
 			p->Alive = false;
 			p->Velocity = mParticleProperties.Velocity;
 			p->Lifetime = mParticleProperties.Lifetime;
-			p->Position = vec2f(rand() % (int)mSize.x + mPosition.x, rand() % (int)mSize.y + mPosition.y); // Respawn in area of Box atm...
+
+			switch (mEmmiter) {
+				case Emmitter::Square:
+					p->Position = vec2f(rand() % (int)mSize.x + mPosition.x, rand() % (int)mSize.y + mPosition.y); // Respawn in area of square
+					break;
+
+				case Emmitter::Circle:
+					float rad = mSize.x * sqrtf(rand() % 11 * 0.1f);
+					float theta = (rand() % 11 * 0.1f) * 2 * 3.14159265359;
+					p->Position.x = mPosition.x + rad * cos(theta);
+					p->Position.y = mPosition.y + rad * sin(theta);
+					break;
+			}
 		}
 
 		p->Velocity.y += mGravity * dt;
@@ -97,22 +109,37 @@ void ParticleSystem::InitParticles(size_t count)
 {
 	switch (mEmmiter)
 	{
-	case Emmitter::Box:
+	case Emmitter::Square: {
 		for (int i = 0; i < count; i++) {
 			ParticleProperties* p = new ParticleProperties(mParticleProperties);
 			p->Position = vec2f(rand() % (int)mSize.x + mPosition.x, rand() % (int)mSize.y + mPosition.y);
-			p->Texture = new Sprite(mDevice, "Partical system:", "Resources\\Textures\\Particle System Inbuilt\\Circle.dds", p->Position); 
+			p->Texture = new Sprite(mDevice, "Partical system:", "Resources\\Textures\\Particle System Inbuilt\\Square.dds", p->Position); 
 			D3D11Renderer2D* re = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDevice);
 			p->Texture->AddRendererComponent(re);
 			mParticles.push_back(p);
 		}
 		break;
-
+	}
 	case Emmitter::Circle:
-		std::cout << "Circle partical emmision currently not supported!" << std::endl;
-		assert(false);
-		break;
+	{
+		for (int i = 0; i < count; i++) {
+			ParticleProperties* p = new ParticleProperties(mParticleProperties);
 
+			// Generate random point inside circle
+			float rad = mSize.x * sqrtf(rand() % 11 * 0.1f);
+			float theta = (rand() % 11 * 0.1f) * 2 * 3.14159265359;
+
+			// Convert to cartesian coords
+			p->Position.x = mPosition.x + rad * cos(theta);
+			p->Position.y = mPosition.y + rad * sin(theta);
+			p->Texture = new Sprite(mDevice, "Partical system:", "Resources\\Textures\\Particle System Inbuilt\\Circle.dds", p->Position);
+
+			D3D11Renderer2D* re = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDevice);
+			p->Texture->AddRendererComponent(re);
+			mParticles.push_back(p);
+		}
+		break;
+	}
 	case Emmitter::Cone:
 		std::cout << "Cone partical emmision currently not supported!" << std::endl;
 		assert(false);
