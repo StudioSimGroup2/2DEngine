@@ -623,7 +623,7 @@ namespace Engine
 				if (ImGui::MenuItem("Sprite")) {
 					// No Impl
 				}
-				if (ImGui::MenuItem("Particle system")) {
+				if (ImGui::MenuItem("Particle system (box emmitter)")) {
 					// Particle Props Init	
 					Sprite* particleTex = new Sprite(mDeviceMGR, "Partical Texture", "Resources\\Textures\\stone.dds", &vec2f(0, 0));
 					D3D11Renderer2D* re = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDeviceMGR);
@@ -636,6 +636,20 @@ namespace Engine
 					temp->SetRate(0.1); // Particles per second
 					mParticleSystems.emplace_back(temp);
 	
+				}
+				if (ImGui::MenuItem("Particle system (circle emmitter)")) {
+					// Particle Props Init	
+					Sprite* particleTex = new Sprite(mDeviceMGR, "Partical Texture", "Resources\\Textures\\stone.dds", &vec2f(0, 0));
+					D3D11Renderer2D* re = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDeviceMGR);
+					particleTex->AddRendererComponent(re);
+					ParticleProperties prop(vec2f(0, 0), 3, particleTex);
+
+					// Particle System Init
+					ParticleSystem* temp = new ParticleSystem(mDeviceMGR, vec2f(0, 0), prop, 150, Emmitter::Circle);
+					temp->SetGravity(100);
+					temp->SetRate(0.1); // Particles per second
+					mParticleSystems.emplace_back(temp);
+
 				}
 				ImGui::EndMenu();
 			}
@@ -680,7 +694,7 @@ namespace Engine
 				ImGui::Spacing();
 				ImGui::Text("Lifetime (seconds)");
 				ImGui::Spacing();
-				ImGui::Text("Texture");
+				ImGui::Text("Emmiter");
 
 				ImGui::NextColumn();
 
@@ -693,7 +707,26 @@ namespace Engine
 				ImGui::Spacing();
 				ImGui::DragFloat("##Gravity", &mParticleSystems[index]->GetGravity(), 1.0f);
 				ImGui::DragFloat("##Lifetime", &mParticleSystems[index]->GetLifetime(), 0.25f);
-				//ImGui::Image(, ImVec2(32,32)); // Sprite used in particle system
+
+				const char* items[] = { "Circle", "Square" };
+				static const char* current_item = "Square";
+				if (ImGui::BeginCombo("##combo", current_item))
+				{
+					for (int n = 0; n < IM_ARRAYSIZE(items); n++)
+					{
+						bool is_selected = (current_item == items[n]); // You can store your selection however you want, outside or inside your objects
+						if (ImGui::Selectable(items[n], is_selected))
+							current_item = items[n];
+							if (is_selected)
+								ImGui::SetItemDefaultFocus();   // You may set the initial focus when opening the combo (scrolling + for keyboard navigation support)
+
+							if (current_item == items[0])
+								ps->GetEmmiter() = Emmitter::Circle;
+							else
+								ps->GetEmmiter() = Emmitter::Square;
+					}
+					ImGui::EndCombo();
+				}
 
 				ImGui::TreePop();
 				ImGui::Columns();

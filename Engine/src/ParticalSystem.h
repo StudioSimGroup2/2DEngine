@@ -62,6 +62,7 @@ public:
 	float& GetGravity() { return mGravity; }
 	float& GetLifetime() { return mParticleProperties.Lifetime; }
 	vec2f& GetVelocity() { return mParticleProperties.Velocity; }
+	Emmitter& GetEmmiter() { return mEmmiter; }
 	void ShowEmmiterIcon(bool flag) { mShowEmmiterIcon = flag; }
 
 private:

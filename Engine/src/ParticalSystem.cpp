@@ -63,8 +63,11 @@ void ParticleSystem::Update(float dt)
 	switch (mEmmiter)
 	{
 	case Emmitter::Square:
-		mEmmiterIcon->SetPosition(&vec2f(mPosition.x + mSize.x/2, mPosition.y + mSize.y / 2));
+	{
+		static vec2f& pos = vec2f(mPosition.x + mSize.x / 2, mPosition.y + mSize.y / 2);
+		mEmmiterIcon->SetPosition(&pos);
 		break;
+	}
 
 	case Emmitter::Circle:
 		mEmmiterIcon->SetPosition(&mPosition);
@@ -130,6 +133,7 @@ void ParticleSystem::InitParticles(size_t count)
 			ParticleProperties* p = new ParticleProperties(mParticleProperties);
 			p->Position = vec2f(rand() % (int)mSize.x + mPosition.x, rand() % (int)mSize.y + mPosition.y);
 			p->Texture = new Sprite(mDevice, "Partical system:", "Resources\\Textures\\Particle System Inbuilt\\Square.dds", &p->Position); 
+		
 			D3D11Renderer2D* re = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDevice);
 			p->Texture->AddRendererComponent(re);
 			mParticles.push_back(p);
