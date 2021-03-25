@@ -51,11 +51,27 @@ ParticleSystem::~ParticleSystem()
 	
 	if (mParticleProperties.Texture)
 		delete mParticleProperties.Texture;
+
+	delete mEmmiterIcon;
 }
 
 void ParticleSystem::Update(float dt)
 {
 	mCurrentRate += dt;
+
+	// Update the icons location
+	switch (mEmmiter)
+	{
+	case Emmitter::Square:
+		mEmmiterIcon->SetPosition(vec2f(mPosition.x + mSize.x/2, mPosition.y + mSize.y / 2));
+		break;
+
+	case Emmitter::Circle:
+		mEmmiterIcon->SetPosition(mPosition);
+		break;
+	}
+
+	// Update all the particles
 	for (ParticleProperties* p : mParticles) {
 		if (!p->Alive) {
 			if (mCurrentRate >= mRate) {
@@ -79,7 +95,7 @@ void ParticleSystem::Update(float dt)
 					break;
 
 				case Emmitter::Circle:
-					float rad = mSize.x * sqrtf(rand() % 11 * 0.1f);
+					float rad = mSize.x * sqrtf(rand() % 11 * 0.1f);	// Returns a value between 0 - 1
 					float theta = (rand() % 11 * 0.1f) * 2 * 3.14159265359;
 					p->Position.x = mPosition.x + rad * cos(theta);
 					p->Position.y = mPosition.y + rad * sin(theta);
@@ -90,10 +106,7 @@ void ParticleSystem::Update(float dt)
 		p->Velocity.y += mGravity * dt;
 		p->Position += p->Velocity * dt;
 		p->Texture->SetPosition(p->Position);
-
 	}
-
-
 
 }
 
@@ -103,6 +116,9 @@ void ParticleSystem::Render()
 		if (p->Alive)
 			p->Texture->Draw();	
 	}
+
+	if (mShowEmmiterIcon)
+		mEmmiterIcon->Draw(); 
 }
 
 void ParticleSystem::InitParticles(size_t count)
@@ -118,8 +134,14 @@ void ParticleSystem::InitParticles(size_t count)
 			p->Texture->AddRendererComponent(re);
 			mParticles.push_back(p);
 		}
+
+		// Setup the Emmiter icon
+		D3D11Renderer2D* re = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDevice);
+		mEmmiterIcon = new Sprite(mDevice, "Partical system:", "Resources\\Textures\\Particle System Inbuilt\\SquareEmmiterIcon.dds", mPosition);
+		mEmmiterIcon->AddRendererComponent(re);
 		break;
 	}
+
 	case Emmitter::Circle:
 	{
 		for (int i = 0; i < count; i++) {
@@ -138,8 +160,14 @@ void ParticleSystem::InitParticles(size_t count)
 			p->Texture->AddRendererComponent(re);
 			mParticles.push_back(p);
 		}
+
+		// Setup the Emmiter icon
+		D3D11Renderer2D* re = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDevice);
+		mEmmiterIcon = new Sprite(mDevice, "Partical system:", "Resources\\Textures\\Particle System Inbuilt\\CircleEmmiterIcon.dds", mPosition);
+		mEmmiterIcon->AddRendererComponent(re);
 		break;
 	}
+
 	case Emmitter::Cone:
 		std::cout << "Cone partical emmision currently not supported!" << std::endl;
 		assert(false);

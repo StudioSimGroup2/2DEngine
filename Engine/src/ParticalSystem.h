@@ -62,6 +62,7 @@ public:
 	float& GetGravity() { return mGravity; }
 	float& GetLifetime() { return mParticleProperties.Lifetime; }
 	vec2f& GetVelocity() { return mParticleProperties.Velocity; }
+	void ShowEmmiterIcon(bool flag) { mShowEmmiterIcon = flag; }
 
 private:
 	D3D11Device* mDevice;					/* Will need openGL device support too...*/
@@ -70,11 +71,13 @@ private:
 	vec2f mSize;
 	size_t mParticleCount;
 	Emmitter mEmmiter;
+	Sprite* mEmmiterIcon;
 
 	float mGravity;
 	float mRate;							/* Constant rate of partical emmission */
 	float mCurrentRate;						/* Current rate counter */
 	std::vector<ParticleProperties*> mParticles;
+	bool mShowEmmiterIcon;
 
 	void InitParticles(size_t count);
 };

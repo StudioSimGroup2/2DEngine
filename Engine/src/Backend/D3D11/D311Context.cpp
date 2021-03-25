@@ -469,7 +469,7 @@ namespace Engine
 		ParticleProperties prop(vec2f(100, -100), 3, particleTex);
 
 		// Particle System Init
-		mParticleSystems.emplace_back(new ParticleSystem(mDeviceMGR, vec2f(300, 300), prop, 150, Emmitter::Circle));
+		mParticleSystems.emplace_back(new ParticleSystem(mDeviceMGR, vec2f(300, 300), prop, 150, Emmitter::Square));
 		mParticleSystems[0]->SetGravity(100);
 		mParticleSystems[0]->SetRate(0.1); // Particles per second
 	}
@@ -649,6 +649,7 @@ namespace Engine
 			char label[20] = { 0 };
 			sprintf_s(label, "Particle system %d", index);
 			if (ImGui::TreeNode(label)) {
+				ps->ShowEmmiterIcon(true);
 				ImGui::Columns(2, "locations");
 				ImGui::Text("Velocity");
 				ImGui::Spacing();
@@ -681,7 +682,9 @@ namespace Engine
 
 				ImGui::TreePop();
 				ImGui::Columns();
-			}
+			} else
+				ps->ShowEmmiterIcon(false);
+
 			index++;
 		}
 
