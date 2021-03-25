@@ -1089,6 +1089,9 @@
     <ClInclude Include="src\Utils\Windows\WindowsTextureCompiler.h">
       <Filter>src\Utils\Windows</Filter>
     </ClInclude>
+    <ClInclude Include="AI.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ext\DDSTextureLoader.cpp">
@@ -1222,6 +1225,9 @@
     </ClCompile>
     <ClCompile Include="src\Utils\Windows\WindowsTextureCompiler.cpp">
       <Filter>src\Utils\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="AI.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

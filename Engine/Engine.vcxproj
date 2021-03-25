@@ -191,6 +191,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AI.h" />
     <ClInclude Include="ext\DDSTextureLoader.h" />
     <ClInclude Include="ext\GLM\common.hpp" />
     <ClInclude Include="ext\GLM\detail\_features.hpp" />
@@ -531,6 +532,7 @@
     <ClInclude Include="src\Utils\Windows\WindowsTextureCompiler.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AI.cpp" />
     <ClCompile Include="ext\DDSTextureLoader.cpp" />
     <ClCompile Include="ext\GLM\detail\glm.cpp" />
     <ClCompile Include="ext\Glad\glad.c" />
@@ -617,4 +619,4 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
-</Project> 
+</Project>
