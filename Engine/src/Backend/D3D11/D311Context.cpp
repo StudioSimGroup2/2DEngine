@@ -447,7 +447,7 @@ namespace Engine
 				case 1:
 				{
 					Sprite* mapItem = new Sprite(mDeviceMGR, std::string("Tile ") + std::string(X + "" + Y) + std::string("]"), 
-						std::string("Textures/stone.dds"), vec2f(32.0f * Y, 32.0f * X)); // someone got their x and y coords wrong, i'll fix it later
+						std::string("Textures/stone.dds"), &vec2f(32.0f * Y, 32.0f * X)); // someone got their x and y coords wrong, i'll fix it later
 					D3D11Renderer2D* re = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDeviceMGR);
 					mapItem->AddRendererComponent(re);
 
@@ -460,13 +460,13 @@ namespace Engine
 			}
 		}
 
-		mTempSprite = new Sprite(mDeviceMGR, std::string("Mario"), std::string("Textures/Mario.dds"), vec2f(32.0f));
+		mTempSprite = new Sprite(mDeviceMGR, std::string("Mario"), std::string("Textures/Mario.dds"), &vec2f(32.0f));
 		D3D11Renderer2D* renderer = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDeviceMGR);
 		mTempSprite->AddRendererComponent(renderer);
 
 
 		// Particle Props Init	
-		Sprite* particleTex = new Sprite(mDeviceMGR, "Partical Texture", "Resources\\Textures\\stone.dds", vec2f(0, 0));
+		Sprite* particleTex = new Sprite(mDeviceMGR, "Partical Texture", "Resources\\Textures\\stone.dds", &vec2f(0, 0));
 		D3D11Renderer2D* re = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDeviceMGR);
 		particleTex->AddRendererComponent(re);
 		ParticleProperties prop(vec2f(100, -100), 3, particleTex);
@@ -523,29 +523,24 @@ namespace Engine
 		CameraManager::Get()->Update(deltaTime); // Belongs in core scene update loop
 
 		mTempSprite->Update(deltaTime);
+        if (mGameScreenManager->getScreen())
+            mGameScreenManager->Update(deltaTime);
+
 
 		for (ParticleSystem* ps : mParticleSystems)
 			ps->Update(deltaTime);
 	}
 
-	void D311Context::RenderScene()
-	{
+	void D311Context::RenderScene() {
+		
 		mDeviceContext->ClearRenderTargetView(mRenderTargetView, DirectX::Colors::SeaGreen);
-
-        if (mGameScreenManager->getScreen())
-            mGameScreenManager->Update(deltaTime);
 
 		// Cycle cameras on A & D keypresses 
 		if (GetAsyncKeyState(0x51)) // Q key
 			CameraManager::Get()->CyclePrevious();
 		if (GetAsyncKeyState(0x45)) // E key
 			CameraManager::Get()->CycleNext();
-	}
-
-
-	void D311Context::RenderScene() {
-		
-		//mDeviceContext->ClearRenderTargetView(mRenderTargetView, DirectX::Colors::SeaGreen);        
+  
 		if (mGameScreenManager->getScreen())
 		{
 			mGameScreenManager->Render();
@@ -630,7 +625,7 @@ namespace Engine
 				}
 				if (ImGui::MenuItem("Particle system")) {
 					// Particle Props Init	
-					Sprite* particleTex = new Sprite(mDeviceMGR, "Partical Texture", "Resources\\Textures\\stone.dds", vec2f(0, 0));
+					Sprite* particleTex = new Sprite(mDeviceMGR, "Partical Texture", "Resources\\Textures\\stone.dds", &vec2f(0, 0));
 					D3D11Renderer2D* re = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDeviceMGR);
 					particleTex->AddRendererComponent(re);
 					ParticleProperties prop(vec2f(0, 0), 3, particleTex);

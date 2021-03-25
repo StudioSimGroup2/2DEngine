@@ -19,8 +19,8 @@ public:
 	void Update(float deltaTime);
 	void Draw();
 
-	void SetPosition(vec2f newPosition) { mPosition = newPosition; }
-	const vec2f& GetPosition() const { return mPosition; }
+	void SetPosition(vec2f* newPosition) { mPosition = newPosition; }
+	const vec2f* GetPosition() const { return mPosition; }
 
 private:
 	std::string mName;
