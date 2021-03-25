@@ -514,6 +514,9 @@
     <ClInclude Include="src\Engine\Renderer\Swapchain.h" />
     <ClInclude Include="src\Engine\Window.h" />
     <ClInclude Include="src\Entry\WindowsSystem.h" />
+    <ClInclude Include="src\GameScreen.h" />
+    <ClInclude Include="src\GameScreenManager.h" />
+    <ClInclude Include="src\GameScreenTest.h" />
     <ClInclude Include="src\LevelMap.h" />
     <ClInclude Include="src\ParticalSystem.h" />
     <ClInclude Include="src\PNGLoader.h" />
@@ -592,6 +595,9 @@
     <ClCompile Include="src\Engine\Renderer\Renderer2D.cpp" />
     <ClCompile Include="src\Engine\Renderer\Swapchain.cpp" />
     <ClCompile Include="src\Entry\WindowsSystem.cpp" />
+    <ClCompile Include="src\GameScreen.cpp" />
+    <ClCompile Include="src\GameScreenManager.cpp" />
+    <ClCompile Include="src\GameScreenTest.cpp" />
     <ClCompile Include="src\LevelMap.cpp" />
     <ClCompile Include="src\ParticalSystem.cpp" />
     <ClCompile Include="src\PNGLoader.cpp" />

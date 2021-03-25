@@ -408,11 +408,13 @@ namespace Engine
 		ImGui_ImplDX11_Init(mDevice, mDeviceContext);
 		ImGui::StyleColorsDark();
 
+		mDeviceMGR = new D3D11Device(mDevice, mDeviceContext);
 
 		// Create the viewport.
 		mDeviceContext->RSSetViewports(1, &viewport);
 
 		AssetManager::GetInstance();
+
 
 		// Create two cameras
 		CameraManager::Get()->Add(new Camera(XMFLOAT4(0.0f, 0.0f, -1.0f, 1.0f)));
@@ -423,9 +425,10 @@ namespace Engine
 
 		InputManager::GetInstance()->BindCommandToButton(KEY_Q, &CameraManager::Get()->CBCycleNext);
 		InputManager::GetInstance()->BindCommandToButton(KEY_E, &CameraManager::Get()->CBCyclePrevious);
-		mDeviceMGR = new D3D11Device(mDevice, mDeviceContext);
 
  		AssetManager::GetInstance()->LoadShader(mDeviceMGR, std::string("Default"), std::string("quadshader.fx"));
+
+		mGameScreenManager = new GameScreenManager(mDeviceMGR, SCREEN_TEST);
 
 		AudioManager::GetInstance()->LoadSound(std::string("TestFile"), std::string("Sounds/zip.wav"));
 		//AudioManager::GetInstance()->PlaySoundFile(std::string("TestFile"), -100.0f); // TODO: implement volume WARNING THE SOUND FILE IS EXTREMELY LOUD!!
@@ -476,6 +479,7 @@ namespace Engine
 
 	void D311Context::Shutdown()
 	{
+
 		if (ThingsToRender.size() >= 1)
 		{
 			ThingsToRender.clear();
@@ -516,7 +520,7 @@ namespace Engine
 
 	void D311Context::OnUpdate(float deltaTime)
 	{
-		CameraManager::Get()->Update(deltaTime);
+		CameraManager::Get()->Update(deltaTime); // Belongs in core scene update loop
 
 		mTempSprite->Update(deltaTime);
 
@@ -528,14 +532,30 @@ namespace Engine
 	{
 		mDeviceContext->ClearRenderTargetView(mRenderTargetView, DirectX::Colors::SeaGreen);
 
-		for (auto Thing : ThingsToRender)
+        if (mGameScreenManager->getScreen())
+            mGameScreenManager->Update(deltaTime);
+
+		// Cycle cameras on A & D keypresses 
+		if (GetAsyncKeyState(0x51)) // Q key
+			CameraManager::Get()->CyclePrevious();
+		if (GetAsyncKeyState(0x45)) // E key
+			CameraManager::Get()->CycleNext();
+	}
+
+
+	void D311Context::RenderScene() {
+		
+		//mDeviceContext->ClearRenderTargetView(mRenderTargetView, DirectX::Colors::SeaGreen);        
+		if (mGameScreenManager->getScreen())
 		{
-			Thing->Draw();
+			mGameScreenManager->Render();
 		}
+
 		mTempSprite->Draw();
 
 		for (ParticleSystem* ps : mParticleSystems)
 			ps->Render();
+
 
 	}
 

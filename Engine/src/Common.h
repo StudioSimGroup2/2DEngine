@@ -78,3 +78,13 @@ struct Rect2D
 };
 
 typedef std::vector<std::vector<int>> TileMap;
+
+
+enum SCREENS
+{
+	SCREEN_TEST = 0,
+	SCREEN_MENU,
+	SCREEN_LEVEL1,
+	SCREEN_LEVEL2,
+	SCREEN_LEVEL3,
+};

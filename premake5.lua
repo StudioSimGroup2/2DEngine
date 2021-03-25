@@ -1,6 +1,7 @@
 workspace "Sleepy Engine"
     architecture "x64"
     startproject "Game"
+	cppdialect "C++17"
 
     configurations
     {

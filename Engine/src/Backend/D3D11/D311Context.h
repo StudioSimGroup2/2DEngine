@@ -1,7 +1,8 @@
 #pragma once
 
-#include "Engine\Renderer\Context.h"
+#include "Engine/Renderer/Context.h"
 #include "Sprite.h"
+#include "GameScreenManager.h"
 
 // TODO: add compiler include path later or Precompiled Header
 
@@ -69,10 +70,13 @@ namespace Engine
 		XMMATRIX mWorldMatrix;
 		XMMATRIX mOrthoMatrix;
 
+
 		//TODO change name 
 		std::vector<Sprite*> ThingsToRender;
 		Sprite* mTempSprite;
 		std::vector<ParticleSystem*> mParticleSystems;
+		GameScreenManager* mGameScreenManager;
+
 
 		AssetManager* mAssetManager;
 		D3D11Device* mDeviceMGR;

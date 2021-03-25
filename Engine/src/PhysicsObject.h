@@ -1,15 +1,15 @@
 #pragma once
-//#include "Sprite.h"
-//#include "Physics.h"
-//class PhysicsObject : public Sprite
-//{
-//public:
-//    PhysicsObject(ID3D11Device* device, const wchar_t* name, Vector2D* Position);
-//    ~PhysicsObject();
-//    void Update(float deltaTime);
-//    void Render(ID3D11DeviceContext* devCon);
-//protected:
-//    Physics* mPhysics;  
-//private:
-//};
+#include "Sprite.h"
+#include "Physics.h"
+class PhysicsObject : public Sprite
+{
+public:
+    PhysicsObject(Device* dev, const std::string& name, const std::string& path, vec2f* position);
+    ~PhysicsObject();
+    void Update(float deltaTime);
+    void Render();
+protected:
+    Physics* mPhysics;  
+private:
+};
 

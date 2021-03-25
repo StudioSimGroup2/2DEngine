@@ -8,7 +8,7 @@
 
 using namespace Engine;
 
-Sprite::Sprite(Device* dev, const std::string& name, const std::string& path, vec2f position)
+Sprite::Sprite(Device* dev, const std::string& name, const std::string& path, vec2f* position)
 {
 	mPosition = position;
 	mName = name;
@@ -37,8 +37,8 @@ void Sprite::Draw()
 		return;
 
 #if GRAPHICS_LIBRARY == 0
-	static_cast<D3D11Renderer2D*>(mRenderer)->Draw(mPosition, mSprTexture);
+	static_cast<D3D11Renderer2D*>(mRenderer)->Draw(*mPosition, mSprTexture);
 #elif GRAPHICS_LIBRARY == 1
-	static_cast<OGLRenderer2D*>(mRenderer)->Draw(mPosition, mSprTexture);
+	static_cast<OGLRenderer2D*>(mRenderer)->Draw(*mPosition, mSprTexture);
 #endif
 }

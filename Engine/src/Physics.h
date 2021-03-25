@@ -2,6 +2,7 @@
 
 #include <vector>
 #include "Common.h"
+#include <Utils/Math.h>
 
 
 
@@ -11,26 +12,26 @@
 class Physics 
 {
 public:
-	Physics(Vector2D* position);
+	Physics(vec2f* position);
 	~Physics();
 	void Update(float dT);
 	void ResetForces();
 
 	void chageGrounded() { mGrounded != mGrounded; };
-	void AddThrust(Vector2D thrust);
+	void AddThrust(vec2f thrust);
 	
-	std::vector<Vector2D> actingForces;
+	std::vector<vec2f> actingForces;
 
 private:
 	void UpdateForces(float dT);
 	void UpdateAcceleration();
 
 	bool mGrounded = true;
-	Vector2D mNetForce;
-	Vector2D mThrust;
-	Vector2D mNetAcceleration;
-	Vector2D mCurrentVelocity;
-	Vector2D* mPosition;
+	vec2f mNetForce;
+	vec2f mThrust;
+	vec2f mNetAcceleration;
+	vec2f mCurrentVelocity;
+	vec2f* mPosition;
 	float mMass;
 	float mWeight;
 
