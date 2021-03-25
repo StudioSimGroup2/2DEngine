@@ -433,18 +433,104 @@ namespace Engine
 		AudioManager::GetInstance()->LoadSound(std::string("TestFile"), std::string("Sounds/zip.wav"));
 		//AudioManager::GetInstance()->PlaySoundFile(std::string("TestFile"), -100.0f); // TODO: implement volume WARNING THE SOUND FILE IS EXTREMELY LOUD!!
 
+		testMap = LevelMap::LoadLevelMap((char*)"Resources/TileMaps/XML_Test.xml");
+		for (int X = 0; X <testMap.size(); X++)
+		{
+			for (int Y = 0; Y < testMap[0].size(); Y++)
+			{
+				switch (testMap[X][Y])
+				{
+				case 0:
+				{
+					break;
+				}
+				case 1:
+				{
+					Sprite* mapItem = new Sprite(mDeviceMGR, std::string("Tile ") + std::string(X + "" + Y) + std::string("]"), 
+						std::string("Textures/stone.dds"), vec2f(32.0f * Y, 32.0f * X)); // someone got their x and y coords wrong, i'll fix it later
+					D3D11Renderer2D* re = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDeviceMGR);
+					mapItem->AddRendererComponent(re);
+
+					ThingsToRender.push_back(mapItem);
+					break;
+				}
+				default:
+					break;
+				}
+			}
+		}
+
+		mTempSprite = new Sprite(mDeviceMGR, std::string("Mario"), std::string("Textures/Mario.dds"), vec2f(32.0f));
+		D3D11Renderer2D* renderer = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDeviceMGR);
+		mTempSprite->AddRendererComponent(renderer);
+
+
+		// Particle Props Init	
+		Sprite* particleTex = new Sprite(mDeviceMGR, "Partical Texture", "Resources\\Textures\\stone.dds", vec2f(0, 0));
+		D3D11Renderer2D* re = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDeviceMGR);
+		particleTex->AddRendererComponent(re);
+		ParticleProperties prop(vec2f(100, -100), 3, particleTex);
+
+		// Particle System Init
+		mParticleSystems.emplace_back(new ParticleSystem(mDeviceMGR, vec2f(300, 300), prop, 150, Emmitter::Square));
+		mParticleSystems[0]->SetGravity(100);
+		mParticleSystems[0]->SetRate(0.1); // Particles per second
 	}
 
 	void D311Context::Shutdown()
 	{
-		mSwapChain->Release();
-		mDevice->Release();
-		mDeviceContext->Release();
+
+		if (ThingsToRender.size() >= 1)
+		{
+			ThingsToRender.clear();
+		}
+
+		for (ParticleSystem* ps : mParticleSystems)
+			delete ps;
+		mParticleSystems.clear();
+
+		if (mTempSprite)
+		{
+			delete mTempSprite;
+			mTempSprite = nullptr;
+		}
+
+		if (mDeviceMGR)
+		{
+			delete mDeviceMGR;
+			mDeviceMGR = nullptr;
+		}
+			
+
+		if (mRasterState)
+			mRasterState->Release();
+		if (mDepthStencilView)
+			mDepthStencilView->Release();
+		if (mDepthStencilBuffer)
+			mDepthStencilBuffer->Release();
+		if (mRenderTargetView)
+			mRenderTargetView->Release();
+		if (mDevice)
+			mDevice->Release();
+		if (mDeviceContext)
+			mDeviceContext->Release();
+		if (mSwapChain)
+			mSwapChain->Release();
 	}
 
 	void D311Context::OnUpdate(float deltaTime)
 	{
 		CameraManager::Get()->Update(deltaTime); // Belongs in core scene update loop
+
+		mTempSprite->Update(deltaTime);
+
+		for (ParticleSystem* ps : mParticleSystems)
+			ps->Update(deltaTime);
+	}
+
+	void D311Context::RenderScene()
+	{
+		mDeviceContext->ClearRenderTargetView(mRenderTargetView, DirectX::Colors::SeaGreen);
 
         if (mGameScreenManager->getScreen())
             mGameScreenManager->Update(deltaTime);
@@ -456,6 +542,7 @@ namespace Engine
 			CameraManager::Get()->CycleNext();
 	}
 
+
 	void D311Context::RenderScene() {
 		
 		//mDeviceContext->ClearRenderTargetView(mRenderTargetView, DirectX::Colors::SeaGreen);        
@@ -463,6 +550,13 @@ namespace Engine
 		{
 			mGameScreenManager->Render();
 		}
+
+		mTempSprite->Draw();
+
+		for (ParticleSystem* ps : mParticleSystems)
+			ps->Render();
+
+
 	}
 
 	void D311Context::SwapBuffers()
@@ -489,8 +583,20 @@ namespace Engine
 		ImGui::NewFrame();
 
 		// Create core dockspace
-		ImGui::SetNextWindowBgAlpha(1);
-		ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
+		ImGui::SetNextWindowBgAlpha(0);
+		if (mEnableEditor) {
+			ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
+			ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.180392161f, 0.5450980663f, 0.3411764801f, 1.0f));  // THIS IS BECAUSE THERES TRANSPARENCY ISSUES ATM! NOT PERMANENT
+			ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.180392161f, 0.5450980663f, 0.3411764801f, 1.0f)); 	 // THIS IS BECAUSE THERES TRANSPARENCY ISSUES ATM! NOT PERMANENT
+			ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 0.0f);
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
+			ImGui::Begin("Viewport", 0, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+			ImVec2 pos = ImGui::GetCursorScreenPos();
+			ImGui::Image(mRTTShaderResourceView, ImGui::GetWindowContentRegionMax()); // render texture 
+			ImGui::End();
+			ImGui::PopStyleVar(2);
+			ImGui::PopStyleColor(2);
+		}
 		
 		// Menu
 		if (ImGui::BeginMainMenuBar())
@@ -509,10 +615,32 @@ namespace Engine
 				ImGui::EndMenu();
 			}
 
+			if (ImGui::BeginMenu("Edit"))
+			{
+				if (ImGui::MenuItem("Toggle Editor Layout")) {
+					mEnableEditor = !mEnableEditor;
+				}
+				ImGui::EndMenu();
+			}
+
 			if (ImGui::BeginMenu("Add"))
 			{
 				if (ImGui::MenuItem("Sprite")) {
 					// No Impl
+				}
+				if (ImGui::MenuItem("Particle system")) {
+					// Particle Props Init	
+					Sprite* particleTex = new Sprite(mDeviceMGR, "Partical Texture", "Resources\\Textures\\stone.dds", vec2f(0, 0));
+					D3D11Renderer2D* re = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDeviceMGR);
+					particleTex->AddRendererComponent(re);
+					ParticleProperties prop(vec2f(0, 0), 3, particleTex);
+
+					// Particle System Init
+					ParticleSystem* temp = new ParticleSystem(mDeviceMGR, vec2f(0, 0), prop, 150, Emmitter::Square);
+					temp->SetGravity(100);
+					temp->SetRate(0.1); // Particles per second
+					mParticleSystems.emplace_back(temp);
+	
 				}
 				ImGui::EndMenu();
 			}
@@ -522,16 +650,7 @@ namespace Engine
 
 
 		// Viewport
-		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.180392161f, 0.5450980663f, 0.3411764801f, 1.0f));  // THIS IS BECAUSE THERES TRANSPARENCY ISSUES ATM! NOT PERMANENT
-		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.180392161f, 0.5450980663f, 0.3411764801f, 1.0f)); 	 // THIS IS BECAUSE THERES TRANSPARENCY ISSUES ATM! NOT PERMANENT
-		ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 0.0f);
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
-		ImGui::Begin("Viewport", 0, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
-		ImVec2 pos = ImGui::GetCursorScreenPos();
-		ImGui::Image(mRTTShaderResourceView, ImGui::GetWindowContentRegionMax()); // render texture 
-		ImGui::End();
-		ImGui::PopStyleVar(2);
-		ImGui::PopStyleColor(2);
+	
 
 		//
 		// TEMP
@@ -545,12 +664,55 @@ namespace Engine
 		ImGui::Text("MARIO AND TILE MAP WILL GO HERE LATER!");
 		ImGui::Text("REQUIRES OTHERS TO EXPOSE DATA FOR ME");
 
+		int index = 0;
+		for (ParticleSystem* ps : mParticleSystems) {
+			char label[20] = { 0 };
+			sprintf_s(label, "Particle system %d", index);
+			if (ImGui::TreeNode(label)) {
+				ps->ShowEmmiterIcon(true);
+				ImGui::Columns(2, "locations");
+				ImGui::Text("Velocity");
+				ImGui::Spacing();
+				ImGui::Text("Emitter Position");
+				ImGui::Spacing();
+				ImGui::Spacing();
+				ImGui::Text("Emitter Size");
+				ImGui::Spacing();
+				ImGui::Spacing();
+				ImGui::Text("Emission Rate\n(seconds)");
+				ImGui::Spacing();
+				ImGui::Text("Gravity");
+				ImGui::Spacing();
+				ImGui::Text("Lifetime (seconds)");
+				ImGui::Spacing();
+				ImGui::Text("Texture");
+
+				ImGui::NextColumn();
+
+				ImGui::DragFloat2("##Velocity", &mParticleSystems[index]->GetVelocity().x, 1.0f);
+				ImGui::DragFloat2("##Pos", &mParticleSystems[index]->GetPosition().x, 1.0f);
+				ImGui::DragFloat2("##Size", &mParticleSystems[index]->GetSize().x, 1.0f);
+				ImGui::DragFloat("##Rate", &mParticleSystems[index]->GetRate(), .025f);
+				ImGui::Spacing();
+				ImGui::Spacing();
+				ImGui::Spacing();
+				ImGui::DragFloat("##Gravity", &mParticleSystems[index]->GetGravity(), 1.0f);
+				ImGui::DragFloat("##Lifetime", &mParticleSystems[index]->GetLifetime(), 0.25f);
+				//ImGui::Image(, ImVec2(32,32)); // Sprite used in particle system
+
+				ImGui::TreePop();
+				ImGui::Columns();
+			} else
+				ps->ShowEmmiterIcon(false);
+
+			index++;
+		}
 
 		ImGui::Separator();
 		ImGui::Text("Cameras");
 		ImGui::Separator();
 
-		int index = 0;
+		index = 0;
 		for (Camera* c : CameraManager::Get()->AllCameras()) {
 			char label[10] = { 0 };
 			sprintf_s(label, "Camera %d", index);

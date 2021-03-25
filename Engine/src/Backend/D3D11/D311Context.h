@@ -22,6 +22,7 @@
 #include "LevelMap.h"
 #include "Common.h"
 #include "Character.h"
+#include "ParticalSystem.h"
 #include <Backend/D3D11/D3D11Device.h>
 #include <time.h>
 //----------------------------------
@@ -69,12 +70,20 @@ namespace Engine
 		XMMATRIX mWorldMatrix;
 		XMMATRIX mOrthoMatrix;
 
+
+		//TODO change name 
+		std::vector<Sprite*> ThingsToRender;
+		Sprite* mTempSprite;
+		std::vector<ParticleSystem*> mParticleSystems;
 		GameScreenManager* mGameScreenManager;
+
 
 		AssetManager* mAssetManager;
 		D3D11Device* mDeviceMGR;
 
 		TileMap testMap;
+
+		bool mEnableEditor = true; // Very curde, will set up an ImGUi properties struct later - Joe
 
 		// Render to texture for imgui
 		ID3D11Texture2D* mRTTRrenderTargetTexture = nullptr;			// Texture to render to 

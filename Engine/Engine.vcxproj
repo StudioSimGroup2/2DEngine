@@ -518,6 +518,7 @@
     <ClInclude Include="src\GameScreenManager.h" />
     <ClInclude Include="src\GameScreenTest.h" />
     <ClInclude Include="src\LevelMap.h" />
+    <ClInclude Include="src\ParticalSystem.h" />
     <ClInclude Include="src\PNGLoader.h" />
     <ClInclude Include="src\Physics.h" />
     <ClInclude Include="src\PhysicsObject.h" />
@@ -598,6 +599,7 @@
     <ClCompile Include="src\GameScreenManager.cpp" />
     <ClCompile Include="src\GameScreenTest.cpp" />
     <ClCompile Include="src\LevelMap.cpp" />
+    <ClCompile Include="src\ParticalSystem.cpp" />
     <ClCompile Include="src\PNGLoader.cpp" />
     <ClCompile Include="src\Physics.cpp" />
     <ClCompile Include="src\PhysicsObject.cpp" />
