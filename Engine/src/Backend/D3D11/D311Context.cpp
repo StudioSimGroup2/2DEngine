@@ -33,6 +33,13 @@ namespace Engine
 
 	void D311Context::Init()
 	{
+		Logger::Init(GetStdHandle(STD_OUTPUT_HANDLE)); // Get handel to console (for text coloring)
+		Logger::SetLogLevel(LogStates::LOG_ERR | LogStates::LOG_WARN | LogStates::LOG_MSG);
+		
+		Logger::LogMsg("Logger initalised!", __FILE__);
+
+
+
 		HRESULT hr;
 
 		IDXGIFactory* factory;
@@ -551,7 +558,6 @@ namespace Engine
 		for (ParticleSystem* ps : mParticleSystems)
 			ps->Render();
 
-
 	}
 
 	void D311Context::SwapBuffers()
@@ -578,7 +584,7 @@ namespace Engine
 		ImGui::NewFrame();
 
 		// Create core dockspace
-		ImGui::SetNextWindowBgAlpha(0);
+		ImGui::SetNextWindowBgAlpha(1);
 		if (mEnableEditor) {
 			ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 			ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.180392161f, 0.5450980663f, 0.3411764801f, 1.0f));  // THIS IS BECAUSE THERES TRANSPARENCY ISSUES ATM! NOT PERMANENT
@@ -614,6 +620,9 @@ namespace Engine
 			{
 				if (ImGui::MenuItem("Toggle Editor Layout")) {
 					mEnableEditor = !mEnableEditor;
+				}
+				if (ImGui::MenuItem("Show logging console")) {
+					mShowLoggingConsole = !mShowLoggingConsole;
 				}
 				ImGui::EndMenu();
 			}
@@ -741,6 +750,24 @@ namespace Engine
 		ImGui::Begin("Framerate");
 		ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		ImGui::End();
+
+		if (mShowLoggingConsole) {
+			ImGui::Begin("Logger");
+
+			std::string sen;
+			for (std::string s : Logger::GetTextBuffer())	// Format the logs into one giant string... not ideal, as we cant do fancy colouring.
+				sen += s;
+			ImGui::Text("%s", sen.c_str());
+
+			if (ImGui::GetScrollY() >= ImGui::GetScrollMaxY())	// Auto scroll to bottom
+				ImGui::SetScrollHereY(1.0f);
+
+			ImGui::End();
+		}
+
+		if (Logger::GetTextBuffer().size() > 512) { // Clear the console once it exceeds 512 logs
+			Logger::GetTextBuffer().erase(Logger::GetTextBuffer().begin(), Logger::GetTextBuffer().begin() + 256); 
+		}
 
 		ImGui::Render();
 		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());

@@ -1084,6 +1084,9 @@
     <ClInclude Include="src\GameScreen.h" />
     <ClInclude Include="src\GameScreenManager.h" />
     <ClInclude Include="src\GameScreenTest.h" />
+    <ClInclude Include="src\Utils\Logger.h">
+      <Filter>src\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ext\DDSTextureLoader.cpp">
@@ -1213,5 +1216,8 @@
     <ClCompile Include="src\GameScreen.cpp" />
     <ClCompile Include="src\GameScreenManager.cpp" />
     <ClCompile Include="src\GameScreenTest.cpp" />
+    <ClCompile Include="src\Utils\Logger.cpp">
+      <Filter>src\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
