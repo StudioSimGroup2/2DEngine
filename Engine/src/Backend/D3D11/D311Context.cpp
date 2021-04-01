@@ -558,7 +558,6 @@ namespace Engine
 		for (ParticleSystem* ps : mParticleSystems)
 			ps->Render();
 
-
 	}
 
 	void D311Context::SwapBuffers()
@@ -621,6 +620,9 @@ namespace Engine
 			{
 				if (ImGui::MenuItem("Toggle Editor Layout")) {
 					mEnableEditor = !mEnableEditor;
+				}
+				if (ImGui::MenuItem("Show logging console")) {
+					mShowLoggingConsole = !mShowLoggingConsole;
 				}
 				ImGui::EndMenu();
 			}
@@ -749,9 +751,23 @@ namespace Engine
 		ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		ImGui::End();
 
-		ImGui::Begin("Logger");
-		ImGui::Text("%s", Logger::GetTextBuffer().c_str());
-		ImGui::End();
+		if (mShowLoggingConsole) {
+			ImGui::Begin("Logger");
+
+			std::string sen;
+			for (std::string s : Logger::GetTextBuffer())	// Format the logs into one giant string... not ideal, as we cant do fancy colouring.
+				sen += s;
+			ImGui::Text("%s", sen.c_str());
+
+			if (ImGui::GetScrollY() >= ImGui::GetScrollMaxY())	// Auto scroll to bottom
+				ImGui::SetScrollHereY(1.0f);
+
+			ImGui::End();
+		}
+
+		if (Logger::GetTextBuffer().size() > 512) { // Clear the console once it exceeds 512 logs
+			Logger::GetTextBuffer().erase(Logger::GetTextBuffer().begin(), Logger::GetTextBuffer().begin() + 256); 
+		}
 
 		ImGui::Render();
 		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());

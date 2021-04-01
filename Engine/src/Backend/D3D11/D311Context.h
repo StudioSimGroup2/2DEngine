@@ -86,6 +86,7 @@ namespace Engine
 		TileMap testMap;
 
 		bool mEnableEditor = true; // Very curde, will set up an ImGUi properties struct later - Joe
+		bool mShowLoggingConsole = true;
 
 		// Render to texture for imgui
 		ID3D11Texture2D* mRTTRrenderTargetTexture = nullptr;			// Texture to render to 
