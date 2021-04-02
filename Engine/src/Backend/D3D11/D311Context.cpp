@@ -440,38 +440,6 @@ namespace Engine
 		AudioManager::GetInstance()->LoadSound(std::string("TestFile"), std::string("Sounds/zip.wav"));
 		//AudioManager::GetInstance()->PlaySoundFile(std::string("TestFile"), -100.0f); // TODO: implement volume WARNING THE SOUND FILE IS EXTREMELY LOUD!!
 
-		testMap = LevelMap::LoadLevelMap((char*)"Resources/TileMaps/XML_Test.xml");
-		for (int X = 0; X <testMap.size(); X++)
-		{
-			for (int Y = 0; Y < testMap[0].size(); Y++)
-			{
-				switch (testMap[X][Y])
-				{
-				case 0:
-				{
-					break;
-				}
-				case 1:
-				{
-					Sprite* mapItem = new Sprite(mDeviceMGR, std::string("Tile ") + std::string(X + "" + Y) + std::string("]"), 
-						std::string("Textures/stone.dds"), &vec2f(32.0f * Y, 32.0f * X)); // someone got their x and y coords wrong, i'll fix it later
-					D3D11Renderer2D* re = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDeviceMGR);
-					mapItem->AddRendererComponent(re);
-
-					ThingsToRender.push_back(mapItem);
-					break;
-				}
-				default:
-					break;
-				}
-			}
-		}
-
-		mTempSprite = new Sprite(mDeviceMGR, std::string("Mario"), std::string("Textures/Mario.dds"), &vec2f(32.0f));
-		D3D11Renderer2D* renderer = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDeviceMGR);
-		mTempSprite->AddRendererComponent(renderer);
-
-
 		// Particle Props Init	
 		Sprite* particleTex = new Sprite(mDeviceMGR, "Partical Texture", "Resources\\Textures\\stone.dds", &vec2f(0, 0));
 		D3D11Renderer2D* re = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDeviceMGR);
@@ -486,21 +454,9 @@ namespace Engine
 
 	void D311Context::Shutdown()
 	{
-
-		if (ThingsToRender.size() >= 1)
-		{
-			ThingsToRender.clear();
-		}
-
 		for (ParticleSystem* ps : mParticleSystems)
 			delete ps;
 		mParticleSystems.clear();
-
-		if (mTempSprite)
-		{
-			delete mTempSprite;
-			mTempSprite = nullptr;
-		}
 
 		if (mDeviceMGR)
 		{
@@ -529,7 +485,6 @@ namespace Engine
 	{
 		CameraManager::Get()->Update(deltaTime); // Belongs in core scene update loop
 
-		mTempSprite->Update(deltaTime);
         if (mGameScreenManager->getScreen())
             mGameScreenManager->Update(deltaTime);
 
@@ -552,8 +507,6 @@ namespace Engine
 		{
 			mGameScreenManager->Render();
 		}
-
-		mTempSprite->Draw();
 
 		for (ParticleSystem* ps : mParticleSystems)
 			ps->Render();
@@ -711,6 +664,18 @@ namespace Engine
 
 			index++;
 		}
+
+		//Display Properties of Characters
+		index = 0;
+		for (Character* Characters : mGameScreenManager->getScreen()->GetCharacters())
+		{
+			char label[256] = { 0 };
+			sprintf_s(label, "Character: %s", Characters->GetName().c_str());
+			if (ImGui::TreeNode(label)) {
+				ImGui::TreePop();
+			}
+		}
+
 
 		ImGui::Separator();
 		ImGui::Text("Cameras");

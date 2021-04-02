@@ -21,6 +21,7 @@ public:
 
 	void SetPosition(vec2f* newPosition) { mPosition = newPosition; }
 	const vec2f* GetPosition() const { return mPosition; }
+	std::string GetName() { return mName; };
 
 private:
 	std::string mName;

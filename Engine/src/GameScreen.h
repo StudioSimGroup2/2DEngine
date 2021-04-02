@@ -21,8 +21,19 @@ public:
 	virtual void Render();
 	int ScreenSelection = 0;
 
+	std::vector<Character*> GetCharacters() { return mCharacters; }
+
+	
+
 protected:
 	Engine::D3D11Device* mDevice;
+
+	std::vector<Sprite*> ThingsToRender;
+	std::vector<Character*> mCharacters;
+
+	//Remove
+	Character* TestCharacter;
+	TileMap testMap;
 
 private:
 

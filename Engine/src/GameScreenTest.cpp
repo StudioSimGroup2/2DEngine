@@ -85,4 +85,6 @@ void GameScreenTest::Initalise()
 	TestCharacter = new Character(mDevice, "Test Character", "Textures/Mario.dds", Position);
 	D3D11Renderer2D* re = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDevice);
 	TestCharacter->AddRendererComponent(re);
+
+	mCharacters.push_back(TestCharacter);
 }

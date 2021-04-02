@@ -63,7 +63,6 @@ void Physics::ResetForces()
 void Physics::AddThrust(vec2f thrust)
 {
 	actingForces.push_back(thrust);
-
 }
 
 void Physics::Update(float dT)

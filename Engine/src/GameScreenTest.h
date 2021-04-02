@@ -15,12 +15,7 @@ public:
 	void Initalise();
 private:
 
-	std::vector<Sprite*> ThingsToRender;
-	Sprite* mTempSprite;
-	//Remove
-	Sprite* TestSprite;
-	Character* TestCharacter;
-	TileMap testMap;
+	
 };
 
 

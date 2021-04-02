@@ -74,16 +74,17 @@ namespace Engine
 
 
 		//TODO change name 
-		std::vector<Sprite*> ThingsToRender;
-		Sprite* mTempSprite;
-		std::vector<ParticleSystem*> mParticleSystems;
 		GameScreenManager* mGameScreenManager;
+
+		//These should be in the GameScreenTest
+		//Move IMGUI to GameScreenTest too so it doesn't render on playable screens & less work needs to be done to fix OGLContext
+		std::vector<ParticleSystem*> mParticleSystems;
+		std::vector<Character*> mCharacters;
+	
 
 
 		AssetManager* mAssetManager;
 		D3D11Device* mDeviceMGR;
-
-		TileMap testMap;
 
 		bool mEnableEditor = true; // Very curde, will set up an ImGUi properties struct later - Joe
 		bool mShowLoggingConsole = true;
