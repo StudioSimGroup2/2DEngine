@@ -1,8 +1,7 @@
 #pragma once
 #include "GameScreen.h"
-#include <Character.h>
-#include <Sprite.h>
-#include "Backend/D3D11/D3D11Device.h"
+
+
 
 class GameScreenTest : public GameScreen
 {

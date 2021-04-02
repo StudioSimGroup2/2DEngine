@@ -10,6 +10,7 @@
 #include <time.h>
 
 #include <Backend/D3D11/D3D11Device.h>
+#include <Backend/D3D11/D3D11Renderer2D.h>
 
 class GameScreen
 {
@@ -19,6 +20,7 @@ public:
 
 	virtual void Update(float deltaTime);
 	virtual void Render();
+	void UpdateTileMap(Vector2D Pos, int value); //does not update game logic. Used to update list of things to render
 	int ScreenSelection = 0;
 
 	std::vector<Character*> GetCharacters() { return mCharacters; }
