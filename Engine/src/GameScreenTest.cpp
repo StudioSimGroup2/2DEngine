@@ -82,7 +82,10 @@ void GameScreenTest::Initalise()
 	}
 
 	vec2f* Position = new vec2f(32, 32);
+	vec2f* AIPosition = new vec2f(32, 64);
 	TestCharacter = new Character(mDevice, "Test Character", "Textures/Mario.dds", Position);
+	TestAI = new Character(mDevice, "Test AI", "Textures/Mario.dds", AIPosition);
 	D3D11Renderer2D* re = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDevice);
 	TestCharacter->AddRendererComponent(re);
+	TestAI->AddRendererComponent(re);
 }

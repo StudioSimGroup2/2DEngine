@@ -1089,7 +1089,7 @@
     <ClInclude Include="src\Utils\Windows\WindowsTextureCompiler.h">
       <Filter>src\Utils\Windows</Filter>
     </ClInclude>
-    <ClInclude Include="AI.h">
+    <ClInclude Include="src\AI.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1226,7 +1226,7 @@
     <ClCompile Include="src\Utils\Windows\WindowsTextureCompiler.cpp">
       <Filter>src\Utils\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="AI.cpp">
+    <ClCompile Include="src\AI.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

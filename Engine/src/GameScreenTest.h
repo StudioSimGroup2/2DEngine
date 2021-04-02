@@ -20,6 +20,7 @@ private:
 	//Remove
 	Sprite* TestSprite;
 	Character* TestCharacter;
+	Character* TestAI;
 	TileMap testMap;
 };
 

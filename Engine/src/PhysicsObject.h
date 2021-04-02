@@ -1,6 +1,8 @@
 #pragma once
 #include "Sprite.h"
 #include "Physics.h"
+#include "AI.h"
+
 class PhysicsObject : public Sprite
 {
 public:
@@ -9,7 +11,8 @@ public:
     void Update(float deltaTime);
     void Render();
 protected:
-    Physics* mPhysics;  
+    Physics* mPhysics;
+    AI* mAI;
 private:
 };
 

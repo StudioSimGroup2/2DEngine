@@ -191,7 +191,6 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="AI.h" />
     <ClInclude Include="ext\DDSTextureLoader.h" />
     <ClInclude Include="ext\GLM\common.hpp" />
     <ClInclude Include="ext\GLM\detail\_features.hpp" />
@@ -487,6 +486,7 @@
     <ClInclude Include="ext\TinyXML\tinyxml.h" />
     <ClInclude Include="ext\drwav\dr_wav.h" />
     <ClInclude Include="ext\stb\stb_image.h" />
+    <ClInclude Include="src\AI.h" />
     <ClInclude Include="src\Backend\D3D11\D311Context.h" />
     <ClInclude Include="src\Backend\D3D11\D3D11Camera.h" />
     <ClInclude Include="src\Backend\D3D11\D3D11Device.h" />
@@ -532,7 +532,6 @@
     <ClInclude Include="src\Utils\Windows\WindowsTextureCompiler.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AI.cpp" />
     <ClCompile Include="ext\DDSTextureLoader.cpp" />
     <ClCompile Include="ext\GLM\detail\glm.cpp" />
     <ClCompile Include="ext\Glad\glad.c" />
@@ -541,6 +540,7 @@
     <ClCompile Include="ext\TinyXML\tinyxmlerror.cpp" />
     <ClCompile Include="ext\TinyXML\tinyxmlparser.cpp" />
     <ClCompile Include="ext\drwav\dr_wav_impl.c" />
+    <ClCompile Include="src\AI.cpp" />
     <ClCompile Include="src\Backend\D3D11\D311Context.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugOGL|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseOGL|x64'">true</ExcludedFromBuild>
