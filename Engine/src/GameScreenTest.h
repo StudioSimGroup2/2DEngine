@@ -14,6 +14,9 @@ public:
 	void Initalise();
 private:
 
+	TileMap testMap;
+	Character* TestCharacter;
+
 	
 };
 

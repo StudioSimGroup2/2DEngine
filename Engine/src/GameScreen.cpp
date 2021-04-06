@@ -7,6 +7,7 @@ GameScreen::GameScreen(Engine::D3D11Device* Device)
 
 GameScreen::~GameScreen()
 {
+	//TODO DELETE EVERYTHING
 }
 
 void GameScreen::Render()

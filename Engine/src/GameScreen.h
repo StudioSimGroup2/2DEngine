@@ -2,12 +2,15 @@
 #include <d3d11.h>
 #include <directxmath.h>
 #include <vector>
-
-#include "LevelMap.h"
-#include "Common.h"
-#include "Character.h"
-#include "TinyXML/tinyxml.h"
 #include <time.h>
+
+#include "Common.h"
+#include "TinyXML/tinyxml.h"
+#include "LevelMap.h"
+#include "Character.h"
+#include "ParticalSystem.h"
+
+
 
 #include <Backend/D3D11/D3D11Device.h>
 #include <Backend/D3D11/D3D11Renderer2D.h>
@@ -30,13 +33,9 @@ public:
 protected:
 	Engine::D3D11Device* mDevice;
 
-	std::vector<Sprite*> ThingsToRender;
+	std::vector<Sprite*> ThingsToRender; //List of all characters in the given scenes
 	std::vector<Character*> mCharacters;
-
-	//Remove
-	Character* TestCharacter;
-	TileMap testMap;
-
+	std::vector<ParticleSystem*> mParticleSystems;
 private:
 
 };

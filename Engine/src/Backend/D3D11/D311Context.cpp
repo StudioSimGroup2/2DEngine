@@ -491,6 +491,11 @@ namespace Engine
 
 		for (ParticleSystem* ps : mParticleSystems)
 			ps->Update(deltaTime);
+		//test
+		if(GetAsyncKeyState(0x69)) // numpad 9
+		{
+			mGameScreenManager->changeScreens(SCREEN_TEST);
+		}
 	}
 
 	void D311Context::RenderScene() {
