@@ -1,5 +1,10 @@
 #include "LevelMap.h"
 
+#include <vector>
+#include <iostream>
+#include <istream>
+#include <fstream>
+
 
 TileMap LevelMap::LoadLevelMap(char* FilePath)
 {
@@ -10,14 +15,14 @@ TileMap LevelMap::LoadLevelMap(char* FilePath)
 	TiXmlDocument doc;
 	if (!doc.LoadFile(FilePath))
 	{
-		cerr << doc.ErrorDesc() << endl;
+		std::cerr << doc.ErrorDesc() << std::endl;
 	}
 
 	//Now get the root element.
 	TiXmlElement* root = doc.FirstChildElement();
 	if (!root)
 	{
-		cerr << "Failed to load file: No root element." << endl;
+		std::cerr << "Failed to load file: No root element." << std::endl;
 		doc.Clear();
 	}
 	else
@@ -27,7 +32,7 @@ TileMap LevelMap::LoadLevelMap(char* FilePath)
 		int height = atoi(root->Attribute("height"));
 		int w = 0, h = 0;
 		TiXmlElement* HELP = root->FirstChildElement();
-		vector<int> Row;
+		std::vector<int> Row;
 		for (TiXmlElement* tileElement = root->FirstChildElement("tilemap")->FirstChildElement("tile"); tileElement != NULL; tileElement = tileElement->NextSiblingElement())
 		{
 			//Populate this position in the array with the tile type.
@@ -64,11 +69,10 @@ TileMap LevelMap::LoadLevelMap(char* FilePath)
 		}
 	}*/
 
-
 	return tilemap;
 }
 
-void LevelMap::SaveTileMap(TileMap Map, string Address)
+void LevelMap::SaveTileMap(TileMap Map, std::string Address)
 {
 	//------------------------------------------------------------------------
 	//Test for saving to XML file
@@ -101,7 +105,7 @@ void LevelMap::SaveTileMap(TileMap Map, string Address)
 	Doc.LinkEndChild(Root);
 	if (!Doc.SaveFile(Address.c_str()));
 	{
-		cerr << Doc.ErrorDesc() << endl;
+		std::cerr << Doc.ErrorDesc() << std::endl;
 	}
 	//------------------------------------------------------------------------
 }

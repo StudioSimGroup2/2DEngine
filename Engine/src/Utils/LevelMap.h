@@ -1,19 +1,18 @@
 #pragma once
-#include <vector>
+
+#include "../../TinyXML/src/tinyxml.h"
+
 #include <iostream>
-#include <istream>
-#include <fstream>
 #include <sstream>
+
+#include "Engine/Core.h"
 #include "Common.h"
-#include <TinyXML/tinyxml.h>
 
-using namespace std;
-
-class LevelMap
+class ENGINE_API LevelMap
 {
 public:
 	static TileMap LoadLevelMap(char* FilePath);
-	static void SaveTileMap(TileMap Map, string Address);
+	static void SaveTileMap(TileMap Map, std::string Address);
 	int getWidth() { return mWidth; };
 	int getHeight() { return mHeight; };
 private:

@@ -1,8 +1,11 @@
 #pragma once
 
-#include <OpenAL-Soft/al.h>
-#include <drwav/dr_wav.h>
+//#include "OpenAL-Soft/al.h"
+//#include "drwav/dr_wav.h"
+
 #include <string>
+#include "../../ext/OpenAL-Soft/al.h"
+#include "../../ext/drwav/dr_wav.h"
 
 class Sound
 {

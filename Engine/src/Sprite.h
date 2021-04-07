@@ -7,12 +7,10 @@
 
 using namespace Engine;
 
-//todo: turn this in to a virtual class, 
-
-class Sprite
+class ENGINE_API Sprite
 {
 public:
-	Sprite(Device* dev, const std::string& name, const std::string& path, vec2f* position);
+	Sprite(char* name, vec2f* position, Texture* tex = nullptr, char* texName = '\0', char* texPath = '\0');
 	~Sprite();
 
 	virtual void AddRendererComponent(Renderer2D* renderer);
@@ -30,11 +28,5 @@ private:
 	Texture* mSprTexture = nullptr;
 	Renderer2D* mRenderer = nullptr;
 
-	AssetManager* mAssetManager;
-
-	int mScreenWidth, mScreenHeight;
 	int mWidth, mHeight;
-	float mPosX, mPosY;
-	int mPreviousPosX = 0, mPreviousPosY = 0;
 };
-

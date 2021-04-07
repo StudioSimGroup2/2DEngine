@@ -35,7 +35,8 @@ project "Engine"
 	links
 	{
 		"OpenAL32.lib",
-		"ImGui"
+		"ImGui",
+		"TinyXML"
 	}
 
     includedirs
@@ -65,6 +66,7 @@ project "Engine"
     filter "configurations:DebugOGL"
         defines "ENGINE_DEBUG_OGL"
         symbols "On"
+		runtime "Debug"
 		excludes
 		{
 			"%{prj.name}/src/Backend/D3D11/**.h",
@@ -79,6 +81,7 @@ project "Engine"
 	filter "configurations:DebugD3D11"
         defines "ENGINE_DEBUG_D3D11"
         symbols "On"
+		runtime "Debug"
 		excludes
 		{
 			"%{prj.name}/src/Backend/OGL/**.h",
@@ -93,6 +96,7 @@ project "Engine"
     filter "configurations:ReleaseOGL"
         defines "ENGINE_RELEASE_OGL"
         optimize "On"
+		runtime "Release"
 		excludes
 		{
 			"%{prj.name}/src/Backend/D3D11/**.h",
@@ -107,6 +111,7 @@ project "Engine"
 	filter "configurations:ReleaseD3D11"
         defines "ENGINE_RELEASE_D3D11"
         optimize "On"
+		runtime "Release"
 		excludes
 		{
 			"%{prj.name}/src/Backend/OGL/**.h",
@@ -140,6 +145,9 @@ project "ImGui"
 	}
 
     filter "configurations:DebugOGL"
+	    defines "ENGINE_DEBUG_OGL"
+        symbols "On"
+		runtime "Debug"
 		excludes
 		{
 			"%{prj.name}/src/D3D11/**.h",
@@ -147,6 +155,9 @@ project "ImGui"
 		}
 
 	filter "configurations:DebugD3D11"
+	    defines "ENGINE_DEBUG_D3D11"
+        symbols "On"
+		runtime "Debug"
 		excludes
 		{
 			"%{prj.name}/src/OpenGL/**.h",
@@ -154,6 +165,9 @@ project "ImGui"
 		}
 
     filter "configurations:ReleaseOGL"
+	    defines "ENGINE_RELEASE_OGL"
+        optimize "On"
+		runtime "Release"
 		excludes
 		{
 			"%{prj.name}/src/D3D11/**.h",
@@ -161,13 +175,56 @@ project "ImGui"
 		}		
 	
 	filter "configurations:ReleaseD3D11"
+	    defines "ENGINE_RELEASE_D3D11"
+        optimize "On"
+		runtime "Release"
 		excludes
 		{
 			"%{prj.name}/src/OpenGL/**.h",
 			"%{prj.name}/src/OpenGL/**.cpp"
-		}		    
+		}		 
 
-		
+project "TinyXML"
+    location "TinyXML"
+    kind "StaticLib"
+    language "C++"
+	buildoptions "/MTd"
+	
+	files
+    {
+        "%{prj.name}/src/**.h",
+		"%{prj.name}/src/**.c",
+        "%{prj.name}/src/**.cpp"
+    }
+
+    targetdir ("bin/".. outputdir .. "/%{prj.name}")
+    objdir ("bin-int/".. outputdir .. "/%{prj.name}")
+
+	includedirs
+	{
+		"%{wks.location}/Engine/ext/"
+	}
+	
+	    filter "configurations:DebugOGL"
+	    defines "ENGINE_DEBUG_OGL"
+        symbols "On"
+		runtime "Debug"
+
+	filter "configurations:DebugD3D11"
+	    defines "ENGINE_DEBUG_D3D11"
+        symbols "On"
+		runtime "Debug"
+
+    filter "configurations:ReleaseOGL"
+	    defines "ENGINE_RELEASE_OGL"
+        optimize "On"
+		runtime "Release"
+	
+	filter "configurations:ReleaseD3D11"
+	    defines "ENGINE_RELEASE_D3D11"
+        optimize "On"
+		runtime "Release"
+
 project "Game"
         location "Game"
         kind "ConsoleApp"
@@ -184,8 +241,9 @@ project "Game"
 
         includedirs
         {
-            "Engine/src"
-        }
+            "Engine/src",
+			"Engine/ext"
+		}
 
         links
         {
@@ -202,18 +260,22 @@ project "Game"
             "WINDOWS_PLATFORM"
 		}
 
-	filter "configurations:Debug"
+	filter "configurations:DebugOGL"
 		defines "ENGINE_DEBUG_OGL"
+		runtime "Debug"
 		symbols "On"
 
-	filter "configurations:Debug"
+	filter "configurations:DebugD3D11"
 		defines "ENGINE_DEBUG_D3D11"
+		runtime "Debug"
 		symbols "On"
 
-	filter "configurations:Release"
+	filter "configurations:ReleaseOGL"
 		defines "ENGINE_RELEASE_OGL"
+		runtime "Release"
 		optimize "On"
 		
-	filter "configurations:Release"
+	filter "configurations:ReleaseD3D11"
 		defines "ENGINE_RELEASE_D3D11"
+		runtime "Release"
 		optimize "On"

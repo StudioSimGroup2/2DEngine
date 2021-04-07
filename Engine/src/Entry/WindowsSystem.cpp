@@ -1,25 +1,21 @@
 #include "WindowsSystem.h"
 
-#include "imgui.h"
-#include "imgui_impl_win32.h"
-
 #include "Engine/Defines.h"
 #include "Engine/Input/InputManager.h"
 
 #if GRAPHICS_LIBRARY == 0
 #include "Backend\D3D11\D311Context.h"
-#include "D3D11\imgui_impl_dx11.h"
 #elif GRAPHICS_LIBRARY == 1
 #include "Backend\OGL\OpenGLContext.h"
-#include "OpenGL\imgui_impl_opengl3.h"
 #endif
 
-extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam); // Extern from IMGUI (used to get input data)
+#include <windowsx.h>
 
-void HelloWorld()
-{
-	std::cout << "Hello";
-}
+#include <imgui.h>
+#include <imgui_impl_win32.h>
+#include <iostream>
+
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT uMSG, WPARAM wParam, LPARAM lParam);
 
 namespace Engine
 {
@@ -53,24 +49,20 @@ namespace Engine
 
 		mCurrentTime = std::chrono::high_resolution_clock::now();
 
-		while (WM_QUIT != msg.message)
+		mNewTime = std::chrono::high_resolution_clock::now();
+		mFrameTime = mNewTime - mCurrentTime;
+		mCurrentTime = mNewTime;
+
+		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
 		{
-			mNewTime = std::chrono::high_resolution_clock::now();
-			mFrameTime = mNewTime - mCurrentTime;
-			mCurrentTime = mNewTime;
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
 
-			if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
-			{
-				TranslateMessage(&msg);
-				DispatchMessage(&msg);
-			}
-
-			if (mRenderer)
-			{
-				mRenderer->OnUpdate(mFrameTime.count());
-				mRenderer->SwapBuffers();
-			}
-
+		if (mRenderer)
+		{
+			mRenderer->OnUpdate(mFrameTime.count());  //everything is updating too fast, we need to cap the update speed
+			mRenderer->SwapBuffers();
 		}
 	}
 
@@ -84,16 +76,6 @@ namespace Engine
 
 	void WindowsSystem::Shutdown()
 	{
-		ImGui_ImplWin32_Shutdown();
-
-#if GRAPHICS_LIBRARY == 1
-		ImGui_ImplOpenGL3_Shutdown();
-#else
-		ImGui_ImplDX11_Shutdown();
-#endif
-
-		ImGui::DestroyContext();
-		
 		if (mRenderer)
 		{
 			delete mRenderer;
@@ -139,7 +121,7 @@ namespace Engine
 	}
 
 	LRESULT CALLBACK WndProc(HWND hwnd, UINT uMSG, WPARAM wParam, LPARAM lParam)
-	{	
+	{
 		if (ImGui_ImplWin32_WndProcHandler(hwnd, uMSG, wParam, lParam))
 			return true;
 
@@ -151,17 +133,78 @@ namespace Engine
 		{
 			window = (Window*)((LPCREATESTRUCT)lParam)->lpCreateParams;
 			SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR)window);
-		break;
+			break;
 		}
-		
+
+		case WM_MOUSEMOVE:
+		{
+			InputManager::GetInstance()->SetMousePosition(vec2f((float)LOWORD(lParam), (float)HIWORD(lParam)));
+		}
+		break;
+
 		case WM_KEYDOWN:
 		{
-			InputManager::GetInstance()->ProcessInput(wParam);
+			InputManager::GetInstance()->KeyPress(wParam);
 		}
 		break;
+
 		case WM_KEYUP:
 		{
-			
+			InputManager::GetInstance()->KeyRelease(wParam);
+		}
+		break;
+
+		case WM_LBUTTONDOWN:
+		{
+			InputManager::GetInstance()->KeyPress(MOUSE_LB);
+		}
+		break;
+
+		case WM_LBUTTONUP:
+		{
+			InputManager::GetInstance()->KeyRelease(MOUSE_LB);
+		}
+		break;
+
+		case WM_MBUTTONDOWN:
+		{
+			InputManager::GetInstance()->KeyPress(MOUSE_MB);
+		}
+		break;
+
+		case WM_MBUTTONUP:
+		{
+			InputManager::GetInstance()->KeyRelease(MOUSE_MB);
+		}
+		break;
+
+		case WM_RBUTTONDOWN:
+		{
+			InputManager::GetInstance()->KeyPress(MOUSE_RB);
+		}
+		break;
+
+		case WM_RBUTTONUP:
+		{
+			InputManager::GetInstance()->KeyRelease(MOUSE_RB);
+		}
+		break;
+
+		case WM_XBUTTONDOWN:
+		{
+			if (wParam == 65568)
+				InputManager::GetInstance()->KeyPress(MOUSE_BB);
+			else
+				InputManager::GetInstance()->KeyPress(MOUSE_FB);
+		}
+		break;
+
+		case WM_XBUTTONUP:
+		{
+			if (wParam == 65536)
+				InputManager::GetInstance()->KeyRelease(MOUSE_BB);
+			else
+				InputManager::GetInstance()->KeyRelease(MOUSE_FB);
 		}
 		break;
 
@@ -170,7 +213,7 @@ namespace Engine
 			Window* window = (Window*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
 			::PostQuitMessage(0);
 			window->Shutdown();
-		break;
+			break;
 		}
 
 		default:

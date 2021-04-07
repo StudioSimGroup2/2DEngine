@@ -1,7 +1,6 @@
 #include "PhysicsObject.h"
 
-
-PhysicsObject::PhysicsObject(Device* dev, const std::string& name, const std::string& path, vec2f* position) : Sprite(dev, name, path, position)
+PhysicsObject::PhysicsObject(char* name, vec2f* position, Texture* tex) : Sprite(name, position, tex)
 {
 	mPhysics = new Physics(position);
 }

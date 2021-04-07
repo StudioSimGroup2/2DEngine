@@ -14,10 +14,11 @@
 #include <windows.h>
 #include <Utils/AssetManager.h>
 #include <Engine/Audio/AudioManager.h>
-#include <LevelMap.h>
 #include "OGLRenderer2D.h"
 #include <Engine/Input/InputManager.h>
 #include <Backend/OGL/OpenGLCamera.h>
+#include <CameraManager.h>
+#include "Engine/Application.h"
 
 #define WGL_CONTEXT_MAJOR_VERSION_ARB     0x2091
 #define WGL_CONTEXT_MINOR_VERSION_ARB     0x2092
@@ -47,7 +48,7 @@ namespace Engine
 
 	void OpenGLContext::Init()
 	{
-		deviceContext = GetDC(mHWND);
+		mDeviceContext = GetDC(mHWND);
 
 		PIXELFORMATDESCRIPTOR pixelFormatDesc;
 		ZeroMemory(&pixelFormatDesc, sizeof(pixelFormatDesc));
@@ -60,11 +61,11 @@ namespace Engine
 		pixelFormatDesc.cStencilBits = 8;
 		pixelFormatDesc.iLayerType = PFD_MAIN_PLANE;
 
-		int pixel = ChoosePixelFormat(deviceContext, &pixelFormatDesc);
-		SetPixelFormat(deviceContext, pixel, &pixelFormatDesc);
+		int pixel = ChoosePixelFormat(mDeviceContext, &pixelFormatDesc);
+		SetPixelFormat(mDeviceContext, pixel, &pixelFormatDesc);
 
-		HGLRC tempRC = wglCreateContext(deviceContext);
-		wglMakeCurrent(deviceContext, tempRC);
+		HGLRC tempRC = wglCreateContext(mDeviceContext);
+		wglMakeCurrent(mDeviceContext, tempRC);
 		PFNWGLCREATECONTEXTATTRIBSARBPROC
 			wglCreateContextAttribsARB = (PFNWGLCREATECONTEXTATTRIBSARBPROC)
 			wglGetProcAddress("wglCreateContextAttribsARB");
@@ -79,11 +80,10 @@ namespace Engine
 			0
 		};
 
-		renderContext = wglCreateContextAttribsARB(deviceContext, 0, attribList);
+		mRenderContext = wglCreateContextAttribsARB(mDeviceContext, 0, attribList);
 		wglMakeCurrent(NULL, NULL);
 		wglDeleteContext(tempRC);
-		wglMakeCurrent(deviceContext, renderContext);
-
+		wglMakeCurrent(mDeviceContext, mRenderContext);
 
 		if (!gladLoadGL())
 		{
@@ -106,90 +106,25 @@ namespace Engine
 		glGenVertexArrays(1, &mRequiredVAO);
 		glBindVertexArray(mRequiredVAO);
 
-		// Setup ImGUI
+		OGLDevice::GetInstance()->SetHGLRC(mRenderContext);
 
-		IMGUI_CHECKVERSION();
-		ImGui::CreateContext();
-		ImGuiIO& io = ImGui::GetIO(); // Currently dont need IO so commented out...
-		ImGui_ImplWin32_Init(mHWND);
-		ImGui_ImplOpenGL3_Init();
-		ImGui::StyleColorsDark();
+		AssetManager::GetInstance()->LoadShader("Default", "default.glsl");
 
 		CameraManager::Get()->Add(new Camera(glm::vec4(0.0f, 0.0f, -1.0f, 1.0f)));
 		CameraManager::Get()->Add(new Camera(glm::vec4(-964.0f, 94.0f, -1.0f, 1.0f)));
+		CameraManager::Get()->GetCameraByIndex(1)->SetStatic(true);
 
 		Camera* cam = CameraManager::Get()->GetPrimaryCamera();
 
 		InputManager::GetInstance()->BindCommandToButton(KEY_Q, &CameraManager::Get()->CBCycleNext);
 		InputManager::GetInstance()->BindCommandToButton(KEY_E, &CameraManager::Get()->CBCyclePrevious);
 
-		//if (GetAsyncKeyState(0x57)) // W key
-//{
-//	mEye.y -= speed;
-//}
-//if (GetAsyncKeyState(0x53)) // S key
-//{
-//	mEye.y += speed;
-//}
-//if (GetAsyncKeyState(0x41)) // A key
-//{
-//	mEye.x += speed;
-//}
-//if (GetAsyncKeyState(0x44)) // D key
-//{
-//	mEye.x -= speed;
-//}
-		AssetManager::GetInstance()->LoadShader(nullptr, std::string("Default"), std::string("default.glsl"));
-
-		AudioManager::GetInstance()->LoadSound(std::string("TestFile"), std::string("Sounds/zip.wav"));
+		AudioManager::GetInstance()->LoadSound("TestFile", "Sounds/zip.wav");
 		//AudioManager::GetInstance()->PlaySoundFile(std::string("TestFile"), -100.0f); // TODO: implement volume WARNING THE SOUND FILE IS EXTREMELY LOUD!!
-
-		testMap = LevelMap::LoadLevelMap((char*)"Resources/TileMaps/XML_Test.xml");
-
-		for (int X = 0; X < testMap.size(); X++)
-		{
-			for (int Y = 0; Y < testMap[0].size(); Y++)
-			{
-				switch (testMap[X][Y])
-				{
-				case 0:
-				{
-
-					break;
-				}
-				case 1:
-				{
-					Sprite* mapItem = new Sprite(nullptr, std::string("Tile ") + std::string(X + "" + Y) + std::string("]"),		// stop creating the same texture multiple times smh
-						std::string("Textures/stone.png"), vec2f(32.0f * Y, 32.0f * X)); // someone got their x and y coords wrong, i'll fix it later
-					OGLRenderer2D* re = new OGLRenderer2D(static_cast<OGLShader*>(AssetManager::GetInstance()->GetShaderByName("Default")));
-					mapItem->AddRendererComponent(re);
-
-					ThingsToRender.push_back(mapItem);
-					break;
-				}
-				default:
-					break;
-				}
-			}
-		}
-
-		mTempSprite = new Sprite(nullptr, std::string("Mario"), std::string("Textures/mario.png"), vec2f(32.0f));
-		OGLRenderer2D* renderer = new OGLRenderer2D(static_cast<OGLShader*>(AssetManager::GetInstance()->GetShaderByName("Default")));
-		mTempSprite->AddRendererComponent(renderer);
 	}
 
 	void OpenGLContext::Shutdown()
 	{
-		if (ThingsToRender.size() >= 1)
-		{
-			ThingsToRender.clear();
-		}
-
-		if (mTempSprite)
-		{
-			delete mTempSprite;
-			mTempSprite = nullptr;
-		}
 	}
 
 	void OpenGLContext::OnUpdate(float deltaTime)
@@ -203,27 +138,11 @@ namespace Engine
 		//glClearColor(0.0f, 0.4f, 0.4f, 1.000000000f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		for (auto Thing : ThingsToRender)
-			Thing->Draw();
+		for (Layer* l : *Application::GetInstance()->GetStack())
+		{
+			l->Render();
+		}
 
-		mTempSprite->Draw();
-
-		//ImGui_ImplOpenGL3_NewFrame();
-		//ImGui_ImplWin32_NewFrame();
-		//ImGui::NewFrame();
-
-		//ImGui::Begin("Temp ImGui window!");
-		//ImGui::Text("Hello world!");
-		//ImGui::End();
-
-		//ImGui::Begin("Framerate");
-		//ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-		//ImGui::End();
-
-		//ImGui::Render();
-		//ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-		CallToSwapBuffers(deviceContext);
+		CallToSwapBuffers(mDeviceContext);
 	}
-
 }

@@ -15,6 +15,9 @@
     <ClInclude Include="src\OpenGL\imgui_impl_opengl3.h">
       <Filter>OpenGL</Filter>
     </ClInclude>
+    <ClInclude Include="src\OpenGL\imgui_impl_win32_opengl.h">
+      <Filter>OpenGL</Filter>
+    </ClInclude>
     <ClInclude Include="src\imconfig.h" />
     <ClInclude Include="src\imgui.h" />
     <ClInclude Include="src\imgui_impl_win32.h" />
@@ -28,6 +31,9 @@
       <Filter>D3D11</Filter>
     </ClCompile>
     <ClCompile Include="src\OpenGL\imgui_impl_opengl3.cpp">
+      <Filter>OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OpenGL\imgui_impl_win32_opengl.cpp">
       <Filter>OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\imgui.cpp" />

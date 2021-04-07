@@ -22,8 +22,10 @@ namespace Engine
 		inline unsigned int GetWidth() const override { return mWidth; }
 		inline unsigned int GetHeight() const override { return mHeight; }
 
-	protected:
-		HWND mHWND;
+		void SetHGLRC(HGLRC rc) { mRenderingContext = rc; }
+
+		HWND GetHWND() { return mHWND; }
+		HGLRC GetHGLRC() { return mRenderingContext; }
 
 	private:
 		virtual void Init(const WindowData& data);
@@ -33,6 +35,9 @@ namespace Engine
 		std::string mTitle;
 		unsigned int mWidth;
 		unsigned int mHeight;
+
+		HWND mHWND;
+		HGLRC mRenderingContext;
 
 		Context* mRenderer;
 

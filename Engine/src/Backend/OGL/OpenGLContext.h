@@ -7,13 +7,10 @@
 #pragma comment(lib, "OpenGL32.lib") // Assuming the user has microsoft SDK. F for linux users
 
 #include "imgui.h"
-#include "imgui_impl_win32.h"
-#include "OpenGL/imgui_impl_opengl3.h"
 
 #include <Glad/glad.h>
 
 #include <Common.h>
-#include "Sprite.h"
 #include <time.h>
 
 namespace Engine
@@ -42,14 +39,14 @@ namespace Engine
 
 		HWND mHWND;
 
-		HDC deviceContext;
-		HGLRC renderContext;
+		HDC mDeviceContext;
+		HGLRC mRenderContext;
 
 		GLuint mRequiredVAO;
 
-		TileMap testMap;
-		std::vector<Sprite*> ThingsToRender;
-		Sprite* mTempSprite;
+
+		bool mEnableEditor = true; // Very curde, will set up an ImGUi properties struct later - Joe
+		bool mShowLoggingConsole = true;
 	};
 }
 

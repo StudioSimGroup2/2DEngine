@@ -8,17 +8,20 @@
 
 using namespace Engine;
 
-Sprite::Sprite(Device* dev, const std::string& name, const std::string& path, vec2f* position)
+Sprite::Sprite(char* name, vec2f* position, Texture* tex, char* texName, char* texPath)
 {
 	mPosition = position;
 	mName = name;
 
-	mSprTexture = AssetManager::GetInstance()->LoadTexture(dev, "Texture: " + name, path);
+	if (tex == nullptr)
+		mSprTexture = AssetManager::GetInstance()->LoadTexture(texName, texPath);
+	else
+		mSprTexture = tex;
 }
 
 Sprite::~Sprite()
 {
-	
+
 }
 
 void Sprite::AddRendererComponent(Renderer2D* renderer)

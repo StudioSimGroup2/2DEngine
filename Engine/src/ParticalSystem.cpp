@@ -1,5 +1,6 @@
 #include "ParticalSystem.h"
 
+#if GRAPHICS_LIBRARY == 0 //DX11
 ParticleSystem::ParticleSystem()
 	: mDevice(nullptr), mPosition(vec2f(100, 100)), mSize(vec2f(100, 100)), mParticleProperties(), mParticleCount(0), mEmmiter(Emmitter::Square)
 {
@@ -48,7 +49,7 @@ ParticleSystem::~ParticleSystem()
 			delete p->Texture;
 	}
 	mParticles.clear();
-	
+
 	if (mParticleProperties.Texture)
 		delete mParticleProperties.Texture;
 
@@ -63,7 +64,7 @@ void ParticleSystem::Update(float dt)
 	switch (mEmmiter)
 	{
 	case Emmitter::Square:
-		mEmmiterIcon->SetPosition(&vec2f(mPosition.x + mSize.x/2, mPosition.y + mSize.y / 2));
+		mEmmiterIcon->SetPosition(&vec2f(mPosition.x + mSize.x / 2, mPosition.y + mSize.y / 2));
 		break;
 
 	case Emmitter::Circle:
@@ -90,16 +91,16 @@ void ParticleSystem::Update(float dt)
 			p->Lifetime = mParticleProperties.Lifetime;
 
 			switch (mEmmiter) {
-				case Emmitter::Square:
-					p->Position = vec2f(rand() % (int)mSize.x + mPosition.x, rand() % (int)mSize.y + mPosition.y); // Respawn in area of square
-					break;
+			case Emmitter::Square:
+				p->Position = vec2f(rand() % (int)mSize.x + mPosition.x, rand() % (int)mSize.y + mPosition.y); // Respawn in area of square
+				break;
 
-				case Emmitter::Circle:
-					float rad = mSize.x * sqrtf(rand() % 11 * 0.1f);	// Returns a value between 0 - 1
-					float theta = (rand() % 11 * 0.1f) * 2 * 3.14159265359;
-					p->Position.x = mPosition.x + rad * cos(theta);
-					p->Position.y = mPosition.y + rad * sin(theta);
-					break;
+			case Emmitter::Circle:
+				float rad = mSize.x * sqrtf(rand() % 11 * 0.1f);	// Returns a value between 0 - 1
+				float theta = (rand() % 11 * 0.1f) * 2 * 3.14159265359;
+				p->Position.x = mPosition.x + rad * cos(theta);
+				p->Position.y = mPosition.y + rad * sin(theta);
+				break;
 			}
 		}
 
@@ -114,11 +115,11 @@ void ParticleSystem::Render()
 {
 	for (ParticleProperties* p : mParticles) {
 		if (p->Alive)
-			p->Texture->Draw();	
+			p->Texture->Draw();
 	}
 
 	if (mShowEmmiterIcon)
-		mEmmiterIcon->Draw(); 
+		mEmmiterIcon->Draw();
 }
 
 void ParticleSystem::InitParticles(size_t count)
@@ -126,24 +127,32 @@ void ParticleSystem::InitParticles(size_t count)
 	switch (mEmmiter)
 	{
 	case Emmitter::Square: {
+
+		Texture* tex = AssetManager::LoadTexture("Square", "Resources\\Textures\\Particle System Inbuilt\\Square.dds");
+
 		for (int i = 0; i < count; i++) {
+
+
 			ParticleProperties* p = new ParticleProperties(mParticleProperties);
 			p->Position = vec2f(rand() % (int)mSize.x + mPosition.x, rand() % (int)mSize.y + mPosition.y);
-			p->Texture = new Sprite(mDevice, "Partical system:", "Resources\\Textures\\Particle System Inbuilt\\Square.dds", &p->Position); 
+			p->Texture = new Sprite("Partical System:", &p->Position, tex);
 			D3D11Renderer2D* re = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDevice);
 			p->Texture->AddRendererComponent(re);
 			mParticles.push_back(p);
 		}
 
 		// Setup the Emmiter icon
+		Texture* icon = AssetManager::LoadTexture("SquareIcon", "Resources\\Textures\\Particle System Inbuilt\\SquareEmmiterIcon.dds");
 		D3D11Renderer2D* re = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDevice);
-		mEmmiterIcon = new Sprite(mDevice, "Partical system:", "Resources\\Textures\\Particle System Inbuilt\\SquareEmmiterIcon.dds", &mPosition);
+		mEmmiterIcon = new Sprite("Partical system:", &mPosition, icon);
 		mEmmiterIcon->AddRendererComponent(re);
 		break;
 	}
 
 	case Emmitter::Circle:
 	{
+		Texture* tex = AssetManager::LoadTexture("Circle", "Resources\\Textures\\Particle System Inbuilt\\Circle.dds");
+
 		for (int i = 0; i < count; i++) {
 			ParticleProperties* p = new ParticleProperties(mParticleProperties);
 
@@ -154,16 +163,17 @@ void ParticleSystem::InitParticles(size_t count)
 			// Convert to cartesian coords
 			p->Position.x = mPosition.x + rad * cos(theta);
 			p->Position.y = mPosition.y + rad * sin(theta);
-			p->Texture = new Sprite(mDevice, "Partical system:", "Resources\\Textures\\Particle System Inbuilt\\Circle.dds", &p->Position);
+			p->Texture = new Sprite("Partical System:", &p->Position, tex);
 
 			D3D11Renderer2D* re = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDevice);
 			p->Texture->AddRendererComponent(re);
 			mParticles.push_back(p);
 		}
 
+		Texture* icon = AssetManager::LoadTexture("SquareIcon", "Resources\\Textures\\Particle System Inbuilt\\CircleEmmiterIcon.dds");
 		// Setup the Emmiter icon
 		D3D11Renderer2D* re = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDevice);
-		mEmmiterIcon = new Sprite(mDevice, "Partical system:", "Resources\\Textures\\Particle System Inbuilt\\CircleEmmiterIcon.dds", &mPosition);
+		mEmmiterIcon = new Sprite("Partical system:", &mPosition, icon);
 		mEmmiterIcon->AddRendererComponent(re);
 		break;
 	}
@@ -175,3 +185,5 @@ void ParticleSystem::InitParticles(size_t count)
 
 	}
 }
+#endif
+

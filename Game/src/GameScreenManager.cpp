@@ -1,18 +1,17 @@
 #include "GameScreenManager.h"
 #include "GameScreenTest.h"
 
-
-GameScreenManager::GameScreenManager(Engine::D3D11Device* device, SCREENS StartScreen)
+GameScreenManager::GameScreenManager(Engine::Device* device, SCREENS StartScreen)
 {
 	mDevice = device;
-	
+
 	mCurrentScreen = NULL;
 	changeScreens(StartScreen);
 }
 
 GameScreenManager::~GameScreenManager()
 {
-	//delete memeber variables
+	/*delete memeber variables*/
 	delete mCurrentScreen;
 	mCurrentScreen = nullptr;
 }

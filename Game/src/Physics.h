@@ -4,12 +4,10 @@
 #include "Common.h"
 #include <Utils/Math.h>
 
-
-
 #define GRAVITY 0.98f
 #define FRICTIONCOEF 0.5f
 
-class Physics 
+class Physics
 {
 public:
 	Physics(vec2f* position);
@@ -19,7 +17,7 @@ public:
 
 	void chageGrounded() { mGrounded != mGrounded; };
 	void AddThrust(vec2f thrust);
-	
+
 	std::vector<vec2f> actingForces;
 
 private:
@@ -36,4 +34,3 @@ private:
 	float mWeight;
 
 };
-

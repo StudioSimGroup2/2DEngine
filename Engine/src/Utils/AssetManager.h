@@ -3,6 +3,8 @@
 #include <vector>
 #include <string>
 
+#include <Engine/Core.h>
+
 #include "Shader.h"
 #include "Texture.h"
 #include "Sound.h"
@@ -10,18 +12,18 @@
 
 namespace Engine
 {
-	class AssetManager
+	class ENGINE_API AssetManager
 	{
 	public:
-		static void LoadShader(Device* device, const std::string& name, const std::string& path);
+		static void LoadShader(char* name, char* path);
 		//static void LoadTexture(Device* device, const std::string& name, const std::string& path);
-		static Texture* LoadTexture(Device* device, const std::string& name, const std::string& path);
+		static Texture* LoadTexture(char* name, char* path);
 
 
 		static AssetManager* GetInstance();
 
-		static Shader* GetShaderByName(const std::string& name);
-		static Texture* GetTextureByName(const std::string& name);
+		static Shader* GetShaderByName(char* name);
+		static Texture* GetTextureByName(char* name);
 		static Sound* GetSoundByName(const std::string& name);
 
 		static void RemoveShader(const std::string& name);

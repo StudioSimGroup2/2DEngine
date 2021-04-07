@@ -482,8 +482,6 @@
     <ClInclude Include="ext\OpenAL-Soft\efx-creative.h" />
     <ClInclude Include="ext\OpenAL-Soft\efx-presets.h" />
     <ClInclude Include="ext\OpenAL-Soft\efx.h" />
-    <ClInclude Include="ext\TinyXML\tinystr.h" />
-    <ClInclude Include="ext\TinyXML\tinyxml.h" />
     <ClInclude Include="ext\drwav\dr_wav.h" />
     <ClInclude Include="ext\stb\stb_image.h" />
     <ClInclude Include="src\Backend\D3D11\D311Context.h" />
@@ -492,6 +490,7 @@
     <ClInclude Include="src\Backend\D3D11\D3D11Renderer2D.h" />
     <ClInclude Include="src\Backend\D3D11\D3D11Shader.h" />
     <ClInclude Include="src\Backend\D3D11\D3D11Texture.h" />
+    <ClInclude Include="src\Backend\OGL\OGLDevice.h" />
     <ClInclude Include="src\Backend\OGL\OGLRenderer2D.h" />
     <ClInclude Include="src\Backend\OGL\OGLShader.h" />
     <ClInclude Include="src\Backend\OGL\OGLTexture.h" />
@@ -499,7 +498,6 @@
     <ClInclude Include="src\Backend\OGL\OpenGLContext.h" />
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\CameraManager.h" />
-    <ClInclude Include="src\Character.h" />
     <ClInclude Include="src\Common.h" />
     <ClInclude Include="src\Engine.h" />
     <ClInclude Include="src\Engine\Application.h" />
@@ -507,39 +505,31 @@
     <ClInclude Include="src\Engine\Core.h" />
     <ClInclude Include="src\Engine\Defines.h" />
     <ClInclude Include="src\Engine\EntryPoint.h" />
+    <ClInclude Include="src\Engine\GUILayer.h" />
     <ClInclude Include="src\Engine\Input\InputManager.h" />
+    <ClInclude Include="src\Engine\Layer.h" />
+    <ClInclude Include="src\Engine\LayerStack.h" />
     <ClInclude Include="src\Engine\Renderer\Context.h" />
     <ClInclude Include="src\Engine\Renderer\Device.h" />
     <ClInclude Include="src\Engine\Renderer\Renderer2D.h" />
     <ClInclude Include="src\Engine\Renderer\Swapchain.h" />
     <ClInclude Include="src\Engine\Window.h" />
     <ClInclude Include="src\Entry\WindowsSystem.h" />
-    <ClInclude Include="src\GameScreen.h" />
-    <ClInclude Include="src\GameScreenManager.h" />
-    <ClInclude Include="src\GameScreenTest.h" />
-    <ClInclude Include="src\LevelMap.h" />
     <ClInclude Include="src\ParticalSystem.h" />
-    <ClInclude Include="src\PNGLoader.h" />
-    <ClInclude Include="src\Physics.h" />
-    <ClInclude Include="src\PhysicsObject.h" />
     <ClInclude Include="src\Sprite.h" />
     <ClInclude Include="src\Utils\AssetManager.h" />
+    <ClInclude Include="src\Utils\LevelMap.h" />
     <ClInclude Include="src\Utils\Logger.h" />
     <ClInclude Include="src\Utils\Math.h" />
     <ClInclude Include="src\Utils\Shader.h" />
     <ClInclude Include="src\Utils\Sound.h" />
     <ClInclude Include="src\Utils\StringHelper.h" />
     <ClInclude Include="src\Utils\Texture.h" />
-    <ClInclude Include="src\Utils\Windows\WindowsTextureCompiler.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ext\DDSTextureLoader.cpp" />
     <ClCompile Include="ext\GLM\detail\glm.cpp" />
     <ClCompile Include="ext\Glad\glad.c" />
-    <ClCompile Include="ext\TinyXML\tinystr.cpp" />
-    <ClCompile Include="ext\TinyXML\tinyxml.cpp" />
-    <ClCompile Include="ext\TinyXML\tinyxmlerror.cpp" />
-    <ClCompile Include="ext\TinyXML\tinyxmlparser.cpp" />
     <ClCompile Include="ext\drwav\dr_wav_impl.c" />
     <ClCompile Include="src\Backend\D3D11\D311Context.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugOGL|x64'">true</ExcludedFromBuild>
@@ -565,6 +555,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugOGL|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseOGL|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="src\Backend\OGL\OGLDevice.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugD3D11|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseD3D11|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="src\Backend\OGL\OGLRenderer2D.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugD3D11|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseD3D11|x64'">true</ExcludedFromBuild>
@@ -587,35 +581,33 @@
     </ClCompile>
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\CameraManager.cpp" />
-    <ClCompile Include="src\Character.cpp" />
     <ClCompile Include="src\Engine\Application.cpp" />
     <ClCompile Include="src\Engine\Audio\AudioManager.cpp" />
+    <ClCompile Include="src\Engine\GUILayer.cpp" />
     <ClCompile Include="src\Engine\Input\InputManager.cpp" />
+    <ClCompile Include="src\Engine\Layer.cpp" />
+    <ClCompile Include="src\Engine\LayerStack.cpp" />
     <ClCompile Include="src\Engine\Renderer\Context.cpp" />
     <ClCompile Include="src\Engine\Renderer\Device.cpp" />
     <ClCompile Include="src\Engine\Renderer\Renderer2D.cpp" />
     <ClCompile Include="src\Engine\Renderer\Swapchain.cpp" />
     <ClCompile Include="src\Entry\WindowsSystem.cpp" />
-    <ClCompile Include="src\GameScreen.cpp" />
-    <ClCompile Include="src\GameScreenManager.cpp" />
-    <ClCompile Include="src\GameScreenTest.cpp" />
-    <ClCompile Include="src\LevelMap.cpp" />
     <ClCompile Include="src\ParticalSystem.cpp" />
-    <ClCompile Include="src\PNGLoader.cpp" />
-    <ClCompile Include="src\Physics.cpp" />
-    <ClCompile Include="src\PhysicsObject.cpp" />
     <ClCompile Include="src\Sprite.cpp" />
     <ClCompile Include="src\Utils\AssetManager.cpp" />
+    <ClCompile Include="src\Utils\LevelMap.cpp" />
     <ClCompile Include="src\Utils\Logger.cpp" />
     <ClCompile Include="src\Utils\Shader.cpp" />
     <ClCompile Include="src\Utils\Sound.cpp" />
     <ClCompile Include="src\Utils\StringHelper.cpp" />
     <ClCompile Include="src\Utils\Texture.cpp" />
-    <ClCompile Include="src\Utils\Windows\WindowsTextureCompiler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ImGui\ImGui.vcxproj">
       <Project>{C0FF640D-2C14-8DBE-F595-301E616989EF}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\TinyXML\TinyXML.vcxproj">
+      <Project>{9A98D342-0678-52DE-0F90-DDB47BEEB83F}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

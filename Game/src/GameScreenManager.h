@@ -5,24 +5,24 @@
 #include "Common.h"
 #include "GameScreen.h"
 
-#include <Backend/D3D11/D3D11Device.h>
+#include <Engine/Renderer/Device.h>
 
 
 class GameScreenManager
 {
 public:
-	GameScreenManager(Engine::D3D11Device* device, SCREENS StartScreen);
+	GameScreenManager(Engine::Device* device, SCREENS StartScreen);
 	~GameScreenManager();
 
 	void Render();
 	void Update(float deltatime);
-	
+
 	void changeScreens(SCREENS Selection);
 	GameScreen* getScreen() { return mCurrentScreen; };
 	bool Quit = false;
 
 private:
-	Engine::D3D11Device* mDevice;
+	Engine::Device* mDevice;
 	GameScreen* mCurrentScreen;
 };
 

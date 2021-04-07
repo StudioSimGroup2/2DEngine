@@ -7,6 +7,8 @@
 #include <d3d11.h>
 #include <DirectXColors.h>
 
+#define STB_IMAGE_IMPLEMENTATION
+
 using namespace DirectX;
 
 namespace Engine
@@ -14,7 +16,7 @@ namespace Engine
 	class D3D11Texture : public Texture
 	{
 	public:
-		D3D11Texture(D3D11Device* device, const std::string& name, const std::string& path);
+		D3D11Texture(D3D11Device* device, char* name, char* path);
 		~D3D11Texture();
 
 		virtual void Load(int pos) const override;
@@ -23,6 +25,8 @@ namespace Engine
 		virtual const std::string& GetName() const override { return mName; }
 
 	private:
+		HRESULT CreateTextureFromFile(D3D11Device* dev, const std::string& path);
+
 		unsigned int mID, mBoundSlot = -1;
 
 		ID3D11ShaderResourceView* mTextureView = nullptr;

@@ -13,19 +13,19 @@ namespace Engine
 {
 	AssetManager* AssetManager::mInstance = nullptr;
 
-	void AssetManager::LoadShader(Device* device, const std::string& name, const std::string& path)
+	void AssetManager::LoadShader(char* name, char* path)
 	{
 #if GRAPHICS_LIBRARY == 0
-		mInstance->mShaders.push_back(new D3D11Shader(static_cast<D3D11Device*>(device), name, path));
+		mInstance->mShaders.push_back(new D3D11Shader(D3D11Device::GetInstance(), name, path));
 #elif GRAPHICS_LIBRARY == 1
 		mInstance->mShaders.push_back(new OGLShader(name, path));
 #endif
 	}
 
-	Texture* AssetManager::LoadTexture(Device* device, const std::string& name, const std::string& path)
+	Texture* AssetManager::LoadTexture(char* name, char* path)
 	{
 #if GRAPHICS_LIBRARY == 0
-		mInstance->mTextures.push_back(new D3D11Texture(static_cast<D3D11Device*>(device), name, path));
+		mInstance->mTextures.push_back(new D3D11Texture(D3D11Device::GetInstance(), name, path));
 #elif GRAPHICS_LIBRARY == 1
 		mInstance->mTextures.push_back(new OGLTexture(name, path));
 #endif
@@ -36,22 +36,22 @@ namespace Engine
 	{
 		if (mInstance == nullptr)
 			mInstance = new AssetManager();
-		
+
 		return mInstance;
 	}
 
-	Shader* AssetManager::GetShaderByName(const std::string& name)
+	Shader* AssetManager::GetShaderByName(char* name)
 	{
 		auto index = std::find_if(mInstance->mShaders.begin(), mInstance->mShaders.end(),
-			[&name](const Shader* s) {return s->GetName() == name; });
+			[&name](const Shader* s) {return s->GetName() == std::string(name); });
 
 		return mInstance->mShaders.at(std::distance(mInstance->mShaders.begin(), index));
 	}
 
-	Texture* AssetManager::GetTextureByName(const std::string& name)
+	Texture* AssetManager::GetTextureByName(char* name)
 	{
 		auto index = std::find_if(mInstance->mTextures.begin(), mInstance->mTextures.end(),
-			[&name](const Texture* s) {return s->GetName() == name; });
+			[&name](const Texture* s) {return s->GetName() == std::string(name); });
 
 		return mInstance->mTextures.at(std::distance(mInstance->mTextures.begin(), index));
 	}

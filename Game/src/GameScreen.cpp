@@ -1,6 +1,6 @@
 #include "GameScreen.h"
 
-GameScreen::GameScreen(Engine::D3D11Device* Device)
+GameScreen::GameScreen(Engine::Device* Device)
 {
 	mDevice = Device;
 }
