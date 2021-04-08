@@ -1,14 +1,14 @@
 #include <Backend/D3D11/D3D11Camera.h>
 
 Camera::Camera()
-	: mEye(XMFLOAT4(0.0f, 0.0f, -1.0f, 1.0f)), mAt(XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)), mUp(XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f)),
+	: mEye(XMFLOAT4(0.0f, 0.0f, -1.0f, 1.0f)), mAt(XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)), mUp(XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f)), mName("-New Camera-"),
 	mZDepth(1), mView(XMMATRIX(XMMatrixIdentity())), mProjection(XMMATRIX(XMMatrixIdentity())), mViewWidth(1280), mViewHeight(720), 
 	mNearPlane(0.1f), mFarPlane(100.0f), mMovementSpeed(100.0f), mPrimary(false), mStatic(false)
 {
 }
 
-Camera::Camera(XMFLOAT4 Eye, XMFLOAT4 At, XMFLOAT4 Up, float ViewWidth, float ViewHeight)
-	: mEye(Eye), mAt(At), mUp(Up), mZDepth(1), mView(XMMATRIX(XMMatrixIdentity())), mProjection(XMMATRIX(XMMatrixIdentity())),
+Camera::Camera(XMFLOAT4 Eye, XMFLOAT4 At, XMFLOAT4 Up, float ViewWidth, float ViewHeight, const std::string& Name)
+	: mEye(Eye), mAt(At), mUp(Up), mName(Name), mZDepth(1), mView(XMMATRIX(XMMatrixIdentity())), mProjection(XMMATRIX(XMMatrixIdentity())),
 	mViewWidth(ViewWidth), mViewHeight(ViewHeight), mNearPlane(0.1f), mFarPlane(100.0f), 
 	mMovementSpeed(100.0f), mPrimary(false), mStatic(false)
 {

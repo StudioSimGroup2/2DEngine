@@ -426,7 +426,10 @@ namespace Engine
 		// Create two cameras
 		CameraManager::Get()->Add(new Camera(XMFLOAT4(0.0f, 0.0f, -1.0f, 1.0f)));
 		CameraManager::Get()->Add(new Camera(XMFLOAT4(-964.0f, 94.0f, -1.0f, 1.0f)));
+		CameraManager::Get()->GetCameraByIndex(0)->SetName("Main Camera");
 		CameraManager::Get()->GetCameraByIndex(1)->SetStatic(true);
+		CameraManager::Get()->GetCameraByIndex(1)->SetName("Secondary Camera");
+
 
 		Camera* cam = CameraManager::Get()->GetPrimaryCamera();
 
@@ -688,8 +691,15 @@ namespace Engine
 
 		index = 0;
 		for (Camera* c : CameraManager::Get()->AllCameras()) {
-			char label[10] = { 0 };
-			sprintf_s(label, "Camera %d", index);
+
+			// Check if camera has been given a name
+			char label[25] = { 0 }; 
+			if (strcmp(c->GetName().c_str(), "-New Camera-") == 0) {
+				sprintf_s(label, "Camera %d", index);
+			} else {
+				sprintf_s(label, c->GetName().c_str());
+			}
+
 			if (ImGui::TreeNode(label)) {
 				ImGui::Columns(2, "locations");
 				ImGui::Text("Position");

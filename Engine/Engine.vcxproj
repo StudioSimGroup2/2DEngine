@@ -497,7 +497,6 @@
     <ClInclude Include="src\Backend\OGL\OGLTexture.h" />
     <ClInclude Include="src\Backend\OGL\OpenGLCamera.h" />
     <ClInclude Include="src\Backend\OGL\OpenGLContext.h" />
-    <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\CameraManager.h" />
     <ClInclude Include="src\Character.h" />
     <ClInclude Include="src\Common.h" />
@@ -518,8 +517,8 @@
     <ClInclude Include="src\GameScreenManager.h" />
     <ClInclude Include="src\GameScreenTest.h" />
     <ClInclude Include="src\LevelMap.h" />
-    <ClInclude Include="src\ParticalSystem.h" />
     <ClInclude Include="src\PNGLoader.h" />
+    <ClInclude Include="src\ParticalSystem.h" />
     <ClInclude Include="src\Physics.h" />
     <ClInclude Include="src\PhysicsObject.h" />
     <ClInclude Include="src\Sprite.h" />
@@ -585,7 +584,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugD3D11|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseD3D11|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\CameraManager.cpp" />
     <ClCompile Include="src\Character.cpp" />
     <ClCompile Include="src\Engine\Application.cpp" />
@@ -600,8 +598,8 @@
     <ClCompile Include="src\GameScreenManager.cpp" />
     <ClCompile Include="src\GameScreenTest.cpp" />
     <ClCompile Include="src\LevelMap.cpp" />
-    <ClCompile Include="src\ParticalSystem.cpp" />
     <ClCompile Include="src\PNGLoader.cpp" />
+    <ClCompile Include="src\ParticalSystem.cpp" />
     <ClCompile Include="src\Physics.cpp" />
     <ClCompile Include="src\PhysicsObject.cpp" />
     <ClCompile Include="src\Sprite.cpp" />

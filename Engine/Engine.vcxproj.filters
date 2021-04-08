@@ -993,9 +993,6 @@
     <ClInclude Include="src\Backend\OGL\OpenGLContext.h">
       <Filter>src\Backend\OGL</Filter>
     </ClInclude>
-    <ClInclude Include="src\Camera.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="src\CameraManager.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -1044,10 +1041,22 @@
     <ClInclude Include="src\Entry\WindowsSystem.h">
       <Filter>src\Entry</Filter>
     </ClInclude>
+    <ClInclude Include="src\GameScreen.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameScreenManager.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameScreenTest.h">
+      <Filter>src</Filter>
+    </ClInclude>
     <ClInclude Include="src\LevelMap.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\PNGLoader.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ParticalSystem.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\Physics.h">
@@ -1060,6 +1069,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\Utils\AssetManager.h">
+      <Filter>src\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utils\Logger.h">
       <Filter>src\Utils</Filter>
     </ClInclude>
     <ClInclude Include="src\Utils\Math.h">
@@ -1079,13 +1091,6 @@
     </ClInclude>
     <ClInclude Include="src\Utils\Windows\WindowsTextureCompiler.h">
       <Filter>src\Utils\Windows</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ParticalSystem.h" />
-    <ClInclude Include="src\GameScreen.h" />
-    <ClInclude Include="src\GameScreenManager.h" />
-    <ClInclude Include="src\GameScreenTest.h" />
-    <ClInclude Include="src\Utils\Logger.h">
-      <Filter>src\Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1146,9 +1151,6 @@
     <ClCompile Include="src\Backend\OGL\OpenGLContext.cpp">
       <Filter>src\Backend\OGL</Filter>
     </ClCompile>
-    <ClCompile Include="src\Camera.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\CameraManager.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -1179,10 +1181,22 @@
     <ClCompile Include="src\Entry\WindowsSystem.cpp">
       <Filter>src\Entry</Filter>
     </ClCompile>
+    <ClCompile Include="src\GameScreen.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameScreenManager.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameScreenTest.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
     <ClCompile Include="src\LevelMap.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\PNGLoader.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ParticalSystem.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Physics.cpp">
@@ -1195,6 +1209,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Utils\AssetManager.cpp">
+      <Filter>src\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utils\Logger.cpp">
       <Filter>src\Utils</Filter>
     </ClCompile>
     <ClCompile Include="src\Utils\Shader.cpp">
@@ -1211,13 +1228,6 @@
     </ClCompile>
     <ClCompile Include="src\Utils\Windows\WindowsTextureCompiler.cpp">
       <Filter>src\Utils\Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ParticalSystem.cpp" />
-    <ClCompile Include="src\GameScreen.cpp" />
-    <ClCompile Include="src\GameScreenManager.cpp" />
-    <ClCompile Include="src\GameScreenTest.cpp" />
-    <ClCompile Include="src\Utils\Logger.cpp">
-      <Filter>src\Utils</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
