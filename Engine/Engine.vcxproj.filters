@@ -67,14 +67,8 @@
     <Filter Include="src\Utils">
       <UniqueIdentifier>{4D9AFFB3-B904-B42A-0243-65D06EEC917F}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Utils\Windows">
-      <UniqueIdentifier>{874175AE-F357-7344-3CCF-FE65A82444CC}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ext\DDSTextureLoader.h">
-      <Filter>ext</Filter>
-    </ClInclude>
     <ClInclude Include="ext\GLM\common.hpp">
       <Filter>ext\GLM</Filter>
     </ClInclude>
@@ -1076,9 +1070,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ext\DDSTextureLoader.cpp">
-      <Filter>ext</Filter>
-    </ClCompile>
     <ClCompile Include="ext\GLM\detail\glm.cpp">
       <Filter>ext\GLM\detail</Filter>
     </ClCompile>

@@ -1,7 +1,5 @@
 #include "D3D11Texture.h"
 
-#include "DDSTextureLoader.h"
-
 #include <assert.h>
 #include <iostream>
 #include <Utils/StringHelper.h>
@@ -51,6 +49,24 @@ namespace Engine
 		unsigned char* source = stbi_load(path.c_str(), &mWidth, &mHeight, &nrChannels, 0);
 		if (!source) fprintf(stderr, "Cannot load file image %s\nSTB Reason: %s\n", source, stbi_failure_reason());
 
+		//TODO: Error checking for nrChannels not equal to 3 or 4
+
+		if (nrChannels == 3)
+		{
+			int size = mWidth * mHeight * 4;
+			unsigned char* temp = new unsigned char[size];
+			
+			for (int i = 0; i < mWidth * mHeight; i++)
+			{
+				temp[i * 4] = source[i * 3];
+				temp[i * 4 + 1] = source[i * 3 + 1];
+				temp[i * 4 + 2] = source[i * 3 + 2];
+				temp[i * 4 + 3] = 255;
+
+				source = temp;
+			}
+		}
+
 		D3D11_TEXTURE2D_DESC desc;
 		ZeroMemory(&desc, sizeof(desc));
 		D3D11_SUBRESOURCE_DATA srd;
@@ -89,8 +105,6 @@ namespace Engine
 		hr = dev->GetInstance()->GetDevice()->CreateShaderResourceView(tex, &srvDesc, &mTextureView);
 		if (FAILED(hr))
 			return hr;
-
-		stbi_image_free(source);
 
 		return hr;
 	}

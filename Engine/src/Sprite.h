@@ -10,10 +10,12 @@ using namespace Engine;
 class ENGINE_API Sprite
 {
 public:
-	Sprite(char* name, vec2f* position, Texture* tex = nullptr, char* texName = '\0', char* texPath = '\0');
+	Sprite(char* name, vec2f* position, Texture* tex);
+	Sprite(char* name, vec2f* position, char* texName, char* texPath);
 	~Sprite();
 
-	virtual void AddRendererComponent(Renderer2D* renderer);
+	virtual void AddRendererComponent(Shader* sh = nullptr);
+	virtual void RemoveRendererComponent();
 	void Update(float deltaTime);
 	void Draw();
 

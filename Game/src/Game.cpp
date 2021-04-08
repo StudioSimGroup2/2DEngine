@@ -14,7 +14,7 @@ public:
 
 	virtual void Render() override
 	{
-		if (mGameScreenManager->getScreen())
+		if (mGameScreenManager->GetScreen())
 			mGameScreenManager->Render();
 	}
 
@@ -22,7 +22,7 @@ public:
 	{
 		float fps = 1.0f / 60.0f; // This is temporary till we have a timer class 
 
-		if (mGameScreenManager->getScreen())
+		if (mGameScreenManager->GetScreen())
 			mGameScreenManager->Update(fps);
 	}
 

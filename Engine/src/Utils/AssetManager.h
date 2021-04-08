@@ -36,6 +36,8 @@ namespace Engine
 	private:
 		AssetManager() { }
 
+		std::string mSupportedTexExtensions[1] = { "png"};
+
 		std::vector<Shader*> mShaders;
 		std::vector<Texture*> mTextures;
 		//std::vector<Sound*> mSounds;

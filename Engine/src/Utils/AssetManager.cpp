@@ -8,6 +8,7 @@
 #include "Backend/OGL/OGLShader.h"
 #include "Backend/OGL/OGLTexture.h"
 #endif
+#include <iostream>
 
 namespace Engine
 {
@@ -24,6 +25,26 @@ namespace Engine
 
 	Texture* AssetManager::LoadTexture(char* name, char* path)
 	{
+		std::string str = std::string(path);
+		bool err = false;
+		for (int i = 0; i < sizeof(mInstance->mSupportedTexExtensions) / sizeof(mInstance->mSupportedTexExtensions[0]); i++)
+		{
+			if (str.substr(str.find_last_of(".") + 1) == mInstance->mSupportedTexExtensions[i])
+			{
+				err = true;
+			}
+		}
+
+		if (!err)
+		{
+			std::cout << "Format : " << str.substr(str.find_last_of(".") + 1) << " is unsupported!" << std::endl;
+			
+			return nullptr;
+		}
+			
+
+		
+
 #if GRAPHICS_LIBRARY == 0
 		mInstance->mTextures.push_back(new D3D11Texture(D3D11Device::GetInstance(), name, path));
 #elif GRAPHICS_LIBRARY == 1

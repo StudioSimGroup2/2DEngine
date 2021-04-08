@@ -1,46 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="D3D11">
-      <UniqueIdentifier>{82A1EA0C-EEB5-12BE-B737-B61D230B0FEF}</UniqueIdentifier>
+    <Filter Include="ext">
+      <UniqueIdentifier>{7670880B-E279-887C-6BF5-9E7CD7FD937C}</UniqueIdentifier>
     </Filter>
-    <Filter Include="OpenGL">
-      <UniqueIdentifier>{8A864AC8-7628-759E-5FE3-88F24B24FCEE}</UniqueIdentifier>
+    <Filter Include="ext\ImFileDialog">
+      <UniqueIdentifier>{4B3E5AD4-3737-7926-6069-5EAB4CC15832}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{2DAB880B-99B4-887C-2230-9F7C8E38947C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\D3D11">
+      <UniqueIdentifier>{D9AFA7B2-451A-5C29-8E58-0DCFFA013A7E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\OpenGL">
+      <UniqueIdentifier>{C15FA925-AD17-EB72-161F-C4CE02F68563}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ext\ImFileDialog\ImFileDialog.h">
+      <Filter>ext\ImFileDialog</Filter>
+    </ClInclude>
     <ClInclude Include="src\D3D11\imgui_impl_dx11.h">
-      <Filter>D3D11</Filter>
+      <Filter>src\D3D11</Filter>
     </ClInclude>
     <ClInclude Include="src\OpenGL\imgui_impl_opengl3.h">
-      <Filter>OpenGL</Filter>
+      <Filter>src\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\OpenGL\imgui_impl_win32_opengl.h">
-      <Filter>OpenGL</Filter>
+      <Filter>src\OpenGL</Filter>
     </ClInclude>
-    <ClInclude Include="src\imconfig.h" />
-    <ClInclude Include="src\imgui.h" />
-    <ClInclude Include="src\imgui_impl_win32.h" />
-    <ClInclude Include="src\imgui_internal.h" />
-    <ClInclude Include="src\imstb_rectpack.h" />
-    <ClInclude Include="src\imstb_textedit.h" />
-    <ClInclude Include="src\imstb_truetype.h" />
+    <ClInclude Include="src\imconfig.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imgui.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imgui_impl_win32.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imgui_internal.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imstb_rectpack.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imstb_textedit.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imstb_truetype.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\implot\implot.h" />
+    <ClInclude Include="ext\implot\implot_internal.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ext\ImFileDialog\ImFileDialog.cpp">
+      <Filter>ext\ImFileDialog</Filter>
+    </ClCompile>
     <ClCompile Include="src\D3D11\imgui_impl_dx11.cpp">
-      <Filter>D3D11</Filter>
+      <Filter>src\D3D11</Filter>
     </ClCompile>
     <ClCompile Include="src\OpenGL\imgui_impl_opengl3.cpp">
-      <Filter>OpenGL</Filter>
+      <Filter>src\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\OpenGL\imgui_impl_win32_opengl.cpp">
-      <Filter>OpenGL</Filter>
+      <Filter>src\OpenGL</Filter>
     </ClCompile>
-    <ClCompile Include="src\imgui.cpp" />
-    <ClCompile Include="src\imgui_demo.cpp" />
-    <ClCompile Include="src\imgui_draw.cpp" />
-    <ClCompile Include="src\imgui_impl_win32.cpp" />
-    <ClCompile Include="src\imgui_tables.cpp" />
-    <ClCompile Include="src\imgui_widgets.cpp" />
+    <ClCompile Include="src\imgui.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imgui_demo.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imgui_draw.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imgui_impl_win32.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imgui_tables.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imgui_widgets.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\implot\implot.cpp" />
+    <ClCompile Include="ext\implot\implot_demo.cpp" />
+    <ClCompile Include="ext\implot\implot_items.cpp" />
   </ItemGroup>
 </Project>

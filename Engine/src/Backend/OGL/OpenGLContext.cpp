@@ -19,6 +19,7 @@
 #include <Backend/OGL/OpenGLCamera.h>
 #include <CameraManager.h>
 #include "Engine/Application.h"
+#include "ImFileDialog/ImFileDialog.h"
 
 #define WGL_CONTEXT_MAJOR_VERSION_ARB     0x2091
 #define WGL_CONTEXT_MINOR_VERSION_ARB     0x2092
@@ -108,6 +109,29 @@ namespace Engine
 
 		OGLDevice::GetInstance()->SetHGLRC(mRenderContext);
 
+		ifd::FileDialog::Instance().CreateTexture = [](uint8_t* data, int w, int h, char fmt) -> void*
+		{
+			GLuint tex;
+
+			glGenTextures(1, &tex);
+			glBindTexture(GL_TEXTURE_2D, tex);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, (fmt == 0) ? GL_BGRA : GL_RGBA, GL_UNSIGNED_BYTE, data);
+			glGenerateMipmap(GL_TEXTURE_2D);
+			glBindTexture(GL_TEXTURE_2D, 0);
+
+			return (void*)tex;
+		};
+
+		ifd::FileDialog::Instance().DeleteTexture = [](void* tex)
+		{
+			GLuint texID = (GLuint)tex;
+			glDeleteTextures(1, &texID);
+		};
+
 		AssetManager::GetInstance()->LoadShader("Default", "default.glsl");
 
 		CameraManager::Get()->Add(new Camera(glm::vec4(0.0f, 0.0f, -1.0f, 1.0f)));
@@ -118,9 +142,6 @@ namespace Engine
 
 		InputManager::GetInstance()->BindCommandToButton(KEY_Q, &CameraManager::Get()->CBCycleNext);
 		InputManager::GetInstance()->BindCommandToButton(KEY_E, &CameraManager::Get()->CBCyclePrevious);
-
-		AudioManager::GetInstance()->LoadSound("TestFile", "Sounds/zip.wav");
-		//AudioManager::GetInstance()->PlaySoundFile(std::string("TestFile"), -100.0f); // TODO: implement volume WARNING THE SOUND FILE IS EXTREMELY LOUD!!
 	}
 
 	void OpenGLContext::Shutdown()

@@ -133,7 +133,10 @@ project "ImGui"
     {
         "%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.c",
-        "%{prj.name}/src/**.cpp"
+        "%{prj.name}/src/**.cpp",
+		"%{prj.name}/ext/**.h",
+		"%{prj.name}/ext/**.c",
+        "%{prj.name}/ext/**.cpp"
     }
 
     targetdir ("bin/".. outputdir .. "/%{prj.name}")

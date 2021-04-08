@@ -6,7 +6,7 @@ GameScreenManager::GameScreenManager(Engine::Device* device, SCREENS StartScreen
 	mDevice = device;
 
 	mCurrentScreen = NULL;
-	changeScreens(StartScreen);
+	ChangeScreens(StartScreen);
 }
 
 GameScreenManager::~GameScreenManager()
@@ -26,7 +26,7 @@ void GameScreenManager::Update(float deltatime)
 	mCurrentScreen->Update(deltatime);
 }
 
-void GameScreenManager::changeScreens(SCREENS Selection)
+void GameScreenManager::ChangeScreens(SCREENS Selection)
 {
 	if (mCurrentScreen != NULL)
 	{
