@@ -16,6 +16,10 @@ Sound::~Sound()
 
 void Sound::Play(float volume, bool loop)
 {
+	alSourcef(mSoundSource, AL_GAIN, volume / 1000);
+
+	alSourcei(mSoundSource, AL_LOOPING, loop ? AL_TRUE : AL_FALSE);
+
 	alSourcePlay(mSoundSource);
 }
 

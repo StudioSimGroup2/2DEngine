@@ -19,12 +19,16 @@
 #include <Engine/Renderer/Device.h>
 #include <Engine/Application.h>
 
+#include <ImFileDialog/ImFileDialog.h>
+#include <implot/implot.h>
+
 using namespace Engine;
 
 GUILayer::GUILayer()
 {
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
+	ImPlot::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 
 	Application* app = Application::GetInstance();
@@ -84,7 +88,7 @@ void GUILayer::Render()
 			}
 			if (ImGui::MenuItem("Open Project CTRL + O"))
 			{
-				//ifd::FileDialog::Instance().Open("File Browser", "Open a texture", "Image file (*.png;*.jpg;*.jpeg;*.bmp;*.tga){.png,.jpg,.jpeg,.bmp,.tga},.*");
+				ifd::FileDialog::Instance().Open("File Browser", "Open a Project", "Image file (*.prj){.png},.*");
 			}
 			if (ImGui::MenuItem("Save Project CTRL + S"))
 			{
@@ -142,7 +146,7 @@ void GUILayer::Render()
 			ImGui::EndMenu();
 		}
 
-		if (ImGui::BeginMenu("Windows"))
+		if (ImGui::BeginMenu("View"))
 		{
 			if (ImGui::MenuItem("Asset Manager")) {
 				// No Impl
@@ -161,7 +165,15 @@ void GUILayer::Render()
 			}
 			if (ImGui::MenuItem("Profiler"))
 			{
+				// No Impl
+			}
+			ImGui::EndMenu();
+		}
 
+		if (ImGui::BeginMenu("Help"))
+		{
+			if (ImGui::MenuItem("About")) {
+				// No Impl
 			}
 			ImGui::EndMenu();
 		}
@@ -169,11 +181,44 @@ void GUILayer::Render()
 		ImGui::EndMainMenuBar();
 	}
 
-	ImGui::ShowDemoWindow();
+	if (ifd::FileDialog::Instance().IsDone("File Browser"))
+	{
+		if (ifd::FileDialog::Instance().HasResult())
+		{
+			std::string res = ifd::FileDialog::Instance().GetResult().u8string();
+			printf("OPEN[%s]\n", res.c_str());
+		}
+		ifd::FileDialog::Instance().Close();
+	}
 
-	ImGui::Begin("Framerate", NULL, ImGuiWindowFlags_AlwaysAutoResize);
+	ImS16 Default[3] = { 1, 1, 1 };
+	ImS16 Renderer[3] = { 1, 1, 1 };
+	ImS16 Assets[3] = { 1, 1, 1 };
+
+	static const char* labels[] = { "Default", "Renderer", "Assets" };
+	static const double positions[] = { 0, 1, 2 };
+
+	ImGui::Begin("Profiler", NULL);
 	ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+	ImGui::Separator();
+	if (ImGui::CollapsingHeader("Heap"))
+	{
+		ImPlot::SetNextPlotLimits(0, 110, -0.5, 9.5, ImGuiCond_Always);
+		ImPlot::SetNextPlotTicksY(positions, 3, labels);
+
+		if (ImPlot::BeginPlot("Heap Profiler", "Memory (MB)", "Heap",
+			ImVec2(-1, 0), 0, 0, ImPlotAxisFlags_Invert))
+		{
+			ImPlot::SetLegendLocation(ImPlotLocation_West, ImPlotOrientation_Vertical);
+			ImPlot::PlotBarsH("Default", Default, 3, 0.2, -0.2);
+		}
+		ImPlot::EndPlot();
+	}
 	ImGui::End();
+
+
+	ImPlot::ShowDemoWindow();
+	//ImGui::ShowDemoWindow();
 
 	ImGui::Render();
 

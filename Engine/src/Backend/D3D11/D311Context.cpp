@@ -1,16 +1,14 @@
 #include "D311Context.h"
 #include "D3D11Renderer2D.h"
-
 #include <Utils/AssetManager.h>
 #include <Engine/Audio/AudioManager.h>
 #include <directxcolors.h>
-
 #include <Backend/D3D11/D3D11Camera.h>
 #include <Engine/Input/InputManager.h>
-
 #include "Engine/Application.h"
-
 #include "Engine/LayerStack.h"
+#include <filesystem>
+#include "ImFileDialog/ImFileDialog.h"
 
 namespace Engine
 {
@@ -406,6 +404,51 @@ namespace Engine
 		// Create the viewport.
 		mDeviceContext->RSSetViewports(1, &viewport);
 
+		ifd::FileDialog::Instance().CreateTexture = [](uint8_t* data, int w, int h, char fmt) -> void*
+		{
+			ID3D11ShaderResourceView* tex;
+
+			D3D11_TEXTURE2D_DESC desc;
+			ZeroMemory(&desc, sizeof(desc));
+			D3D11_SUBRESOURCE_DATA srd;
+			ZeroMemory(&srd, sizeof(srd));
+			ID3D11Texture2D* tex2d = nullptr;
+			D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
+			ZeroMemory(&srvDesc, sizeof(srvDesc));
+
+			desc.Width = w;
+			desc.Height = h;
+			desc.MipLevels = 1;
+			desc.ArraySize = 1;
+			desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+			desc.SampleDesc.Count = 1;
+			desc.Usage = D3D11_USAGE_DEFAULT;
+			desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+			desc.CPUAccessFlags = 0;
+
+			srd.pSysMem = data;
+			srd.SysMemPitch = 4 * w;
+			srd.SysMemSlicePitch = 0;
+
+			Device::GetDevice()->GetDevice()->CreateTexture2D(&desc, &srd, &tex2d);
+
+			srvDesc.Format = desc.Format;
+			srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+			srvDesc.Texture2D.MipLevels = desc.MipLevels;
+			srvDesc.Texture2D.MostDetailedMip = 0;
+
+			Device::GetDevice()->GetDevice()->CreateShaderResourceView(tex2d, &srvDesc, &tex);
+
+			return (void*)tex;
+		};
+
+		ifd::FileDialog::Instance().DeleteTexture = [](void* tex)
+		{
+			ID3D11ShaderResourceView* srv = (ID3D11ShaderResourceView*)tex;
+
+			srv->Release();
+		};
+
 		AssetManager::GetInstance()->LoadShader("Default", "quadshader.fx");
 
 		// Create two cameras
@@ -418,17 +461,16 @@ namespace Engine
 		InputManager::GetInstance()->BindCommandToButton(KEY_Q, &CameraManager::Get()->CBCycleNext);
 		InputManager::GetInstance()->BindCommandToButton(KEY_E, &CameraManager::Get()->CBCyclePrevious);
 
-		AudioManager::GetInstance()->LoadSound(std::string("TestFile"), std::string("Sounds/zip.wav"));
-		//AudioManager::GetInstance()->PlaySoundFile(std::string("TestFile"), -100.0f); // TODO: implement volume WARNING THE SOUND FILE IS EXTREMELY LOUD!!
+		//Todo: Moving this
+		//Particle Props Init	
+		//std::filesystem::path p = std::filesystem::current_path();
 
-		// Particle Props Init	
-		//Sprite* particleTex = new Sprite(mDeviceMGR, "Partical Texture", "Resources\\Textures\\stone.dds", &vec2f(0, 0));
-		//D3D11Renderer2D* re = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDeviceMGR);
-		//particleTex->AddRendererComponent(re);
+		//Sprite* particleTex = new Sprite("Particle system", &vec2f(0, 0), "Particle Texture", "Assets/Textures/Stone.png");
+		//particleTex->AddRendererComponent();
 		//ParticleProperties prop(vec2f(100, -100), 3, particleTex);
 
 		//// Particle System Init
-		//mParticleSystems.emplace_back(new ParticleSystem(mDeviceMGR, vec2f(300, 300), prop, 150, Emmitter::Square));
+		//mParticleSystems.emplace_back(new ParticleSystem(D3D11Device::GetInstance(), vec2f(300, 300), prop, 150, Emmitter::Square));
 		//mParticleSystems[0]->SetGravity(100);
 		//mParticleSystems[0]->SetRate(0.1); // Particles per second
 	}
@@ -467,27 +509,21 @@ namespace Engine
 		CameraManager::Get()->Update(deltaTime); // Belongs in core scene update loop
 
 
-		//for (ParticleSystem* ps : mParticleSystems)
-		//	ps->Update(deltaTime);
+		/*for (ParticleSystem* ps : mParticleSystems)
+			ps->Update(deltaTime);*/
 	}
 
 	void D311Context::RenderScene() 
 	{
 		mDeviceContext->ClearRenderTargetView(mRenderTargetView, DirectX::Colors::SeaGreen);
 
-		//// Cycle cameras on A & D keypresses 
-		//if (GetAsyncKeyState(0x51)) // Q key
-		//	CameraManager::Get()->CyclePrevious();
-		//if (GetAsyncKeyState(0x45)) // E key
-		//	CameraManager::Get()->CycleNext();
-
 		for (Layer* l : *Application::GetInstance()->GetStack())
 		{
 			l->Render();
 		}
 
-		//for (ParticleSystem* ps : mParticleSystems)
-		//	ps->Render();
+		/*for (ParticleSystem* ps : mParticleSystems)
+			ps->Render();*/
 
 	}
 

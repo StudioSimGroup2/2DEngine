@@ -166,6 +166,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ext\ImFileDialog\ImFileDialog.h" />
+    <ClInclude Include="ext\implot\implot.h" />
+    <ClInclude Include="ext\implot\implot_internal.h" />
     <ClInclude Include="src\D3D11\imgui_impl_dx11.h" />
     <ClInclude Include="src\OpenGL\imgui_impl_opengl3.h" />
     <ClInclude Include="src\OpenGL\imgui_impl_win32_opengl.h" />
@@ -178,6 +181,10 @@
     <ClInclude Include="src\imstb_truetype.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ext\ImFileDialog\ImFileDialog.cpp" />
+    <ClCompile Include="ext\implot\implot.cpp" />
+    <ClCompile Include="ext\implot\implot_demo.cpp" />
+    <ClCompile Include="ext\implot\implot_items.cpp" />
     <ClCompile Include="src\D3D11\imgui_impl_dx11.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugOGL|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseOGL|x64'">true</ExcludedFromBuild>

@@ -191,7 +191,6 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="ext\DDSTextureLoader.h" />
     <ClInclude Include="ext\GLM\common.hpp" />
     <ClInclude Include="ext\GLM\detail\_features.hpp" />
     <ClInclude Include="ext\GLM\detail\_fixes.hpp" />
@@ -527,7 +526,6 @@
     <ClInclude Include="src\Utils\Texture.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ext\DDSTextureLoader.cpp" />
     <ClCompile Include="ext\GLM\detail\glm.cpp" />
     <ClCompile Include="ext\Glad\glad.c" />
     <ClCompile Include="ext\drwav\dr_wav_impl.c" />

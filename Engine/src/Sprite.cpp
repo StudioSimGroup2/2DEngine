@@ -8,25 +8,48 @@
 
 using namespace Engine;
 
-Sprite::Sprite(char* name, vec2f* position, Texture* tex, char* texName, char* texPath)
+Sprite::Sprite(char* name, vec2f* position, Texture* tex)
 {
 	mPosition = position;
 	mName = name;
 
-	if (tex == nullptr)
-		mSprTexture = AssetManager::GetInstance()->LoadTexture(texName, texPath);
-	else
-		mSprTexture = tex;
+	mSprTexture = tex;
+}
+
+Sprite::Sprite(char* name, vec2f* position, char* texName, char* texPath)
+{
+	mPosition = position;
+	mName = name;
+	
+	mSprTexture = AssetManager::GetInstance()->LoadTexture(texName, texPath);
 }
 
 Sprite::~Sprite()
 {
+	RemoveRendererComponent();
 
+	if (mPosition)
+	{
+		delete mPosition;
+		mPosition = nullptr;
+	}
+		
 }
 
-void Sprite::AddRendererComponent(Renderer2D* renderer)
+void Sprite::AddRendererComponent(Shader* sh)
 {
-	mRenderer = renderer;
+	if (sh == nullptr)
+		mRenderer = Device::CreateRenderer(AssetManager::GetInstance()->GetShaderByName("Default"));
+	else
+		mRenderer = Device::CreateRenderer(sh);
+}
+
+void Sprite::RemoveRendererComponent()
+{
+	if (mRenderer)
+		delete mRenderer;
+	
+	mRenderer = nullptr;
 }
 
 void Sprite::Update(float deltaTime)

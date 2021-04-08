@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Engine/Renderer/Context.h"
-#include "Sprite.h"
 
 // TODO: add compiler include path later or Precompiled Header
 
@@ -37,9 +36,6 @@ namespace Engine
 
 		void RenderImGui();
 		void RenderScene();
-
-		/*void BeginScene();
-		void EndScene();*/
 		
 	private:
 		unsigned int mMemorySize;
@@ -64,8 +60,7 @@ namespace Engine
 		XMMATRIX mOrthoMatrix;
 
 		//These should be in the GameScreenTest
-		//Move IMGUI to GameScreenTest too so it doesn't render on playable screens & less work needs to be done to fix OGLContext
-		/*std::vector<ParticleSystem*> mParticleSystems;*/
+		std::vector<ParticleSystem*> mParticleSystems;
 
 		bool mEnableEditor = true; // Very curde, will set up an ImGUi properties struct later - Joe
 		bool mShowLoggingConsole = true;

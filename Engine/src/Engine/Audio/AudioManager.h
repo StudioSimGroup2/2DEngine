@@ -6,9 +6,11 @@
 #include <Utils/Sound.h>
 #include <string>
 
+#include "Engine/Core.h"
+
 namespace Engine
 {
-	class AudioManager
+	class ENGINE_API AudioManager
 	{
 	public:
 		void PlaySoundFile(const std::string& name, float volume, bool loop = false, bool isMusic = false);
