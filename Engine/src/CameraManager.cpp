@@ -85,6 +85,16 @@ Camera* CameraManager::GetCameraByName(const std::string& Name) const
 	return nullptr;
 }
 
+float CameraManager::Lerpf(float a, float b, float t)
+{
+	return a + (b - a) * t;
+}
+
+vec2f CameraManager::Lerp2f(vec2f a, vec2f b, float t)
+{
+	return vec2f(Lerpf(a.x, b.x, t), Lerpf(a.y, b.y, t));
+}
+
 void CameraManager::SetPrimaryCamera(size_t index)
 {
 	size_t previouslyActive = CameraManager::Get()->GetPrimaryCameraIndex();
@@ -109,6 +119,16 @@ void CameraManager::CBCyclePrevious()
 		currentCamera = mInstance->mCameras.size() - 1; // Wrap around when out of range
 
 	CameraManager::Get()->SetPrimaryCamera(currentCamera);
+}
+
+void CameraManager::LerpCameraTo(Camera* cam, vec2f toPos, float duration)
+{
+	if (cam == nullptr)
+		return;
+
+	vec2f c(cam->GetEye().x, cam->GetEye().y);
+	vec2f newPos = Lerp2f(c, toPos, duration);
+	cam->SetEye(XMFLOAT4(newPos.x, newPos.y, cam->GetEye().z, cam->GetEye().w));
 }
 
 Camera* CameraManager::GetPrimaryCamera() const

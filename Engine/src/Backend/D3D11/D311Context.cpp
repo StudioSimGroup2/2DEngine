@@ -431,6 +431,7 @@ namespace Engine
 		CameraManager::Get()->GetCameraByIndex(1)->SetName("Secondary Camera");
 
 
+
 		Camera* cam = CameraManager::Get()->GetPrimaryCamera();
 
 		InputManager::GetInstance()->BindCommandToButton(KEY_Q, &CameraManager::Get()->CBCycleNext);
@@ -748,6 +749,18 @@ namespace Engine
 		if (Logger::GetTextBuffer().size() > 512) { // Clear the console once it exceeds 512 logs
 			Logger::GetTextBuffer().erase(Logger::GetTextBuffer().begin(), Logger::GetTextBuffer().begin() + 256); 
 		}
+
+
+
+		ImGui::Begin("Lerp slider");
+		static bool b;
+		ImGui::Checkbox("Lerp", &b);
+		if (b) {
+			Camera* c = CameraManager::Get()->GetCameraByName("Secondary Camera");
+			CameraManager::Get()->LerpCameraTo(c, vec2f(0, 0),  0.008f);
+
+		}
+		ImGui::End();
 
 		ImGui::Render();
 		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());

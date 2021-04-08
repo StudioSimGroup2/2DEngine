@@ -11,6 +11,7 @@
 #include <vector>
 #include <assert.h>
 #include <iostream>
+#include <Utils\Math.h>
 #include "Utils\Logger.h"
 
 // [TEMP] Simple assert macro, move to pch file or smth later plz <3
@@ -26,13 +27,16 @@ public:
 	void Add(Camera* Camera);
 	void Delete(size_t index);
 	void Update(float deltaTime, bool forceUpdate=false); // force update, will force all the Cameras to be updated, not just the primary Camera
+	void SetPrimaryCamera(size_t index);
 
 	// Returns and sets the next active Camera to be either the next or previous Camera.
 	Camera* CycleNext();
 	Camera* CyclePrevious();
-
 	static void CBCycleNext();
 	static void CBCyclePrevious();
+
+	void LerpCameraTo(Camera* cam, vec2f toPos, float duration);
+
 
 	Camera* GetPrimaryCamera() const;
 	size_t GetPrimaryCameraIndex() const;
@@ -40,13 +44,16 @@ public:
 	Camera* GetCameraByName(const std::string& Name) const;
 	std::vector<Camera*> AllCameras() const { return mCameras; }
 
-	void SetPrimaryCamera(size_t index);
 
 private:
 	CameraManager() = default; // Create atleast 1 ortho Camera by default
 
 	CameraManager(const CameraManager& other) = delete;
 	void operator=(const CameraManager& other) = delete;
+
+	// Move these to a math class later?
+	float Lerpf(float a, float b, float t);
+	vec2f Lerp2f(vec2f a, vec2f b, float t);
 
 	static CameraManager* mInstance;
 	std::vector<Camera*> mCameras;
