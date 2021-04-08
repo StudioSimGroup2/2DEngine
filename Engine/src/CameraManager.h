@@ -11,6 +11,7 @@
 #include <vector>
 #include <assert.h>
 #include <iostream>
+#include "Utils\Logger.h"
 
 // [TEMP] Simple assert macro, move to pch file or smth later plz <3
 #define ASSERT(cond, msg) if (!cond) { std::cerr << "Assert failed: " << msg << ".\nFile: " << __FILE__ << ", line: " << __LINE__ << std::endl; abort(); }
@@ -36,6 +37,7 @@ public:
 	Camera* GetPrimaryCamera() const;
 	size_t GetPrimaryCameraIndex() const;
 	Camera* GetCameraByIndex(size_t index) const;
+	Camera* GetCameraByName(const std::string& Name) const;
 	std::vector<Camera*> AllCameras() const { return mCameras; }
 
 	void SetPrimaryCamera(size_t index);

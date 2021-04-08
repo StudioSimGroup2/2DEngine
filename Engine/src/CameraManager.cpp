@@ -74,6 +74,17 @@ Camera* CameraManager::GetCameraByIndex(size_t index) const
 	return mCameras[index];
 }
 
+Camera* CameraManager::GetCameraByName(const std::string& Name) const
+{
+	for (Camera* c : mCameras) {
+		if (strcmp(c->GetName().c_str(), Name.c_str()) == 0)
+			return c;
+	}
+	std::string errMsg = "Could not find Camera with name supplied: '" + Name + "'";
+	Logger::LogError(errMsg.c_str(), __FILE__);
+	return nullptr;
+}
+
 void CameraManager::SetPrimaryCamera(size_t index)
 {
 	size_t previouslyActive = CameraManager::Get()->GetPrimaryCameraIndex();
