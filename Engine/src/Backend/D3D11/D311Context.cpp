@@ -500,6 +500,9 @@ namespace Engine
 		{
 			mGameScreenManager->changeScreens(SCREEN_TEST);
 		}
+
+		
+
 	}
 
 	void D311Context::RenderScene() {
@@ -751,16 +754,15 @@ namespace Engine
 		}
 
 
+		ImGui::Begin("Lerp second cam");
+		static float percent = 0.0f;
+		ImGui::SliderFloat("Lerp amm", &percent, 0.0f, 1.0f);
+		Camera* c = CameraManager::Get()->GetCameraByName("Secondary Camera");
+		c->Lerp(vec2f(-100, 50), vec2f(300, 50), percent);	// Manual lerp
+		//c->Lerp(vec2f(c->GetEye().x, c->GetEye().y), vec2f(300, 50), 0.008f);	// Auto lerp over time
 
-		ImGui::Begin("Lerp slider");
-		static bool b;
-		ImGui::Checkbox("Lerp", &b);
-		if (b) {
-			Camera* c = CameraManager::Get()->GetCameraByName("Secondary Camera");
-			CameraManager::Get()->LerpCameraTo(c, vec2f(0, 0),  0.008f);
-
-		}
 		ImGui::End();
+
 
 		ImGui::Render();
 		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());

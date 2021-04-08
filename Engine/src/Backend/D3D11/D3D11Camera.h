@@ -5,6 +5,7 @@
 #include <directxcolors.h>
 #include <DirectXCollision.h>
 #include <string>
+#include <Utils\Math.h>
 using namespace DirectX;
 
 class Camera
@@ -53,6 +54,8 @@ public:
 	void SetPrimary(bool flag) { mPrimary = flag; }
 	void SetStatic(bool flag) { mStatic = flag; }
 
+	void Lerp(const vec2f from, const vec2f to, float t);
+
 private:
 	XMFLOAT4 mEye, mAt, mUp;
 	std::string mName;
@@ -65,4 +68,7 @@ private:
 	bool mStatic;			// Can the camera move? 
 
 	void UpdateMovement(float deltaTime); // TODO: Requires DeltaTime
+
+	float Lerpf(float a, float b, float t);
+	vec2f Lerp2f(vec2f a, vec2f b, float t);
 };

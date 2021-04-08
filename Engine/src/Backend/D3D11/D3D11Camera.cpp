@@ -14,6 +14,13 @@ Camera::Camera(XMFLOAT4 Eye, XMFLOAT4 At, XMFLOAT4 Up, float ViewWidth, float Vi
 {
 }
 
+void Camera::Lerp(const vec2f from, const vec2f to, float t)
+{
+	vec2f newPos = Lerp2f(from, to, t);
+	mEye.x = newPos.x;
+	mEye.y = newPos.y;
+}
+
 void Camera::Update(float deltaTime)
 {
 	if (!mStatic)
@@ -55,4 +62,14 @@ void Camera::UpdateMovement(float deltaTime)
 	{
 		mEye.x += speed;
 	}
+}
+
+float Camera::Lerpf(float a, float b, float t)
+{
+	return a + t * (b - a);
+}
+
+vec2f Camera::Lerp2f(vec2f a, vec2f b, float t)
+{
+	return vec2f(Lerpf(a.x, b.x, t), Lerpf(a.y, b.y, t));
 }

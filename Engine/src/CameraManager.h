@@ -35,8 +35,6 @@ public:
 	static void CBCycleNext();
 	static void CBCyclePrevious();
 
-	void LerpCameraTo(Camera* cam, vec2f toPos, float duration);
-
 
 	Camera* GetPrimaryCamera() const;
 	size_t GetPrimaryCameraIndex() const;
@@ -50,10 +48,6 @@ private:
 
 	CameraManager(const CameraManager& other) = delete;
 	void operator=(const CameraManager& other) = delete;
-
-	// Move these to a math class later?
-	float Lerpf(float a, float b, float t);
-	vec2f Lerp2f(vec2f a, vec2f b, float t);
 
 	static CameraManager* mInstance;
 	std::vector<Camera*> mCameras;
