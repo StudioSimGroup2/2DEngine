@@ -29,6 +29,4 @@ private:
 
 	Texture* mSprTexture = nullptr;
 	Renderer2D* mRenderer = nullptr;
-
-	int mWidth, mHeight;
 };

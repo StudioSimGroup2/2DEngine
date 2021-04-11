@@ -1,7 +1,8 @@
 #include "Character.h"
 #include "Engine/Input/InputManager.h"
 
-Character::Character(Device* dev, char* name, vec2f* position, Texture* tex) : PhysicsObject(name, position, tex)
+Character::Character(char* name, vec2f* position, Texture* tex)
+		:PhysicsObject(name, position, tex)
 {
 	mSpeed = 200;
 	mSpeedModifier = 1;
@@ -15,8 +16,7 @@ Character::Character(Device* dev, char* name, vec2f* position, Texture* tex) : P
 }
 
 Character::~Character()
-{
-}
+= default;
 
 void Character::Update(float deltaTime)
 {

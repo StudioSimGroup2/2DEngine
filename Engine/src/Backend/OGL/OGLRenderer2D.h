@@ -1,33 +1,24 @@
 #pragma once
 
 #include "Engine/Renderer/Renderer2D.h"
+
 #include <Backend/OGL/OGLShader.h>
-
-#include <GLM/glm.hpp>
-#include <GLM/ext/matrix_transform.hpp>
-#include <GLM/gtc/type_ptr.hpp>
-
-#include "OpenGLCamera.h"
+#include <Backend/OGL/OGLTexture.h>
 
 namespace Engine
 {
 	class OGLRenderer2D : public Renderer2D
 	{
 	public:
-		OGLRenderer2D(OGLShader* shader);
+		explicit OGLRenderer2D(Shader* shader);
 
-		virtual void Draw(vec2f position, Texture* textureToRender) const override;
+		void Draw(vec2f& position, vec2f& rotation, vec2f& scale, Texture* textureToRender) override;
 
 	private:
 		void InitBuffers();
 
-		unsigned int mVAO;
+		unsigned int mVAO{};
 
-		struct VertexType
-		{
-			glm::vec3 position;
-			glm::vec2 texture;
-		};
 	};
 }
 

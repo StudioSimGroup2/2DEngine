@@ -1,4 +1,5 @@
 #pragma once
+
 #include "GameScreen.h"
 #include "Character.h"
 #include <Sprite.h>
@@ -6,20 +7,19 @@
 class GameScreenTest : public GameScreen
 {
 public:
-	GameScreenTest(Device* Device);
-	~GameScreenTest();
+	explicit GameScreenTest(Device* Device);
+	~GameScreenTest() override;
 
-	void Update(float deltaTime);
-	void Render();
-	void Initalise();
+	void Update(float deltaTime) override;
+	void Render() override;
+	void Init();
 private:
 
-	std::vector<Sprite*> ThingsToRender;
-	Sprite* mTempSprite;
-	//Remove
-	Sprite* TestSprite;
-	Character* TestCharacter;
-	TileMap testMap;
+	//std::vector<Sprite*> ThingsToRender;
+	////Remove
+	//Sprite* TestSprite;
+	//Character* TestCharacter;
+	//TileMap testMap;
 };
 
 

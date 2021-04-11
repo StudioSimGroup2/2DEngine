@@ -3,10 +3,8 @@
 namespace Engine
 {
 	Layer::Layer()
-	{
-	}
+	= default;
 
 	Layer::~Layer()
-	{
-	}
+	= default;
 }

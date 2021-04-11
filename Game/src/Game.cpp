@@ -1,33 +1,32 @@
 #include <Engine.h>
 
 #include "GameScreenManager.h"
+#include "SceneManager.h"
+#include "Scene.h"
 
 class GameLayer : public Engine::Layer
 {
 public:
 	GameLayer()
 	{
-		mGameScreenManager = new GameScreenManager(nullptr, SCREEN_TEST);
+		SceneManager::GetInstance()->LoadScene();
 	}
 
-	virtual ~GameLayer() = default;
+	virtual ~GameLayer()
+	{
+	}
 
 	virtual void Render() override
 	{
-		if (mGameScreenManager->GetScreen())
-			mGameScreenManager->Render();
+		SceneManager::GetInstance()->RenderScene();
 	}
 
 	virtual void Update() override
 	{
-		float fps = 1.0f / 60.0f; // This is temporary till we have a timer class 
-
-		if (mGameScreenManager->GetScreen())
-			mGameScreenManager->Update(fps);
+		SceneManager::GetInstance()->UpdateScene();
 	}
 
 private:
-	GameScreenManager* mGameScreenManager;
 };
 
 class Game : public Engine::Application

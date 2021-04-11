@@ -12,10 +12,10 @@ namespace Engine
 		OGLTexture(const std::string& name, const std::string& path);
 		~OGLTexture();
 
-		virtual void Load(int pos) const override;
-		virtual void Unload(int pos) const override;
+		void Load(int pos) const override;
+		void Unload(int pos) const override;
 
-		virtual const std::string& GetName() const override { return mName; }
+		const std::string& GetName() const override { return mName; }
 
 	private:
 		bool CreateTextureFromFile(const std::string& path);

@@ -53,7 +53,7 @@ namespace Engine
 
 	void InputManager::ProcessKeyboard()
 	{
-		for (int i = 0; i < 256; i++)
+		for (uint32_t i = 0; i < 256; i++)
 		{
 			if (mKBPressed[i])
 			{
@@ -82,12 +82,11 @@ namespace Engine
 				}
 			}
 		}
-
 	}
 
 	void InputManager::ProcessMouse()
 	{
-		for (int i = 1; i < 7; i++)
+		for (uint32_t i = 1; i < 7; i++)
 		{
 			if (mMBPressed[i])
 			{
@@ -117,6 +116,13 @@ namespace Engine
 				}
 			}
 		}
+	}
+
+	void InputManager::Shutdown()
+	{
+		mInputCallback.clear();
+
+		delete mInstance;
 	}
 
 	InputManager::InputManager()

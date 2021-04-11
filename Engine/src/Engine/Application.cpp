@@ -1,8 +1,6 @@
 #include "Application.h"
-#include <iostream>
-
-#include "Input/InputManager.h"
-
+#include "Utils/AssetManager.h"
+#include "Audio/AudioManager.h"
 
 namespace Engine
 {
@@ -22,7 +20,6 @@ namespace Engine
 
 		Logger::LogMsg("Logger initalised!", __FILE__);
 
-
 		mWindow = std::unique_ptr<Window>(Window::Create());
 
 		mLayerStack = new LayerStack();
@@ -33,7 +30,6 @@ namespace Engine
 
 	Application::~Application()
 	{
-		mWindow->Shutdown();
 	}
 
 	void Application::Run()
@@ -50,6 +46,30 @@ namespace Engine
 
 			mWindow->OnUpdate();
 		}
+	}
+
+	void Application::ForceShutdown()
+	{
+		if (!mRunning)
+		{
+			return;
+		}
+		
+		mRunning = false;
+
+		if (mLayerStack)
+		{
+			delete mLayerStack;
+			mLayerStack = nullptr;
+		}
+
+		mGUILayer = nullptr;
+
+		AudioManager::GetInstance()->Shutdown();
+		InputManager::GetInstance()->Shutdown();
+		AssetManager::GetInstance()->Shutdown();
+
+		mWindow->Shutdown();
 	}
 
 	void Application::AddLayer(Layer* layer)

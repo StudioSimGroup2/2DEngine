@@ -6,6 +6,10 @@
 
 #include "Engine/Core.h"
 
+// disable: "<type> needs to have dll-interface to be used by clients'
+// Happens on STL member variables which are not public therefore is ok
+#   pragma warning (disable : 4251)
+
 #pragma region KeyCodes
 #define		MOUSE_LB	01
 #define		MOUSE_RB	02
@@ -82,6 +86,8 @@ namespace Engine
 
 		vec2f SetMousePosition(vec2f& mousePos) { return mMousePos = mousePos; }
 		vec2f GetMousePosition() const { return mMousePos; }
+
+		void Shutdown();
 
 	private:
 		InputManager();
