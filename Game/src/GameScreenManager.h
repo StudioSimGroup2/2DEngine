@@ -7,7 +7,6 @@
 
 #include <Engine/Renderer/Device.h>
 
-
 class GameScreenManager
 {
 public:

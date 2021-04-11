@@ -67,6 +67,7 @@ project "Engine"
         defines "ENGINE_DEBUG_OGL"
         symbols "On"
 		runtime "Debug"
+		buildoptions "/MTd"
 		excludes
 		{
 			"%{prj.name}/src/Backend/D3D11/**.h",
@@ -82,6 +83,7 @@ project "Engine"
         defines "ENGINE_DEBUG_D3D11"
         symbols "On"
 		runtime "Debug"
+		buildoptions "/MTd"
 		excludes
 		{
 			"%{prj.name}/src/Backend/OGL/**.h",
@@ -127,8 +129,7 @@ project "ImGui"
     location "ImGui"
     kind "StaticLib"
     language "C++"
-	buildoptions "/MTd"
-	
+
 	files
     {
         "%{prj.name}/src/**.h",
@@ -147,10 +148,17 @@ project "ImGui"
 		"%{wks.location}/Engine/ext/"
 	}
 
+        filter "system:windows"
+		cppdialect "C++17"
+		staticruntime "On"
+		systemversion "latest"
+
+
     filter "configurations:DebugOGL"
 	    defines "ENGINE_DEBUG_OGL"
         symbols "On"
 		runtime "Debug"
+		buildoptions "/MTd"
 		excludes
 		{
 			"%{prj.name}/src/D3D11/**.h",
@@ -161,6 +169,7 @@ project "ImGui"
 	    defines "ENGINE_DEBUG_D3D11"
         symbols "On"
 		runtime "Debug"
+		buildoptions "/MTd"
 		excludes
 		{
 			"%{prj.name}/src/OpenGL/**.h",
@@ -191,7 +200,6 @@ project "TinyXML"
     location "TinyXML"
     kind "StaticLib"
     language "C++"
-	buildoptions "/MTd"
 	
 	files
     {
@@ -208,15 +216,22 @@ project "TinyXML"
 		"%{wks.location}/Engine/ext/"
 	}
 	
-	    filter "configurations:DebugOGL"
+        filter "system:windows"
+		cppdialect "C++17"
+		staticruntime "On"
+		systemversion "latest"  
+
+	   filter "configurations:DebugOGL"
 	    defines "ENGINE_DEBUG_OGL"
         symbols "On"
 		runtime "Debug"
+		buildoptions "/MTd"
 
 	filter "configurations:DebugD3D11"
 	    defines "ENGINE_DEBUG_D3D11"
         symbols "On"
 		runtime "Debug"
+		buildoptions "/MTd"
 
     filter "configurations:ReleaseOGL"
 	    defines "ENGINE_RELEASE_OGL"
@@ -267,11 +282,13 @@ project "Game"
 		defines "ENGINE_DEBUG_OGL"
 		runtime "Debug"
 		symbols "On"
+		buildoptions "/MTd"
 
 	filter "configurations:DebugD3D11"
 		defines "ENGINE_DEBUG_D3D11"
 		runtime "Debug"
 		symbols "On"
+		buildoptions "/MTd"
 
 	filter "configurations:ReleaseOGL"
 		defines "ENGINE_RELEASE_OGL"

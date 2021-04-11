@@ -61,6 +61,12 @@
     <Filter Include="src\Engine\Renderer">
       <UniqueIdentifier>{F838018B-649A-DE98-ED07-254B59681558}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Entities">
+      <UniqueIdentifier>{81A6B583-6D09-4528-168F-7DDE02D110AB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Entities\Components">
+      <UniqueIdentifier>{F6D8F07E-6210-3916-6B1A-9D39D7D05F0F}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Entry">
       <UniqueIdentifier>{8EF7DAB2-FA61-8F29-43A0-40CFAF496D7E}</UniqueIdentifier>
     </Filter>
@@ -1029,16 +1035,31 @@
     <ClInclude Include="src\Engine\Renderer\Renderer2D.h">
       <Filter>src\Engine\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\Renderer\Swapchain.h">
-      <Filter>src\Engine\Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="src\Engine\Window.h">
       <Filter>src\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entities\Component.h">
+      <Filter>src\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entities\ComponentIncludes.h">
+      <Filter>src\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entities\Components\SpriteComp.h">
+      <Filter>src\Entities\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entities\GameObject.h">
+      <Filter>src\Entities</Filter>
     </ClInclude>
     <ClInclude Include="src\Entry\WindowsSystem.h">
       <Filter>src\Entry</Filter>
     </ClInclude>
     <ClInclude Include="src\ParticalSystem.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SceneManager.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\Sprite.h">
@@ -1139,22 +1160,22 @@
     <ClCompile Include="src\Engine\LayerStack.cpp">
       <Filter>src\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="src\Engine\Renderer\Context.cpp">
-      <Filter>src\Engine\Renderer</Filter>
+    <ClCompile Include="src\Entities\Components\SpriteComp.cpp">
+      <Filter>src\Entities\Components</Filter>
     </ClCompile>
-    <ClCompile Include="src\Engine\Renderer\Device.cpp">
-      <Filter>src\Engine\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Engine\Renderer\Renderer2D.cpp">
-      <Filter>src\Engine\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Engine\Renderer\Swapchain.cpp">
-      <Filter>src\Engine\Renderer</Filter>
+    <ClCompile Include="src\Entities\GameObject.cpp">
+      <Filter>src\Entities</Filter>
     </ClCompile>
     <ClCompile Include="src\Entry\WindowsSystem.cpp">
       <Filter>src\Entry</Filter>
     </ClCompile>
     <ClCompile Include="src\ParticalSystem.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SceneManager.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Sprite.cpp">
@@ -1169,16 +1190,10 @@
     <ClCompile Include="src\Utils\Logger.cpp">
       <Filter>src\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="src\Utils\Shader.cpp">
-      <Filter>src\Utils</Filter>
-    </ClCompile>
     <ClCompile Include="src\Utils\Sound.cpp">
       <Filter>src\Utils</Filter>
     </ClCompile>
     <ClCompile Include="src\Utils\StringHelper.cpp">
-      <Filter>src\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Utils\Texture.cpp">
       <Filter>src\Utils</Filter>
     </ClCompile>
   </ItemGroup>

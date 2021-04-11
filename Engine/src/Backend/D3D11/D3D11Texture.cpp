@@ -26,6 +26,14 @@ namespace Engine
 
 	D3D11Texture::~D3D11Texture()
 	{
+		if (mTextureView)
+		{
+			mTextureView->Release();
+			mTextureView = nullptr;
+		}
+
+		mDeviceContext = nullptr;
+		
 	}
 
 	void D3D11Texture::Load(int pos = 1) const

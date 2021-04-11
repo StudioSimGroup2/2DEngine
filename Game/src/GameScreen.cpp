@@ -6,8 +6,7 @@ GameScreen::GameScreen(Engine::Device* Device)
 }
 
 GameScreen::~GameScreen()
-{
-}
+= default;
 
 void GameScreen::Render()
 {

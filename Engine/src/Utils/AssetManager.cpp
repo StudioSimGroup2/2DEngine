@@ -1,20 +1,14 @@
 #include "AssetManager.h"
 
-#if GRAPHICS_LIBRARY == 0
-#include "Backend/D3D11/D3D11Shader.h"
-#include "Backend/D3D11/D3D11Device.h"
-#include "Backend/D3D11/D3D11Texture.h"
-#elif GRAPHICS_LIBRARY == 1
-#include "Backend/OGL/OGLShader.h"
-#include "Backend/OGL/OGLTexture.h"
-#endif
+#include "StringHelper.h"
+
 #include <iostream>
 
 namespace Engine
 {
 	AssetManager* AssetManager::mInstance = nullptr;
 
-	void AssetManager::LoadShader(char* name, char* path)
+	void AssetManager::LoadShader(const char* name, const char* path)
 	{
 #if GRAPHICS_LIBRARY == 0
 		mInstance->mShaders.push_back(new D3D11Shader(D3D11Device::GetInstance(), name, path));
@@ -25,25 +19,21 @@ namespace Engine
 
 	Texture* AssetManager::LoadTexture(char* name, char* path)
 	{
-		std::string str = std::string(path);
-		bool err = false;
-		for (int i = 0; i < sizeof(mInstance->mSupportedTexExtensions) / sizeof(mInstance->mSupportedTexExtensions[0]); i++)
+		bool err = true;
+		for (auto & mSupportedTexExtension : mInstance->mSupportedTexExtensions)
 		{
-			if (str.substr(str.find_last_of(".") + 1) == mInstance->mSupportedTexExtensions[i])
+			if (StringHelper::GetFileExtension(path) == mSupportedTexExtension)
 			{
-				err = true;
+				err = false;
 			}
 		}
 
-		if (!err)
+		if (err)
 		{
-			std::cout << "Format : " << str.substr(str.find_last_of(".") + 1) << " is unsupported!" << std::endl;
+			std::cout << "The File extension : " << StringHelper::GetFileExtension(path) << " is not supported!" << std::endl;
 			
 			return nullptr;
 		}
-			
-
-		
 
 #if GRAPHICS_LIBRARY == 0
 		mInstance->mTextures.push_back(new D3D11Texture(D3D11Device::GetInstance(), name, path));
@@ -61,7 +51,7 @@ namespace Engine
 		return mInstance;
 	}
 
-	Shader* AssetManager::GetShaderByName(char* name)
+	Shader* AssetManager::GetShaderByName(const char* name)
 	{
 		auto index = std::find_if(mInstance->mShaders.begin(), mInstance->mShaders.end(),
 			[&name](const Shader* s) {return s->GetName() == std::string(name); });
@@ -94,10 +84,16 @@ namespace Engine
 
 	void AssetManager::ClearAll()
 	{
+		for (Shader* s : mInstance->mShaders)
+			delete s;
+
+		for (Texture* t : mInstance->mTextures)
+			delete t;
 	}
 
 	void AssetManager::Shutdown()
 	{
+		ClearAll();
 		delete mInstance;
 	}
 }

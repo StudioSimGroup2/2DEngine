@@ -7,7 +7,7 @@
 class Character : public PhysicsObject
 {
 public:
-	Character(Device* dev, char* name, vec2f* position, Texture* tex);
+	Character(char* name, vec2f* position, Texture* tex);
 	~Character();
 	void Update(float deltaTime);
 	void Render();

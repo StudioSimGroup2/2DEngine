@@ -103,6 +103,7 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalOptions>/MTd %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -125,6 +126,7 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalOptions>/MTd %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -511,10 +513,15 @@
     <ClInclude Include="src\Engine\Renderer\Context.h" />
     <ClInclude Include="src\Engine\Renderer\Device.h" />
     <ClInclude Include="src\Engine\Renderer\Renderer2D.h" />
-    <ClInclude Include="src\Engine\Renderer\Swapchain.h" />
     <ClInclude Include="src\Engine\Window.h" />
+    <ClInclude Include="src\Entities\Component.h" />
+    <ClInclude Include="src\Entities\ComponentIncludes.h" />
+    <ClInclude Include="src\Entities\Components\SpriteComp.h" />
+    <ClInclude Include="src\Entities\GameObject.h" />
     <ClInclude Include="src\Entry\WindowsSystem.h" />
     <ClInclude Include="src\ParticalSystem.h" />
+    <ClInclude Include="src\Scene.h" />
+    <ClInclude Include="src\SceneManager.h" />
     <ClInclude Include="src\Sprite.h" />
     <ClInclude Include="src\Utils\AssetManager.h" />
     <ClInclude Include="src\Utils\LevelMap.h" />
@@ -585,20 +592,18 @@
     <ClCompile Include="src\Engine\Input\InputManager.cpp" />
     <ClCompile Include="src\Engine\Layer.cpp" />
     <ClCompile Include="src\Engine\LayerStack.cpp" />
-    <ClCompile Include="src\Engine\Renderer\Context.cpp" />
-    <ClCompile Include="src\Engine\Renderer\Device.cpp" />
-    <ClCompile Include="src\Engine\Renderer\Renderer2D.cpp" />
-    <ClCompile Include="src\Engine\Renderer\Swapchain.cpp" />
+    <ClCompile Include="src\Entities\Components\SpriteComp.cpp" />
+    <ClCompile Include="src\Entities\GameObject.cpp" />
     <ClCompile Include="src\Entry\WindowsSystem.cpp" />
     <ClCompile Include="src\ParticalSystem.cpp" />
+    <ClCompile Include="src\Scene.cpp" />
+    <ClCompile Include="src\SceneManager.cpp" />
     <ClCompile Include="src\Sprite.cpp" />
     <ClCompile Include="src\Utils\AssetManager.cpp" />
     <ClCompile Include="src\Utils\LevelMap.cpp" />
     <ClCompile Include="src\Utils\Logger.cpp" />
-    <ClCompile Include="src\Utils\Shader.cpp" />
     <ClCompile Include="src\Utils\Sound.cpp" />
     <ClCompile Include="src\Utils\StringHelper.cpp" />
-    <ClCompile Include="src\Utils\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ImGui\ImGui.vcxproj">

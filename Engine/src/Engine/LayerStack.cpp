@@ -3,13 +3,16 @@
 namespace Engine
 {
 	LayerStack::LayerStack()
-	{
-	}
+	= default;
 
 	LayerStack::~LayerStack()
 	{
 		for (Layer* l : mLayers)
+		{
 			delete l;
+			l = nullptr;
+		}
+			
 	}
 
 	void LayerStack::AddLayerToStack(Layer* layer)

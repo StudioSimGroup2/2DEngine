@@ -3,12 +3,9 @@
 #include <vector>
 #include <iostream>
 #include <istream>
-#include <fstream>
-
 
 TileMap LevelMap::LoadLevelMap(char* FilePath)
 {
-	int tile;
 	TileMap tilemap;
 
 	//Get the whole xml document.

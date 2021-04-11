@@ -16,8 +16,7 @@ namespace Engine
 	}
 
 	OGLTexture::~OGLTexture()
-	{
-	}
+	= default;
 
 	void OGLTexture::Load(int pos) const
 	{
@@ -50,5 +49,7 @@ namespace Engine
 		{
 			return true;
 		}
+
+		return false;
 	}
 }

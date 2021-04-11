@@ -128,7 +128,7 @@ void ParticleSystem::InitParticles(size_t count)
 	{
 	case Emmitter::Square: {
 
-		Texture* tex = AssetManager::LoadTexture("Square", "Assets\\Textures\\Particle System Inbuilt\\Square.dds");
+		Texture* tex = AssetManager::GetInstance()->LoadTexture("Square", "Assets\\Textures\\Particle System Inbuilt\\Square.dds");
 
 		for (int i = 0; i < count; i++) {
 
@@ -142,7 +142,7 @@ void ParticleSystem::InitParticles(size_t count)
 		}
 
 		// Setup the Emmiter icon
-		Texture* icon = AssetManager::LoadTexture("SquareIcon", "Assets\\Textures\\Particle System Inbuilt\\SquareEmmiterIcon.dds");
+		Texture* icon = AssetManager::GetInstance()->LoadTexture("SquareIcon", "Assets\\Textures\\Particle System Inbuilt\\SquareEmmiterIcon.dds");
 		D3D11Renderer2D* re = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDevice);
 		mEmmiterIcon = new Sprite("Partical system:", &mPosition, icon);
 		mEmmiterIcon->AddRendererComponent();
@@ -151,7 +151,7 @@ void ParticleSystem::InitParticles(size_t count)
 
 	case Emmitter::Circle:
 	{
-		Texture* tex = AssetManager::LoadTexture("Circle", "Assets\\Textures\\Particle System Inbuilt\\Circle.dds");
+		Texture* tex = AssetManager::GetInstance()->LoadTexture("Circle", "Assets\\Textures\\Particle System Inbuilt\\Circle.dds");
 
 		for (int i = 0; i < count; i++) {
 			ParticleProperties* p = new ParticleProperties(mParticleProperties);
@@ -170,7 +170,7 @@ void ParticleSystem::InitParticles(size_t count)
 			mParticles.push_back(p);
 		}
 
-		Texture* icon = AssetManager::LoadTexture("SquareIcon", "Assets\\Textures\\Particle System Inbuilt\\CircleEmmiterIcon.dds");
+		Texture* icon = AssetManager::GetInstance()->LoadTexture("SquareIcon", "Assets\\Textures\\Particle System Inbuilt\\CircleEmmiterIcon.dds");
 		// Setup the Emmiter icon
 		D3D11Renderer2D* re = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDevice);
 		mEmmiterIcon = new Sprite("Partical system:", &mPosition, icon);

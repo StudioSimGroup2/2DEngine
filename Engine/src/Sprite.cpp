@@ -1,11 +1,5 @@
 #include "Sprite.h"
 
-#if GRAPHICS_LIBRARY == 0
-#include "Backend/D3D11/D3D11Renderer2D.h"
-#elif GRAPHICS_LIBRARY == 1
-#include "Backend/OGL/OGLRenderer2D.h"
-#endif
-
 using namespace Engine;
 
 Sprite::Sprite(char* name, vec2f* position, Texture* tex)
@@ -33,21 +27,16 @@ Sprite::~Sprite()
 		delete mPosition;
 		mPosition = nullptr;
 	}
-		
 }
 
 void Sprite::AddRendererComponent(Shader* sh)
 {
-	if (sh == nullptr)
-		mRenderer = Device::CreateRenderer(AssetManager::GetInstance()->GetShaderByName("Default"));
-	else
-		mRenderer = Device::CreateRenderer(sh);
+	mRenderer = Device::CreateRenderer(sh == nullptr ? AssetManager::GetInstance()->GetShaderByName("Default") : sh);
 }
 
 void Sprite::RemoveRendererComponent()
 {
-	if (mRenderer)
-		delete mRenderer;
+	delete mRenderer;
 	
 	mRenderer = nullptr;
 }
@@ -63,8 +52,8 @@ void Sprite::Draw()
 		return;
 
 #if GRAPHICS_LIBRARY == 0
-	static_cast<D3D11Renderer2D*>(mRenderer)->Draw(*mPosition, mSprTexture);
+	dynamic_cast<D3D11Renderer2D*>(mRenderer)->Draw(*mPosition, mSprTexture);
 #elif GRAPHICS_LIBRARY == 1
-	static_cast<OGLRenderer2D*>(mRenderer)->Draw(*mPosition, mSprTexture);
+	dynamic_cast<OGLRenderer2D*>(mRenderer)->Draw(*mPosition, mSprTexture);
 #endif
 }

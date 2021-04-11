@@ -1,26 +1,48 @@
 #include "D3D11Renderer2D.h"
 
-#include "D3D11Device.h"
 #include <CameraManager.h>
 
 namespace Engine
 {
-	D3D11Renderer2D::D3D11Renderer2D(D3D11Shader* shader, D3D11Device* dev)
+	D3D11Renderer2D::D3D11Renderer2D(Shader* shader, D3D11Device* dev)
 	{
-		mShader = static_cast<Shader*>(shader);
+		mShader = shader;
 
 		mDeviceContext = dev->GetDeviceContext();
 
 		InitBuffers(dev->GetDevice());
 	}
 
+	D3D11Renderer2D::~D3D11Renderer2D()
+	{
+		if (mVertexBuffer)
+		{
+			mVertexBuffer->Release();
+			mVertexBuffer = nullptr;
+		}
+
+		if (mIndexBuffer)
+		{
+			mIndexBuffer->Release();
+			mIndexBuffer = nullptr;
+		}
+		
+		if (mConstantBuffer)
+		{
+			mConstantBuffer->Release();
+			mConstantBuffer = nullptr;
+		}
+
+		mDeviceContext = nullptr;
+	}
+
 	void D3D11Renderer2D::Draw(vec2f position, Texture* textureToRender) const
 	{
 		Camera* camera = CameraManager::Get()->GetPrimaryCamera();
 
-		XMMATRIX mScale = XMMatrixScaling(1, 1.05f, 1);
-		XMMATRIX mRotate = XMMatrixRotationX(0) * XMMatrixRotationY(0) * XMMatrixRotationZ(0);
-		XMMATRIX mTranslate = XMMatrixTranslation(position.x, -position.y, 0);
+		XMMATRIX mScale = XMMatrixScaling(1.0f, 1.05f, 1.0f);
+		XMMATRIX mRotate = XMMatrixRotationX(0.0f) * XMMatrixRotationY(0.0f) * XMMatrixRotationZ(0.0f);
+		XMMATRIX mTranslate = XMMatrixTranslation(position.x, -position.y, 0.0f);
 		XMMATRIX world = mScale * mRotate * mTranslate;
 
 		ConstantBuffer cb;
