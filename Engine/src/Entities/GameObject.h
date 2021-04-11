@@ -14,8 +14,8 @@ namespace Engine
 	class ENGINE_API GameObject
 	{
 	public:
-		GameObject() { std::cout << "Gaze into the the abyss:	       " << this << std::endl; };
-		GameObject(GameObject* parent) { mParent = parent; parent->AttachToParent(this); }
+		GameObject();
+		GameObject(GameObject* parent);
 		~GameObject() = default;
 
 		void Start();
@@ -33,12 +33,12 @@ namespace Engine
 		void SetParent(GameObject* parent) { mParent = parent; }
 		void SetName(const std::string& name) { mName = name; }
 
-		GameObject* GetParent() { return mParent; }
-		std::vector<GameObject*> GetChildren() { return mChildren; }
+		GameObject* GetParent() const { return mParent; }
+		std::vector<GameObject*> GetChildren() const { return mChildren; }
 
 		std::string& GetName() { return mName; }
 
-		std::vector<Component*> GetComponents() { return mComponents; }
+		std::vector<Component*> GetComponents() const { return mComponents; }
 
 		template<typename T>
 		inline T* GetComponent()
@@ -53,18 +53,6 @@ namespace Engine
 			return retrievedComponent;
 		}
 
-		//template<typename T>
-		//inline void AddComponent(T* comp)
-		//{
-		//	Component* c = dynamic_cast<Component*>(comp);
-		//	if (!(c->GetGameObject()))
-		//	{
-		//		c->SetGameObject(this);
-		//	}
-		//	mComponents.push_back(c);
-		//	c->DebugInit();
-		//}
-
 		template<typename T>
 		inline T* AddComponent(T* comp)
 		{
@@ -74,18 +62,18 @@ namespace Engine
 				c->SetGameObject(this);
 			}
 			mComponents.push_back(c);
-			c->DebugInit();
 
 			return comp;
 		}
 
 	protected:
 		bool mStatus = true; // Enable objects by default
+		GameObject* mParent = nullptr;
 
 	private:
+		void InitTransformComponent();
+		
 		std::string mName;
-
-		GameObject* mParent = nullptr;
 
 		std::vector<Component*> mComponents;
 		std::vector<GameObject*> mChildren;

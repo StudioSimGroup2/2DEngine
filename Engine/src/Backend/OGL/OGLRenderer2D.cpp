@@ -16,26 +16,17 @@ namespace Engine
 		InitBuffers();
 	}
 
-	void OGLRenderer2D::Draw(vec2f position, Texture* textureToRender) const
+	void OGLRenderer2D::Draw(vec2f& position, vec2f& rotation, vec2f& scale, Texture* textureToRender)
 	{
 		mShader->Load();
 
 		Camera* camera = CameraManager::Get()->GetPrimaryCamera();
 
-		//// Todo:
-		//// weird mvp stuff
-
-		//glm::mat4 Model = glm::mat4(1.0f);
-		//Model = glm::rotate(Model, 0.0f, glm::vec3(1, 0, 0)) * glm::rotate(Model, 0.0f, glm::vec3(0, 1, 0)) * glm::rotate(Model, 0.0f, glm::vec3(0, 0, 1));
-		//Model = glm::scale(Model, glm::vec3(1.0f, 1.0f, 1.0f));
-		//Model = glm::translate(Model, glm::vec3(position.x, position.y, 0));
-		//glm::mat4 mvp = camera->GetProjectionMatrix() * camera->GetViewMatrix() * Model;
-
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(position.x, position.y, 0.0f));
-		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(rotation.x, rotation.y, 1.0f));
 
-		model = glm::scale(model, glm::vec3(33.0f, 34.0f, 0.0f)); // fix for sprites rendering at 32x32
+		model = glm::scale(model, glm::vec3(32.0f * scale.x, 32.0f * scale.y, 0.0f)); // fix for sprites rendering at 32x32
 
 		dynamic_cast<OGLShader*>(mShader)->SetMatrix("model", model);
 		dynamic_cast<OGLShader*>(mShader)->SetMatrix("projection", camera->GetProjectionMatrix());

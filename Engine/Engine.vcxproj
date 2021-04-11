@@ -102,9 +102,9 @@
       <AdditionalIncludeDirectories>src;ext;..\Imgui\src;..\Imgui\ext;..\TinyXML\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalOptions>/MTd %(AdditionalOptions)</AdditionalOptions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalOptions>/MDd %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -534,6 +534,7 @@
     <ClInclude Include="src\Utils\Sound.h" />
     <ClInclude Include="src\Utils\StringHelper.h" />
     <ClInclude Include="src\Utils\Texture.h" />
+    <ClInclude Include="src\Entities\Components\TransformComp.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ext\GLM\detail\glm.cpp" />
@@ -595,6 +596,7 @@
     <ClCompile Include="src\Engine\Input\InputManager.cpp" />
     <ClCompile Include="src\Engine\Layer.cpp" />
     <ClCompile Include="src\Engine\LayerStack.cpp" />
+    <ClCompile Include="src\Entities\Component.cpp" />
     <ClCompile Include="src\Entities\Components\SpriteComp.cpp" />
     <ClCompile Include="src\Entities\GameObject.cpp" />
     <ClCompile Include="src\Entry\WindowsSystem.cpp" />
@@ -609,6 +611,7 @@
     <ClCompile Include="src\Utils\Logger.cpp" />
     <ClCompile Include="src\Utils\Sound.cpp" />
     <ClCompile Include="src\Utils\StringHelper.cpp" />
+    <ClCompile Include="src\Entities\Components\TransformComp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ImGui\ImGui.vcxproj">

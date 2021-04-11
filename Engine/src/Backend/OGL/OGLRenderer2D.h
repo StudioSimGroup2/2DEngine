@@ -12,7 +12,7 @@ namespace Engine
 	public:
 		explicit OGLRenderer2D(Shader* shader);
 
-		void Draw(vec2f position, Texture* textureToRender) const override;
+		void Draw(vec2f& position, vec2f& rotation, vec2f& scale, Texture* textureToRender) override;
 
 	private:
 		void InitBuffers();

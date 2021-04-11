@@ -1,24 +1,27 @@
 #pragma once
 
 #include "../Component.h"
-#include "Sprite.h"
+#include "Utils/Texture.h"
+#include <Engine/Renderer/Renderer2D.h>
 
 namespace Engine
 {
 	class ENGINE_API SpriteComp : public Component
 	{
 	public:
-		SpriteComp() : Component() { mType = "Sprite"; }
-		SpriteComp(GameObject* parent) : Component(parent) { mType = "Sprite"; }
+		SpriteComp();
+		SpriteComp(GameObject* parent);
 		~SpriteComp() override;
 
 		void Update() override;
 		void Render() override;
 
-		void SetSprite(Sprite* sprite) { mSprite = sprite; }
-		Sprite* GetSprite() { return mSprite; }
-
+		void SetTexture(Texture* texture) { mTexture = texture; }
+		Texture* GetTexture() const { return mTexture; }
 	private:
-		Sprite* mSprite = nullptr;
+		void Init();
+
+		Texture* mTexture = nullptr;
+		Renderer2D* mRenderer = nullptr;
 	};
 }

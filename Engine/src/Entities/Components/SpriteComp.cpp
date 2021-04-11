@@ -1,13 +1,30 @@
 #include "SpriteComp.h"
+#include <Engine/Renderer/Device.h>
+#include <Utils/AssetManager.h>
+
+#include "Entities/GameObject.h"
 
 namespace Engine
 {
+	SpriteComp::SpriteComp() : Component()
+	{
+		Init();
+	}
+
+	SpriteComp::SpriteComp(GameObject* parent) : Component(parent)
+	{
+		Init();
+	}
+
 	SpriteComp::~SpriteComp()
 	{
-		if (mSprite)
+		if (mTexture)
+			mTexture = nullptr;
+
+		if (mRenderer)
 		{
-			delete mSprite;
-			mSprite = nullptr;
+			delete mRenderer;
+			mRenderer = nullptr;
 		}
 
 		Component::~Component();
@@ -20,6 +37,28 @@ namespace Engine
 
 	void SpriteComp::Render()
 	{
-		mSprite->Draw();
+		if (!mRenderer)
+			return;
+
+#if GRAPHICS_LIBRARY == 0
+		dynamic_cast<D3D11Renderer2D*>(mRenderer)->Draw(mParent->GetComponent<TransformComp>()->GetPosition(),
+			mParent->GetComponent<TransformComp>()->GetRotation(),
+			mParent->GetComponent<TransformComp>()->GetScale(),
+			mTexture
+		);
+#elif GRAPHICS_LIBRARY == 1
+		dynamic_cast<OGLRenderer2D*>(mRenderer)->Draw(mParent->GetComponent<TransformComp>()->GetPosition(),
+			mParent->GetComponent<TransformComp>()->GetRotation(),
+			mParent->GetComponent<TransformComp>()->GetScale(),
+			mTexture
+		);
+#endif
+	}
+
+	void SpriteComp::Init()
+	{
+		//mRenderer = Device::CreateRenderer(sh == nullptr ? AssetManager::GetInstance()->GetShaderByName("Default") : sh);
+		mRenderer = Device::CreateRenderer(AssetManager::GetInstance()->GetShaderByName("Default"));
+		mType = "Sprite";
 	}
 }
