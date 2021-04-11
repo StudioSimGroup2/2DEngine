@@ -1,7 +1,5 @@
 #include "OGLTexture.h"
 
-#include <Glad/glad.h>
-
 #include <stb/stb_image.h>
 
 namespace Engine
@@ -9,15 +7,15 @@ namespace Engine
 	OGLTexture::OGLTexture(const std::string& name, const std::string& path)
 	{
 		mName = name;
+		mPath = path;
 		
 		glGenTextures(1, &mID);
 
-		CreateTextureFromFile(path);
+		CreateTextureFromFile();
 	}
 
 	OGLTexture::~OGLTexture()
-	{
-	}
+	= default;
 
 	void OGLTexture::Load(int pos) const
 	{
@@ -28,11 +26,11 @@ namespace Engine
 	{
 	}
 
-	bool OGLTexture::CreateTextureFromFile(const std::string& path)
+	bool OGLTexture::CreateTextureFromFile()
 	{
 		int nrChannels;
 
-		unsigned char* source = stbi_load(path.c_str(), &mWidth, &mHeight, &nrChannels, 0);
+		unsigned char* source = stbi_load(mPath.c_str(), &mWidth, &mHeight, &nrChannels, 0);
 
 		glBindTexture(GL_TEXTURE_2D, mID);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, mWidth, mHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, source);
@@ -50,5 +48,7 @@ namespace Engine
 		{
 			return true;
 		}
+
+		return false;
 	}
 }

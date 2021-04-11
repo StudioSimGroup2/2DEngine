@@ -1,11 +1,12 @@
 #pragma once
+#include <memory>
 
 #include "Core.h"
 #include "Window.h"
 #include "LayerStack.h"
-#include <memory>
-#include "Utils/Logger.h"
 
+#include "Utils/Logger.h"
+#include <Engine/Input/InputManager.h>
 #include "GUILayer.h"
 
 namespace Engine
@@ -17,9 +18,12 @@ namespace Engine
 		~Application();
 
 		static Application* GetInstance() { return mInstance; }
+		bool GetRun() { return mRunning; }
+
 		Window& GetWindowData() { return *mWindow; }
 
 		void Run();
+		void ForceShutdown();
 
 		void AddLayer(Layer* layer);
 		void RemoveLayer(Layer* layer);

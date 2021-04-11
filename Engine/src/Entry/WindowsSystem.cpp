@@ -15,6 +15,8 @@
 #include <imgui_impl_win32.h>
 #include <iostream>
 
+#include <Engine/Application.h>
+
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT uMSG, WPARAM wParam, LPARAM lParam);
 
 namespace Engine
@@ -61,7 +63,7 @@ namespace Engine
 
 		if (mRenderer)
 		{
-			mRenderer->OnUpdate(mFrameTime.count());  //everything is updating too fast, we need to cap the update speed
+			mRenderer->OnUpdate(static_cast<float>(mFrameTime.count()));  //everything is updating too fast, we need to cap the update speed
 			mRenderer->SwapBuffers();
 		}
 	}
@@ -82,7 +84,8 @@ namespace Engine
 			mRenderer = nullptr;
 		}
 
-		exit(0);
+		DestroyWindow(mHWND);
+		UnregisterClass(mClassName, mHInstance);
 	}
 
 	void WindowsSystem::Init(const WindowData& data)
@@ -96,8 +99,9 @@ namespace Engine
 		wndclass.hCursor = LoadCursor(NULL, IDC_ARROW);
 		wndclass.hIcon = LoadIcon(NULL, IDI_APPLICATION);
 		wndclass.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
-		wndclass.hInstance = GetModuleHandle(NULL);
-		wndclass.lpszClassName = L"EngineWindowClass";
+		mHInstance = GetModuleHandle(NULL);
+		wndclass.hInstance = mHInstance;
+		wndclass.lpszClassName = mClassName;
 		wndclass.lpszMenuName = L"";
 		wndclass.style = CS_OWNDC;
 		wndclass.lpfnWndProc = &WndProc;
@@ -105,7 +109,7 @@ namespace Engine
 		// TODO: Error checking
 		RegisterClassEx(&wndclass);
 
-		mHWND = CreateWindowEx(WS_EX_OVERLAPPEDWINDOW, L"EngineWindowClass", L"Sleepy Engine", WS_VISIBLE | WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, 1280, 720, NULL, NULL, wndclass.hInstance, this);
+		mHWND = CreateWindowEx(WS_EX_OVERLAPPEDWINDOW, mClassName, L"Sleepy Engine", WS_VISIBLE | WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, 1280, 720, NULL, NULL, mHInstance, this);
 
 #if GRAPHICS_LIBRARY == 1
 		mRenderer = new OpenGLContext(mHWND, mWidth, mHeight, true, false);
@@ -121,7 +125,10 @@ namespace Engine
 	}
 
 	LRESULT CALLBACK WndProc(HWND hwnd, UINT uMSG, WPARAM wParam, LPARAM lParam)
-	{
+	{	
+		if (shuttingDown)
+			return NULL;
+		
 		if (ImGui_ImplWin32_WndProcHandler(hwnd, uMSG, wParam, lParam))
 			return true;
 
@@ -144,13 +151,13 @@ namespace Engine
 
 		case WM_KEYDOWN:
 		{
-			InputManager::GetInstance()->KeyPress(wParam);
+			InputManager::GetInstance()->KeyPress(static_cast<uint32_t>(wParam));
 		}
 		break;
 
 		case WM_KEYUP:
 		{
-			InputManager::GetInstance()->KeyRelease(wParam);
+			InputManager::GetInstance()->KeyRelease(static_cast<uint32_t>(wParam));
 		}
 		break;
 
@@ -211,8 +218,10 @@ namespace Engine
 		case WM_DESTROY:
 		{
 			Window* window = (Window*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
-			::PostQuitMessage(0);
-			window->Shutdown();
+			shuttingDown = true;
+			Application::GetInstance()->ForceShutdown();
+			PostQuitMessage(0);
+			
 			break;
 		}
 

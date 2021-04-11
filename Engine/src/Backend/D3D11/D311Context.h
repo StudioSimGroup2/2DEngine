@@ -1,9 +1,5 @@
 #pragma once
 
-#include "Engine/Renderer/Context.h"
-
-// TODO: add compiler include path later or Precompiled Header
-
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "dxgi.lib")
 #pragma comment(lib, "d3dcompiler.lib")
@@ -11,8 +7,9 @@
 #include <d3d11.h>
 #include <directxmath.h>
 
+#include "Engine/Renderer/Context.h"
+
 //Can be removed added for testing
-#include "Common.h"
 #include "ParticalSystem.h"
 //----------------------------------
 
@@ -26,20 +23,16 @@ namespace Engine
 		D311Context(HWND hwnd, UINT32 screenWidth, UINT32 screenHeight, bool vSync, bool fullscreen);
 		~D311Context();
 		
-		virtual void Init() override;
-		virtual void Shutdown() override;
-		virtual void OnUpdate(float deltaTime) override;
-		virtual void SwapBuffers() override;
+		void Init() override;
+		void Shutdown() override;
+		void OnUpdate(float deltaTime) override;
 
-		virtual int GetCardMemory() override { return mMemorySize; }
-		virtual std::string GetCardName() override  { return mName; }
+		virtual void SwapBuffers() override;
 
 		void RenderImGui();
 		void RenderScene();
 		
 	private:
-		unsigned int mMemorySize;
-		std::string mName;
 
 		UINT32 mScreenWidth;
 		UINT32 mScreenHeight;

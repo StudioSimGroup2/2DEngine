@@ -40,7 +40,7 @@ void GameScreenManager::ChangeScreens(SCREENS Selection)
 	{
 	case SCREEN_TEST:
 		NewScreen = new GameScreenTest(mDevice);
-		mCurrentScreen = (GameScreen*)NewScreen;
+		mCurrentScreen = NewScreen;
 		break;
 	case SCREEN_LEVEL1:
 		break;

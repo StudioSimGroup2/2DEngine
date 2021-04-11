@@ -1,27 +1,21 @@
 #include "D311Context.h"
-#include "D3D11Renderer2D.h"
-#include <Utils/AssetManager.h>
-#include <Engine/Audio/AudioManager.h>
-#include <directxcolors.h>
-#include <Backend/D3D11/D3D11Camera.h>
-#include <Engine/Input/InputManager.h>
 #include "Engine/Application.h"
-#include "Engine/LayerStack.h"
-#include <filesystem>
-#include "ImFileDialog/ImFileDialog.h"
+#include <Utils/AssetManager.h>
+#include <Backend/D3D11/D3D11Camera.h>
+#include <CameraManager.h>
 
 namespace Engine
 {
 	D311Context::D311Context(HWND hwnd, UINT32 screenWidth, UINT32 screenHeight, bool vSync, bool fullscreen)
 	{
-		mSwapChain = 0;
-		mDevice = 0;
-		mDeviceContext = 0;
-		mRenderTargetView = 0;
-		mDepthStencilBuffer = 0;
-		mDepthStencilState = 0;
-		mDepthStencilView = 0;
-		mRasterState = 0;
+		mSwapChain = nullptr;
+		mDevice = nullptr;
+		mDeviceContext = nullptr;
+		mRenderTargetView = nullptr;
+		mDepthStencilBuffer = nullptr;
+		mDepthStencilState = nullptr;
+		mDepthStencilView = nullptr;
+		mRasterState = nullptr;
 
 		mHWND = hwnd;
 		mScreenHeight = screenHeight;
@@ -35,18 +29,14 @@ namespace Engine
 
 	void D311Context::Init()
 	{
-
-
 		HRESULT hr;
 
 		IDXGIFactory* factory;
 		IDXGIAdapter* adapter;
 		IDXGIOutput* adapterOutput;
 		unsigned int numModes, i, numerator, denominator;
-		unsigned long long stringLength;
 		DXGI_MODE_DESC* displayModeList;
 		DXGI_ADAPTER_DESC adapterDesc;
-		int error;
 		DXGI_SWAP_CHAIN_DESC swapChainDesc;
 		D3D_FEATURE_LEVEL featureLevel;
 		ID3D11Texture2D* backBufferPtr;
@@ -55,13 +45,11 @@ namespace Engine
 		D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
 		D3D11_RASTERIZER_DESC rasterDesc;
 		D3D11_VIEWPORT viewport;
-		float fieldOfView, screenAspect;
 
-		// Need client rect insted of window res
 		RECT rc;
 		GetClientRect(mHWND, &rc);
-		UINT width = rc.right - rc.left;
-		UINT height = rc.bottom - rc.top;
+		UINT width = static_cast<UINT>(rc.right - rc.left);
+		UINT height = static_cast<UINT>(rc.bottom - rc.top);
 
 		// Create a DirectX graphics interface factory.
 		hr = CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&factory);
@@ -85,7 +73,7 @@ namespace Engine
 		}
 
 		// Get the number of modes that fit the DXGI_FORMAT_R8G8B8A8_UNORM display format for the adapter output (monitor).
-		hr = adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numModes, NULL);
+		hr = adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numModes, nullptr);
 		if (FAILED(hr))
 		{
 			return;
@@ -93,10 +81,6 @@ namespace Engine
 
 		// Create a list to hold all the possible display modes for this monitor/video card combination.
 		displayModeList = new DXGI_MODE_DESC[numModes];
-		if (!displayModeList)
-		{
-			return;
-		}
 
 		// Now fill the display mode list structures.
 		hr = adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numModes, displayModeList);
@@ -126,32 +110,31 @@ namespace Engine
 			return;
 		}
 
-		// Store the dedicated video card memory in megabytes.
-		mMemorySize = (int)(adapterDesc.DedicatedVideoMemory / 1024 / 1024);
-
 		// Convert the name of the video card to a character array and store it.
 		char cardDesc[128];
 		char defchar = ' ';
 
-		WideCharToMultiByte(CP_ACP, 0, adapterDesc.Description, -1, cardDesc, 128, &defchar, NULL);
+		WideCharToMultiByte(CP_ACP, 0, adapterDesc.Description, -1, cardDesc, 128, &defchar, nullptr);
 
-		mName = std::string(cardDesc);
+		DeviceData dData = DeviceData(std::string(cardDesc), (int)(adapterDesc.DedicatedVideoMemory / 1024 / 1024));
+
+		D3D11Device::GetInstance()->SetDeviceData(dData);
 
 		// Release the display mode list.
 		delete[] displayModeList;
-		displayModeList = 0;
+		displayModeList = nullptr;
 
 		// Release the adapter output.
 		adapterOutput->Release();
-		adapterOutput = 0;
+		adapterOutput = nullptr;
 
 		// Release the adapter.
 		adapter->Release();
-		adapter = 0;
+		adapter = nullptr;
 
 		// Release the factory.
 		factory->Release();
-		factory = 0;
+		factory = nullptr;
 
 		// Initialize the swap chain description.
 		ZeroMemory(&swapChainDesc, sizeof(swapChainDesc));
@@ -209,8 +192,8 @@ namespace Engine
 		featureLevel = D3D_FEATURE_LEVEL_11_0;
 
 		/*Create the swap chain, Direct3D device, and Direct3D device context.*/
-		hr = D3D11CreateDeviceAndSwapChain(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, D3D11_CREATE_DEVICE_DEBUG, &featureLevel, 1,
-			D3D11_SDK_VERSION, &swapChainDesc, &mSwapChain, &mDevice, NULL, &mDeviceContext);
+		hr = D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, D3D11_CREATE_DEVICE_DEBUG, &featureLevel, 1,
+			D3D11_SDK_VERSION, &swapChainDesc, &mSwapChain, &mDevice, nullptr, &mDeviceContext);
 
 		if (FAILED(hr))
 		{
@@ -225,7 +208,7 @@ namespace Engine
 		}
 
 		// Create the render target view with the back buffer pointer.
-		hr = mDevice->CreateRenderTargetView(backBufferPtr, NULL, &mRenderTargetView);
+		hr = mDevice->CreateRenderTargetView(backBufferPtr, nullptr, &mRenderTargetView);
 		if (FAILED(hr))
 		{
 			return;
@@ -233,7 +216,7 @@ namespace Engine
 
 		// Release pointer to the back buffer as we no longer need it.
 		backBufferPtr->Release();
-		backBufferPtr = 0;
+		backBufferPtr = nullptr;
 
 		// Initialize the description of the depth buffer.
 		ZeroMemory(&depthBufferDesc, sizeof(depthBufferDesc));
@@ -252,7 +235,7 @@ namespace Engine
 		depthBufferDesc.MiscFlags = 0;
 
 		// Create the texture for the depth buffer using the filled out description.
-		hr = mDevice->CreateTexture2D(&depthBufferDesc, NULL, &mDepthStencilBuffer);
+		hr = mDevice->CreateTexture2D(&depthBufferDesc, nullptr, &mDepthStencilBuffer);
 		if (FAILED(hr))
 		{
 			return;
@@ -378,7 +361,7 @@ namespace Engine
 		textureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
 		textureDesc.CPUAccessFlags = 0;
 		textureDesc.MiscFlags = 0;
-		mDevice->CreateTexture2D(&textureDesc, NULL, &mRTTRrenderTargetTexture);
+		mDevice->CreateTexture2D(&textureDesc, nullptr, &mRTTRrenderTargetTexture);
 		
 		// Setup the description of the render target view.
 		D3D11_RENDER_TARGET_VIEW_DESC renderTargetViewDesc;
@@ -404,66 +387,18 @@ namespace Engine
 		// Create the viewport.
 		mDeviceContext->RSSetViewports(1, &viewport);
 
-		ifd::FileDialog::Instance().CreateTexture = [](uint8_t* data, int w, int h, char fmt) -> void*
-		{
-			ID3D11ShaderResourceView* tex;
-
-			D3D11_TEXTURE2D_DESC desc;
-			ZeroMemory(&desc, sizeof(desc));
-			D3D11_SUBRESOURCE_DATA srd;
-			ZeroMemory(&srd, sizeof(srd));
-			ID3D11Texture2D* tex2d = nullptr;
-			D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
-			ZeroMemory(&srvDesc, sizeof(srvDesc));
-
-			desc.Width = w;
-			desc.Height = h;
-			desc.MipLevels = 1;
-			desc.ArraySize = 1;
-			desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-			desc.SampleDesc.Count = 1;
-			desc.Usage = D3D11_USAGE_DEFAULT;
-			desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-			desc.CPUAccessFlags = 0;
-
-			srd.pSysMem = data;
-			srd.SysMemPitch = 4 * w;
-			srd.SysMemSlicePitch = 0;
-
-			Device::GetDevice()->GetDevice()->CreateTexture2D(&desc, &srd, &tex2d);
-
-			srvDesc.Format = desc.Format;
-			srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-			srvDesc.Texture2D.MipLevels = desc.MipLevels;
-			srvDesc.Texture2D.MostDetailedMip = 0;
-
-			Device::GetDevice()->GetDevice()->CreateShaderResourceView(tex2d, &srvDesc, &tex);
-
-			return (void*)tex;
-		};
-
-		ifd::FileDialog::Instance().DeleteTexture = [](void* tex)
-		{
-			ID3D11ShaderResourceView* srv = (ID3D11ShaderResourceView*)tex;
-
-			srv->Release();
-		};
-
 		AssetManager::GetInstance()->LoadShader("Default", "quadshader.fx");
 
 		// Create two cameras
-		CameraManager::Get()->Add(new Camera(XMFLOAT4(0.0f, 0.0f, -1.0f, 1.0f)));
-		CameraManager::Get()->Add(new Camera(XMFLOAT4(-964.0f, 94.0f, -1.0f, 1.0f)));
+		CameraManager::Get()->Add(new Camera(XMFLOAT4(0.0f, 0.0f, -1.0f, 1.0f))); // Memory leak here
+		CameraManager::Get()->Add(new Camera(XMFLOAT4(-964.0f, 94.0f, -1.0f, 1.0f))); // and here
 		CameraManager::Get()->GetCameraByIndex(1)->SetStatic(true);
-
-		Camera* cam = CameraManager::Get()->GetPrimaryCamera();
 
 		InputManager::GetInstance()->BindCommandToButton(KEY_Q, &CameraManager::Get()->CBCycleNext);
 		InputManager::GetInstance()->BindCommandToButton(KEY_E, &CameraManager::Get()->CBCyclePrevious);
 
 		//Todo: Moving this
 		//Particle Props Init	
-		//std::filesystem::path p = std::filesystem::current_path();
 
 		//Sprite* particleTex = new Sprite("Particle system", &vec2f(0, 0), "Particle Texture", "Assets/Textures/Stone.png");
 		//particleTex->AddRendererComponent();
@@ -486,28 +421,89 @@ namespace Engine
 		//	delete mDeviceMGR;
 		//	mDeviceMGR = nullptr;
 		//}
-			
+
+		D3D11Device::Shutdown();
+
+		if (mTransparant)
+		{
+			mTransparant->Release();
+			mTransparant = nullptr;
+		}
 
 		if (mRasterState)
+		{
 			mRasterState->Release();
+			mRasterState = nullptr;
+		}
+
+		if (mRTTShaderResourceView)
+		{
+			mRTTShaderResourceView->Release();
+			mRTTShaderResourceView = nullptr;
+		}
+
+		if (mRTTRrenderTargetTexture)
+		{
+			mRTTRrenderTargetTexture->Release();
+			mRTTRrenderTargetTexture = nullptr;
+		}
+
+		if (mRasterState)
+		{
+			mRasterState->Release();
+			mRasterState = nullptr;
+		}
+			
 		if (mDepthStencilView)
+		{
 			mDepthStencilView->Release();
+			mDepthStencilView = nullptr;
+		}
+			
+		if (mDepthStencilState)
+		{
+			mDepthStencilState->Release();
+			mDepthStencilState = nullptr;
+		}
+			
 		if (mDepthStencilBuffer)
+		{
 			mDepthStencilBuffer->Release();
+			mDepthStencilBuffer = nullptr;
+		}
+
+		if (mRTTRenderTargetView)
+		{
+			mRTTRenderTargetView->Release();
+			mRTTRenderTargetView = nullptr;
+		}
+
 		if (mRenderTargetView)
+		{
 			mRenderTargetView->Release();
+			mRenderTargetView = nullptr;
+		}
+			
 		if (mDevice)
+		{
 			mDevice->Release();
+		}
+			
 		if (mDeviceContext)
+		{
 			mDeviceContext->Release();
+		}
+
 		if (mSwapChain)
+		{
 			mSwapChain->Release();
+			mSwapChain = nullptr;
+		}
 	}
 
 	void D311Context::OnUpdate(float deltaTime)
 	{
 		CameraManager::Get()->Update(deltaTime); // Belongs in core scene update loop
-
 
 		/*for (ParticleSystem* ps : mParticleSystems)
 			ps->Update(deltaTime);*/

@@ -11,4 +11,13 @@ namespace Engine
 
 		return mInstance;
 	}
+
+	void OGLDevice::ShutdownDevice()
+	{
+		if (mInstance)
+		{
+			delete mInstance;
+			mInstance = nullptr;
+		}
+	}
 }

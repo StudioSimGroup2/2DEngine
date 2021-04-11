@@ -53,7 +53,7 @@ namespace Engine
 
 	void InputManager::ProcessKeyboard()
 	{
-		for (int i = 0; i < 256; i++)
+		for (uint32_t i = 0; i < 256; i++)
 		{
 			if (mKBPressed[i])
 			{
@@ -82,12 +82,11 @@ namespace Engine
 				}
 			}
 		}
-
 	}
 
 	void InputManager::ProcessMouse()
 	{
-		for (int i = 1; i < 7; i++)
+		for (uint32_t i = 1; i < 7; i++)
 		{
 			if (mMBPressed[i])
 			{
@@ -100,7 +99,6 @@ namespace Engine
 				else if (mMouse[i] != KB_REPEAT && mMBPressedPrev[i])
 				{
 					mMouse[i] = MB_REPEAT;
-
 				}
 
 				HandleCallbacks(i);
@@ -117,6 +115,51 @@ namespace Engine
 				}
 			}
 		}
+	}
+
+	void InputManager::Shutdown()
+	{
+		if (mInstance == nullptr)
+			return;
+
+		if (mInstance->mMouse)
+		{
+			//delete[] mInstance->mMouse; // This results in a heap corruption. 
+			mInstance->mMouse = nullptr;
+		}
+
+		if (mInstance->mKeyboard)
+		{
+			delete[] mInstance->mKeyboard;
+			mInstance->mKeyboard = nullptr;
+		}
+
+		if (mInstance->mKBPressed)
+		{
+			delete[] mInstance->mKBPressed;
+			mInstance->mKBPressed = nullptr;
+		}
+
+		if (mInstance->mKBPressedPrev)
+		{
+			delete[] mInstance->mKBPressedPrev;
+			mInstance->mKBPressedPrev = nullptr;
+		}
+		
+		if (mInstance->mMBPressed)
+		{
+			delete[] mInstance->mMBPressed;
+			mInstance->mMBPressed = nullptr;
+		}
+
+		if (mInstance->mMBPressedPrev)
+		{
+			delete[] mInstance->mMBPressedPrev;
+			mInstance->mMBPressedPrev = nullptr;
+		}
+		
+		delete mInstance;
+		mInstance = nullptr;
 	}
 
 	InputManager::InputManager()

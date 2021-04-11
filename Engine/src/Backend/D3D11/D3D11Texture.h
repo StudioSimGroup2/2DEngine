@@ -22,12 +22,10 @@ namespace Engine
 		virtual void Load(int pos) const override;
 		virtual void Unload(int pos) const override;
 
-		virtual const std::string& GetName() const override { return mName; }
+		void* GetTexID() override { return (void*)(size_t)mTextureView; }
 
 	private:
-		HRESULT CreateTextureFromFile(D3D11Device* dev, const std::string& path);
-
-		unsigned int mID, mBoundSlot = -1;
+		HRESULT CreateTextureFromFile(D3D11Device* dev);
 
 		ID3D11ShaderResourceView* mTextureView = nullptr;
 

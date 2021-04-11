@@ -1,20 +1,14 @@
 #include "AssetManager.h"
 
-#if GRAPHICS_LIBRARY == 0
-#include "Backend/D3D11/D3D11Shader.h"
-#include "Backend/D3D11/D3D11Device.h"
-#include "Backend/D3D11/D3D11Texture.h"
-#elif GRAPHICS_LIBRARY == 1
-#include "Backend/OGL/OGLShader.h"
-#include "Backend/OGL/OGLTexture.h"
-#endif
+#include "StringHelper.h"
+
 #include <iostream>
 
 namespace Engine
 {
 	AssetManager* AssetManager::mInstance = nullptr;
 
-	void AssetManager::LoadShader(char* name, char* path)
+	void AssetManager::LoadShader(const std::string& name, const std::string& path)
 	{
 #if GRAPHICS_LIBRARY == 0
 		mInstance->mShaders.push_back(new D3D11Shader(D3D11Device::GetInstance(), name, path));
@@ -23,27 +17,23 @@ namespace Engine
 #endif
 	}
 
-	Texture* AssetManager::LoadTexture(char* name, char* path)
+	Texture* AssetManager::LoadTexture(const std::string& name, const std::string& path)
 	{
-		std::string str = std::string(path);
-		bool err = false;
-		for (int i = 0; i < sizeof(mInstance->mSupportedTexExtensions) / sizeof(mInstance->mSupportedTexExtensions[0]); i++)
+		bool err = true;
+		for (auto & mSupportedTexExtension : mInstance->mSupportedTexExtensions)
 		{
-			if (str.substr(str.find_last_of(".") + 1) == mInstance->mSupportedTexExtensions[i])
+			if (StringHelper::GetFileExtension(path) == mSupportedTexExtension)
 			{
-				err = true;
+				err = false;
 			}
 		}
 
-		if (!err)
+		if (err)
 		{
-			std::cout << "Format : " << str.substr(str.find_last_of(".") + 1) << " is unsupported!" << std::endl;
+			std::cout << "The File extension : " << StringHelper::GetFileExtension(path) << " is not supported!" << std::endl;
 			
 			return nullptr;
 		}
-			
-
-		
 
 #if GRAPHICS_LIBRARY == 0
 		mInstance->mTextures.push_back(new D3D11Texture(D3D11Device::GetInstance(), name, path));
@@ -61,18 +51,18 @@ namespace Engine
 		return mInstance;
 	}
 
-	Shader* AssetManager::GetShaderByName(char* name)
+	Shader* AssetManager::GetShaderByName(const std::string& name)
 	{
 		auto index = std::find_if(mInstance->mShaders.begin(), mInstance->mShaders.end(),
-			[&name](const Shader* s) {return s->GetName() == std::string(name); });
+			[&name](const Shader* s) {return s->GetName() == name; });
 
 		return mInstance->mShaders.at(std::distance(mInstance->mShaders.begin(), index));
 	}
 
-	Texture* AssetManager::GetTextureByName(char* name)
+	Texture* AssetManager::GetTextureByName(const std::string& name)
 	{
 		auto index = std::find_if(mInstance->mTextures.begin(), mInstance->mTextures.end(),
-			[&name](const Texture* s) {return s->GetName() == std::string(name); });
+			[&name](Texture* s) {return s->GetName() == name; });
 
 		return mInstance->mTextures.at(std::distance(mInstance->mTextures.begin(), index));
 	}
@@ -94,10 +84,31 @@ namespace Engine
 
 	void AssetManager::ClearAll()
 	{
+		for (Shader* s : mInstance->mShaders)
+		{
+			delete s;
+			s = nullptr;
+		}
+			
+
+		for (Texture* t : mInstance->mTextures)
+		{
+			delete t;
+			t = nullptr;
+		}
 	}
 
 	void AssetManager::Shutdown()
 	{
-		delete mInstance;
+		if (mInstance == nullptr)
+			return;
+		
+		mInstance->ClearAll();
+
+		if (mInstance)
+		{
+			delete mInstance;
+			mInstance = nullptr;
+		}
 	}
 }

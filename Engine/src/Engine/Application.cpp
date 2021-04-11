@@ -1,8 +1,9 @@
 #include "Application.h"
-#include <iostream>
+#include "Utils/AssetManager.h"
+#include "Audio/AudioManager.h"
 
 #include "Input/InputManager.h"
-
+#include "Memory/MemoryManager.h"
 
 namespace Engine
 {
@@ -17,11 +18,7 @@ namespace Engine
 
 		mInstance = this;
 
-		Logger::Init(GetStdHandle(STD_OUTPUT_HANDLE)); // Get handel to console (for text coloring)
-		Logger::SetLogLevel(LogStates::LOG_ERR | LogStates::LOG_WARN | LogStates::LOG_MSG);
-
-		Logger::LogMsg("Logger initalised!", __FILE__);
-
+		//MemoryManager::GetInstance();
 
 		mWindow = std::unique_ptr<Window>(Window::Create());
 
@@ -33,7 +30,6 @@ namespace Engine
 
 	Application::~Application()
 	{
-		mWindow->Shutdown();
 	}
 
 	void Application::Run()
@@ -50,6 +46,30 @@ namespace Engine
 
 			mWindow->OnUpdate();
 		}
+	}
+
+	void Application::ForceShutdown()
+	{
+		if (!mRunning)
+		{
+			return;
+		}
+		
+		mRunning = false;
+
+		if (mLayerStack)
+		{
+			delete mLayerStack;
+			mLayerStack = nullptr;
+		}
+
+		mGUILayer = nullptr;
+
+		AudioManager::Shutdown();
+		InputManager::Shutdown();
+		AssetManager::Shutdown();
+
+		mWindow->Shutdown();
 	}
 
 	void Application::AddLayer(Layer* layer)

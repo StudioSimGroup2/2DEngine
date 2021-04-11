@@ -72,6 +72,8 @@
     <IntDir>..\bin-int\DebugOGL-windows-x86_64\Engine\</IntDir>
     <TargetName>Engine</TargetName>
     <TargetExt>.dll</TargetExt>
+    <IncludePath>C:\Program Files (x86)\Visual Leak Detector\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files %28x86%29\Visual Leak Detector\lib\Win64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugD3D11|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -99,11 +101,12 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WINDOWS_PLATFORM;ENGINE_BUILD_DLL;ENGINE_DEBUG_OGL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;ext;..\Imgui\src;..\Imgui\ext;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;ext;..\Imgui\src;..\Imgui\ext;..\TinyXML\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalOptions>/MDd %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -121,10 +124,11 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WINDOWS_PLATFORM;ENGINE_BUILD_DLL;ENGINE_DEBUG_D3D11;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;ext;..\Imgui\src;..\Imgui\ext;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;ext;..\Imgui\src;..\Imgui\ext;..\TinyXML\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalOptions>/MTd %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -143,7 +147,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WINDOWS_PLATFORM;ENGINE_BUILD_DLL;ENGINE_RELEASE_OGL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;ext;..\Imgui\src;..\Imgui\ext;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;ext;..\Imgui\src;..\Imgui\ext;..\TinyXML\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -169,7 +173,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WINDOWS_PLATFORM;ENGINE_BUILD_DLL;ENGINE_RELEASE_D3D11;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;ext;..\Imgui\src;..\Imgui\ext;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;ext;..\Imgui\src;..\Imgui\ext;..\TinyXML\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -483,6 +487,10 @@
     <ClInclude Include="ext\OpenAL-Soft\efx.h" />
     <ClInclude Include="ext\drwav\dr_wav.h" />
     <ClInclude Include="ext\stb\stb_image.h" />
+    <ClInclude Include="src\Memory\FreeListAllocator.h" />
+    <ClInclude Include="src\Memory\Heap.h" />
+    <ClInclude Include="src\Memory\PoolAllocator.h" />
+    <ClInclude Include="src\Memory\MemoryManager.h" />
     <ClInclude Include="src\Backend\D3D11\D311Context.h" />
     <ClInclude Include="src\Backend\D3D11\D3D11Camera.h" />
     <ClInclude Include="src\Backend\D3D11\D3D11Device.h" />
@@ -511,10 +519,18 @@
     <ClInclude Include="src\Engine\Renderer\Context.h" />
     <ClInclude Include="src\Engine\Renderer\Device.h" />
     <ClInclude Include="src\Engine\Renderer\Renderer2D.h" />
-    <ClInclude Include="src\Engine\Renderer\Swapchain.h" />
     <ClInclude Include="src\Engine\Window.h" />
+    <ClInclude Include="src\Entities\Component.h" />
+    <ClInclude Include="src\Entities\ComponentIncludes.h" />
+    <ClInclude Include="src\Entities\Components\SpriteComp.h" />
+    <ClInclude Include="src\Entities\GameObject.h" />
     <ClInclude Include="src\Entry\WindowsSystem.h" />
+    <ClInclude Include="src\GameScreen.h" />
+    <ClInclude Include="src\GameScreenTest.h" />
+    <ClInclude Include="src\LevelMap.h" />
     <ClInclude Include="src\ParticalSystem.h" />
+    <ClInclude Include="src\Scene.h" />
+    <ClInclude Include="src\SceneManager.h" />
     <ClInclude Include="src\Sprite.h" />
     <ClInclude Include="src\Utils\AssetManager.h" />
     <ClInclude Include="src\Utils\LevelMap.h" />
@@ -524,11 +540,16 @@
     <ClInclude Include="src\Utils\Sound.h" />
     <ClInclude Include="src\Utils\StringHelper.h" />
     <ClInclude Include="src\Utils\Texture.h" />
+    <ClInclude Include="src\Entities\Components\TransformComp.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ext\GLM\detail\glm.cpp" />
     <ClCompile Include="ext\Glad\glad.c" />
     <ClCompile Include="ext\drwav\dr_wav_impl.c" />
+    <ClCompile Include="src\Memory\FreeListAllocator.cpp" />
+    <ClCompile Include="src\Memory\Heap.cpp" />
+    <ClCompile Include="src\Memory\PoolAllocator.cpp" />
+    <ClCompile Include="src\Memory\MemoryManager.cpp" />
     <ClCompile Include="src\Backend\D3D11\D311Context.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugOGL|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseOGL|x64'">true</ExcludedFromBuild>
@@ -585,20 +606,22 @@
     <ClCompile Include="src\Engine\Input\InputManager.cpp" />
     <ClCompile Include="src\Engine\Layer.cpp" />
     <ClCompile Include="src\Engine\LayerStack.cpp" />
-    <ClCompile Include="src\Engine\Renderer\Context.cpp" />
-    <ClCompile Include="src\Engine\Renderer\Device.cpp" />
-    <ClCompile Include="src\Engine\Renderer\Renderer2D.cpp" />
-    <ClCompile Include="src\Engine\Renderer\Swapchain.cpp" />
+    <ClCompile Include="src\Entities\Component.cpp" />
+    <ClCompile Include="src\Entities\Components\SpriteComp.cpp" />
+    <ClCompile Include="src\Entities\GameObject.cpp" />
     <ClCompile Include="src\Entry\WindowsSystem.cpp" />
+    <ClCompile Include="src\GameScreen.cpp" />
+    <ClCompile Include="src\GameScreenTest.cpp" />
     <ClCompile Include="src\ParticalSystem.cpp" />
+    <ClCompile Include="src\Scene.cpp" />
+    <ClCompile Include="src\SceneManager.cpp" />
     <ClCompile Include="src\Sprite.cpp" />
     <ClCompile Include="src\Utils\AssetManager.cpp" />
     <ClCompile Include="src\Utils\LevelMap.cpp" />
     <ClCompile Include="src\Utils\Logger.cpp" />
-    <ClCompile Include="src\Utils\Shader.cpp" />
     <ClCompile Include="src\Utils\Sound.cpp" />
     <ClCompile Include="src\Utils\StringHelper.cpp" />
-    <ClCompile Include="src\Utils\Texture.cpp" />
+    <ClCompile Include="src\Entities\Components\TransformComp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ImGui\ImGui.vcxproj">

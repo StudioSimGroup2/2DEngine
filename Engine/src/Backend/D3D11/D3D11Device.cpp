@@ -11,4 +11,19 @@ namespace Engine
 
 		return mInstance;
 	}
+
+	void D3D11Device::Shutdown()
+	{
+		if (mInstance == nullptr)
+			return;
+
+		if (mInstance->mDevice)
+			mInstance->mDevice = nullptr;
+
+		if (mInstance->mDeviceContext)
+			mInstance->mDeviceContext = nullptr;
+
+		delete mInstance;
+		mInstance = nullptr;
+	}
 }

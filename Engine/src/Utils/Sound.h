@@ -29,7 +29,7 @@ protected:
 private:
 	void LoadSound(const std::string& path);
 
-	ALuint mSoundBuffer;
-	ALuint mSoundSource;
+	ALuint mSoundBuffer{};
+	ALuint mSoundSource{};
 };
 

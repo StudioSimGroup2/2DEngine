@@ -70,11 +70,11 @@ void Sound::LoadSound(const std::string& path)
 	drwav_free(source, nullptr);
 
 	alGenBuffers(1, &mSoundBuffer);
-	alBufferData(mSoundBuffer, AL_FORMAT_STEREO16, pcmData.data(), pcmData.size() * 2, sampleRate);
+	alBufferData(mSoundBuffer, AL_FORMAT_STEREO16, static_cast<ALvoid*>(pcmData.data()), static_cast<ALsizei>(pcmData.size() * 2), static_cast<ALsizei>(sampleRate));
 
 	alGenSources(1, &mSoundSource);
 	alSourcef(mSoundSource, AL_PITCH, 1.0f);
 	alSourcef(mSoundSource, AL_PITCH, 1.0f);
 	alSourcei(mSoundSource, AL_LOOPING, AL_FALSE);
-	alSourcei(mSoundSource, AL_BUFFER, mSoundBuffer);
+	alSourcei(mSoundSource, AL_BUFFER, static_cast<ALint>(mSoundBuffer));
 }
