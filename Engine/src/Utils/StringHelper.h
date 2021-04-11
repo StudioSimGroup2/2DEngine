@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 
+// String Helper class taken from https://github.com/Pindrought/DirectX-11-Engine-VS2017
+
 class StringHelper
 {
 public:

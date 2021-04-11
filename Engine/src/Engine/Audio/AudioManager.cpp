@@ -5,7 +5,8 @@ namespace Engine
 {
 	AudioManager* AudioManager::mInstance = nullptr;
 	
-	void AudioManager::PlaySoundFile(const std::string& name, float volume, bool loop, bool isMusic)
+	void
+	AudioManager::PlaySoundFile(const std::string& name, float volume, bool loop)
 	{
 		auto index = std::find_if(mInstance->mSounds.begin(), mInstance->mSounds.end(),
 			[&name](Sound* s) {return s->GetName() == name; });
@@ -41,9 +42,19 @@ namespace Engine
 		return mInstance;
 	}
 
+	void AudioManager::Shutdown()
+	{
+		for (Sound* s : mInstance->mSounds)
+		{
+			delete s;
+		}
+
+		delete mInstance;
+	}
+
 	AudioManager::AudioManager()
 	{
-		auto audioDevice = alcOpenDevice(NULL);
+		auto audioDevice = alcOpenDevice(nullptr);
 
 		if (!audioDevice)
 		{
@@ -51,7 +62,7 @@ namespace Engine
 			return;
 		}
 
-		auto audioContext = alcCreateContext(audioDevice, NULL);
+		auto audioContext = alcCreateContext(audioDevice, nullptr);
 
 		if (!alcMakeContextCurrent(audioContext))
 		{

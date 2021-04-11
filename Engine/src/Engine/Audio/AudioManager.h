@@ -6,12 +6,15 @@
 #include <Utils/Sound.h>
 #include <string>
 
+#include "Engine/Core.h"
+
 namespace Engine
 {
-	class AudioManager
+	class ENGINE_API AudioManager
 	{
 	public:
-		void PlaySoundFile(const std::string& name, float volume, bool loop = false, bool isMusic = false);
+		void
+		PlaySoundFile(const std::string& name, float volume, bool loop);
 		void PauseSound(const std::string& name);
 		void StopSound(const std::string& name);
 
@@ -21,6 +24,8 @@ namespace Engine
 		void RemoveSound(const std::string& name);
 
 		static AudioManager* GetInstance();
+
+		void Shutdown();
 
 	private:
 		AudioManager();

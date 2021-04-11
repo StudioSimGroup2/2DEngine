@@ -6,6 +6,7 @@
 #include <directxmath.h>
 #include <directxcolors.h>
 #include <DirectXCollision.h>
+
 using namespace DirectX;
 
 class Camera

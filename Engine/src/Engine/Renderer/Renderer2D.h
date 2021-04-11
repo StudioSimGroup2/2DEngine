@@ -4,20 +4,16 @@
 #include <Utils/Shader.h>
 #include <Utils/Math.h>
 
-/// <summary>
-/// Sprite Rendering class
-/// </summary>
-
 namespace Engine
 {
 	class Renderer2D
 	{
 	public:
-		virtual ~Renderer2D();
+		virtual ~Renderer2D() = default;
 
 		virtual void Draw(vec2f position, Texture* textureToRender) const = 0;
 	protected:
-		Shader* mShader;
+		Shader* mShader = nullptr;
 	};
 }
 

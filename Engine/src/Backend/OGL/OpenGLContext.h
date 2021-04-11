@@ -1,20 +1,10 @@
 #pragma once
 
-#include "Engine/Renderer/Context.h"
-
-#include <Windows.h>
-
 #pragma comment(lib, "OpenGL32.lib") // Assuming the user has microsoft SDK. F for linux users
-
-#include "imgui.h"
-#include "imgui_impl_win32.h"
-#include "OpenGL/imgui_impl_opengl3.h"
-
+#include <Windows.h>
 #include <Glad/glad.h>
 
-#include <Common.h>
-#include "Sprite.h"
-#include <time.h>
+#include "Engine/Renderer/Context.h"
 
 namespace Engine
 {
@@ -23,33 +13,24 @@ namespace Engine
 	public:
 		OpenGLContext(HWND hwnd, UINT32 screenWidth, UINT32 screenHeight, bool vSync, bool fullscreen);
 
-		virtual void Init() override;
-		virtual void Shutdown() override;
-		virtual void OnUpdate(float deltaTime) override;
-		virtual void SwapBuffers() override;
-
-		virtual int GetCardMemory() override { return mMemorySize; }
-		virtual std::string GetCardName() override { return mName; }
+		void Init() override;
+		void Shutdown() override;
+		void OnUpdate(float deltaTime) override;
+		void SwapBuffers() override;
 
 	private:
-		unsigned int mMemorySize;
-		std::string mName;
-
-		unsigned int mVAO;
 
 		UINT32 mScreenWidth;
 		UINT32 mScreenHeight;
 
 		HWND mHWND;
-
-		HDC deviceContext;
-		HGLRC renderContext;
+		HDC mDeviceContext;
+		HGLRC mRenderContext;
 
 		GLuint mRequiredVAO;
 
-		TileMap testMap;
-		std::vector<Sprite*> ThingsToRender;
-		Sprite* mTempSprite;
+		bool mEnableEditor = true; // Very curde, will set up an ImGUi properties struct later - Joe
+		bool mShowLoggingConsole = true;
 	};
 }
 

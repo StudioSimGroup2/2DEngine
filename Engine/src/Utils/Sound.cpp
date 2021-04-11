@@ -16,6 +16,10 @@ Sound::~Sound()
 
 void Sound::Play(float volume, bool loop)
 {
+	alSourcef(mSoundSource, AL_GAIN, volume / 1000);
+
+	alSourcei(mSoundSource, AL_LOOPING, loop ? AL_TRUE : AL_FALSE);
+
 	alSourcePlay(mSoundSource);
 }
 
@@ -66,11 +70,11 @@ void Sound::LoadSound(const std::string& path)
 	drwav_free(source, nullptr);
 
 	alGenBuffers(1, &mSoundBuffer);
-	alBufferData(mSoundBuffer, AL_FORMAT_STEREO16, pcmData.data(), pcmData.size() * 2, sampleRate);
+	alBufferData(mSoundBuffer, AL_FORMAT_STEREO16, static_cast<ALvoid*>(pcmData.data()), static_cast<ALsizei>(pcmData.size() * 2), static_cast<ALsizei>(sampleRate));
 
 	alGenSources(1, &mSoundSource);
 	alSourcef(mSoundSource, AL_PITCH, 1.0f);
 	alSourcef(mSoundSource, AL_PITCH, 1.0f);
 	alSourcei(mSoundSource, AL_LOOPING, AL_FALSE);
-	alSourcei(mSoundSource, AL_BUFFER, mSoundBuffer);
+	alSourcei(mSoundSource, AL_BUFFER, static_cast<ALint>(mSoundBuffer));
 }

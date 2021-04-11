@@ -1,15 +1,17 @@
 #include "OGLRenderer2D.h"
+#include <CameraManager.h>
 
 #include <GLM/glm.hpp>
 #include <GLM/ext/matrix_transform.hpp>
 #include <GLM/gtc/type_ptr.hpp>
-#include <CameraManager.h>
+
+#include "OpenGLCamera.h"
 
 namespace Engine
 {
-	OGLRenderer2D::OGLRenderer2D(OGLShader* shader)
+	OGLRenderer2D::OGLRenderer2D(Shader* shader)
 	{
-		mShader = static_cast<Shader*>(shader);
+		mShader = shader;
 
 		InitBuffers();
 	}
@@ -35,10 +37,8 @@ namespace Engine
 
 		model = glm::scale(model, glm::vec3(33.0f, 34.0f, 0.0f)); // fix for sprites rendering at 32x32
 
-		static_cast<OGLShader*>(mShader)->SetMatrix("model", model);
-		static_cast<OGLShader*>(mShader)->SetMatrix("projection", camera->GetProjectionMatrix());
-		//static_cast<OGLShader*>(mShader)->SetMatrix("View", camera->GetViewMatrix());
-		//static_cast<OGLShader*>(mShader)->SetMatrix("World", Model);
+		dynamic_cast<OGLShader*>(mShader)->SetMatrix("model", model);
+		dynamic_cast<OGLShader*>(mShader)->SetMatrix("projection", camera->GetProjectionMatrix());
 
 		glActiveTexture(GL_TEXTURE0);
 		textureToRender->Load();

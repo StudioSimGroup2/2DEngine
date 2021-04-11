@@ -31,9 +31,6 @@
     <Filter Include="ext\OpenAL-Soft">
       <UniqueIdentifier>{8DA6F963-F931-6728-0243-EA1C6E4DC328}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ext\TinyXML">
-      <UniqueIdentifier>{FA967ED5-664C-F7CA-EF40-F1A15BF5EDCE}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ext\drwav">
       <UniqueIdentifier>{490369FC-B56D-1D73-FEAB-CE186A55FBC7}</UniqueIdentifier>
     </Filter>
@@ -64,20 +61,20 @@
     <Filter Include="src\Engine\Renderer">
       <UniqueIdentifier>{F838018B-649A-DE98-ED07-254B59681558}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Entities">
+      <UniqueIdentifier>{81A6B583-6D09-4528-168F-7DDE02D110AB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Entities\Components">
+      <UniqueIdentifier>{F6D8F07E-6210-3916-6B1A-9D39D7D05F0F}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Entry">
       <UniqueIdentifier>{8EF7DAB2-FA61-8F29-43A0-40CFAF496D7E}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Utils">
       <UniqueIdentifier>{4D9AFFB3-B904-B42A-0243-65D06EEC917F}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Utils\Windows">
-      <UniqueIdentifier>{874175AE-F357-7344-3CCF-FE65A82444CC}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ext\DDSTextureLoader.h">
-      <Filter>ext</Filter>
-    </ClInclude>
     <ClInclude Include="ext\GLM\common.hpp">
       <Filter>ext\GLM</Filter>
     </ClInclude>
@@ -948,12 +945,6 @@
     <ClInclude Include="ext\OpenAL-Soft\efx.h">
       <Filter>ext\OpenAL-Soft</Filter>
     </ClInclude>
-    <ClInclude Include="ext\TinyXML\tinystr.h">
-      <Filter>ext\TinyXML</Filter>
-    </ClInclude>
-    <ClInclude Include="ext\TinyXML\tinyxml.h">
-      <Filter>ext\TinyXML</Filter>
-    </ClInclude>
     <ClInclude Include="ext\drwav\dr_wav.h">
       <Filter>ext\drwav</Filter>
     </ClInclude>
@@ -978,6 +969,9 @@
     <ClInclude Include="src\Backend\D3D11\D3D11Texture.h">
       <Filter>src\Backend\D3D11</Filter>
     </ClInclude>
+    <ClInclude Include="src\Backend\OGL\OGLDevice.h">
+      <Filter>src\Backend\OGL</Filter>
+    </ClInclude>
     <ClInclude Include="src\Backend\OGL\OGLRenderer2D.h">
       <Filter>src\Backend\OGL</Filter>
     </ClInclude>
@@ -997,9 +991,6 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\CameraManager.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Character.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\Common.h">
@@ -1023,8 +1014,17 @@
     <ClInclude Include="src\Engine\EntryPoint.h">
       <Filter>src\Engine</Filter>
     </ClInclude>
+    <ClInclude Include="src\Engine\GUILayer.h">
+      <Filter>src\Engine</Filter>
+    </ClInclude>
     <ClInclude Include="src\Engine\Input\InputManager.h">
       <Filter>src\Engine\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Layer.h">
+      <Filter>src\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\LayerStack.h">
+      <Filter>src\Engine</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine\Renderer\Context.h">
       <Filter>src\Engine\Renderer</Filter>
@@ -1035,31 +1035,52 @@
     <ClInclude Include="src\Engine\Renderer\Renderer2D.h">
       <Filter>src\Engine\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\Renderer\Swapchain.h">
-      <Filter>src\Engine\Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="src\Engine\Window.h">
       <Filter>src\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entities\Component.h">
+      <Filter>src\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entities\ComponentIncludes.h">
+      <Filter>src\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entities\Components\SpriteComp.h">
+      <Filter>src\Entities\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entities\GameObject.h">
+      <Filter>src\Entities</Filter>
     </ClInclude>
     <ClInclude Include="src\Entry\WindowsSystem.h">
       <Filter>src\Entry</Filter>
     </ClInclude>
+    <ClInclude Include="src\GameScreen.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameScreenTest.h">
+      <Filter>src</Filter>
+    </ClInclude>
     <ClInclude Include="src\LevelMap.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\PNGLoader.h">
+    <ClInclude Include="src\ParticalSystem.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\Physics.h">
+    <ClInclude Include="src\Scene.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\PhysicsObject.h">
+    <ClInclude Include="src\SceneManager.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\Sprite.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\Utils\AssetManager.h">
+      <Filter>src\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utils\LevelMap.h">
+      <Filter>src\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utils\Logger.h">
       <Filter>src\Utils</Filter>
     </ClInclude>
     <ClInclude Include="src\Utils\Math.h">
@@ -1077,38 +1098,13 @@
     <ClInclude Include="src\Utils\Texture.h">
       <Filter>src\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="src\Utils\Windows\WindowsTextureCompiler.h">
-      <Filter>src\Utils\Windows</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ParticalSystem.h" />
-    <ClInclude Include="src\GameScreen.h" />
-    <ClInclude Include="src\GameScreenManager.h" />
-    <ClInclude Include="src\GameScreenTest.h" />
-    <ClInclude Include="src\Utils\Logger.h">
-      <Filter>src\Utils</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ext\DDSTextureLoader.cpp">
-      <Filter>ext</Filter>
-    </ClCompile>
     <ClCompile Include="ext\GLM\detail\glm.cpp">
       <Filter>ext\GLM\detail</Filter>
     </ClCompile>
     <ClCompile Include="ext\Glad\glad.c">
       <Filter>ext\Glad</Filter>
-    </ClCompile>
-    <ClCompile Include="ext\TinyXML\tinystr.cpp">
-      <Filter>ext\TinyXML</Filter>
-    </ClCompile>
-    <ClCompile Include="ext\TinyXML\tinyxml.cpp">
-      <Filter>ext\TinyXML</Filter>
-    </ClCompile>
-    <ClCompile Include="ext\TinyXML\tinyxmlerror.cpp">
-      <Filter>ext\TinyXML</Filter>
-    </ClCompile>
-    <ClCompile Include="ext\TinyXML\tinyxmlparser.cpp">
-      <Filter>ext\TinyXML</Filter>
     </ClCompile>
     <ClCompile Include="ext\drwav\dr_wav_impl.c">
       <Filter>ext\drwav</Filter>
@@ -1131,6 +1127,9 @@
     <ClCompile Include="src\Backend\D3D11\D3D11Texture.cpp">
       <Filter>src\Backend\D3D11</Filter>
     </ClCompile>
+    <ClCompile Include="src\Backend\OGL\OGLDevice.cpp">
+      <Filter>src\Backend\OGL</Filter>
+    </ClCompile>
     <ClCompile Include="src\Backend\OGL\OGLRenderer2D.cpp">
       <Filter>src\Backend\OGL</Filter>
     </ClCompile>
@@ -1152,43 +1151,46 @@
     <ClCompile Include="src\CameraManager.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Character.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\Engine\Application.cpp">
       <Filter>src\Engine</Filter>
     </ClCompile>
     <ClCompile Include="src\Engine\Audio\AudioManager.cpp">
       <Filter>src\Engine\Audio</Filter>
     </ClCompile>
+    <ClCompile Include="src\Engine\GUILayer.cpp">
+      <Filter>src\Engine</Filter>
+    </ClCompile>
     <ClCompile Include="src\Engine\Input\InputManager.cpp">
       <Filter>src\Engine\Input</Filter>
     </ClCompile>
-    <ClCompile Include="src\Engine\Renderer\Context.cpp">
-      <Filter>src\Engine\Renderer</Filter>
+    <ClCompile Include="src\Engine\Layer.cpp">
+      <Filter>src\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="src\Engine\Renderer\Device.cpp">
-      <Filter>src\Engine\Renderer</Filter>
+    <ClCompile Include="src\Engine\LayerStack.cpp">
+      <Filter>src\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="src\Engine\Renderer\Renderer2D.cpp">
-      <Filter>src\Engine\Renderer</Filter>
+    <ClCompile Include="src\Entities\Components\SpriteComp.cpp">
+      <Filter>src\Entities\Components</Filter>
     </ClCompile>
-    <ClCompile Include="src\Engine\Renderer\Swapchain.cpp">
-      <Filter>src\Engine\Renderer</Filter>
+    <ClCompile Include="src\Entities\GameObject.cpp">
+      <Filter>src\Entities</Filter>
     </ClCompile>
     <ClCompile Include="src\Entry\WindowsSystem.cpp">
       <Filter>src\Entry</Filter>
     </ClCompile>
-    <ClCompile Include="src\LevelMap.cpp">
+    <ClCompile Include="src\GameScreen.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\PNGLoader.cpp">
+    <ClCompile Include="src\GameScreenTest.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Physics.cpp">
+    <ClCompile Include="src\ParticalSystem.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\PhysicsObject.cpp">
+    <ClCompile Include="src\Scene.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SceneManager.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Sprite.cpp">
@@ -1197,26 +1199,16 @@
     <ClCompile Include="src\Utils\AssetManager.cpp">
       <Filter>src\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="src\Utils\Shader.cpp">
+    <ClCompile Include="src\Utils\LevelMap.cpp">
+      <Filter>src\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utils\Logger.cpp">
       <Filter>src\Utils</Filter>
     </ClCompile>
     <ClCompile Include="src\Utils\Sound.cpp">
       <Filter>src\Utils</Filter>
     </ClCompile>
     <ClCompile Include="src\Utils\StringHelper.cpp">
-      <Filter>src\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Utils\Texture.cpp">
-      <Filter>src\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Utils\Windows\WindowsTextureCompiler.cpp">
-      <Filter>src\Utils\Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ParticalSystem.cpp" />
-    <ClCompile Include="src\GameScreen.cpp" />
-    <ClCompile Include="src\GameScreenManager.cpp" />
-    <ClCompile Include="src\GameScreenTest.cpp" />
-    <ClCompile Include="src\Utils\Logger.cpp">
       <Filter>src\Utils</Filter>
     </ClCompile>
   </ItemGroup>

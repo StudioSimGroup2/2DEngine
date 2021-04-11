@@ -5,7 +5,7 @@
 
 namespace Engine
 {
-	D3D11Shader::D3D11Shader(D3D11Device* device, const std::string& name, const std::string path)
+	D3D11Shader::D3D11Shader(D3D11Device* device, const std::string& name, const std::string& path)
 	{
 		mName = name;
 		mDeviceContext = device->GetDeviceContext();
@@ -59,7 +59,31 @@ namespace Engine
 
 	D3D11Shader::~D3D11Shader()
 	{
-		
+		if (mInputLayout)
+		{
+			mInputLayout->Release();
+			mInputLayout = nullptr;
+		}
+
+		if (mVertexShader)
+		{
+			mVertexShader->Release();
+			mVertexShader = nullptr;
+		}
+
+		if (mPixelShader)
+		{
+			mPixelShader->Release();
+			mPixelShader = nullptr;
+		}
+
+		if (mSamplerState)
+		{
+			mSamplerState->Release();
+			mSamplerState = nullptr;
+		}
+
+		mDeviceContext = nullptr;
 	}
 
 	void D3D11Shader::Load() const

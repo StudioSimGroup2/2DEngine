@@ -8,6 +8,8 @@ int main(int argc, char** argv)
 {
 	auto app = Engine::CreateApplication();
 	app->Run();
+
+	return 0;
 }
 #endif
 
