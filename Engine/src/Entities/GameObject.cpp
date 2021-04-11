@@ -1,5 +1,17 @@
 #include "GameObject.h"
 
+Engine::GameObject::GameObject()
+{
+	std::cout << "Gaze into the the abyss:	       " << this << std::endl;
+	InitTransformComponent();
+}
+
+Engine::GameObject::GameObject(GameObject* parent)
+{
+	mParent = parent; parent->AttachToParent(this);
+	InitTransformComponent();
+}
+
 void Engine::GameObject::Start()
 {
 }
@@ -32,4 +44,9 @@ void Engine::GameObject::OnEnable()
 
 void Engine::GameObject::OnDisable()
 {
+}
+
+void Engine::GameObject::InitTransformComponent()
+{
+	AddComponent<TransformComp>(new TransformComp);
 }

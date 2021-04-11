@@ -1071,9 +1071,6 @@
     <ClInclude Include="src\SceneManager.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\Sprite.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="src\Utils\AssetManager.h">
       <Filter>src\Utils</Filter>
     </ClInclude>
@@ -1098,6 +1095,8 @@
     <ClInclude Include="src\Utils\Texture.h">
       <Filter>src\Utils</Filter>
     </ClInclude>
+    <ClInclude Include="src\Entities\Components\TransformComp.h" />
+    <ClInclude Include="src\Sprite.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ext\GLM\detail\glm.cpp">
@@ -1193,9 +1192,6 @@
     <ClCompile Include="src\SceneManager.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Sprite.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\Utils\AssetManager.cpp">
       <Filter>src\Utils</Filter>
     </ClCompile>
@@ -1211,5 +1207,8 @@
     <ClCompile Include="src\Utils\StringHelper.cpp">
       <Filter>src\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="src\Entities\Components\TransformComp.cpp" />
+    <ClCompile Include="src\Entities\Component.cpp" />
+    <ClCompile Include="src\Sprite.cpp" />
   </ItemGroup>
 </Project>

@@ -1,5 +1,7 @@
 #include "Sprite.h"
 
+// THIS CLASS WILL BE REMOVED DO NOT USE!
+
 using namespace Engine;
 
 Sprite::Sprite(char* name, vec2f* position, Texture* tex)
@@ -51,9 +53,11 @@ void Sprite::Draw()
 	if (!mRenderer)
 		return;
 
-#if GRAPHICS_LIBRARY == 0
-	dynamic_cast<D3D11Renderer2D*>(mRenderer)->Draw(*mPosition, mSprTexture);
-#elif GRAPHICS_LIBRARY == 1
-	dynamic_cast<OGLRenderer2D*>(mRenderer)->Draw(*mPosition, mSprTexture);
-#endif
+
+
+//#if GRAPHICS_LIBRARY == 0
+//	dynamic_cast<D3D11Renderer2D*>(mRenderer)->Draw(*mPosition, mSprTexture);
+//#elif GRAPHICS_LIBRARY == 1
+//	dynamic_cast<OGLRenderer2D*>(mRenderer)->Draw(*mPosition, mSprTexture);
+//#endif
 }

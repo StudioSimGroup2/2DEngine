@@ -1,8 +1,11 @@
 #pragma once
 #include <Engine/Layer.h>
-#include <SceneManager.h>
+
+#include <Entities/GameObject.h>
 
 // This is the editor interface
+
+using namespace Engine;
 
 class GUILayer : public Engine::Layer
 {
@@ -16,6 +19,8 @@ public:
 private:
 	GameObject* mCurrentSelectedNode = nullptr;
 
-	void CreateNode(GameObject* go, int flags, int& index, int& nodeClicked, static int& selectionMask);
+	void SpriteComponent(SpriteComp* c);
+	void TransformComponent(TransformComp* c);
+	void CreateNode(GameObject* go, int flags, int& index, int& nodeClicked, int& selectionMask);
 };
 

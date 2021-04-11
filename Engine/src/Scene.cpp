@@ -36,11 +36,10 @@ namespace Engine
 		/// <summary>
 		/// sprite class needs to be removed its useless now that we're actually setting up components
 		/// </summary>
-		SpriteComp* sprComp = mPlayer->AddComponent(new SpriteComp);
-		Texture* stoneTex = AssetManager::GetInstance()->LoadTexture((char*)"Stone", (char*)"Assets/Textures/Stone.png");
-		auto* instanceOfAClassThatReallyNeedsToBeCleanedUpXOX = new Sprite((char*)std::string("Tile").c_str(), new vec2f(32 * 12, 32 * 4), stoneTex);
-		instanceOfAClassThatReallyNeedsToBeCleanedUpXOX->AddRendererComponent();
-		sprComp->SetSprite(instanceOfAClassThatReallyNeedsToBeCleanedUpXOX);
+
+		SpriteComp* spr = mPlayer->AddComponent(new SpriteComp);
+		mPlayer->GetComponent<TransformComp>()->SetPosition(200.0f, 200.0f);
+		spr->SetTexture(AssetManager::GetInstance()->LoadTexture((char*)"Stone", (char*)"Assets/Textures/Stone.png"));
 	}
 
 	Scene::~Scene()

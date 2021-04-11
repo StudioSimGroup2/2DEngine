@@ -17,7 +17,7 @@ namespace Engine
 		D3D11Renderer2D(Shader* shader, D3D11Device* dev);
 		~D3D11Renderer2D();
 
-		void Draw(vec2f position, Texture* textureToRender) const override;
+		void Draw(vec2f& position, vec2f& rotation, vec2f& scale, Texture* textureToRender) override;
 		 
 	private:
 		void InitBuffers(ID3D11Device* dev);

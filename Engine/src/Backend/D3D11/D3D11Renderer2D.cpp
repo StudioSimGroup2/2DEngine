@@ -36,7 +36,7 @@ namespace Engine
 		mDeviceContext = nullptr;
 	}
 
-	void D3D11Renderer2D::Draw(vec2f position, Texture* textureToRender) const
+	void D3D11Renderer2D::Draw(vec2f& position, vec2f& rotation, vec2f& scale, Texture* textureToRender)
 	{
 		Camera* camera = CameraManager::Get()->GetPrimaryCamera();
 

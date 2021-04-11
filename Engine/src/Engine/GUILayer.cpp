@@ -23,6 +23,8 @@
 #include <implot/implot.h>
 #include <CameraManager.h>
 
+#include <SceneManager.h>
+
 
 using namespace Engine;
 
@@ -388,7 +390,17 @@ void GUILayer::Render()
 
 		for (Component* c : mCurrentSelectedNode->GetComponents())
 		{
-			ImGui::CollapsingHeader(c->GetType().c_str());
+			if (ImGui::CollapsingHeader(c->GetType().c_str()))
+			{
+				if (c->GetType() == "Transform")
+				{
+					TransformComponent(dynamic_cast<TransformComp*>(c));
+				}
+				else if (c->GetType() == "Sprite")
+				{
+					SpriteComponent(dynamic_cast<SpriteComp*>(c));
+				}
+			}
 		}
 	}
 
@@ -519,7 +531,59 @@ void GUILayer::Update()
 {
 }
 
-void GUILayer::CreateNode(GameObject* go, int flags, int& index, int& nodeClicked, static int& selectionMask)
+void GUILayer::SpriteComponent(SpriteComp* c)
+{
+	ImGui::PushID("sprite");
+	ImGui::Text("Sprite");
+	ImGui::PopID();
+}
+
+void GUILayer::TransformComponent(TransformComp* c)
+{
+	float position[2];
+	position[0] = c->GetPosition().x;
+	position[1] = c->GetPosition().y;
+
+	float scale[2] = { c->GetScale().x, c->GetScale().y };
+
+	float rotation[2] = { c->GetRotation().x, c->GetRotation().y };
+	
+	ImGui::PushID("position");
+
+	ImGui::Columns(2);
+	ImGui::Text("Position");
+	ImGui::NextColumn();
+	ImGui::DragFloat2("##position", &position[0], 0.1f);
+	ImGui::Columns(1);
+
+	ImGui::PopID();
+
+	ImGui::PushID("rotation");
+
+	ImGui::Columns(2);
+	ImGui::Text("Rotation");
+	ImGui::NextColumn();
+	ImGui::DragFloat2("##rotation", &rotation[0], 0.1f);
+	ImGui::Columns(1);
+
+	ImGui::PopID();
+
+	ImGui::PushID("scale");
+
+	ImGui::Columns(2);
+	ImGui::Text("Scale");
+	ImGui::NextColumn();
+	ImGui::DragFloat2("##scale", &scale[0], 0.1f);
+	ImGui::Columns(1);
+
+	ImGui::PopID();
+
+	c->SetPosition(position[0], position[1]);
+	c->SetRotation(rotation[0], rotation[1]);
+	c->SetScale(scale[0], scale[1]);
+}
+
+void GUILayer::CreateNode(GameObject* go, int flags, int& index, int& nodeClicked, int& selectionMask)
 {
 	ImGui::PushID(index);
 	ImGuiTreeNodeFlags node_flags = flags;
