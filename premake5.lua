@@ -44,7 +44,8 @@ project "Engine"
         "%{prj.name}/src",
 		"%{prj.name}/ext",
 		"%{wks.location}/Imgui/src",
-		"%{wks.location}/Imgui/ext"
+		"%{wks.location}/Imgui/ext",
+		"%{wks.location}/TinyXML/src"
     }
 
     filter "system:windows"

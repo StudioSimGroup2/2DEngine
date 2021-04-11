@@ -3,13 +3,11 @@
 #include "Engine/Core.h"
 #include <iostream>
 
-
-
 namespace Engine
 {
 	class GameObject;
 
-	class Component
+	class ENGINE_API Component
 	{
 	public:
 		Component() { }

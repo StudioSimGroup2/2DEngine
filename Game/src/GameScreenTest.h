@@ -15,11 +15,11 @@ public:
 	void Init();
 private:
 
-	std::vector<Sprite*> ThingsToRender;
-	//Remove
-	Sprite* TestSprite;
-	Character* TestCharacter;
-	TileMap testMap;
+	//std::vector<Sprite*> ThingsToRender;
+	////Remove
+	//Sprite* TestSprite;
+	//Character* TestCharacter;
+	//TileMap testMap;
 };
 
 
