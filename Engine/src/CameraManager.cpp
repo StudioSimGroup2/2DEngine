@@ -1,4 +1,6 @@
 #include "CameraManager.h"
+
+
 CameraManager* CameraManager::mInstance = nullptr;
 
 CameraManager* CameraManager::Get()
@@ -12,11 +14,12 @@ CameraManager* CameraManager::Get()
 CameraManager::~CameraManager()
 {
 	for (Camera* c : mCameras)
+	{
 		delete c;
-	mCameras.clear();
+		c = nullptr;
+	}
 
-	if (mInstance != nullptr)
-		delete mInstance;
+	mCameras.shrink_to_fit();
 }
 
 void CameraManager::Add(Camera* Camera)
@@ -79,6 +82,15 @@ void CameraManager::SetPrimaryCamera(size_t index)
 	size_t previouslyActive = CameraManager::Get()->GetPrimaryCameraIndex();
 	mCameras[previouslyActive]->SetPrimary(false);
 	mCameras[index]->SetPrimary(true);
+}
+
+void CameraManager::Shutdown()
+{
+	if (mInstance == nullptr)
+		return;
+
+	delete mInstance;
+	mInstance = nullptr;
 }
 
 void CameraManager::CBCycleNext()

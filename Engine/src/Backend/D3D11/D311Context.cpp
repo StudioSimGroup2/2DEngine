@@ -390,8 +390,8 @@ namespace Engine
 		AssetManager::GetInstance()->LoadShader("Default", "quadshader.fx");
 
 		// Create two cameras
-		CameraManager::Get()->Add(new Camera(XMFLOAT4(0.0f, 0.0f, -1.0f, 1.0f)));
-		CameraManager::Get()->Add(new Camera(XMFLOAT4(-964.0f, 94.0f, -1.0f, 1.0f)));
+		CameraManager::Get()->Add(new Camera(XMFLOAT4(0.0f, 0.0f, -1.0f, 1.0f))); // Memory leak here
+		CameraManager::Get()->Add(new Camera(XMFLOAT4(-964.0f, 94.0f, -1.0f, 1.0f))); // and here
 		CameraManager::Get()->GetCameraByIndex(1)->SetStatic(true);
 
 		InputManager::GetInstance()->BindCommandToButton(KEY_Q, &CameraManager::Get()->CBCycleNext);
@@ -399,7 +399,6 @@ namespace Engine
 
 		//Todo: Moving this
 		//Particle Props Init	
-		//std::filesystem::path p = std::filesystem::current_path();
 
 		//Sprite* particleTex = new Sprite("Particle system", &vec2f(0, 0), "Particle Texture", "Assets/Textures/Stone.png");
 		//particleTex->AddRendererComponent();
@@ -422,6 +421,8 @@ namespace Engine
 		//	delete mDeviceMGR;
 		//	mDeviceMGR = nullptr;
 		//}
+
+		D3D11Device::Shutdown();
 
 		if (mTransparant)
 		{
@@ -486,15 +487,11 @@ namespace Engine
 		if (mDevice)
 		{
 			mDevice->Release();
-			mDevice = nullptr;
-			D3D11Device::GetInstance()->SetDevice(nullptr);
 		}
 			
 		if (mDeviceContext)
 		{
 			mDeviceContext->Release();
-			mDeviceContext = nullptr;
-			D3D11Device::GetInstance()->SetDeviceContext(nullptr);
 		}
 
 		if (mSwapChain)

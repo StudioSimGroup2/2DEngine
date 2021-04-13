@@ -10,6 +10,11 @@ Engine::TransformComp::TransformComp(GameObject* parent) : Component(parent)
 	Init();
 }
 
+Engine::TransformComp::~TransformComp()
+{
+	mParent = nullptr;
+}
+
 void Engine::TransformComp::Update()
 {
 }

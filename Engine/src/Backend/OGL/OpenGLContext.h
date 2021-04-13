@@ -12,6 +12,7 @@ namespace Engine
 	{
 	public:
 		OpenGLContext(HWND hwnd, UINT32 screenWidth, UINT32 screenHeight, bool vSync, bool fullscreen);
+		~OpenGLContext();
 
 		void Init() override;
 		void Shutdown() override;

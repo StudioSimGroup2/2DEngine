@@ -48,6 +48,8 @@ namespace Engine
 
 		static OGLDevice* GetInstance();
 
+		void ShutdownDevice();
+
 	private:
 		OGLDevice() = default;
 

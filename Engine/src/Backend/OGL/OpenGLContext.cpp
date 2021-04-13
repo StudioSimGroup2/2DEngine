@@ -38,6 +38,11 @@ namespace Engine
 		mScreenWidth = screenWidth;
 	}
 
+	OpenGLContext::~OpenGLContext()
+	{
+		Shutdown();
+	}
+
 	void OpenGLContext::Init()
 	{
 		mDeviceContext = GetDC(mHWND);
@@ -104,8 +109,8 @@ namespace Engine
 
 		AssetManager::GetInstance()->LoadShader("Default", "default.glsl");
 
-		CameraManager::Get()->Add(new Camera(glm::vec4(0.0f, 0.0f, -1.0f, 1.0f)));
-		CameraManager::Get()->Add(new Camera(glm::vec4(-964.0f, 94.0f, -1.0f, 1.0f)));
+		CameraManager::Get()->Add(new Camera(glm::vec4(0.0f, 0.0f, -1.0f, 1.0f))); // Memory Leak here
+		CameraManager::Get()->Add(new Camera(glm::vec4(-964.0f, 94.0f, -1.0f, 1.0f))); // and here
 		CameraManager::Get()->GetCameraByIndex(1)->SetStatic(true);
 
 		InputManager::GetInstance()->BindCommandToButton(KEY_Q, &CameraManager::Get()->CBCycleNext);
@@ -114,6 +119,8 @@ namespace Engine
 
 	void OpenGLContext::Shutdown()
 	{
+		OGLDevice::GetInstance()->ShutdownDevice();
+		CameraManager::Shutdown();
 	}
 
 	void OpenGLContext::OnUpdate(float deltaTime)

@@ -8,7 +8,7 @@ namespace Engine
 {
 	AssetManager* AssetManager::mInstance = nullptr;
 
-	void AssetManager::LoadShader(const char* name, const char* path)
+	void AssetManager::LoadShader(const std::string& name, const std::string& path)
 	{
 #if GRAPHICS_LIBRARY == 0
 		mInstance->mShaders.push_back(new D3D11Shader(D3D11Device::GetInstance(), name, path));
@@ -17,7 +17,7 @@ namespace Engine
 #endif
 	}
 
-	Texture* AssetManager::LoadTexture(char* name, char* path)
+	Texture* AssetManager::LoadTexture(const std::string& name, const std::string& path)
 	{
 		bool err = true;
 		for (auto & mSupportedTexExtension : mInstance->mSupportedTexExtensions)
@@ -51,18 +51,18 @@ namespace Engine
 		return mInstance;
 	}
 
-	Shader* AssetManager::GetShaderByName(const char* name)
+	Shader* AssetManager::GetShaderByName(const std::string& name)
 	{
 		auto index = std::find_if(mInstance->mShaders.begin(), mInstance->mShaders.end(),
-			[&name](const Shader* s) {return s->GetName() == std::string(name); });
+			[&name](const Shader* s) {return s->GetName() == name; });
 
 		return mInstance->mShaders.at(std::distance(mInstance->mShaders.begin(), index));
 	}
 
-	Texture* AssetManager::GetTextureByName(char* name)
+	Texture* AssetManager::GetTextureByName(const std::string& name)
 	{
 		auto index = std::find_if(mInstance->mTextures.begin(), mInstance->mTextures.end(),
-			[&name](const Texture* s) {return s->GetName() == std::string(name); });
+			[&name](Texture* s) {return s->GetName() == name; });
 
 		return mInstance->mTextures.at(std::distance(mInstance->mTextures.begin(), index));
 	}
@@ -85,15 +85,30 @@ namespace Engine
 	void AssetManager::ClearAll()
 	{
 		for (Shader* s : mInstance->mShaders)
+		{
 			delete s;
+			s = nullptr;
+		}
+			
 
 		for (Texture* t : mInstance->mTextures)
+		{
 			delete t;
+			t = nullptr;
+		}
 	}
 
 	void AssetManager::Shutdown()
 	{
-		ClearAll();
-		delete mInstance;
+		if (mInstance == nullptr)
+			return;
+		
+		mInstance->ClearAll();
+
+		if (mInstance)
+		{
+			delete mInstance;
+			mInstance = nullptr;
+		}
 	}
 }

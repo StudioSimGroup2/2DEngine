@@ -29,12 +29,19 @@ namespace Engine
 
 	void SceneManager::Shutdown()
 	{
-		if (mCurrScene)
+		if (mInstance == nullptr)
+			return;
+
+		if (mInstance->mCurrScene)
 		{
-			delete mCurrScene;
-			mCurrScene = nullptr;
+			delete mInstance->mCurrScene;
+			mInstance->mCurrScene = nullptr;
 		}
 
-		delete mInstance;
+		if (mInstance)
+		{
+			delete mInstance;
+			mInstance = nullptr;
+		}
 	}
 }

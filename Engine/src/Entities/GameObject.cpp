@@ -2,7 +2,6 @@
 
 Engine::GameObject::GameObject()
 {
-	std::cout << "Gaze into the the abyss:	       " << this << std::endl;
 	InitTransformComponent();
 }
 
@@ -10,6 +9,23 @@ Engine::GameObject::GameObject(GameObject* parent)
 {
 	mParent = parent; parent->AttachToParent(this);
 	InitTransformComponent();
+}
+
+Engine::GameObject::~GameObject()
+{
+	for (Component* c : mComponents)
+	{
+		delete c;
+		c = nullptr;
+	}
+	mComponents.shrink_to_fit();
+
+	//TODO Add children back to the scene hierachy 
+	for (GameObject* child : mChildren)
+	{
+		child->SetParent(nullptr);
+		child = nullptr;
+	}
 }
 
 void Engine::GameObject::Start()

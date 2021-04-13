@@ -26,7 +26,7 @@ namespace Engine
 
 		bool IsSceneLoaded() { return (mSceneLoaded); }
 
-		void Shutdown();
+		static void Shutdown();
 	private:
 		SceneManager() { }
 

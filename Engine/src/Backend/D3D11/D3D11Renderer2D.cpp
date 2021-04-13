@@ -40,8 +40,8 @@ namespace Engine
 	{
 		Camera* camera = CameraManager::Get()->GetPrimaryCamera();
 
-		XMMATRIX mScale = XMMatrixScaling(1.0f, 1.05f, 1.0f);
-		XMMATRIX mRotate = XMMatrixRotationX(0.0f) * XMMatrixRotationY(0.0f) * XMMatrixRotationZ(0.0f);
+		XMMATRIX mScale = XMMatrixScaling(scale.x * 1.0f, scale.y * 1.0f, 1.0f);
+		XMMATRIX mRotate = XMMatrixRotationX(rotation.x) * XMMatrixRotationY(rotation.y) * XMMatrixRotationZ(0.0f);
 		XMMATRIX mTranslate = XMMatrixTranslation(position.x, -position.y, 0.0f);
 		XMMATRIX world = mScale * mRotate * mTranslate;
 

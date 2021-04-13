@@ -19,14 +19,14 @@ namespace Engine
 	class ENGINE_API AssetManager
 	{
 	public:
-		void LoadShader(const char* name, const char* path);
+		void LoadShader(const std::string& name, const std::string& path);
 		//static void LoadTexture(Device* device, const std::string& name, const std::string& path);
-		Texture* LoadTexture(char* name, char* path);
+		Texture* LoadTexture(const std::string& name, const std::string& path);
 
 		static AssetManager* GetInstance();
 
-		Shader* GetShaderByName(const char* name);
-		Texture* GetTextureByName(char* name);
+		Shader* GetShaderByName(const std::string& name);
+		Texture* GetTextureByName(const std::string& name);
 		Sound* GetSoundByName(const std::string& name);
 
 		void RemoveShader(const std::string& name);
@@ -34,7 +34,7 @@ namespace Engine
 
 		void ClearAll();
 
-		void Shutdown();
+		static void Shutdown();
 	private:
 		AssetManager() { }
 

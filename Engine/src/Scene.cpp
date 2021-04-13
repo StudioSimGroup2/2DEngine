@@ -13,45 +13,49 @@ namespace Engine
 		
 		mPlayer->SetName("Parent");
 
-		GameObject* firstChild = new GameObject(mPlayer);
-		firstChild->SetName("I am a child");
+		//GameObject* firstChild = new GameObject(mPlayer);
+		//firstChild->SetName("I am a child");
 
-		GameObject* secondChild = new GameObject(firstChild);
-		secondChild->SetName("I am a grandchild");
-		GameObject* mTest = new GameObject();
+		//GameObject* secondChild = new GameObject(firstChild);
+		//secondChild->SetName("I am a grandchild");
+		//GameObject* mTest = new GameObject();
 
-		GameObject* thirdChild = new GameObject(mTest);
-		thirdChild->SetName("child");
+		//GameObject* thirdChild = new GameObject(mTest);
+		//thirdChild->SetName("child");
 
-		mTest->SetName("Object B");
+		//mTest->SetName("Object B");
 
-		GameObject* childLess = new GameObject();
-		childLess->SetName("nO Child");
+		//GameObject* childLess = new GameObject();
+		//childLess->SetName("nO Child");
 
-		mSceneObjects.push_back(mPlayer);
-		mSceneObjects.push_back(mTest);
-		mSceneObjects.push_back(childLess);
+		//mSceneObjects.push_back(mPlayer);
+		//mSceneObjects.push_back(mTest);
+		//mSceneObjects.push_back(childLess);
 
 
-		/// <summary>
-		/// sprite class needs to be removed its useless now that we're actually setting up components
-		/// </summary>
+		///// <summary>
+		///// sprite class needs to be removed its useless now that we're actually setting up components
+		///// </summary>
 
 		SpriteComp* spr = mPlayer->AddComponent(new SpriteComp);
-		mPlayer->GetComponent<TransformComp>()->SetPosition(200.0f, 200.0f);
+		//mPlayer->GetComponent<TransformComp>()->SetPosition(200.0f, 200.0f);
 		spr->SetTexture(AssetManager::GetInstance()->LoadTexture((char*)"Stone", (char*)"Assets/Textures/Stone.png"));
+		
+		mSceneObjects.push_back(mPlayer);
+
+		AudioManager::GetInstance()->LoadSound("z", "zip.wav");
+		AudioManager::GetInstance()->PlaySoundFile("z", 0.2, false);
 	}
 
 	Scene::~Scene()
 	{
-		if (!(mSceneObjects.empty()))
+		for (GameObject* go : mSceneObjects)
 		{
-			for (GameObject* go : mSceneObjects)
-			{
-				delete go;
-				go = nullptr;
-			}
+			delete go;
+			go = nullptr;
 		}
+
+		mSceneObjects.shrink_to_fit();
 	}
 
 	void Scene::Init()

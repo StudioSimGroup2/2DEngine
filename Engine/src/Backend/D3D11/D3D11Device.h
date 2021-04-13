@@ -46,6 +46,8 @@ namespace Engine
 
 		static D3D11Device* GetInstance();
 
+		static void Shutdown();
+
 	private:
 		D3D11Device() = default;
 

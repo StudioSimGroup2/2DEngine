@@ -18,6 +18,8 @@ namespace Engine
 
 		void SetTexture(Texture* texture) { mTexture = texture; }
 		Texture* GetTexture() const { return mTexture; }
+
+		void* GetTexID();
 	private:
 		void Init();
 

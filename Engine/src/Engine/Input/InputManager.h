@@ -87,7 +87,7 @@ namespace Engine
 		vec2f SetMousePosition(vec2f& mousePos) { return mMousePos = mousePos; }
 		vec2f GetMousePosition() const { return mMousePos; }
 
-		void Shutdown();
+		static void Shutdown();
 
 	private:
 		InputManager();

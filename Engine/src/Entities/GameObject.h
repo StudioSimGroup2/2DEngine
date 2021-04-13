@@ -16,7 +16,7 @@ namespace Engine
 	public:
 		GameObject();
 		GameObject(GameObject* parent);
-		~GameObject() = default;
+		~GameObject();
 
 		void Start();
 		void Update();

@@ -30,7 +30,7 @@ namespace Engine
 
 		static AudioManager* GetInstance();
 
-		void Shutdown();
+		static void Shutdown();
 
 	private:
 		AudioManager();

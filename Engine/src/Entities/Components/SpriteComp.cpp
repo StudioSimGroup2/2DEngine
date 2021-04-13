@@ -55,6 +55,16 @@ namespace Engine
 #endif
 	}
 
+	void* SpriteComp::GetTexID()
+	{
+#if GRAPHICS_LIBRARY == 0
+		return dynamic_cast<D3D11Texture*>(mTexture)->GetTexID();
+
+#elif GRAPHICS_LIBRARY == 1
+		return dynamic_cast<OGLTexture*>(mTexture)->GetTexID();
+#endif
+	}
+
 	void SpriteComp::Init()
 	{
 		//mRenderer = Device::CreateRenderer(sh == nullptr ? AssetManager::GetInstance()->GetShaderByName("Default") : sh);

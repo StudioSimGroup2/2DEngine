@@ -44,9 +44,13 @@ namespace Engine
 
 	void AudioManager::Shutdown()
 	{
+		if (mInstance == nullptr)
+			return;
+		
 		for (Sound* s : mInstance->mSounds)
 		{
 			delete s;
+			s = nullptr;
 		}
 
 		delete mInstance;

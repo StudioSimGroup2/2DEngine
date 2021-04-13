@@ -10,6 +10,7 @@ namespace Engine
 	public:
 		TransformComp();
 		TransformComp(GameObject* parent);
+		~TransformComp();
 
 		void SetPosition(float x, float y) { mPosition.x = x; mPosition.y = y; }
 		void SetRotation(float x, float y) { mRotation.x = x; mRotation.y = y; }

@@ -1097,6 +1097,10 @@
     </ClInclude>
     <ClInclude Include="src\Entities\Components\TransformComp.h" />
     <ClInclude Include="src\Sprite.h" />
+    <ClInclude Include="src\Memory\FreeListAllocator.h" />
+    <ClInclude Include="src\Memory\Heap.h" />
+    <ClInclude Include="src\Memory\PoolAllocator.h" />
+    <ClInclude Include="src\Memory\MemoryManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ext\GLM\detail\glm.cpp">
@@ -1210,5 +1214,9 @@
     <ClCompile Include="src\Entities\Components\TransformComp.cpp" />
     <ClCompile Include="src\Entities\Component.cpp" />
     <ClCompile Include="src\Sprite.cpp" />
+    <ClCompile Include="src\Memory\FreeListAllocator.cpp" />
+    <ClCompile Include="src\Memory\Heap.cpp" />
+    <ClCompile Include="src\Memory\PoolAllocator.cpp" />
+    <ClCompile Include="src\Memory\MemoryManager.cpp" />
   </ItemGroup>
 </Project>

@@ -13,6 +13,7 @@ namespace Engine
 	D3D11Texture::D3D11Texture(D3D11Device* device, char* name, char* path)
 	{
 		mName = std::string(name);
+		mPath = std::string(path);
 		mDeviceContext = device->GetDeviceContext();
 
 		auto hr = S_OK;
@@ -20,8 +21,7 @@ namespace Engine
 		mWidth = 32;
 		mHeight = 32;
 
-		hr = CreateTextureFromFile(device, path);
-		//hr = DirectX::CreateDDSTextureFromFile(device->GetDevice(), StringHelper::StringToWide(path).c_str(), nullptr, &mTextureView);
+		hr = CreateTextureFromFile(device);
 	}
 
 	D3D11Texture::~D3D11Texture()
@@ -48,13 +48,13 @@ namespace Engine
 		mDeviceContext->PSSetShaderResources(0, pos, NULL);
 	}
 
-	HRESULT D3D11Texture::CreateTextureFromFile(D3D11Device* dev, const std::string& path)
+	HRESULT D3D11Texture::CreateTextureFromFile(D3D11Device* dev)
 	{
 		HRESULT hr = S_OK;
 
 		int nrChannels;
 
-		unsigned char* source = stbi_load(path.c_str(), &mWidth, &mHeight, &nrChannels, 0);
+		unsigned char* source = stbi_load(mPath.c_str(), &mWidth, &mHeight, &nrChannels, 0);
 		if (!source) fprintf(stderr, "Cannot load file image %s\nSTB Reason: %s\n", source, stbi_failure_reason());
 
 		//TODO: Error checking for nrChannels not equal to 3 or 4
@@ -113,6 +113,8 @@ namespace Engine
 		hr = dev->GetInstance()->GetDevice()->CreateShaderResourceView(tex, &srvDesc, &mTextureView);
 		if (FAILED(hr))
 			return hr;
+
+		stbi_image_free(source);
 
 		return hr;
 	}

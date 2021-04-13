@@ -2,6 +2,9 @@
 #include "Utils/AssetManager.h"
 #include "Audio/AudioManager.h"
 
+#include "Input/InputManager.h"
+#include "Memory/MemoryManager.h"
+
 namespace Engine
 {
 	Application* Application::mInstance = nullptr;
@@ -15,10 +18,7 @@ namespace Engine
 
 		mInstance = this;
 
-		Logger::Init(GetStdHandle(STD_OUTPUT_HANDLE)); // Get handel to console (for text coloring)
-		Logger::SetLogLevel(LogStates::LOG_ERR | LogStates::LOG_WARN | LogStates::LOG_MSG);
-
-		Logger::LogMsg("Logger initalised!", __FILE__);
+		//MemoryManager::GetInstance();
 
 		mWindow = std::unique_ptr<Window>(Window::Create());
 
@@ -65,9 +65,9 @@ namespace Engine
 
 		mGUILayer = nullptr;
 
-		AudioManager::GetInstance()->Shutdown();
-		InputManager::GetInstance()->Shutdown();
-		AssetManager::GetInstance()->Shutdown();
+		AudioManager::Shutdown();
+		InputManager::Shutdown();
+		AssetManager::Shutdown();
 
 		mWindow->Shutdown();
 	}

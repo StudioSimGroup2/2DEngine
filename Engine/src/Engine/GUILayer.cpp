@@ -130,6 +130,8 @@ GUILayer::GUILayer()
 
 GUILayer::~GUILayer()
 {
+	SceneManager::Shutdown();
+
 	ifd::FileDialog::Instance().Close();
 
 #if GRAPHICS_LIBRARY ==  1
@@ -140,6 +142,7 @@ GUILayer::~GUILayer()
 	ImGui_ImplWin32_Shutdown();
 #endif
 
+	ImPlot::DestroyContext();
 	ImGui::DestroyContext();
 }
 
@@ -285,16 +288,6 @@ void GUILayer::Render()
 		ImGui::EndMainMenuBar();
 	}
 
-	if (ifd::FileDialog::Instance().IsDone("File Browser"))
-	{
-		if (ifd::FileDialog::Instance().HasResult())
-		{
-			std::string res = ifd::FileDialog::Instance().GetResult().u8string();
-			printf("OPEN[%s]\n", res.c_str());
-		}
-		ifd::FileDialog::Instance().Close();
-	}
-
 #pragma endregion
 
 #pragma region Profiler
@@ -353,7 +346,7 @@ void GUILayer::Render()
 
 #pragma endregion
 
-	//ImGui::ShowDemoWindow();
+	ImGui::ShowDemoWindow();
 
 #pragma region SH // <------ Current Scene Hierarchy
 
@@ -534,8 +527,28 @@ void GUILayer::Update()
 void GUILayer::SpriteComponent(SpriteComp* c)
 {
 	ImGui::PushID("sprite");
-	ImGui::Text("Sprite");
+
+	if (ImGui::Button(c->GetTexture()->GetPath().c_str()))
+	{
+		ifd::FileDialog::Instance().Open("File Browser", "Change Sprite Texture", "Texture File (*.png){.png},.*");
+	}
+
+	if (ifd::FileDialog::Instance().IsDone("File Browser"))
+	{
+		if (ifd::FileDialog::Instance().HasResult())
+		{
+			c->SetTexture(AssetManager::GetInstance()->LoadTexture(
+				"", ifd::FileDialog::Instance().GetResult().u8string()));
+		}
+		ifd::FileDialog::Instance().Close();
+	}
+
+	ImGui::SameLine();
+	ImGui::Image((void*)(intptr_t)c->GetTexID(), ImVec2(32.0f, 32.0f));
+	ImGui::Separator();
+	
 	ImGui::PopID();
+
 }
 
 void GUILayer::TransformComponent(TransformComp* c)
