@@ -10,7 +10,7 @@
 
 namespace Engine
 {
-	D3D11Texture::D3D11Texture(D3D11Device* device, char* name, char* path)
+	D3D11Texture::D3D11Texture(D3D11Device* device, const std::string& name, const std::string& path)
 	{
 		mName = std::string(name);
 		mPath = std::string(path);

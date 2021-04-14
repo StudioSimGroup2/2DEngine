@@ -527,8 +527,27 @@ void GUILayer::Update()
 void GUILayer::SpriteComponent(SpriteComp* c)
 {
 	ImGui::PushID("sprite");
+ 
+	bool flipX = c->GetFlipX();
+	bool flipY = c->GetFlipY();
 
-	if (ImGui::Button(c->GetTexture()->GetPath().c_str()))
+	auto& ref = c->GetColour();
+
+	std::string path;
+	static ImVec4 colour = ImVec4(ref[0], ref[1],
+		ref[2], ref[3]);
+
+	if (c->GetTexture()->GetPath().length() > 25)
+	{
+		path = c->GetTexture()->GetPath().substr(25);
+		path = path.substr(path.find_first_of('\\'));
+	}
+	else
+	{
+		path = c->GetTexture()->GetPath();
+	}
+
+	if (ImGui::Button(path.c_str()))
 	{
 		ifd::FileDialog::Instance().Open("File Browser", "Change Sprite Texture", "Texture File (*.png){.png},.*");
 	}
@@ -545,10 +564,25 @@ void GUILayer::SpriteComponent(SpriteComp* c)
 
 	ImGui::SameLine();
 	ImGui::Image((void*)(intptr_t)c->GetTexID(), ImVec2(32.0f, 32.0f));
-	ImGui::Separator();
-	
-	ImGui::PopID();
 
+	ImGui::Text("Color");
+	ImGui::SameLine();
+	ImGui::ColorEdit4("##colpicker", (float*)&colour, ImGuiColorEditFlags_NoDragDrop);
+
+	ImGui::Columns(2);
+	ImGui::Text("Flip");
+	ImGui::NextColumn();
+	ImGui::Checkbox("X", &flipX);
+	ImGui::SameLine();
+	ImGui::Checkbox("Y", &flipY);
+	ImGui::Columns(1);
+	
+	c->ToggleFlipX(flipX);
+	c->ToggleFlipY(flipY);
+	c->SetColour(colour.x, colour.y, colour.z, colour.w);
+
+
+	ImGui::PopID();
 }
 
 void GUILayer::TransformComponent(TransformComp* c)

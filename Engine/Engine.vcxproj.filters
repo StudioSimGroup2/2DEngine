@@ -70,6 +70,9 @@
     <Filter Include="src\Entry">
       <UniqueIdentifier>{8EF7DAB2-FA61-8F29-43A0-40CFAF496D7E}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Memory">
+      <UniqueIdentifier>{F56D3C20-E125-7E6D-4A2D-57C93604195E}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Utils">
       <UniqueIdentifier>{4D9AFFB3-B904-B42A-0243-65D06EEC917F}</UniqueIdentifier>
     </Filter>
@@ -1047,6 +1050,9 @@
     <ClInclude Include="src\Entities\Components\SpriteComp.h">
       <Filter>src\Entities\Components</Filter>
     </ClInclude>
+    <ClInclude Include="src\Entities\Components\TransformComp.h">
+      <Filter>src\Entities\Components</Filter>
+    </ClInclude>
     <ClInclude Include="src\Entities\GameObject.h">
       <Filter>src\Entities</Filter>
     </ClInclude>
@@ -1062,6 +1068,18 @@
     <ClInclude Include="src\LevelMap.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\Memory\FreeListAllocator.h">
+      <Filter>src\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Memory\Heap.h">
+      <Filter>src\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Memory\MemoryManager.h">
+      <Filter>src\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Memory\PoolAllocator.h">
+      <Filter>src\Memory</Filter>
+    </ClInclude>
     <ClInclude Include="src\ParticalSystem.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -1069,6 +1087,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\SceneManager.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sprite.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\Utils\AssetManager.h">
@@ -1095,12 +1116,7 @@
     <ClInclude Include="src\Utils\Texture.h">
       <Filter>src\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="src\Entities\Components\TransformComp.h" />
-    <ClInclude Include="src\Sprite.h" />
-    <ClInclude Include="src\Memory\FreeListAllocator.h" />
-    <ClInclude Include="src\Memory\Heap.h" />
-    <ClInclude Include="src\Memory\PoolAllocator.h" />
-    <ClInclude Include="src\Memory\MemoryManager.h" />
+    <ClInclude Include="src\Entities\Components\PhysicsComp.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ext\GLM\detail\glm.cpp">
@@ -1172,7 +1188,13 @@
     <ClCompile Include="src\Engine\LayerStack.cpp">
       <Filter>src\Engine</Filter>
     </ClCompile>
+    <ClCompile Include="src\Entities\Component.cpp">
+      <Filter>src\Entities</Filter>
+    </ClCompile>
     <ClCompile Include="src\Entities\Components\SpriteComp.cpp">
+      <Filter>src\Entities\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Entities\Components\TransformComp.cpp">
       <Filter>src\Entities\Components</Filter>
     </ClCompile>
     <ClCompile Include="src\Entities\GameObject.cpp">
@@ -1187,6 +1209,18 @@
     <ClCompile Include="src\GameScreenTest.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\Memory\FreeListAllocator.cpp">
+      <Filter>src\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Memory\Heap.cpp">
+      <Filter>src\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Memory\MemoryManager.cpp">
+      <Filter>src\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Memory\PoolAllocator.cpp">
+      <Filter>src\Memory</Filter>
+    </ClCompile>
     <ClCompile Include="src\ParticalSystem.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -1194,6 +1228,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\SceneManager.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sprite.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Utils\AssetManager.cpp">
@@ -1211,12 +1248,6 @@
     <ClCompile Include="src\Utils\StringHelper.cpp">
       <Filter>src\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="src\Entities\Components\TransformComp.cpp" />
-    <ClCompile Include="src\Entities\Component.cpp" />
-    <ClCompile Include="src\Sprite.cpp" />
-    <ClCompile Include="src\Memory\FreeListAllocator.cpp" />
-    <ClCompile Include="src\Memory\Heap.cpp" />
-    <ClCompile Include="src\Memory\PoolAllocator.cpp" />
-    <ClCompile Include="src\Memory\MemoryManager.cpp" />
+    <ClCompile Include="src\Entities\Components\PhysicsComp.cpp" />
   </ItemGroup>
 </Project>

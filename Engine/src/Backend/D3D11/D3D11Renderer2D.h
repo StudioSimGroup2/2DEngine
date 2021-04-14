@@ -24,6 +24,7 @@ namespace Engine
 
 		ID3D11Buffer* mVertexBuffer = nullptr, * mIndexBuffer = nullptr;
 		ID3D11Buffer* mConstantBuffer;
+		ID3D11Buffer* mColourBuffer;
 
 		//DirectX::XMMATRIX mWorld;
 
@@ -32,6 +33,17 @@ namespace Engine
 			XMMATRIX mWorld;
 			XMMATRIX mView;
 			XMMATRIX mProjection;
+			int mFlipX;
+			int mFlipY;
+			XMFLOAT2 padding;
+		};
+
+		struct ColourBuffer
+		{
+			float r;
+			float g;
+			float b;
+			float a;
 		};
 
 		struct VertexType

@@ -16,7 +16,7 @@ namespace Engine
 	class D3D11Texture : public Texture
 	{
 	public:
-		D3D11Texture(D3D11Device* device, char* name, char* path);
+		D3D11Texture(D3D11Device* device, const std::string& name, const std::string& path);
 		~D3D11Texture();
 
 		virtual void Load(int pos) const override;

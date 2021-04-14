@@ -30,6 +30,9 @@ namespace Engine
 
 		dynamic_cast<OGLShader*>(mShader)->SetMatrix("model", model);
 		dynamic_cast<OGLShader*>(mShader)->SetMatrix("projection", camera->GetProjectionMatrix());
+		dynamic_cast<OGLShader*>(mShader)->SetBool("flipX", mFlipX);
+		dynamic_cast<OGLShader*>(mShader)->SetBool("flipY", mFlipY);
+		dynamic_cast<OGLShader*>(mShader)->SetVector4("Colour", glm::vec4(mColour[0], mColour[1], mColour[2], mColour[3]));
 
 		glActiveTexture(GL_TEXTURE0);
 		textureToRender->Load();

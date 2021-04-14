@@ -49,10 +49,22 @@ namespace Engine
 		cb.mProjection = XMMatrixTranspose(camera->GetProjectionMatrix());
 		cb.mView = XMMatrixTranspose(camera->GetViewMatrix());
 		cb.mWorld = XMMatrixTranspose(world);
+		cb.mFlipX = mFlipX;
+		cb.mFlipY = mFlipY;
+
+		ColourBuffer colourB;
+		colourB.r = mColour[0];
+		colourB.g = mColour[1];
+		colourB.b = mColour[2];
+		colourB.a = mColour[3];
 
 		mDeviceContext->UpdateSubresource(mConstantBuffer, 0, nullptr, &cb, 0, 0);
 		mDeviceContext->VSSetConstantBuffers(0, 1, &mConstantBuffer);
 		mDeviceContext->PSSetConstantBuffers(0, 1, &mConstantBuffer);
+
+		mDeviceContext->UpdateSubresource(mColourBuffer, 0, nullptr, &colourB, 0, 0);
+		mDeviceContext->VSSetConstantBuffers(1, 1, &mColourBuffer);
+		mDeviceContext->PSSetConstantBuffers(1, 1, &mColourBuffer);
 
 		UINT stride = sizeof(VertexType);
 		UINT offset = 0;
@@ -136,6 +148,14 @@ namespace Engine
 		bd.CPUAccessFlags = 0;
 
 		hr = dev->CreateBuffer(&bd, nullptr, &mConstantBuffer);
+		ASSERT(!FAILED(hr), "Error creating Constant buffer");
+
+		bd.Usage = D3D11_USAGE_DEFAULT;
+		bd.ByteWidth = sizeof(ColourBuffer);
+		bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		bd.CPUAccessFlags = 0;
+
+		hr = dev->CreateBuffer(&bd, nullptr, &mColourBuffer);
 		ASSERT(!FAILED(hr), "Error creating Constant buffer");
 	}
 }
