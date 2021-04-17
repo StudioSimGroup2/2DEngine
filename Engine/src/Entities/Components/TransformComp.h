@@ -10,7 +10,7 @@ namespace Engine
 	public:
 		TransformComp();
 		TransformComp(GameObject* parent);
-		~TransformComp();
+		~TransformComp() override;
 
 		void SetPosition(float x, float y) { mPosition.x = x; mPosition.y = y; }
 		void SetRotation(float x, float y) { mRotation.x = x; mRotation.y = y; }
@@ -19,9 +19,9 @@ namespace Engine
 		void Update() override;
 		void Render() override;
 
-		vec2f GetPosition() const { return mPosition; }
-		vec2f GetRotation() const { return mRotation; }
-		vec2f GetScale() const { return mScale; }
+		vec2f& GetPosition() { return mPosition; }
+		vec2f& GetRotation() { return mRotation; }
+		vec2f& GetScale() { return mScale; }
 
 	private:
 		void Init();

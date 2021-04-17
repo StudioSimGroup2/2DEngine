@@ -27,7 +27,7 @@ namespace Engine
 			mRenderer = nullptr;
 		}
 
-		Component::~Component();
+		mParent = nullptr;
 	}
 
 	void SpriteComp::Update()

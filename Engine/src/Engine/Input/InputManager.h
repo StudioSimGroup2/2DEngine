@@ -3,6 +3,7 @@
 #include <map>
 #include <functional>
 #include <Utils/Math.h>
+#include <cstring>
 
 #include "Engine/Core.h"
 
@@ -84,7 +85,7 @@ namespace Engine
 
 		void BindCommandToButton(uint32_t key, const std::function<void()>& callback);
 
-		vec2f SetMousePosition(vec2f& mousePos) { return mMousePos = mousePos; }
+		vec2f SetMousePosition(const vec2f& mousePos) { return mMousePos = mousePos; }
 		vec2f GetMousePosition() const { return mMousePos; }
 
 		static void Shutdown();

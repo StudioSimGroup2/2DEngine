@@ -8,18 +8,18 @@
 
 #include <Engine/Defines.h>
 
+#include "imgui_impl_win32.h"
+
 #if GRAPHICS_LIBRARY ==  1
-#include "OpenGL/imgui_impl_win32_opengl.h"
 #include "OpenGL/imgui_impl_opengl3.h"
 #elif GRAPHICS_LIBRARY ==  0
-#include "imgui_impl_win32.h"
 #include "D3D11/imgui_impl_dx11.h"
 #endif
 
 #include <Engine/Renderer/Device.h>
 #include <Engine/Application.h>
 
-#include <ImFileDialog/ImFileDialog.h>
+//#include <ImFileDialog/ImFileDialog.h>
 #include <implot/implot.h>
 #include <CameraManager.h>
 
@@ -47,11 +47,11 @@ GUILayer::GUILayer()
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 	io.ConfigDockingWithShift = true;
 
+	ImGui_ImplWin32_Init(dynamic_cast<Engine::WindowsSystem*>(&app->GetWindowData())->GetHWND());
+
 #if GRAPHICS_LIBRARY ==  1
-	ImGui_ImplWin32_Init(dynamic_cast<Engine::WindowsSystem*>(&app->GetWindowData())->GetHWND(), reinterpret_cast<void*>(Device::GetDevice()->GetHGLRC()));
 	ImGui_ImplOpenGL3_Init("#version 460");
 #elif GRAPHICS_LIBRARY ==  0
-	ImGui_ImplWin32_Init(dynamic_cast<Engine::WindowsSystem*>(&app->GetWindowData())->GetHWND());
 	ImGui_ImplDX11_Init(Device::GetDevice()->GetDevice(), Device::GetDevice()->GetDeviceContext());
 #endif
 
@@ -64,83 +64,82 @@ GUILayer::GUILayer()
 		style.Colors[ImGuiCol_WindowBg].w = 1.0f;
 	}
 
-	ifd::FileDialog::Instance().CreateTexture = [](uint8_t* data, int w, int h, char fmt) -> void*
-	{
-#if GRAPHICS_LIBRARY ==  1
-		GLuint tex;
-
-		glGenTextures(1, &tex);
-		glBindTexture(GL_TEXTURE_2D, tex);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, (fmt == 0) ? GL_BGRA : GL_RGBA, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, 0);
-#elif GRAPHICS_LIBRARY ==  0
-		ID3D11ShaderResourceView* tex;
-
-		D3D11_TEXTURE2D_DESC desc;
-		ZeroMemory(&desc, sizeof(desc));
-		D3D11_SUBRESOURCE_DATA srd;
-		ZeroMemory(&srd, sizeof(srd));
-		ID3D11Texture2D* tex2d = nullptr;
-		D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
-		ZeroMemory(&srvDesc, sizeof(srvDesc));
-
-		desc.Width = static_cast<UINT>(w);
-		desc.Height = static_cast<UINT>(h);
-		desc.MipLevels = 1;
-		desc.ArraySize = 1;
-		desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-		desc.SampleDesc.Count = 1;
-		desc.Usage = D3D11_USAGE_DEFAULT;
-		desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-		desc.CPUAccessFlags = 0;
-
-		srd.pSysMem = data;
-		srd.SysMemPitch = static_cast<UINT>(4 * w);
-		srd.SysMemSlicePitch = 0;
-
-		Device::GetDevice()->GetDevice()->CreateTexture2D(&desc, &srd, &tex2d);
-
-		srvDesc.Format = desc.Format;
-		srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-		srvDesc.Texture2D.MipLevels = desc.MipLevels;
-		srvDesc.Texture2D.MostDetailedMip = 0;
-
-		Device::GetDevice()->GetDevice()->CreateShaderResourceView(tex2d, &srvDesc, &tex);
-#endif
-		return (void*)(size_t)tex;
-	};
-
-	ifd::FileDialog::Instance().DeleteTexture = [](void* tex)
-	{
-#if GRAPHICS_LIBRARY ==  1
-		GLuint texID = (GLuint)(uintptr_t)(tex);
-		glDeleteTextures(1, &texID);
-#elif GRAPHICS_LIBRARY ==  0
-		auto* srv = (ID3D11ShaderResourceView*)tex;
-
-		srv->Release();
-#endif
-	};
+//	ifd::FileDialog::Instance().CreateTexture = [](uint8_t* data, int w, int h, char fmt) -> void*
+//	{
+//#if GRAPHICS_LIBRARY ==  1
+//		GLuint tex;
+//
+//		glGenTextures(1, &tex);
+//		glBindTexture(GL_TEXTURE_2D, tex);
+//		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+//		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+//		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+//		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+//		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, (fmt == 0) ? GL_BGRA : GL_RGBA, GL_UNSIGNED_BYTE, data);
+//		glGenerateMipmap(GL_TEXTURE_2D);
+//		glBindTexture(GL_TEXTURE_2D, 0);
+//#elif GRAPHICS_LIBRARY ==  0
+//		ID3D11ShaderResourceView* tex;
+//
+//		D3D11_TEXTURE2D_DESC desc;
+//		ZeroMemory(&desc, sizeof(desc));
+//		D3D11_SUBRESOURCE_DATA srd;
+//		ZeroMemory(&srd, sizeof(srd));
+//		ID3D11Texture2D* tex2d = nullptr;
+//		D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
+//		ZeroMemory(&srvDesc, sizeof(srvDesc));
+//
+//		desc.Width = static_cast<UINT>(w);
+//		desc.Height = static_cast<UINT>(h);
+//		desc.MipLevels = 1;
+//		desc.ArraySize = 1;
+//		desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+//		desc.SampleDesc.Count = 1;
+//		desc.Usage = D3D11_USAGE_DEFAULT;
+//		desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+//		desc.CPUAccessFlags = 0;
+//
+//		srd.pSysMem = data;
+//		srd.SysMemPitch = static_cast<UINT>(4 * w);
+//		srd.SysMemSlicePitch = 0;
+//
+//		Device::GetDevice()->GetDevice()->CreateTexture2D(&desc, &srd, &tex2d);
+//
+//		srvDesc.Format = desc.Format;
+//		srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+//		srvDesc.Texture2D.MipLevels = desc.MipLevels;
+//		srvDesc.Texture2D.MostDetailedMip = 0;
+//
+//		Device::GetDevice()->GetDevice()->CreateShaderResourceView(tex2d, &srvDesc, &tex);
+//#endif
+//		return (void*)(size_t)tex;
+//	};
+//
+//	ifd::FileDialog::Instance().DeleteTexture = [](void* tex)
+//	{
+//#if GRAPHICS_LIBRARY ==  1
+//		GLuint texID = (GLuint)(uintptr_t)(tex);
+//		glDeleteTextures(1, &texID);
+//#elif GRAPHICS_LIBRARY ==  0
+//		auto* srv = (ID3D11ShaderResourceView*)tex;
+//
+//		srv->Release();
+//#endif
+//	};
 }
 
 GUILayer::~GUILayer()
 {
 	SceneManager::Shutdown();
 
-	ifd::FileDialog::Instance().Close();
+	//ifd::FileDialog::Instance().Close();
 
 #if GRAPHICS_LIBRARY ==  1
 	ImGui_ImplOpenGL3_Shutdown();
-	ImGui_ImplWin32_Shutdown();
 #elif GRAPHICS_LIBRARY == 0
 	ImGui_ImplDX11_Shutdown();
-	ImGui_ImplWin32_Shutdown();
 #endif
+	ImGui_ImplWin32_Shutdown();
 
 	ImPlot::DestroyContext();
 	ImGui::DestroyContext();
@@ -175,7 +174,7 @@ void GUILayer::Render()
 			}
 			if (ImGui::MenuItem("Open Project CTRL + O"))
 			{
-				ifd::FileDialog::Instance().Open("File Browser", "Open a Project", "Engine Project File (*.prj){.png},.*");
+				//ifd::FileDialog::Instance().Open("File Browser", "Open a Project", "Engine Project File (*.prj){.png},.*");
 			}
 			if (ImGui::MenuItem("Save Project CTRL + S"))
 			{
@@ -367,8 +366,6 @@ void GUILayer::Render()
 			selectionMask = (1 << nodeClicked);           // Click to single-select
 	}
 
-	//https://www.youtube.com/watch?v=Aog3mYBK7mA
-
 	ImGui::End();
 
 #pragma endregion 
@@ -549,18 +546,18 @@ void GUILayer::SpriteComponent(SpriteComp* c)
 
 	if (ImGui::Button(path.c_str()))
 	{
-		ifd::FileDialog::Instance().Open("File Browser", "Change Sprite Texture", "Texture File (*.png){.png},.*");
+		//ifd::FileDialog::Instance().Open("File Browser", "Change Sprite Texture", "Texture File (*.png){.png},.*");
 	}
 
-	if (ifd::FileDialog::Instance().IsDone("File Browser"))
-	{
-		if (ifd::FileDialog::Instance().HasResult())
-		{
-			c->SetTexture(AssetManager::GetInstance()->LoadTexture(
-				"", ifd::FileDialog::Instance().GetResult().u8string()));
-		}
-		ifd::FileDialog::Instance().Close();
-	}
+//	if (ifd::FileDialog::Instance().IsDone("File Browser"))
+//	{
+//		if (ifd::FileDialog::Instance().HasResult())
+//		{
+//			c->SetTexture(AssetManager::GetInstance()->LoadTexture(
+//				"", ifd::FileDialog::Instance().GetResult().u8string()));
+//		}
+//		ifd::FileDialog::Instance().Close();
+//	}
 
 	ImGui::SameLine();
 	ImGui::Image((void*)(intptr_t)c->GetTexID(), ImVec2(32.0f, 32.0f));

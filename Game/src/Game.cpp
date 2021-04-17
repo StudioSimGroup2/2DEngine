@@ -3,13 +3,13 @@
 #include "GameScreenManager.h"
 #include "SceneManager.h"
 #include "Scene.h"
+#include <Scripting/ScriptingEngine.h>
 
 class GameLayer : public Engine::Layer
 {
 public:
 	GameLayer()
 	{
-		SceneManager::GetInstance()->LoadScene();
 	}
 
 	virtual ~GameLayer()
@@ -35,6 +35,7 @@ public:
 	Game()
 	{
 		AddLayer(new GameLayer());
+		ScriptingEngine::GetInstance()->Init();
 	}
 
 	~Game()

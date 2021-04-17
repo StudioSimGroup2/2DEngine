@@ -18,6 +18,9 @@ namespace Engine
 		GameObject(GameObject* parent);
 		~GameObject();
 
+		void AddRef() { /* do nothing */ }
+		void ReleaseRef() { /* do nothing */ }
+
 		void Start();
 		void Update();
 		void FixedUpdate();

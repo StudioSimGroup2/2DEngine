@@ -22,6 +22,11 @@ namespace Engine
 
 		void SaveScene();
 
+		GameObject* CreateObject();
+		//void CreateObject(GameObject* parent);
+
+		GameObject* DestroyObject();
+
 		std::vector<GameObject*> GetSceneObjects() { return mCurrScene->GetSceneObjects(); }
 
 		bool IsSceneLoaded() { return (mSceneLoaded); }

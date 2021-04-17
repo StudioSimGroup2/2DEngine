@@ -96,7 +96,7 @@ namespace Engine
 					mMBPressedPrev[i] = true;
 					HandleCallbacks(i);
 				}
-				else if (mMouse[i] != KB_REPEAT && mMBPressedPrev[i])
+				else if (mMouse[i] != MB_REPEAT && mMBPressedPrev[i])
 				{
 					mMouse[i] = MB_REPEAT;
 				}

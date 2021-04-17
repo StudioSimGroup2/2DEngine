@@ -16,11 +16,10 @@ namespace Engine
 	public:
 		Component();
 		Component(GameObject* parent);
+		virtual ~Component() {}
 
 		virtual void Update() = 0;
 		virtual void Render() = 0;
-
-		virtual ~Component() { mParent = nullptr; }
 
 		std::string GetType() const { return mType; }
 

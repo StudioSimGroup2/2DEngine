@@ -107,7 +107,7 @@ namespace Engine
 
 		OGLDevice::GetInstance()->SetHGLRC(mRenderContext);
 
-		AssetManager::GetInstance()->LoadShader("Default", "default.glsl");
+		AssetManager::GetInstance()->LoadShader("Default", "Assets/Shaders/default.glsl");
 
 		CameraManager::Get()->Add(new Camera(glm::vec4(0.0f, 0.0f, -1.0f, 1.0f))); // Memory Leak here
 		CameraManager::Get()->Add(new Camera(glm::vec4(-964.0f, 94.0f, -1.0f, 1.0f))); // and here

@@ -73,6 +73,9 @@
     <Filter Include="src\Memory">
       <UniqueIdentifier>{F56D3C20-E125-7E6D-4A2D-57C93604195E}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Scripting">
+      <UniqueIdentifier>{6FBC2D98-DB7C-A9CE-A4B7-F24B1037EEAA}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Utils">
       <UniqueIdentifier>{4D9AFFB3-B904-B42A-0243-65D06EEC917F}</UniqueIdentifier>
     </Filter>
@@ -1017,9 +1020,6 @@
     <ClInclude Include="src\Engine\EntryPoint.h">
       <Filter>src\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="src\Engine\GUILayer.h">
-      <Filter>src\Engine</Filter>
-    </ClInclude>
     <ClInclude Include="src\Engine\Input\InputManager.h">
       <Filter>src\Engine\Input</Filter>
     </ClInclude>
@@ -1046,6 +1046,12 @@
     </ClInclude>
     <ClInclude Include="src\Entities\ComponentIncludes.h">
       <Filter>src\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entities\Components\PhysicsComp.h">
+      <Filter>src\Entities\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entities\Components\ScriptComponent.h">
+      <Filter>src\Entities\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\Entities\Components\SpriteComp.h">
       <Filter>src\Entities\Components</Filter>
@@ -1089,6 +1095,9 @@
     <ClInclude Include="src\SceneManager.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\Scripting\ScriptingEngine.h">
+      <Filter>src\Scripting</Filter>
+    </ClInclude>
     <ClInclude Include="src\Sprite.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -1116,7 +1125,9 @@
     <ClInclude Include="src\Utils\Texture.h">
       <Filter>src\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="src\Entities\Components\PhysicsComp.h" />
+    <ClInclude Include="src\UI\GUILayer.h">
+      <Filter>src\Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ext\GLM\detail\glm.cpp">
@@ -1176,9 +1187,6 @@
     <ClCompile Include="src\Engine\Audio\AudioManager.cpp">
       <Filter>src\Engine\Audio</Filter>
     </ClCompile>
-    <ClCompile Include="src\Engine\GUILayer.cpp">
-      <Filter>src\Engine</Filter>
-    </ClCompile>
     <ClCompile Include="src\Engine\Input\InputManager.cpp">
       <Filter>src\Engine\Input</Filter>
     </ClCompile>
@@ -1190,6 +1198,12 @@
     </ClCompile>
     <ClCompile Include="src\Entities\Component.cpp">
       <Filter>src\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Entities\Components\PhysicsComp.cpp">
+      <Filter>src\Entities\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Entities\Components\ScriptComponent.cpp">
+      <Filter>src\Entities\Components</Filter>
     </ClCompile>
     <ClCompile Include="src\Entities\Components\SpriteComp.cpp">
       <Filter>src\Entities\Components</Filter>
@@ -1230,6 +1244,9 @@
     <ClCompile Include="src\SceneManager.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\Scripting\ScriptingEngine.cpp">
+      <Filter>src\Scripting</Filter>
+    </ClCompile>
     <ClCompile Include="src\Sprite.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -1248,6 +1265,8 @@
     <ClCompile Include="src\Utils\StringHelper.cpp">
       <Filter>src\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="src\Entities\Components\PhysicsComp.cpp" />
+    <ClCompile Include="src\UI\GUILayer.cpp">
+      <Filter>src\Engine</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

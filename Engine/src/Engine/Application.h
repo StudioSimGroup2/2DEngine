@@ -7,7 +7,7 @@
 
 #include "Utils/Logger.h"
 #include <Engine/Input/InputManager.h>
-#include "GUILayer.h"
+#include <UI/GUILayer.h>
 
 namespace Engine
 {

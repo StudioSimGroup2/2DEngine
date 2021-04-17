@@ -1,6 +1,6 @@
 #pragma once
-#include <d3d11.h>
-#include <directxmath.h>
+//#include <d3d11.h>
+//#include <directxmath.h>
 #include <vector>
 #include "Common.h"
 #include "GameScreen.h"

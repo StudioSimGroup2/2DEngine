@@ -11,8 +11,8 @@ namespace Engine
 		virtual void Load(int pos = 1) const = 0;
 		virtual void Unload(int pos = 1) const = 0;
 
-		const std::string& const GetName() { return mName; }
-		const std::string& const GetPath() { return mPath; }
+		std::string& GetName() { return mName; }
+		std::string& GetPath() { return mPath; }
 		virtual int GetWidth() { return mWidth; }
 		virtual int GetHeight() { return mHeight; }
 

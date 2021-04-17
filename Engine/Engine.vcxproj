@@ -98,12 +98,11 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>WINDOWS_PLATFORM;ENGINE_BUILD_DLL;ENGINE_DEBUG_OGL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;ext;..\Imgui\src;..\Imgui\ext;..\TinyXML\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WINDOWS_PLATFORM;ENGINE_BUILD_DLL;WIN32;ENGINE_DEBUG_OGL;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;ext;..\Imgui\src;..\Imgui\ext;..\TinyXML\src;..\Lua\src;..\Sol2\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalOptions>/MTd %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -121,12 +120,11 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>WINDOWS_PLATFORM;ENGINE_BUILD_DLL;ENGINE_DEBUG_D3D11;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;ext;..\Imgui\src;..\Imgui\ext;..\TinyXML\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WINDOWS_PLATFORM;ENGINE_BUILD_DLL;WIN32;ENGINE_DEBUG_D3D11;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;ext;..\Imgui\src;..\Imgui\ext;..\TinyXML\src;..\Lua\src;..\Sol2\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalOptions>/MTd %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -144,8 +142,8 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>WINDOWS_PLATFORM;ENGINE_BUILD_DLL;ENGINE_RELEASE_OGL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;ext;..\Imgui\src;..\Imgui\ext;..\TinyXML\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WINDOWS_PLATFORM;ENGINE_BUILD_DLL;WIN32;ENGINE_RELEASE_OGL;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;ext;..\Imgui\src;..\Imgui\ext;..\TinyXML\src;..\Lua\src;..\Sol2\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -170,8 +168,8 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>WINDOWS_PLATFORM;ENGINE_BUILD_DLL;ENGINE_RELEASE_D3D11;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;ext;..\Imgui\src;..\Imgui\ext;..\TinyXML\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WINDOWS_PLATFORM;ENGINE_BUILD_DLL;WIN32;ENGINE_RELEASE_D3D11;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;ext;..\Imgui\src;..\Imgui\ext;..\TinyXML\src;..\Lua\src;..\Sol2\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -485,7 +483,6 @@
     <ClInclude Include="ext\OpenAL-Soft\efx.h" />
     <ClInclude Include="ext\drwav\dr_wav.h" />
     <ClInclude Include="ext\stb\stb_image.h" />
-    <ClInclude Include="src\Entities\Components\PhysicsComp.h" />
     <ClInclude Include="src\Backend\D3D11\D311Context.h" />
     <ClInclude Include="src\Backend\D3D11\D3D11Camera.h" />
     <ClInclude Include="src\Backend\D3D11\D3D11Device.h" />
@@ -507,7 +504,7 @@
     <ClInclude Include="src\Engine\Core.h" />
     <ClInclude Include="src\Engine\Defines.h" />
     <ClInclude Include="src\Engine\EntryPoint.h" />
-    <ClInclude Include="src\Engine\GUILayer.h" />
+    <ClInclude Include="src\UI\GUILayer.h" />
     <ClInclude Include="src\Engine\Input\InputManager.h" />
     <ClInclude Include="src\Engine\Layer.h" />
     <ClInclude Include="src\Engine\LayerStack.h" />
@@ -517,6 +514,8 @@
     <ClInclude Include="src\Engine\Window.h" />
     <ClInclude Include="src\Entities\Component.h" />
     <ClInclude Include="src\Entities\ComponentIncludes.h" />
+    <ClInclude Include="src\Entities\Components\PhysicsComp.h" />
+    <ClInclude Include="src\Entities\Components\ScriptComponent.h" />
     <ClInclude Include="src\Entities\Components\SpriteComp.h" />
     <ClInclude Include="src\Entities\Components\TransformComp.h" />
     <ClInclude Include="src\Entities\GameObject.h" />
@@ -531,6 +530,7 @@
     <ClInclude Include="src\ParticalSystem.h" />
     <ClInclude Include="src\Scene.h" />
     <ClInclude Include="src\SceneManager.h" />
+    <ClInclude Include="src\Scripting\ScriptingEngine.h" />
     <ClInclude Include="src\Sprite.h" />
     <ClInclude Include="src\Utils\AssetManager.h" />
     <ClInclude Include="src\Utils\LevelMap.h" />
@@ -545,7 +545,6 @@
     <ClCompile Include="ext\GLM\detail\glm.cpp" />
     <ClCompile Include="ext\Glad\glad.c" />
     <ClCompile Include="ext\drwav\dr_wav_impl.c" />
-    <ClCompile Include="src\Entities\Components\PhysicsComp.cpp" />
     <ClCompile Include="src\Backend\D3D11\D311Context.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugOGL|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseOGL|x64'">true</ExcludedFromBuild>
@@ -598,11 +597,13 @@
     <ClCompile Include="src\CameraManager.cpp" />
     <ClCompile Include="src\Engine\Application.cpp" />
     <ClCompile Include="src\Engine\Audio\AudioManager.cpp" />
-    <ClCompile Include="src\Engine\GUILayer.cpp" />
+    <ClCompile Include="src\UI\GUILayer.cpp" />
     <ClCompile Include="src\Engine\Input\InputManager.cpp" />
     <ClCompile Include="src\Engine\Layer.cpp" />
     <ClCompile Include="src\Engine\LayerStack.cpp" />
     <ClCompile Include="src\Entities\Component.cpp" />
+    <ClCompile Include="src\Entities\Components\PhysicsComp.cpp" />
+    <ClCompile Include="src\Entities\Components\ScriptComponent.cpp" />
     <ClCompile Include="src\Entities\Components\SpriteComp.cpp" />
     <ClCompile Include="src\Entities\Components\TransformComp.cpp" />
     <ClCompile Include="src\Entities\GameObject.cpp" />
@@ -616,6 +617,7 @@
     <ClCompile Include="src\ParticalSystem.cpp" />
     <ClCompile Include="src\Scene.cpp" />
     <ClCompile Include="src\SceneManager.cpp" />
+    <ClCompile Include="src\Scripting\ScriptingEngine.cpp" />
     <ClCompile Include="src\Sprite.cpp" />
     <ClCompile Include="src\Utils\AssetManager.cpp" />
     <ClCompile Include="src\Utils\LevelMap.cpp" />
@@ -629,6 +631,9 @@
     </ProjectReference>
     <ProjectReference Include="..\TinyXML\TinyXML.vcxproj">
       <Project>{9A98D342-0678-52DE-0F90-DDB47BEEB83F}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Lua\Lua.vcxproj">
+      <Project>{A705880B-130F-887C-9C8A-9E7C0893937C}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -27,6 +27,21 @@ namespace Engine
 	{
 	}
 
+	GameObject* SceneManager::CreateObject()
+	{
+		GameObject* go = new GameObject();
+		GetSceneObjects().push_back(go);
+
+		return go;
+	}
+
+	GameObject* SceneManager::DestroyObject()
+	{
+		std::cout << "Called Destroy Object" << std::endl;
+
+		return nullptr;
+	}
+
 	void SceneManager::Shutdown()
 	{
 		if (mInstance == nullptr)
