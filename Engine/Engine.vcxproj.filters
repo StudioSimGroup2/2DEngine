@@ -1092,6 +1092,7 @@
     <ClInclude Include="src\Utils\Windows\WindowsTextureCompiler.h">
       <Filter>src\Utils\Windows</Filter>
     </ClInclude>
+    <ClInclude Include="src\Camera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ext\DDSTextureLoader.cpp">
@@ -1229,5 +1230,6 @@
     <ClCompile Include="src\Utils\Windows\WindowsTextureCompiler.cpp">
       <Filter>src\Utils\Windows</Filter>
     </ClCompile>
+    <ClCompile Include="src\Camera.cpp" />
   </ItemGroup>
 </Project>

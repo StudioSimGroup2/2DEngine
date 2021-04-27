@@ -17,7 +17,8 @@ public:
 
 	~Camera() = default;
 
-	void Update(float deltaTime);  // Updates the view and projection matrices
+	void Update(float deltaTime) ;  // Updates the view and projection matrices
+	void UpdateMovement(float deltaTime);
 
 	inline const glm::vec4 GetEye() const { return mEye; }
 	inline const glm::vec4 GetAt() const { return mAt; }
@@ -49,5 +50,4 @@ private:
 	bool mPrimary;			// Is this the main camera
 	bool mStatic = false;	// Can the camera move? 
 
-	void UpdateMovement(float deltaTime); // TODO: Requires DeltaTime
 };

@@ -424,8 +424,8 @@ namespace Engine
 
 
 		// Create two cameras
-		CameraManager::Get()->Add(new Camera(XMFLOAT4(0.0f, 0.0f, -1.0f, 1.0f)));
-		CameraManager::Get()->Add(new Camera(XMFLOAT4(-964.0f, 94.0f, -1.0f, 1.0f)));
+		CameraManager::Get()->Add(Camera::Create(glm::vec4(0.0f, 0.0f, -1.0f, 1.0f)));
+		CameraManager::Get()->Add(Camera::Create(glm::vec4(-964.0f, 94.0f, -1.0f, 1.0f)));
 		CameraManager::Get()->GetCameraByIndex(0)->SetName("Main Camera");
 		CameraManager::Get()->GetCameraByIndex(1)->SetStatic(true);
 		CameraManager::Get()->GetCameraByIndex(1)->SetName("Secondary Camera");
@@ -687,7 +687,7 @@ namespace Engine
 				ImGui::TreePop();
 			}
 		}
-
+		
 
 		ImGui::Separator();
 		ImGui::Text("Cameras");

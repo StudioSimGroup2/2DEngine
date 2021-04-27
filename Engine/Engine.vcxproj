@@ -497,6 +497,7 @@
     <ClInclude Include="src\Backend\OGL\OGLTexture.h" />
     <ClInclude Include="src\Backend\OGL\OpenGLCamera.h" />
     <ClInclude Include="src\Backend\OGL\OpenGLContext.h" />
+    <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\CameraManager.h" />
     <ClInclude Include="src\Character.h" />
     <ClInclude Include="src\Common.h" />
@@ -584,6 +585,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugD3D11|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseD3D11|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\CameraManager.cpp" />
     <ClCompile Include="src\Character.cpp" />
     <ClCompile Include="src\Engine\Application.cpp" />

@@ -28,7 +28,7 @@ void CameraManager::Add(Camera* Camera)
 
 void CameraManager::Delete(size_t index)
 {
-	ASSERT(!(index >= mCameras.size()), "Deleting Camera, Index supplied was out of range");
+	ASSERT(!(index >= mCameras.size()), "CameraManager::Delete(), Index supplied was out of range");
 	mCameras.erase(mCameras.begin() + index);
 }
 
@@ -70,7 +70,7 @@ Camera* CameraManager::CyclePrevious()
 
 Camera* CameraManager::GetCameraByIndex(size_t index) const
 {
-	ASSERT(!(index >= mCameras.size()), "Getting Camera, Index supplied was out of range");
+	ASSERT(!(index >= mCameras.size()), "CameraManager::GetCameraByIndex(), Index supplied was out of range");
 	return mCameras[index];
 }
 
@@ -80,7 +80,7 @@ Camera* CameraManager::GetCameraByName(const std::string& Name) const
 		if (strcmp(c->GetName().c_str(), Name.c_str()) == 0)
 			return c;
 	}
-	std::string errMsg = "Could not find Camera with name supplied: '" + Name + "'";
+	std::string errMsg = "CameraManager::GetCameraByName(), Could not find Camera with name supplied: '" + Name + "'";
 	Logger::LogError(errMsg.c_str(), __FILE__);
 	return nullptr;
 }

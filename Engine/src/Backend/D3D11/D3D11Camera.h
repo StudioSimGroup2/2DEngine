@@ -4,71 +4,33 @@
 #include <directxmath.h>
 #include <directxcolors.h>
 #include <DirectXCollision.h>
-#include <string>
-#include <Utils\Math.h>
+
+#include <GLM/glm.hpp>
+#include <GLM/ext/matrix_transform.hpp>
+
+#include "..\..\Camera.h"
 using namespace DirectX;
 
-class Camera
+
+class D3DCamera : public Camera
 {
 public:
-	Camera();
-	Camera(XMFLOAT4 Eye, XMFLOAT4 At = XMFLOAT4(0, 0, 0, 1), XMFLOAT4 Up = XMFLOAT4(0, 1, 0, 1), float ViewWidth = 1280, float ViewHeight = 720, const std::string& Name="-New Camera-");
-	~Camera() = default;
+	D3DCamera();
+	D3DCamera(XMFLOAT4 Eye, XMFLOAT4 At = XMFLOAT4(0, 0, 0, 1), XMFLOAT4 Up = XMFLOAT4(0, 1, 0, 1), float ViewWidth = 1280, float ViewHeight = 720, const std::string& Name = "-New Camera-");
+	D3DCamera(glm::vec4 Eye, glm::vec4 At = glm::vec4(0, 0, 0, 1), glm::vec4 Up = glm::vec4(0, 1, 0, 1), float ViewWidth = 1280, float ViewHeight = 720, const std::string& Name="-New Camera-");
+	~D3DCamera() = default;
 
-	void Update(float deltaTime);  // Updates the view and projection matrices
+	void Update(float deltaTime) override;  // Updates the view and projection matrices
 
-	const XMFLOAT4 GetEye() const { return mEye; }
-	XMFLOAT4& GetEye() { return mEye; }
-	const XMFLOAT4 GetAt() const { return mAt; }
-	XMFLOAT4& GetAt() { return mAt; }
-	const XMFLOAT4 GetUp() const { return mUp; }
-	XMFLOAT4& GetUp() { return mUp; }
-	const std::string& GetName() const { return mName; }
-	std::string& GetName() { return mName; }
-	const float GetZDepth() const { return mZDepth; }
-	float& GetZDepth() { return mZDepth; }
-	const XMMATRIX GetViewMatrix() const { return mView; }
-	const XMMATRIX GetProjectionMatrix() const { return mProjection; }
-	const float GetViewWidth() const { return mViewWidth; }
-	float& GetViewWidth() { return mViewWidth; }
-	const float GetViewHeight() const { return mViewHeight; }
-	float& GetViewHeight() { return mViewHeight; }
-	const float GetNearPlane() const { return mNearPlane; }
-	float& GetNearPlane() { return mNearPlane; }
-	const float GetFarPlane() const { return mFarPlane; }
-	float& GetFarPlane() { return mFarPlane; }
-	const float GetSpeed() const { return mMovementSpeed; }
-	float& GetSpeed() { return mMovementSpeed; }
-	const bool IsPrimary() const { return mPrimary; }
-	bool& IsPrimary() { return mPrimary; }
-	const bool IsStatic() const { return mStatic; }
-	bool& IsStatic() { return mStatic; }
+	const XMMATRIX GetViewMatrix() const override { return mView; }
+	const XMMATRIX GetProjectionMatrix() const override { return mProjection; }
 
-	void SetEye(XMFLOAT4 Eye) { mEye = Eye; }
-	void SetAt(XMFLOAT4 At) { mAt = At; }
-	void SetUp(XMFLOAT4 Up) { mUp = Up; }
-	void SetName(const std::string& Name) { mName = Name; }
-	void SetViewWidth(float width) { mViewWidth = width; }
-	void SetViewHeight(float height) { mViewHeight = height; }
-	void SetSpeed(float speed) { mMovementSpeed = speed; }
-	void SetPrimary(bool flag) { mPrimary = flag; }
-	void SetStatic(bool flag) { mStatic = flag; }
-
-	void Lerp(const vec2f from, const vec2f to, float t);
 
 private:
-	XMFLOAT4 mEye, mAt, mUp;
-	std::string mName;
-	float mZDepth;	
 	XMMATRIX mView, mProjection;
-	float mViewWidth, mViewHeight;
-	float mNearPlane, mFarPlane;
-	float mMovementSpeed;
-	bool mPrimary;			// Is this the main camera
-	bool mStatic;			// Can the camera move? 
 
-	void UpdateMovement(float deltaTime); // TODO: Requires DeltaTime
+	void UpdateMovement(float deltaTime) override;
 
-	float Lerpf(float a, float b, float t);
-	vec2f Lerp2f(vec2f a, vec2f b, float t);
+	inline glm::vec4 ToGLM(XMFLOAT4 xmFloat4) const { return glm::vec4(xmFloat4.x, xmFloat4.y, xmFloat4.z, xmFloat4.w); }
+	inline XMFLOAT4 ToXM(glm::vec4 vec4) const { return XMFLOAT4(vec4.x, vec4.y, vec4.z, vec4.w); }
 };
