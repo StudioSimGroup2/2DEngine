@@ -55,6 +55,11 @@ namespace Engine
 #endif
 	}
 
+	void SpriteComp::SetTexturePath(const std::string path)
+	{
+		SetTexture(AssetManager::GetInstance()->LoadTexture(mParent->GetName() + " Tex", path));
+	}
+
 	void* SpriteComp::GetTexID()
 	{
 #if GRAPHICS_LIBRARY == 0

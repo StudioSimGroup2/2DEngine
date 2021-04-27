@@ -76,6 +76,9 @@
     <Filter Include="src\Scripting">
       <UniqueIdentifier>{6FBC2D98-DB7C-A9CE-A4B7-F24B1037EEAA}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\UI">
+      <UniqueIdentifier>{3A4B661C-26ED-90F2-0FA8-A446FBE81743}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Utils">
       <UniqueIdentifier>{4D9AFFB3-B904-B42A-0243-65D06EEC917F}</UniqueIdentifier>
     </Filter>
@@ -1047,9 +1050,6 @@
     <ClInclude Include="src\Entities\ComponentIncludes.h">
       <Filter>src\Entities</Filter>
     </ClInclude>
-    <ClInclude Include="src\Entities\Components\PhysicsComp.h">
-      <Filter>src\Entities\Components</Filter>
-    </ClInclude>
     <ClInclude Include="src\Entities\Components\ScriptComponent.h">
       <Filter>src\Entities\Components</Filter>
     </ClInclude>
@@ -1101,6 +1101,9 @@
     <ClInclude Include="src\Sprite.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\UI\GUILayer.h">
+      <Filter>src\UI</Filter>
+    </ClInclude>
     <ClInclude Include="src\Utils\AssetManager.h">
       <Filter>src\Utils</Filter>
     </ClInclude>
@@ -1124,9 +1127,6 @@
     </ClInclude>
     <ClInclude Include="src\Utils\Texture.h">
       <Filter>src\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="src\UI\GUILayer.h">
-      <Filter>src\Engine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1199,9 +1199,6 @@
     <ClCompile Include="src\Entities\Component.cpp">
       <Filter>src\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="src\Entities\Components\PhysicsComp.cpp">
-      <Filter>src\Entities\Components</Filter>
-    </ClCompile>
     <ClCompile Include="src\Entities\Components\ScriptComponent.cpp">
       <Filter>src\Entities\Components</Filter>
     </ClCompile>
@@ -1250,6 +1247,9 @@
     <ClCompile Include="src\Sprite.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\UI\GUILayer.cpp">
+      <Filter>src\UI</Filter>
+    </ClCompile>
     <ClCompile Include="src\Utils\AssetManager.cpp">
       <Filter>src\Utils</Filter>
     </ClCompile>
@@ -1264,9 +1264,6 @@
     </ClCompile>
     <ClCompile Include="src\Utils\StringHelper.cpp">
       <Filter>src\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="src\UI\GUILayer.cpp">
-      <Filter>src\Engine</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

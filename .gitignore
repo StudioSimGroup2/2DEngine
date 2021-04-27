@@ -352,3 +352,7 @@ MigrationBackup/
 bin-int/
 
 *.sln
+
+*.vcxproj
+
+Engine/Engine.vcxproj.filters

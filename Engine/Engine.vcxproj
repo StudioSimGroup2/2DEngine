@@ -504,7 +504,6 @@
     <ClInclude Include="src\Engine\Core.h" />
     <ClInclude Include="src\Engine\Defines.h" />
     <ClInclude Include="src\Engine\EntryPoint.h" />
-    <ClInclude Include="src\UI\GUILayer.h" />
     <ClInclude Include="src\Engine\Input\InputManager.h" />
     <ClInclude Include="src\Engine\Layer.h" />
     <ClInclude Include="src\Engine\LayerStack.h" />
@@ -514,7 +513,6 @@
     <ClInclude Include="src\Engine\Window.h" />
     <ClInclude Include="src\Entities\Component.h" />
     <ClInclude Include="src\Entities\ComponentIncludes.h" />
-    <ClInclude Include="src\Entities\Components\PhysicsComp.h" />
     <ClInclude Include="src\Entities\Components\ScriptComponent.h" />
     <ClInclude Include="src\Entities\Components\SpriteComp.h" />
     <ClInclude Include="src\Entities\Components\TransformComp.h" />
@@ -532,6 +530,7 @@
     <ClInclude Include="src\SceneManager.h" />
     <ClInclude Include="src\Scripting\ScriptingEngine.h" />
     <ClInclude Include="src\Sprite.h" />
+    <ClInclude Include="src\UI\GUILayer.h" />
     <ClInclude Include="src\Utils\AssetManager.h" />
     <ClInclude Include="src\Utils\LevelMap.h" />
     <ClInclude Include="src\Utils\Logger.h" />
@@ -597,12 +596,10 @@
     <ClCompile Include="src\CameraManager.cpp" />
     <ClCompile Include="src\Engine\Application.cpp" />
     <ClCompile Include="src\Engine\Audio\AudioManager.cpp" />
-    <ClCompile Include="src\UI\GUILayer.cpp" />
     <ClCompile Include="src\Engine\Input\InputManager.cpp" />
     <ClCompile Include="src\Engine\Layer.cpp" />
     <ClCompile Include="src\Engine\LayerStack.cpp" />
     <ClCompile Include="src\Entities\Component.cpp" />
-    <ClCompile Include="src\Entities\Components\PhysicsComp.cpp" />
     <ClCompile Include="src\Entities\Components\ScriptComponent.cpp" />
     <ClCompile Include="src\Entities\Components\SpriteComp.cpp" />
     <ClCompile Include="src\Entities\Components\TransformComp.cpp" />
@@ -619,6 +616,7 @@
     <ClCompile Include="src\SceneManager.cpp" />
     <ClCompile Include="src\Scripting\ScriptingEngine.cpp" />
     <ClCompile Include="src\Sprite.cpp" />
+    <ClCompile Include="src\UI\GUILayer.cpp" />
     <ClCompile Include="src\Utils\AssetManager.cpp" />
     <ClCompile Include="src\Utils\LevelMap.cpp" />
     <ClCompile Include="src\Utils\Logger.cpp" />

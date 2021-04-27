@@ -19,6 +19,9 @@ namespace Engine
 		void Update() override;
 		void Render() override;
 
+		void SetX(float x) { mPosition.x = x; }
+		void SetY(float y) { mPosition.x = y; }
+
 		vec2f& GetPosition() { return mPosition; }
 		vec2f& GetRotation() { return mRotation; }
 		vec2f& GetScale() { return mScale; }

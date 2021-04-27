@@ -1,6 +1,6 @@
 #pragma once
-
-#include "Scene.h"
+#include <Entities/GameObject.h>
+#include <vector>
 
 //TODO: Load Scene
 
@@ -16,9 +16,9 @@ namespace Engine
 		// TODO: Read from file
 		void LoadScene();
 
-		void PlayScene() { mCurrScene->Init(); }
-		void UpdateScene() { mCurrScene->Update(); }
-		void RenderScene() { mCurrScene->Render(); }
+		void PlayScene() { }
+		void UpdateScene();
+		void RenderScene();
 
 		void SaveScene();
 
@@ -27,7 +27,7 @@ namespace Engine
 
 		GameObject* DestroyObject();
 
-		std::vector<GameObject*> GetSceneObjects() { return mCurrScene->GetSceneObjects(); }
+		std::vector<GameObject*> GetSceneObjects() { return mSceneObjects; }
 
 		bool IsSceneLoaded() { return (mSceneLoaded); }
 
@@ -37,9 +37,9 @@ namespace Engine
 
 		static SceneManager* mInstance;
 
-		bool mSceneLoaded = false;
+		std::vector<GameObject*> mSceneObjects;
 
-		Scene* mCurrScene;
+		bool mSceneLoaded = false;
 	};
 }
 

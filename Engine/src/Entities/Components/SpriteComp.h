@@ -16,6 +16,7 @@ namespace Engine
 		void Update() override;
 		void Render() override;
 
+		void SetTexturePath(const std::string path);
 		void SetTexture(Texture* texture) { mTexture = texture; }
 		Texture* GetTexture() const { return mTexture; }
 		

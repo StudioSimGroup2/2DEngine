@@ -19,8 +19,23 @@ namespace Engine
 
 	void SceneManager::LoadScene()
 	{
-		mCurrScene = new Scene();
 		mSceneLoaded = true;
+	}
+
+	void SceneManager::UpdateScene()
+	{
+		for (GameObject* go : mSceneObjects)
+		{
+			go->Update();
+		}
+	}
+
+	void SceneManager::RenderScene()
+	{
+		for (GameObject* go : mSceneObjects)
+		{
+			go->Render();
+		}
 	}
 
 	void SceneManager::SaveScene()
@@ -30,7 +45,8 @@ namespace Engine
 	GameObject* SceneManager::CreateObject()
 	{
 		GameObject* go = new GameObject();
-		GetSceneObjects().push_back(go);
+		mSceneObjects.push_back(go);
+		go->SetName("Unnamed Object " + std::to_string(mSceneObjects.size()));
 
 		return go;
 	}
@@ -46,12 +62,6 @@ namespace Engine
 	{
 		if (mInstance == nullptr)
 			return;
-
-		if (mInstance->mCurrScene)
-		{
-			delete mInstance->mCurrScene;
-			mInstance->mCurrScene = nullptr;
-		}
 
 		if (mInstance)
 		{

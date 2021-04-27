@@ -18,9 +18,6 @@ namespace Engine
 		GameObject(GameObject* parent);
 		~GameObject();
 
-		void AddRef() { /* do nothing */ }
-		void ReleaseRef() { /* do nothing */ }
-
 		void Start();
 		void Update();
 		void FixedUpdate();
@@ -34,7 +31,7 @@ namespace Engine
 
 		void AttachToParent(GameObject* child) { mChildren.push_back(child); }
 		void SetParent(GameObject* parent) { mParent = parent; }
-		void SetName(const std::string& name) { mName = name; }
+		void SetName(const std::string& name) { if (!name.empty()) mName = name; }
 
 		GameObject* GetParent() const { return mParent; }
 		std::vector<GameObject*> GetChildren() const { return mChildren; }

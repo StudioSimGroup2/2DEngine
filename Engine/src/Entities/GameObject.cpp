@@ -3,6 +3,7 @@
 Engine::GameObject::GameObject()
 {
 	InitTransformComponent();
+
 }
 
 Engine::GameObject::GameObject(GameObject* parent)

@@ -353,8 +353,10 @@ void GUILayer::Render()
 	static int selectionMask = (1 << 2);
 	int sceneIndex = 0;
 	int nodeClicked = -1;
+
 	for (GameObject* go : SceneManager::GetInstance()->GetSceneObjects())
 		CreateNode(go, ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth, sceneIndex, nodeClicked, selectionMask);
+		
 
 	if (nodeClicked != -1)
 	{
