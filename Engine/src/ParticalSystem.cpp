@@ -50,6 +50,9 @@ ParticleSystem::~ParticleSystem()
 	}
 	mParticles.clear();
 
+	if (mParticleProperties.Texture)
+		delete mParticleProperties.Texture;
+
 	delete mEmmiterIcon;
 }
 
@@ -57,12 +60,16 @@ void ParticleSystem::Update(float dt)
 {
 	mCurrentRate += dt;
 
-	// Update the emmiter icons location
+	// Update the icons location
 	switch (mEmmiter)
 	{
-	case Emmitter::Square: mEmmiterIcon->SetPosition(&mPosition); break;
-	case Emmitter::Circle: mEmmiterIcon->SetPosition(&mPosition); break;
-	case Emmitter::Cone: mEmmiterIcon->SetPosition(&mPosition); break;
+	case Emmitter::Square:
+		mEmmiterIcon->SetPosition(&vec2f(mPosition.x + mSize.x / 2, mPosition.y + mSize.y / 2));
+		break;
+
+	case Emmitter::Circle:
+		mEmmiterIcon->SetPosition(&mPosition);
+		break;
 	}
 
 	// Update all the particles
@@ -128,9 +135,7 @@ void ParticleSystem::InitParticles(size_t count)
 
 			ParticleProperties* p = new ParticleProperties(mParticleProperties);
 			p->Position = vec2f(rand() % (int)mSize.x + mPosition.x, rand() % (int)mSize.y + mPosition.y);
-
-			SetupTexture(p);
-
+			p->Texture = new Sprite("Partical System:", &p->Position, tex);
 			D3D11Renderer2D* re = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDevice);
 			p->Texture->AddRendererComponent();
 			mParticles.push_back(p);
@@ -158,9 +163,7 @@ void ParticleSystem::InitParticles(size_t count)
 			// Convert to cartesian coords
 			p->Position.x = mPosition.x + rad * cos(theta);
 			p->Position.y = mPosition.y + rad * sin(theta);
-
-			SetupTexture(p);
-
+			p->Texture = new Sprite("Partical System:", &p->Position, tex);
 
 			D3D11Renderer2D* re = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDevice);
 			p->Texture->AddRendererComponent();
@@ -182,17 +185,5 @@ void ParticleSystem::InitParticles(size_t count)
 
 	}
 }
-
-void ParticleSystem::SetupTexture(ParticleProperties* particle)
-{
-	switch (particle->Style)
-	{
-	case ParticleTexture::Custom:	particle->Texture = new Sprite(mDevice, "Partical system:", mParticleProperties.TexturePath, &particle->Position); break;
-	case ParticleTexture::Circle: particle->Texture = new Sprite(mDevice, "Partical system:", "Resources\\Textures\\Particle System Inbuilt\\Circle.dds", &particle->Position); break;
-	case ParticleTexture::Square: particle->Texture = new Sprite(mDevice, "Partical system:", "Resources\\Textures\\Particle System Inbuilt\\Square.dds", &particle->Position); break;
-	case ParticleTexture::Triangle: particle->Texture = new Sprite(mDevice, "Partical system:", "Resources\\Textures\\Particle System Inbuilt\\Triangle.dds", &particle->Position); break;
-	}
-}
-
 #endif
 

@@ -400,10 +400,9 @@ namespace Engine
 		//Todo: Moving this
 		//Particle Props Init	
 
-		// Particle Props Init	
-		//ParticleProperties prop(vec2f(100, -100), 3, "Resources\\Textures\\stone.dds");
-		//ParticleProperties prop(vec2f(100, -100), 3, ParticleTexture::Triangle);
-
+		//Sprite* particleTex = new Sprite("Particle system", &vec2f(0, 0), "Particle Texture", "Assets/Textures/Stone.png");
+		//particleTex->AddRendererComponent();
+		//ParticleProperties prop(vec2f(100, -100), 3, particleTex);
 
 		//// Particle System Init
 		//mParticleSystems.emplace_back(new ParticleSystem(D3D11Device::GetInstance(), vec2f(300, 300), prop, 150, Emmitter::Square));
@@ -539,5 +538,6 @@ namespace Engine
 
 	void D311Context::RenderImGui()
 	{
+	
 	}
 }
