@@ -65,7 +65,7 @@ namespace Engine
 
 		mGUILayer = nullptr;
 
-		AudioManager::Shutdown();
+		//AudioManager::Shutdown();
 		InputManager::Shutdown();
 		AssetManager::Shutdown();
 

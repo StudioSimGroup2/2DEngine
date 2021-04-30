@@ -10,7 +10,7 @@
 #include "Engine/Renderer/Context.h"
 
 //Can be removed added for testing
-#include "ParticalSystem.h"
+//#include "ParticalSystem.h"
 //----------------------------------
 
 using namespace DirectX;
@@ -53,7 +53,7 @@ namespace Engine
 		XMMATRIX mOrthoMatrix;
 
 		//These should be in the GameScreenTest
-		std::vector<ParticleSystem*> mParticleSystems;
+		//std::vector<ParticleSystem*> mParticleSystems;
 
 		bool mEnableEditor = true; // Very curde, will set up an ImGUi properties struct later - Joe
 		bool mShowLoggingConsole = true;

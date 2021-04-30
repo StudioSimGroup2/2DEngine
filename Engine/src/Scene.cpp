@@ -43,8 +43,13 @@ namespace Engine
 		
 		mSceneObjects.push_back(mPlayer);
 
-		AudioManager::GetInstance()->LoadSound("z", "zip.wav");
-		AudioManager::GetInstance()->PlaySoundFile("z", 0.2, false);
+		//ParticleProperties prop(vec2f(100, -100), 3, "Assets/Textures/Stone.png"); // "Resources\\Textures\\stone.dds"
+		//mParticleSystems.emplace_back(new ParticleSystem(D3D11Device::GetInstance(), vec2f(300, 300), prop, 150, Emmitter::Square));
+		//mParticleSystems[0]->SetGravity(100);
+		//mParticleSystems[0]->SetRate(0.1); // Particles per second
+
+		//AudioManager::GetInstance()->LoadSound("z", "zip.wav");
+		//AudioManager::GetInstance()->PlaySoundFile("z", 0.2, false);
 	}
 
 	Scene::~Scene()
@@ -56,6 +61,10 @@ namespace Engine
 		}
 
 		mSceneObjects.shrink_to_fit();
+
+		//for (ParticleSystem* ps : mParticleSystems)
+		//	delete ps;
+		//mParticleSystems.clear();
 	}
 
 	void Scene::Init()
@@ -76,6 +85,9 @@ namespace Engine
 		{
 			go->Update();
 		}
+
+		//for (ParticleSystem* ps : mParticleSystems)
+		//	ps->Update(0.16f); // No dt?
 	}
 
 	void Scene::FixedUpdate()
@@ -100,6 +112,9 @@ namespace Engine
 		{
 			go->Render();
 		}
+
+		//for (ParticleSystem* ps : mParticleSystems)
+		//	ps->Render();
 	}
 
 }
