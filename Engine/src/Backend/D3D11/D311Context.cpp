@@ -466,10 +466,9 @@ namespace Engine
 
 
 		// Particle Props Init	
-		Sprite* particleTex = new Sprite(mDeviceMGR, "Partical Texture", "Resources\\Textures\\stone.dds", &vec2f(0, 0));
-		D3D11Renderer2D* re = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDeviceMGR);
-		particleTex->AddRendererComponent(re);
-		ParticleProperties prop(vec2f(100, -100), 3, particleTex);
+		ParticleProperties prop(vec2f(100, -100), 3, "Resources\\Textures\\stone.dds");
+		//ParticleProperties prop(vec2f(100, -100), 3, ParticleTexture::Triangle);
+
 
 		// Particle System Init
 		mParticleSystems.emplace_back(new ParticleSystem(mDeviceMGR, vec2f(300, 300), prop, 150, Emmitter::Square));
@@ -624,11 +623,8 @@ namespace Engine
 					// No Impl
 				}
 				if (ImGui::MenuItem("Particle system (box emmitter)")) {
-					// Particle Props Init	
-					Sprite* particleTex = new Sprite(mDeviceMGR, "Partical Texture", "Resources\\Textures\\stone.dds", &vec2f(0, 0));
-					D3D11Renderer2D* re = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDeviceMGR);
-					particleTex->AddRendererComponent(re);
-					ParticleProperties prop(vec2f(0, 0), 3, particleTex);
+						
+					ParticleProperties prop(vec2f(0, 0), 3, ParticleTexture::Square); // Particle Props Init
 
 					// Particle System Init
 					ParticleSystem* temp = new ParticleSystem(mDeviceMGR, vec2f(0, 0), prop, 150, Emmitter::Square);
@@ -638,11 +634,9 @@ namespace Engine
 	
 				}
 				if (ImGui::MenuItem("Particle system (circle emmitter)")) {
-					// Particle Props Init	
-					Sprite* particleTex = new Sprite(mDeviceMGR, "Partical Texture", "Resources\\Textures\\stone.dds", &vec2f(0, 0));
-					D3D11Renderer2D* re = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDeviceMGR);
-					particleTex->AddRendererComponent(re);
-					ParticleProperties prop(vec2f(0, 0), 3, particleTex);
+
+					ParticleProperties prop(vec2f(0, 0), 3, ParticleTexture::Circle); // Particle Props Init
+
 
 					// Particle System Init
 					ParticleSystem* temp = new ParticleSystem(mDeviceMGR, vec2f(0, 0), prop, 150, Emmitter::Circle);

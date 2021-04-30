@@ -10,17 +10,36 @@
 
 #include "Sprite.h"
 
+// In-built textures for particles (Currently not used)
+enum class ParticleTexture
+{
+	Custom = 0,
+	Circle,
+	Square,
+	Triangle
+};
+
+
 struct ParticleProperties
 {
 	ParticleProperties() = default;
-	ParticleProperties(vec2f velocity, float lifetime, Sprite* texture)
-		: Velocity(velocity), Lifetime(lifetime), Texture(texture), Alive(false) {}
+	ParticleProperties(vec2f velocity, float lifetime, ParticleTexture style, const char* texture="")			// Using inbuilt texture ctor
+		: Velocity(velocity), Lifetime(lifetime), TexturePath(texture), Alive(false),
+		Texture(nullptr), Style(style) {}
+
+	ParticleProperties(vec2f velocity, float lifetime, const char* texture)				// Custom partical system ctor
+		: Velocity(velocity), Lifetime(lifetime), TexturePath(texture), Alive(false),
+		Texture(nullptr), Style(ParticleTexture::Custom) {}
 
 	vec2f Position;		/* Local position of a single partical */
 	vec2f Velocity;
 	float Lifetime;		/* Measured in Seconds */
-	Sprite* Texture;
+
+	const char* TexturePath;
 	bool Alive;
+	
+	ParticleTexture Style;
+	Sprite* Texture = nullptr;	/* Set internally, pointless to assign a value */
 };
 
 enum class Emmitter
@@ -30,14 +49,6 @@ enum class Emmitter
 	Cone
 };
 
-// In-built textures for particles (Currently not used)
-enum class ParticleStyle
-{
-	Custom = 0,
-	Circle,
-	Square,
-	Triangle
-};
 
 
 class ParticleSystem
@@ -81,5 +92,6 @@ private:
 	bool mShowEmmiterIcon;
 
 	void InitParticles(size_t count);
+	void SetupTexture(ParticleProperties* particle);
 };
 
