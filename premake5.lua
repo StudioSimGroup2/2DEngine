@@ -34,7 +34,7 @@ project "Engine"
 	
 	links
 	{
-		"OpenAL32.lib",
+		--"OpenAL32.lib",
 		"ImGui",
 		"TinyXML"
 	}

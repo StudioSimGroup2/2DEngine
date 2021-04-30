@@ -27,7 +27,7 @@ namespace Engine
 
 		Shader* GetShaderByName(const std::string& name);
 		Texture* GetTextureByName(const std::string& name);
-		Sound* GetSoundByName(const std::string& name);
+		// Sound* GetSoundByName(const std::string& name);
 
 		void RemoveShader(const std::string& name);
 		void RemoveTexture(const std::string& name);
