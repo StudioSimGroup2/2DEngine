@@ -41,9 +41,9 @@ namespace Engine
 		Camera* camera = CameraManager::Get()->GetPrimaryCamera();
 
 		XMMATRIX mScale = XMMatrixScaling(scale.x * 1.0f, scale.y * 1.0f, 1.0f);
-		XMMATRIX mRotate = XMMatrixRotationX(rotation.x) * XMMatrixRotationY(rotation.y) * XMMatrixRotationZ(0.0f);
+		XMMATRIX mRotate =	XMMatrixRotationZ(rotation.x);
 		XMMATRIX mTranslate = XMMatrixTranslation(position.x, -position.y, 0.0f);
-		XMMATRIX world = mScale * mRotate * mTranslate;
+		XMMATRIX world = mTranslate* mRotate * mScale;
 
 		ConstantBuffer cb;
 		cb.mProjection = XMMatrixTranspose(camera->GetProjectionMatrix());

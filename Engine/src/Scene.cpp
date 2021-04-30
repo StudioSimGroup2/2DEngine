@@ -38,13 +38,20 @@ namespace Engine
 		///// </summary>
 
 		SpriteComp* spr = mPlayer->AddComponent(new SpriteComp);
-		//mPlayer->GetComponent<TransformComp>()->SetPosition(200.0f, 200.0f);
+		mPlayer->GetComponent<TransformComp>()->SetPosition(200.0f, 200.0f);
 		spr->SetTexture(AssetManager::GetInstance()->LoadTexture((char*)"Stone", (char*)"Assets/Textures/Stone.png"));
 		
 		mSceneObjects.push_back(mPlayer);
 
-		AudioManager::GetInstance()->LoadSound("z", "zip.wav");
-		AudioManager::GetInstance()->PlaySoundFile("z", 0.2, false);
+		GameObject* mLevelMap = new GameObject();
+		TileMapComp* TM = mLevelMap->AddComponent(new TileMapComp);
+		TM->LoadTileMap("Assets/TileMaps/XML_Test.xml");
+		mLevelMap->SetName("tileMapTest");
+
+		mSceneObjects.push_back(mLevelMap);
+
+		/*AudioManager::GetInstance()->LoadSound("z", "zip.wav");
+		AudioManager::GetInstance()->PlaySoundFile("z", 0.2, false);*/
 	}
 
 	Scene::~Scene()
