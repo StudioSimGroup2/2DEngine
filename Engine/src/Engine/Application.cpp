@@ -1,6 +1,6 @@
 #include "Application.h"
 #include "Utils/AssetManager.h"
-#include "Audio/AudioManager.h"
+//#include "Audio/AudioManager.h"
 
 #include "Input/InputManager.h"
 #include "Memory/MemoryManager.h"
@@ -69,7 +69,7 @@ namespace Engine
 
 		mGUILayer = nullptr;
 
-		AudioManager::Shutdown();
+		//AudioManager::Shutdown();
 		InputManager::Shutdown();
 		AssetManager::Shutdown();
 

@@ -67,12 +67,12 @@ namespace Engine
 		return mInstance->mTextures.at(std::distance(mInstance->mTextures.begin(), index));
 	}
 
-	Sound* AssetManager::GetSoundByName(const std::string& name)
-	{
-		/*auto match = std::find_if(mInstance->mShaders.begin(), mInstance->mShaders.begin(), [](const Sound* s) { return s->GetNa(); });
-		return mInstance->mShaders.at(std::distance(mInstance->mShaders.begin(), match));*/
-		return nullptr;
-	}
+	//Sound* AssetManager::GetSoundByName(const std::string& name)
+	//{
+	//	/*auto match = std::find_if(mInstance->mShaders.begin(), mInstance->mShaders.begin(), [](const Sound* s) { return s->GetNa(); });
+	//	return mInstance->mShaders.at(std::distance(mInstance->mShaders.begin(), match));*/
+	//	return nullptr;
+	//}
 
 	void AssetManager::RemoveShader(const std::string& name)
 	{
