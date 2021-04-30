@@ -2,7 +2,7 @@
 
 PhysicsObject::PhysicsObject(Device* dev, vec2f* position, char* name, Texture* tex) : Sprite(name, position, tex)
 {
-	mPhysics = new PhysicsComp(position);
+	mPhysics = new PhysicsComp();
 	//mAI = new AI(position);
 }
 

@@ -40,6 +40,7 @@ namespace Engine
 		SpriteComp* spr = mPlayer->AddComponent(new SpriteComp);
 		mPlayer->GetComponent<TransformComp>()->SetPosition(200.0f, 200.0f);
 		spr->SetTexture(AssetManager::GetInstance()->LoadTexture((char*)"Stone", (char*)"Assets/Textures/Stone.png"));
+		mPlayer->AddComponent(new PhysicsComp());
 		
 		mSceneObjects.push_back(mPlayer);
 

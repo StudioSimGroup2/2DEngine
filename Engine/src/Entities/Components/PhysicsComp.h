@@ -12,7 +12,7 @@ namespace Engine
 	class ENGINE_API PhysicsComp : public Component
 	{
 	public:
-		PhysicsComp(vec2f* position);
+		PhysicsComp();
 		~PhysicsComp();
 		void Update(float dT);
 
@@ -27,7 +27,7 @@ namespace Engine
 		void UpdateForces(float dT);
 		void UpdateAcceleration();
 
-		bool mGrounded = true;
+		bool mGrounded = false;
 		vec2f mNetForce;
 		vec2f mThrust;
 		vec2f mNetAcceleration;

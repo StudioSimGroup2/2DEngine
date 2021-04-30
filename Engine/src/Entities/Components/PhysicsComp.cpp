@@ -1,8 +1,9 @@
 #include "PhysicsComp.h"
-Engine::PhysicsComp::PhysicsComp(vec2f* position) : Component()
+#include "Entities/GameObject.h"
+
+Engine::PhysicsComp::PhysicsComp() : Component()
 {
-	mPosition = position;
-	mGrounded = true;
+	mGrounded;
 
 	//Initialize Net Forces
 	mNetForce.x = 0.0f;
@@ -41,7 +42,7 @@ void Engine::PhysicsComp::UpdateForces(float dT)
 	{
 		//When not grounded, apply gravitational force equal to
 		//the weight of the character multiplied by gravity
-		mNetForce.y -= mWeight;
+		mNetForce.y += mWeight;
 	}
 }
 
@@ -54,6 +55,8 @@ void Engine::PhysicsComp::UpdateAcceleration()
 
 void Engine::PhysicsComp::Update()
 {
+	float dkfjdsf = float(0.016);
+	Update(dkfjdsf);
 }
 
 void Engine::PhysicsComp::Render()
@@ -86,6 +89,10 @@ void Engine::PhysicsComp::Update(float dT)
 	UpdateForces(dT);
 
 	//Calculate new position using formula s = ut + 1/2at^2
-	mPosition->x = mPosition->x + (mCurrentVelocity.x * dT) + (mNetAcceleration.x * 0.5f * (dT * dT));
-	mPosition->y = mPosition->y + (mCurrentVelocity.y * dT) + (mNetAcceleration.y * 0.5f * (dT * dT));
+	vec2f position = mParent->GetComponent<TransformComp>()->GetPosition();
+
+	position += (mCurrentVelocity * dT) + (mNetAcceleration * 0.5f * (dT * dT));
+	
+	mParent->GetComponent<TransformComp>()->SetPosition(position.x, position.y);
+	Logger::LogMsg("Test Pos", mParent->GetComponent<TransformComp>()->GetPosition().y);
 }
