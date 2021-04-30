@@ -3,8 +3,20 @@
 
 Engine::PhysicsComp::PhysicsComp() : Component()
 {
+	Init();
 	mGrounded;
 
+	
+}
+
+Engine::PhysicsComp::~PhysicsComp()
+{
+
+}
+
+void Engine::PhysicsComp::Init()
+{
+	mType = "Physics";
 	//Initialize Net Forces
 	mNetForce.x = 0.0f;
 	mNetForce.y = 0.0f;
@@ -18,25 +30,20 @@ Engine::PhysicsComp::PhysicsComp() : Component()
 	mCurrentVelocity.y = 0.0f;
 
 	mMass = 1.0f;
-	mWeight = mMass * GRAVITY;
-}
-
-Engine::PhysicsComp::~PhysicsComp()
-{
-
 }
 
 void Engine::PhysicsComp::UpdateForces(float dT)
 {
 	//Calculate new velocity using the formula v = u + at
 	mCurrentVelocity = mCurrentVelocity + (mNetAcceleration * dT);
+	mWeight = mMass * mGravity;
 	ResetForces();
 
 	if (mGrounded)
 	{
 		// When grounded, apply frictional force equal to the current velocity
 		// multiplied by a frictional coefficient
-		mNetForce.x += (mCurrentVelocity.x * -FRICTIONCOEF);
+		mNetForce.x += (mCurrentVelocity.x * -mFriction);
 	}
 	else
 	{

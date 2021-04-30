@@ -4,8 +4,7 @@
 #include <Utils/Math.h>
 #include <vector>
 
-#define GRAVITY 0.98f
-#define FRICTIONCOEF 0.5f
+
 
 namespace Engine
 {
@@ -14,12 +13,21 @@ namespace Engine
 	public:
 		PhysicsComp();
 		~PhysicsComp();
+		void Init();
 		void Update(float dT);
 
 		void ResetForces();
 
 		void chageGrounded() { mGrounded != mGrounded; };
 		void AddThrust(vec2f thrust);
+
+		float GetMass() { return mMass; }
+		float GetGravity() { return mGravity; }
+		float GetFriction() { return mFriction; }
+
+		void SetMass(float newMass) { mMass = newMass; }
+		void SetGravity(float newGravity) { mGravity = newGravity; }
+		void SetFriction(float newFriction) { mFriction = newFriction; }
 
 		std::vector<vec2f> actingForces;
 
@@ -35,7 +43,8 @@ namespace Engine
 		vec2f* mPosition;
 		float mMass;
 		float mWeight;
-
+		float mGravity = 0.98f;
+		float mFriction = 0.5f;
 
 		// Inherited via Component
 		virtual void Update() override;
