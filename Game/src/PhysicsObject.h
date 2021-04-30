@@ -4,7 +4,7 @@
 class PhysicsObject : public Sprite
 {
 public:
-    PhysicsObject(Device* dev, const std::string& name, const std::string& path, vec2f* position);
+    PhysicsObject(Device* dev, vec2f* position, char* name, Texture* tex);
     ~PhysicsObject();
     void Update(float deltaTime);
     void Render();

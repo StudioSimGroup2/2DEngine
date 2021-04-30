@@ -1,8 +1,8 @@
 #include "Character.h"
 #include "Engine/Input/InputManager.h"
 
-Character::Character(char* name, vec2f* position, Texture* tex)
-		:PhysicsObject(name, position, tex)
+Character::Character(Device* dev, char* name, vec2f* position, Texture* tex)
+		:PhysicsObject(dev, position, name,  tex)
 {
 	mSpeed = 200;
 	mSpeedModifier = 1;
