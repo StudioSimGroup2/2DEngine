@@ -43,8 +43,8 @@ namespace Engine
 		
 		mSceneObjects.push_back(mPlayer);
 
-		AudioManager::GetInstance()->LoadSound("z", "zip.wav");
-		AudioManager::GetInstance()->PlaySoundFile("z", 0.2, false);
+		//AudioManager::GetInstance()->LoadSound("z", "zip.wav");
+		//AudioManager::GetInstance()->PlaySoundFile("z", 0.2, false);
 	}
 
 	Scene::~Scene()
