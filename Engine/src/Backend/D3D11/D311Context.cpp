@@ -1,25 +1,21 @@
 #include "D311Context.h"
-#include "D3D11Renderer2D.h"
-
+#include "Engine/Application.h"
 #include <Utils/AssetManager.h>
-#include <Engine/Audio/AudioManager.h>
-#include <directxcolors.h>
-
 #include <Backend/D3D11/D3D11Camera.h>
-#include <Engine/Input/InputManager.h>
+#include <CameraManager.h>
 
 namespace Engine
 {
 	D311Context::D311Context(HWND hwnd, UINT32 screenWidth, UINT32 screenHeight, bool vSync, bool fullscreen)
 	{
-		mSwapChain = 0;
-		mDevice = 0;
-		mDeviceContext = 0;
-		mRenderTargetView = 0;
-		mDepthStencilBuffer = 0;
-		mDepthStencilState = 0;
-		mDepthStencilView = 0;
-		mRasterState = 0;
+		mSwapChain = nullptr;
+		mDevice = nullptr;
+		mDeviceContext = nullptr;
+		mRenderTargetView = nullptr;
+		mDepthStencilBuffer = nullptr;
+		mDepthStencilState = nullptr;
+		mDepthStencilView = nullptr;
+		mRasterState = nullptr;
 
 		mHWND = hwnd;
 		mScreenHeight = screenHeight;
@@ -39,10 +35,8 @@ namespace Engine
 		IDXGIAdapter* adapter;
 		IDXGIOutput* adapterOutput;
 		unsigned int numModes, i, numerator, denominator;
-		unsigned long long stringLength;
 		DXGI_MODE_DESC* displayModeList;
 		DXGI_ADAPTER_DESC adapterDesc;
-		int error;
 		DXGI_SWAP_CHAIN_DESC swapChainDesc;
 		D3D_FEATURE_LEVEL featureLevel;
 		ID3D11Texture2D* backBufferPtr;
@@ -51,13 +45,11 @@ namespace Engine
 		D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
 		D3D11_RASTERIZER_DESC rasterDesc;
 		D3D11_VIEWPORT viewport;
-		float fieldOfView, screenAspect;
 
-		// Need client rect insted of window res
 		RECT rc;
 		GetClientRect(mHWND, &rc);
-		UINT width = rc.right - rc.left;
-		UINT height = rc.bottom - rc.top;
+		UINT width = static_cast<UINT>(rc.right - rc.left);
+		UINT height = static_cast<UINT>(rc.bottom - rc.top);
 
 		// Create a DirectX graphics interface factory.
 		hr = CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&factory);
@@ -81,7 +73,7 @@ namespace Engine
 		}
 
 		// Get the number of modes that fit the DXGI_FORMAT_R8G8B8A8_UNORM display format for the adapter output (monitor).
-		hr = adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numModes, NULL);
+		hr = adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numModes, nullptr);
 		if (FAILED(hr))
 		{
 			return;
@@ -89,10 +81,6 @@ namespace Engine
 
 		// Create a list to hold all the possible display modes for this monitor/video card combination.
 		displayModeList = new DXGI_MODE_DESC[numModes];
-		if (!displayModeList)
-		{
-			return;
-		}
 
 		// Now fill the display mode list structures.
 		hr = adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numModes, displayModeList);
@@ -122,32 +110,31 @@ namespace Engine
 			return;
 		}
 
-		// Store the dedicated video card memory in megabytes.
-		mMemorySize = (int)(adapterDesc.DedicatedVideoMemory / 1024 / 1024);
-
 		// Convert the name of the video card to a character array and store it.
 		char cardDesc[128];
 		char defchar = ' ';
 
-		WideCharToMultiByte(CP_ACP, 0, adapterDesc.Description, -1, cardDesc, 128, &defchar, NULL);
+		WideCharToMultiByte(CP_ACP, 0, adapterDesc.Description, -1, cardDesc, 128, &defchar, nullptr);
 
-		mName = std::string(cardDesc);
+		DeviceData dData = DeviceData(std::string(cardDesc), (int)(adapterDesc.DedicatedVideoMemory / 1024 / 1024));
+
+		D3D11Device::GetInstance()->SetDeviceData(dData);
 
 		// Release the display mode list.
 		delete[] displayModeList;
-		displayModeList = 0;
+		displayModeList = nullptr;
 
 		// Release the adapter output.
 		adapterOutput->Release();
-		adapterOutput = 0;
+		adapterOutput = nullptr;
 
 		// Release the adapter.
 		adapter->Release();
-		adapter = 0;
+		adapter = nullptr;
 
 		// Release the factory.
 		factory->Release();
-		factory = 0;
+		factory = nullptr;
 
 		// Initialize the swap chain description.
 		ZeroMemory(&swapChainDesc, sizeof(swapChainDesc));
@@ -205,8 +192,8 @@ namespace Engine
 		featureLevel = D3D_FEATURE_LEVEL_11_0;
 
 		/*Create the swap chain, Direct3D device, and Direct3D device context.*/
-		hr = D3D11CreateDeviceAndSwapChain(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, D3D11_CREATE_DEVICE_DEBUG, &featureLevel, 1,
-			D3D11_SDK_VERSION, &swapChainDesc, &mSwapChain, &mDevice, NULL, &mDeviceContext);
+		hr = D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, D3D11_CREATE_DEVICE_DEBUG, &featureLevel, 1,
+			D3D11_SDK_VERSION, &swapChainDesc, &mSwapChain, &mDevice, nullptr, &mDeviceContext);
 
 		if (FAILED(hr))
 		{
@@ -221,7 +208,7 @@ namespace Engine
 		}
 
 		// Create the render target view with the back buffer pointer.
-		hr = mDevice->CreateRenderTargetView(backBufferPtr, NULL, &mRenderTargetView);
+		hr = mDevice->CreateRenderTargetView(backBufferPtr, nullptr, &mRenderTargetView);
 		if (FAILED(hr))
 		{
 			return;
@@ -229,7 +216,7 @@ namespace Engine
 
 		// Release pointer to the back buffer as we no longer need it.
 		backBufferPtr->Release();
-		backBufferPtr = 0;
+		backBufferPtr = nullptr;
 
 		// Initialize the description of the depth buffer.
 		ZeroMemory(&depthBufferDesc, sizeof(depthBufferDesc));
@@ -248,7 +235,7 @@ namespace Engine
 		depthBufferDesc.MiscFlags = 0;
 
 		// Create the texture for the depth buffer using the filled out description.
-		hr = mDevice->CreateTexture2D(&depthBufferDesc, NULL, &mDepthStencilBuffer);
+		hr = mDevice->CreateTexture2D(&depthBufferDesc, nullptr, &mDepthStencilBuffer);
 		if (FAILED(hr))
 		{
 			return;
@@ -374,7 +361,7 @@ namespace Engine
 		textureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
 		textureDesc.CPUAccessFlags = 0;
 		textureDesc.MiscFlags = 0;
-		mDevice->CreateTexture2D(&textureDesc, NULL, &mRTTRrenderTargetTexture);
+		mDevice->CreateTexture2D(&textureDesc, nullptr, &mRTTRrenderTargetTexture);
 		
 		// Setup the description of the render target view.
 		D3D11_RENDER_TARGET_VIEW_DESC renderTargetViewDesc;
@@ -394,162 +381,146 @@ namespace Engine
 		mDevice->CreateShaderResourceView(mRTTRrenderTargetTexture, &shaderResourceViewDesc, &mRTTShaderResourceView);
 		//---------------------------------
 
-		// Setup ImGUI
-		IMGUI_CHECKVERSION();
-		ImGui::CreateContext();
-		ImGuiIO& io = ImGui::GetIO();
-		io.DisplaySize = ImVec2(mScreenWidth, mScreenHeight);
-		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
-		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-		io.ConfigDockingWithShift = true;
-		//io.IniFilename = "..\\ImGui\\imgui.ini";
-		ImGui_ImplWin32_Init(mHWND);
-		ImGui_ImplDX11_Init(mDevice, mDeviceContext);
-		ImGui::StyleColorsDark();
-
-		mDeviceMGR = new D3D11Device(mDevice, mDeviceContext);
+		D3D11Device::GetInstance()->SetDevice(mDevice);
+		D3D11Device::GetInstance()->SetDeviceContext(mDeviceContext);
 
 		// Create the viewport.
 		mDeviceContext->RSSetViewports(1, &viewport);
 
-		AssetManager::GetInstance();
-
+		AssetManager::GetInstance()->LoadShader("Default", "quadshader.fx");
 
 		// Create two cameras
-		CameraManager::Get()->Add(new Camera(XMFLOAT4(0.0f, 0.0f, -1.0f, 1.0f)));
-		CameraManager::Get()->Add(new Camera(XMFLOAT4(-964.0f, 94.0f, -1.0f, 1.0f)));
+		CameraManager::Get()->Add(new Camera(XMFLOAT4(0.0f, 0.0f, -1.0f, 1.0f))); // Memory leak here
+		CameraManager::Get()->Add(new Camera(XMFLOAT4(-964.0f, 94.0f, -1.0f, 1.0f))); // and here
 		CameraManager::Get()->GetCameraByIndex(1)->SetStatic(true);
-
-		Camera* cam = CameraManager::Get()->GetPrimaryCamera();
 
 		InputManager::GetInstance()->BindCommandToButton(KEY_Q, &CameraManager::Get()->CBCycleNext);
 		InputManager::GetInstance()->BindCommandToButton(KEY_E, &CameraManager::Get()->CBCyclePrevious);
 
- 		AssetManager::GetInstance()->LoadShader(mDeviceMGR, std::string("Default"), std::string("quadshader.fx"));
-
-		mGameScreenManager = new GameScreenManager(mDeviceMGR, SCREEN_TEST);
-
-		AudioManager::GetInstance()->LoadSound(std::string("TestFile"), std::string("Sounds/zip.wav"));
-		//AudioManager::GetInstance()->PlaySoundFile(std::string("TestFile"), -100.0f); // TODO: implement volume WARNING THE SOUND FILE IS EXTREMELY LOUD!!
-
-		testMap = LevelMap::LoadLevelMap((char*)"Resources/TileMaps/XML_Test.xml");
-		for (int X = 0; X <testMap.size(); X++)
-		{
-			for (int Y = 0; Y < testMap[0].size(); Y++)
-			{
-				switch (testMap[X][Y])
-				{
-				case 0:
-				{
-					break;
-				}
-				case 1:
-				{
-					Sprite* mapItem = new Sprite(mDeviceMGR, std::string("Tile ") + std::string(X + "" + Y) + std::string("]"), 
-						std::string("Textures/stone.dds"), &vec2f(32.0f * Y, 32.0f * X)); // someone got their x and y coords wrong, i'll fix it later
-					D3D11Renderer2D* re = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDeviceMGR);
-					mapItem->AddRendererComponent(re);
-
-					ThingsToRender.push_back(mapItem);
-					break;
-				}
-				default:
-					break;
-				}
-			}
-		}
-
-		mTempSprite = new Sprite(mDeviceMGR, std::string("Mario"), std::string("Textures/Mario.dds"), &vec2f(32.0f));
-		D3D11Renderer2D* renderer = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDeviceMGR);
-		mTempSprite->AddRendererComponent(renderer);
-
+		//Todo: Moving this
+		//Particle Props Init	
 
 		// Particle Props Init	
-		ParticleProperties prop(vec2f(100, -100), 3, "Resources\\Textures\\stone.dds");
+		//ParticleProperties prop(vec2f(100, -100), 3, "Resources\\Textures\\stone.dds");
 		//ParticleProperties prop(vec2f(100, -100), 3, ParticleTexture::Triangle);
 
 
-		// Particle System Init
-		mParticleSystems.emplace_back(new ParticleSystem(mDeviceMGR, vec2f(300, 300), prop, 150, Emmitter::Square));
-		mParticleSystems[0]->SetGravity(100);
-		mParticleSystems[0]->SetRate(0.1); // Particles per second
+		//// Particle System Init
+		//mParticleSystems.emplace_back(new ParticleSystem(D3D11Device::GetInstance(), vec2f(300, 300), prop, 150, Emmitter::Square));
+		//mParticleSystems[0]->SetGravity(100);
+		//mParticleSystems[0]->SetRate(0.1); // Particles per second
 	}
 
 	void D311Context::Shutdown()
 	{
+		//for (ParticleSystem* ps : mParticleSystems)
+		//	delete ps;
+		//mParticleSystems.clear();
 
-		if (ThingsToRender.size() >= 1)
+		//if (mDeviceMGR)
+		//{
+		//	delete mDeviceMGR;
+		//	mDeviceMGR = nullptr;
+		//}
+
+		D3D11Device::Shutdown();
+
+		if (mTransparant)
 		{
-			ThingsToRender.clear();
+			mTransparant->Release();
+			mTransparant = nullptr;
 		}
-
-		for (ParticleSystem* ps : mParticleSystems)
-			delete ps;
-		mParticleSystems.clear();
-
-		if (mTempSprite)
-		{
-			delete mTempSprite;
-			mTempSprite = nullptr;
-		}
-
-		if (mDeviceMGR)
-		{
-			delete mDeviceMGR;
-			mDeviceMGR = nullptr;
-		}
-			
 
 		if (mRasterState)
+		{
 			mRasterState->Release();
+			mRasterState = nullptr;
+		}
+
+		if (mRTTShaderResourceView)
+		{
+			mRTTShaderResourceView->Release();
+			mRTTShaderResourceView = nullptr;
+		}
+
+		if (mRTTRrenderTargetTexture)
+		{
+			mRTTRrenderTargetTexture->Release();
+			mRTTRrenderTargetTexture = nullptr;
+		}
+
+		if (mRasterState)
+		{
+			mRasterState->Release();
+			mRasterState = nullptr;
+		}
+			
 		if (mDepthStencilView)
+		{
 			mDepthStencilView->Release();
+			mDepthStencilView = nullptr;
+		}
+			
+		if (mDepthStencilState)
+		{
+			mDepthStencilState->Release();
+			mDepthStencilState = nullptr;
+		}
+			
 		if (mDepthStencilBuffer)
+		{
 			mDepthStencilBuffer->Release();
+			mDepthStencilBuffer = nullptr;
+		}
+
+		if (mRTTRenderTargetView)
+		{
+			mRTTRenderTargetView->Release();
+			mRTTRenderTargetView = nullptr;
+		}
+
 		if (mRenderTargetView)
+		{
 			mRenderTargetView->Release();
+			mRenderTargetView = nullptr;
+		}
+			
 		if (mDevice)
+		{
 			mDevice->Release();
+		}
+			
 		if (mDeviceContext)
+		{
 			mDeviceContext->Release();
+		}
+
 		if (mSwapChain)
+		{
 			mSwapChain->Release();
+			mSwapChain = nullptr;
+		}
 	}
 
 	void D311Context::OnUpdate(float deltaTime)
 	{
 		CameraManager::Get()->Update(deltaTime); // Belongs in core scene update loop
 
-		mTempSprite->Update(deltaTime);
-        if (mGameScreenManager->getScreen())
-            mGameScreenManager->Update(deltaTime);
-
-
-		for (ParticleSystem* ps : mParticleSystems)
-			ps->Update(deltaTime);
+		/*for (ParticleSystem* ps : mParticleSystems)
+			ps->Update(deltaTime);*/
 	}
 
-	void D311Context::RenderScene() {
-		
+	void D311Context::RenderScene() 
+	{
 		mDeviceContext->ClearRenderTargetView(mRenderTargetView, DirectX::Colors::SeaGreen);
 
-		// Cycle cameras on A & D keypresses 
-		if (GetAsyncKeyState(0x51)) // Q key
-			CameraManager::Get()->CyclePrevious();
-		if (GetAsyncKeyState(0x45)) // E key
-			CameraManager::Get()->CycleNext();
-  
-		if (mGameScreenManager->getScreen())
+		for (Layer* l : *Application::GetInstance()->GetStack())
 		{
-			mGameScreenManager->Render();
+			l->Render();
 		}
 
-		mTempSprite->Draw();
-
-		for (ParticleSystem* ps : mParticleSystems)
-			ps->Render();
-
+		/*for (ParticleSystem* ps : mParticleSystems)
+			ps->Render();*/
 
 	}
 
@@ -559,219 +530,14 @@ namespace Engine
 		mDeviceContext->ClearRenderTargetView(mRTTRenderTargetView, DirectX::Colors::SeaGreen);
 		RenderScene();
 
-	
 		mDeviceContext->OMSetRenderTargets(1, &mRenderTargetView, mDepthStencilView); // Set back to back buffer
 		mDeviceContext->ClearDepthStencilView(mDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0u);
 		RenderScene();
-		
-		RenderImGui();
 
 		mSwapChain->Present(0, 0);
 	}
 
 	void D311Context::RenderImGui()
 	{
-		// ImGui rendering below (Move to seperate UI rendering function later
-		ImGui_ImplDX11_NewFrame();
-		ImGui_ImplWin32_NewFrame();
-		ImGui::NewFrame();
-
-		// Create core dockspace
-		ImGui::SetNextWindowBgAlpha(0);
-		if (mEnableEditor) {
-			ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
-			ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.180392161f, 0.5450980663f, 0.3411764801f, 1.0f));  // THIS IS BECAUSE THERES TRANSPARENCY ISSUES ATM! NOT PERMANENT
-			ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.180392161f, 0.5450980663f, 0.3411764801f, 1.0f)); 	 // THIS IS BECAUSE THERES TRANSPARENCY ISSUES ATM! NOT PERMANENT
-			ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 0.0f);
-			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
-			ImGui::Begin("Viewport", 0, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
-			ImVec2 pos = ImGui::GetCursorScreenPos();
-			ImGui::Image(mRTTShaderResourceView, ImGui::GetWindowContentRegionMax()); // render texture 
-			ImGui::End();
-			ImGui::PopStyleVar(2);
-			ImGui::PopStyleColor(2);
-		}
-		
-		// Menu
-		if (ImGui::BeginMainMenuBar())
-		{
-			if (ImGui::BeginMenu("File"))
-			{
-				if (ImGui::MenuItem("New")) {
-					// No Impl
-				}
-				if (ImGui::MenuItem("Open...")) {
-					// No Impl
-				}
-				if (ImGui::MenuItem("Save As...")) {
-					// No Impl
-				}
-				ImGui::EndMenu();
-			}
-
-			if (ImGui::BeginMenu("Edit"))
-			{
-				if (ImGui::MenuItem("Toggle Editor Layout")) {
-					mEnableEditor = !mEnableEditor;
-				}
-				ImGui::EndMenu();
-			}
-
-			if (ImGui::BeginMenu("Add"))
-			{
-				if (ImGui::MenuItem("Sprite")) {
-					// No Impl
-				}
-				if (ImGui::MenuItem("Particle system (box emmitter)")) {
-						
-					ParticleProperties prop(vec2f(0, 0), 3, ParticleTexture::Square); // Particle Props Init
-
-					// Particle System Init
-					ParticleSystem* temp = new ParticleSystem(mDeviceMGR, vec2f(0, 0), prop, 150, Emmitter::Square);
-					temp->SetGravity(100);
-					temp->SetRate(0.1); // Particles per second
-					mParticleSystems.emplace_back(temp);
-	
-				}
-				if (ImGui::MenuItem("Particle system (circle emmitter)")) {
-
-					ParticleProperties prop(vec2f(0, 0), 3, ParticleTexture::Circle); // Particle Props Init
-
-
-					// Particle System Init
-					ParticleSystem* temp = new ParticleSystem(mDeviceMGR, vec2f(0, 0), prop, 150, Emmitter::Circle);
-					temp->SetGravity(100);
-					temp->SetRate(0.1); // Particles per second
-					mParticleSystems.emplace_back(temp);
-
-				}
-				ImGui::EndMenu();
-			}
-
-			ImGui::EndMainMenuBar();
-		}
-
-
-		// Viewport
-	
-
-		//
-		// TEMP
-		//
-		ImGui::Begin("Scene Hierarchy");
-
-		ImGui::Separator();
-		ImGui::Text("Scene");
-		ImGui::Separator();
-
-		ImGui::Text("MARIO AND TILE MAP WILL GO HERE LATER!");
-		ImGui::Text("REQUIRES OTHERS TO EXPOSE DATA FOR ME");
-
-		int index = 0;
-		for (ParticleSystem* ps : mParticleSystems) {
-			char label[20] = { 0 };
-			sprintf_s(label, "Particle system %d", index);
-			if (ImGui::TreeNode(label)) {
-				ps->ShowEmmiterIcon(true);
-				ImGui::Columns(2, "locations");
-				ImGui::Text("Velocity");
-				ImGui::Spacing();
-				ImGui::Text("Emitter Position");
-				ImGui::Spacing();
-				ImGui::Spacing();
-				ImGui::Text("Emitter Size");
-				ImGui::Spacing();
-				ImGui::Spacing();
-				ImGui::Text("Emission Rate\n(seconds)");
-				ImGui::Spacing();
-				ImGui::Text("Gravity");
-				ImGui::Spacing();
-				ImGui::Text("Lifetime (seconds)");
-				ImGui::Spacing();
-				ImGui::Text("Emmiter");
-
-				ImGui::NextColumn();
-
-				ImGui::DragFloat2("##Velocity", &mParticleSystems[index]->GetVelocity().x, 1.0f);
-				ImGui::DragFloat2("##Pos", &mParticleSystems[index]->GetPosition().x, 1.0f);
-				ImGui::DragFloat2("##Size", &mParticleSystems[index]->GetSize().x, 1.0f);
-				ImGui::DragFloat("##Rate", &mParticleSystems[index]->GetRate(), .025f);
-				ImGui::Spacing();
-				ImGui::Spacing();
-				ImGui::Spacing();
-				ImGui::DragFloat("##Gravity", &mParticleSystems[index]->GetGravity(), 1.0f);
-				ImGui::DragFloat("##Lifetime", &mParticleSystems[index]->GetLifetime(), 0.25f);
-
-				const char* items[] = { "Circle", "Square" };
-				static const char* current_item = "Square";
-				if (ImGui::BeginCombo("##combo", current_item))
-				{
-					for (int n = 0; n < IM_ARRAYSIZE(items); n++)
-					{
-						bool is_selected = (current_item == items[n]); // You can store your selection however you want, outside or inside your objects
-						if (ImGui::Selectable(items[n], is_selected))
-							current_item = items[n];
-							if (is_selected)
-								ImGui::SetItemDefaultFocus();   // You may set the initial focus when opening the combo (scrolling + for keyboard navigation support)
-
-							if (current_item == items[0])
-								ps->GetEmmiter() = Emmitter::Circle;
-							else
-								ps->GetEmmiter() = Emmitter::Square;
-					}
-					ImGui::EndCombo();
-				}
-
-				ImGui::TreePop();
-				ImGui::Columns();
-			} else
-				ps->ShowEmmiterIcon(false);
-
-			index++;
-		}
-
-		ImGui::Separator();
-		ImGui::Text("Cameras");
-		ImGui::Separator();
-
-		index = 0;
-		for (Camera* c : CameraManager::Get()->AllCameras()) {
-			char label[10] = { 0 };
-			sprintf_s(label, "Camera %d", index);
-			if (ImGui::TreeNode(label)) {
-				ImGui::Columns(2, "locations");
-				ImGui::Text("Position");
-				ImGui::Spacing();
-				ImGui::Text("Z-Depth"); 
-				ImGui::Spacing();
-				ImGui::Text("Near plane");
-				ImGui::Spacing();
-				ImGui::Text("Far plane"); 
-				ImGui::Spacing();
-				ImGui::Text("Static camera"); 
-		
-				ImGui::NextColumn();
-
-				ImGui::DragFloat2("##Pos", &c->GetEye().x, 1);
-				ImGui::DragFloat("##Z-Depth", &c->GetZDepth(), 1, 0.0f);
-				ImGui::SliderFloat("##Near plane", &c->GetNearPlane(), 0, 10, "%.1f");
-				ImGui::SliderFloat("##Far plane", &c->GetFarPlane(), 1, 200, "%.1f");
-				ImGui::Checkbox("##Static camera", &c->IsStatic());
-
-				ImGui::TreePop();
-				ImGui::Columns();
-			}
-			index++;
-		}
-		ImGui::End();
-
-		ImGui::Begin("Framerate");
-		ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-		ImGui::End();
-
-		ImGui::Render();
-		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
-		ImGui::UpdatePlatformWindows();
-		ImGui::RenderPlatformWindowsDefault();
 	}
 }

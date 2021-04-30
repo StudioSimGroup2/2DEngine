@@ -1,33 +1,43 @@
-#pragma once
-#include <OpenAL-Soft/al.h>
-#include <OpenAL-Soft/alc.h>
+// #pragma once
 
-#include <vector>
-#include <Utils/Sound.h>
-#include <string>
+// // disable: "<type> needs to have dll-interface to be used by clients'
+// // Happens on STL member variables which are not public therefore is ok
+// #   pragma warning (disable : 4251)
 
-namespace Engine
-{
-	class AudioManager
-	{
-	public:
-		void PlaySoundFile(const std::string& name, float volume, bool loop = false, bool isMusic = false);
-		void PauseSound(const std::string& name);
-		void StopSound(const std::string& name);
+// #include <OpenAL-Soft/al.h>
+// #include <OpenAL-Soft/alc.h>
 
-		void Clear();
+// #include <vector>
+// #include <Utils/Sound.h>
+// #include <string>
 
-		void LoadSound(const std::string& name, const std::string& path);
-		void RemoveSound(const std::string& name);
+// #include "Engine/Core.h"
 
-		static AudioManager* GetInstance();
+// namespace Engine
+// {
+	// class ENGINE_API AudioManager
+	// {
+	// public:
+		// void
+		// PlaySoundFile(const std::string& name, float volume, bool loop);
+		// void PauseSound(const std::string& name);
+		// void StopSound(const std::string& name);
 
-	private:
-		AudioManager();
+		// void Clear();
 
-		std::vector<Sound*> mSounds;
+		// void LoadSound(const std::string& name, const std::string& path);
+		// void RemoveSound(const std::string& name);
 
-		static AudioManager* mInstance;
-	};
-}
+		// static AudioManager* GetInstance();
+
+		// static void Shutdown();
+
+	// private:
+		// AudioManager();
+
+		// std::vector<Sound*> mSounds;
+
+		// static AudioManager* mInstance;
+	// };
+// }
 

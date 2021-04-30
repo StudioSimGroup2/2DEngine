@@ -30,5 +30,6 @@ namespace Engine
 		virtual unsigned int GetHeight() const = 0;
 
 		static Window* Create(const WindowData& data = WindowData());
+		bool mForceShutdown;
 	};
 }

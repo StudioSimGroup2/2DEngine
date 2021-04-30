@@ -10,16 +10,16 @@ namespace Engine
 	class D3D11Shader : public Shader
 	{
 	public:
-		D3D11Shader(D3D11Device* device, const std::string& name, const std::string path);
+		D3D11Shader(D3D11Device* device, const std::string& name, const std::string& path);
 		~D3D11Shader();
 		
-		virtual void Load() const override;
-		virtual void Unload() const override;
+		void Load() const override;
+		void Unload() const override;
 
-		virtual const std::string& GetName() const override { return mName; }
+		const std::string& GetName() const override { return mName; }
 
 	private:
-		HRESULT CompileShaderFromFile(const WCHAR* szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel,
+		static HRESULT CompileShaderFromFile(const WCHAR* szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel,
 			ID3DBlob** ppBlobOut);
 
 		ID3D11VertexShader* mVertexShader = nullptr;

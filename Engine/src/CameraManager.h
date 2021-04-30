@@ -40,6 +40,8 @@ public:
 
 	void SetPrimaryCamera(size_t index);
 
+	static void Shutdown();
+
 private:
 	CameraManager() = default; // Create atleast 1 ortho Camera by default
 

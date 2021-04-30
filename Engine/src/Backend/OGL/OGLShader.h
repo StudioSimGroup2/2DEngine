@@ -15,17 +15,19 @@ namespace Engine
 		OGLShader(const std::string& name, const std::string& path);
 		~OGLShader();
 
-		virtual void Load() const override;
-		virtual void Unload() const override;
+		void Load() const override;
+		void Unload() const override;
 
 		void SetInt(const std::string& name, int value);
 		void SetVector3(const std::string& name, const glm::vec3& value);
+		void SetVector4(const std::string& name, const glm::vec4& value);
 		void SetMatrix(const std::string& name, const glm::mat4& matrix);
+		void SetBool(const std::string& name, bool value);
 
-		virtual const std::string& GetName() const override { return mName; }
+		const std::string& GetName() const override { return mName; }
 
 	private:
-		bool CompileShaderFromFile(const std::string& path, bool isVertex, int blob);
+		void CompileShaderFromFile(const std::string& path, bool isVertex, int blob);
 
 		unsigned int mID;
 	};

@@ -1,36 +1,70 @@
 #include "D3D11Renderer2D.h"
 
-#include "D3D11Device.h"
 #include <CameraManager.h>
 
 namespace Engine
 {
-	D3D11Renderer2D::D3D11Renderer2D(D3D11Shader* shader, D3D11Device* dev)
+	D3D11Renderer2D::D3D11Renderer2D(Shader* shader, D3D11Device* dev)
 	{
-		mShader = static_cast<Shader*>(shader);
+		mShader = shader;
 
 		mDeviceContext = dev->GetDeviceContext();
 
 		InitBuffers(dev->GetDevice());
 	}
 
-	void D3D11Renderer2D::Draw(vec2f position, Texture* textureToRender) const
+	D3D11Renderer2D::~D3D11Renderer2D()
+	{
+		if (mVertexBuffer)
+		{
+			mVertexBuffer->Release();
+			mVertexBuffer = nullptr;
+		}
+
+		if (mIndexBuffer)
+		{
+			mIndexBuffer->Release();
+			mIndexBuffer = nullptr;
+		}
+		
+		if (mConstantBuffer)
+		{
+			mConstantBuffer->Release();
+			mConstantBuffer = nullptr;
+		}
+
+		mDeviceContext = nullptr;
+	}
+
+	void D3D11Renderer2D::Draw(vec2f& position, vec2f& rotation, vec2f& scale, Texture* textureToRender)
 	{
 		Camera* camera = CameraManager::Get()->GetPrimaryCamera();
 
-		XMMATRIX mScale = XMMatrixScaling(1, 1.05f, 1);
-		XMMATRIX mRotate = XMMatrixRotationX(0) * XMMatrixRotationY(0) * XMMatrixRotationZ(0);
-		XMMATRIX mTranslate = XMMatrixTranslation(position.x, -position.y, 0);
+		XMMATRIX mScale = XMMatrixScaling(scale.x * 1.0f, scale.y * 1.0f, 1.0f);
+		XMMATRIX mRotate = XMMatrixRotationX(rotation.x) * XMMatrixRotationY(rotation.y) * XMMatrixRotationZ(0.0f);
+		XMMATRIX mTranslate = XMMatrixTranslation(position.x, -position.y, 0.0f);
 		XMMATRIX world = mScale * mRotate * mTranslate;
 
 		ConstantBuffer cb;
 		cb.mProjection = XMMatrixTranspose(camera->GetProjectionMatrix());
 		cb.mView = XMMatrixTranspose(camera->GetViewMatrix());
 		cb.mWorld = XMMatrixTranspose(world);
+		cb.mFlipX = mFlipX;
+		cb.mFlipY = mFlipY;
+
+		ColourBuffer colourB;
+		colourB.r = mColour[0];
+		colourB.g = mColour[1];
+		colourB.b = mColour[2];
+		colourB.a = mColour[3];
 
 		mDeviceContext->UpdateSubresource(mConstantBuffer, 0, nullptr, &cb, 0, 0);
 		mDeviceContext->VSSetConstantBuffers(0, 1, &mConstantBuffer);
 		mDeviceContext->PSSetConstantBuffers(0, 1, &mConstantBuffer);
+
+		mDeviceContext->UpdateSubresource(mColourBuffer, 0, nullptr, &colourB, 0, 0);
+		mDeviceContext->VSSetConstantBuffers(1, 1, &mColourBuffer);
+		mDeviceContext->PSSetConstantBuffers(1, 1, &mColourBuffer);
 
 		UINT stride = sizeof(VertexType);
 		UINT offset = 0;
@@ -114,6 +148,14 @@ namespace Engine
 		bd.CPUAccessFlags = 0;
 
 		hr = dev->CreateBuffer(&bd, nullptr, &mConstantBuffer);
+		ASSERT(!FAILED(hr), "Error creating Constant buffer");
+
+		bd.Usage = D3D11_USAGE_DEFAULT;
+		bd.ByteWidth = sizeof(ColourBuffer);
+		bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		bd.CPUAccessFlags = 0;
+
+		hr = dev->CreateBuffer(&bd, nullptr, &mColourBuffer);
 		ASSERT(!FAILED(hr), "Error creating Constant buffer");
 	}
 }

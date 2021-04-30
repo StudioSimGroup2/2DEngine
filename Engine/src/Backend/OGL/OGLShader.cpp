@@ -1,7 +1,6 @@
 #include "OGLShader.h"
 
 #include <fstream>
-#include <iterator>
 #include <iostream>
 
 #define GL_PIXEL_SHADER GL_FRAGMENT_SHADER
@@ -12,16 +11,15 @@ namespace Engine
 	{
 		mName = name;
 
-		bool result = true;
 		unsigned int blobVS;
 		unsigned int blobPS;
 
 		blobVS = glCreateShader(GL_VERTEX_SHADER);
 		blobPS = glCreateShader(GL_PIXEL_SHADER);
 
-		result = CompileShaderFromFile(path, true, blobVS);
+		CompileShaderFromFile(path, true, blobVS);
 
-		result = CompileShaderFromFile(path, false, blobPS);
+		CompileShaderFromFile(path, false, blobPS);
 
 		mID = glCreateProgram();
 		glAttachShader(mID, blobVS);
@@ -68,18 +66,30 @@ namespace Engine
 		glUniform3f(glGetUniformLocation(mID, (name).c_str()), value.x, value.y, value.z);
 	}
 
+	void OGLShader::SetVector4(const std::string& name, const glm::vec4& value)
+	{
+		Load();
+		glUniform4f(glGetUniformLocation(mID, (name).c_str()), value.x, value.y, value.z, value.w);
+	}
+
 	void OGLShader::SetMatrix(const std::string& name, const glm::mat4& matrix)
 	{
 		Load();
-		glUniformMatrix4fv(glGetUniformLocation(mID, (name).c_str()), 1, false, glm::value_ptr(matrix));
+		glUniformMatrix4fv(glGetUniformLocation(mID, (name).c_str()), 1, static_cast<GLboolean>(false), glm::value_ptr(matrix));
 	}
 
-	bool OGLShader::CompileShaderFromFile(const std::string& path, bool isVertex, int blob)
+	void OGLShader::SetBool(const std::string& name, bool value)
+	{
+		Load();
+		glUniform1i(glGetUniformLocation(mID, (name).c_str()), value);
+	}
+
+	void OGLShader::CompileShaderFromFile(const std::string& path, bool isVertex, int blob)
 	{
 		std::ifstream ifs(path.c_str(), std::ios::in);
 
 		if (!ifs.is_open())
-			return false;
+			return;
 
 		std::string data;
 		data.assign((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
@@ -99,25 +109,18 @@ namespace Engine
 
 		const GLchar* source = contents.c_str();
 
-		glShaderSource(blob, 1, &source, NULL);
-		glCompileShader(blob);
+		glShaderSource(static_cast<GLuint>(blob), 1, &source, NULL);
+		glCompileShader(static_cast<GLuint>(blob));
 
 		int success;
 		char infoLog[512];
 
-		glGetShaderiv(blob, GL_COMPILE_STATUS, &success);
+		glGetShaderiv(static_cast<GLuint>(blob), GL_COMPILE_STATUS, &success);
 		if (!success)
 		{
-			glGetShaderInfoLog(blob, 512, NULL, infoLog);
+			glGetShaderInfoLog(static_cast<GLuint>(blob), 512, NULL, infoLog);
 			std::cout << infoLog << std::endl;
-
-			return false;
 		}
-
-		//TODO:
-		// Error Checking
-
-		return true;
 	}
 }
 

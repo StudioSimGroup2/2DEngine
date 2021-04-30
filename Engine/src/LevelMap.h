@@ -5,7 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include "Common.h"
-#include <TinyXML/tinyxml.h>
+#include <tinyxml.h>
 
 using namespace std;
 

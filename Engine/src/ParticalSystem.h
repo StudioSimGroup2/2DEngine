@@ -1,4 +1,8 @@
 #pragma once
+
+#include "Engine/Defines.h"
+
+#if GRAPHICS_LIBRARY == 0 //DX11
 #include <vector>
 #include <cstdlib>
 #include <time.h>
@@ -94,4 +98,8 @@ private:
 	void InitParticles(size_t count);
 	void SetupTexture(ParticleProperties* particle);
 };
+#elif GRAPHICS_LIBRARY == 1 // OpenGL
+#endif
+
+
 

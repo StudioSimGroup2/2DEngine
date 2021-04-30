@@ -1,8 +1,10 @@
 #pragma once
 
 #include "Engine/Renderer/Renderer2D.h"
-#include <Backend/D3D11/D3D11Shader.h>
+
 #include <DirectXMath.h>
+
+#include <Backend/D3D11/D3D11Shader.h>
 #include <Backend/D3D11/D3D11Texture.h>
 
 using namespace DirectX;
@@ -12,23 +14,36 @@ namespace Engine
 	class D3D11Renderer2D : public Renderer2D
 	{
 	public:
-		D3D11Renderer2D(D3D11Shader* shader, D3D11Device* dev);
+		D3D11Renderer2D(Shader* shader, D3D11Device* dev);
+		~D3D11Renderer2D();
 
-		virtual void Draw(vec2f position, Texture* textureToRender) const override;
-
+		void Draw(vec2f& position, vec2f& rotation, vec2f& scale, Texture* textureToRender) override;
+		 
 	private:
 		void InitBuffers(ID3D11Device* dev);
 
 		ID3D11Buffer* mVertexBuffer = nullptr, * mIndexBuffer = nullptr;
 		ID3D11Buffer* mConstantBuffer;
+		ID3D11Buffer* mColourBuffer;
 
-		DirectX::XMMATRIX mWorld;
+		//DirectX::XMMATRIX mWorld;
 
 		struct ConstantBuffer
 		{
 			XMMATRIX mWorld;
 			XMMATRIX mView;
 			XMMATRIX mProjection;
+			int mFlipX;
+			int mFlipY;
+			XMFLOAT2 padding;
+		};
+
+		struct ColourBuffer
+		{
+			float r;
+			float g;
+			float b;
+			float a;
 		};
 
 		struct VertexType
