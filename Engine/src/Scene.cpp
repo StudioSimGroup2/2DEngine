@@ -32,18 +32,13 @@ namespace Engine
 		//mSceneObjects.push_back(mTest);
 		//mSceneObjects.push_back(childLess);
 
-
-		///// <summary>
-		///// sprite class needs to be removed its useless now that we're actually setting up components
-		///// </summary>
-
 		SpriteComp* spr = mPlayer->AddComponent(new SpriteComp);
 		//mPlayer->GetComponent<TransformComp>()->SetPosition(200.0f, 200.0f);
 		spr->SetTexture(AssetManager::GetInstance()->LoadTexture((char*)"Stone", (char*)"Assets/Textures/Stone.png"));
 		
 		mSceneObjects.push_back(mPlayer);
 
-		AudioManager::GetInstance()->LoadSound("z", "zip.wav");
+		AudioManager::GetInstance()->LoadSound("z", "Assets/Audio/SFX/zip.wav");
 		AudioManager::GetInstance()->PlaySoundFile("z", 0.2f, false);
 	}
 

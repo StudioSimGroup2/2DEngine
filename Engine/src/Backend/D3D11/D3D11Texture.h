@@ -26,6 +26,8 @@ namespace Engine
 
 		HRESULT CreateTextureFromFile(D3D11Device* dev);
 
+	private:
+
 		ID3D11ShaderResourceView* mTextureView = nullptr;
 
 		ID3D11DeviceContext* mDeviceContext; // is this being used?

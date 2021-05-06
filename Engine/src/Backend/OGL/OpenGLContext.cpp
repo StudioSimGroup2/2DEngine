@@ -105,7 +105,9 @@ namespace Engine
 		glGenVertexArrays(1, &mRequiredVAO);
 		glBindVertexArray(mRequiredVAO);
 
+		OGLDevice::GetInstance()->SetHDC(mDeviceContext);
 		OGLDevice::GetInstance()->SetHGLRC(mRenderContext);
+		OGLDevice::GetInstance()->SetHWND(mHWND);
 
 		AssetManager::GetInstance()->LoadShader("Default", "default.glsl");
 

@@ -20,8 +20,8 @@ namespace Engine
 
 		bool CreateTextureFromFile();
 
+	private:
 		GLuint mID;
-
 	};
 }
 

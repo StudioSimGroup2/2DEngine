@@ -1,6 +1,7 @@
 #include "OGLTexture.h"
 
 #include <stb/stb_image.h>
+#include <Utils\Logger.h>
 
 namespace Engine
 {
@@ -10,6 +11,8 @@ namespace Engine
 		mPath = path;
 		
 		glGenTextures(1, &mID);
+
+		Logger::LogWarn("tex id", mID);
 
 		CreateTextureFromFile();
 	}

@@ -22,13 +22,13 @@ namespace Engine
 
 		virtual ~Component() { mParent = nullptr; }
 
-		std::string GetType() const { return mType; }
+		int GetType() const { return mType; }
 
 		GameObject* GetGameObject() const { return mParent; }
 		void SetGameObject(GameObject* parent) { mParent = parent; }
 
 	protected:
-		std::string mType;
+		int mType;
 		GameObject* mParent = nullptr;
 	};
 }

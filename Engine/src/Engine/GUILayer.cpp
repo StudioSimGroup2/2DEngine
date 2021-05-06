@@ -8,11 +8,21 @@
 
 #include <Engine/Defines.h>
 
-#if GRAPHICS_LIBRARY ==  1
-#include "OpenGL/imgui_impl_win32_opengl.h"
-#include "OpenGL/imgui_impl_opengl3.h"
-#elif GRAPHICS_LIBRARY ==  0
 #include "imgui_impl_win32.h"
+#if GRAPHICS_LIBRARY ==  1
+#include "OpenGL/imgui_impl_opengl3.h"
+	#ifdef _WIN64
+
+		struct RendererData
+		{
+			HDC hDC;
+		};
+
+		bool CreateDeviceOpenGL2(HWND hWnd, RendererData* data);
+		void CleanupDeviceOpenGL2(HWND hWnd, RendererData* data);
+		bool ActivateOpenGL2(HWND hWnd);
+	#endif
+#elif GRAPHICS_LIBRARY ==  0
 #include "D3D11/imgui_impl_dx11.h"
 #endif
 
@@ -24,7 +34,7 @@
 #include <CameraManager.h>
 
 #include <SceneManager.h>
-
+#include <imgui_internal.h>
 
 using namespace Engine;
 
@@ -38,18 +48,31 @@ GUILayer::GUILayer()
 	Application* app = Application::GetInstance();
 	io.DisplaySize = ImVec2(static_cast<float>(app->GetWindowData().GetWidth()), static_cast<float>(app->GetWindowData().GetHeight()));
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-
-	//OpenGL version does not currently support viewports
-#if GRAPHICS_LIBRARY ==  0
 	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable; 
-#endif
-
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 	io.ConfigDockingWithShift = true;
+	io.IniFilename = "imgui.ini";
 
 #if GRAPHICS_LIBRARY ==  1
-	ImGui_ImplWin32_Init(dynamic_cast<Engine::WindowsSystem*>(&app->GetWindowData())->GetHWND(), reinterpret_cast<void*>(Device::GetDevice()->GetHGLRC()));
+	ImGui_ImplWin32_Init(dynamic_cast<Engine::WindowsSystem*>(&app->GetWindowData())->GetHWND(), true);
 	ImGui_ImplOpenGL3_Init("#version 460");
+
+	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+	{
+		ImGuiPlatformIO& platform_io = ImGui::GetPlatformIO();
+
+		// Store the hdc for this new window
+		assert(platform_io.Renderer_CreateWindow == NULL);
+		platform_io.Renderer_CreateWindow = Win32_CreateWindow;
+		assert(platform_io.Renderer_DestroyWindow == NULL);
+		platform_io.Renderer_DestroyWindow = Win32_DestroyWindow;
+		assert(platform_io.Renderer_SwapBuffers == NULL);
+		platform_io.Renderer_SwapBuffers = Win32_SwapBuffers;
+
+		// We need to activate the context before drawing
+		assert(platform_io.Platform_RenderWindow == NULL);
+		platform_io.Platform_RenderWindow = Win32_RenderWindow;
+}
 #elif GRAPHICS_LIBRARY ==  0
 	ImGui_ImplWin32_Init(dynamic_cast<Engine::WindowsSystem*>(&app->GetWindowData())->GetHWND());
 	ImGui_ImplDX11_Init(Device::GetDevice()->GetDevice(), Device::GetDevice()->GetDeviceContext());
@@ -126,6 +149,15 @@ GUILayer::GUILayer()
 		srv->Release();
 #endif
 	};
+
+	// idk why and i dont want to know 
+	// why on earth despite the fact opengl SHOULD be generating an id for each texture
+	// the play button is loaded in to the frame buffer...
+
+	/*std::filesystem::path p = std::filesystem::current_path().parent_path();
+	p /= "Engine\\Assets\\Editor\\Icons\\";
+	AssetManager::GetInstance()->LoadTexture("PlayIcon", p.string() + "right.png");
+	AssetManager::GetInstance()->LoadTexture("StopIcon", p.string() + "stop.png");*/
 }
 
 GUILayer::~GUILayer()
@@ -165,9 +197,12 @@ void GUILayer::Render()
 	ImGui::SetNextWindowBgAlpha(1);
 	ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 
+	float menuBar; 
+
 	// Menu
 	if (ImGui::BeginMainMenuBar())
 	{
+		menuBar = ImGui::GetWindowSize().y;
 		if (ImGui::BeginMenu("File"))
 		{
 			if (ImGui::MenuItem("New Project CTRL + N")) {
@@ -290,6 +325,35 @@ void GUILayer::Render()
 
 #pragma endregion
 
+#pragma region GUI Buttons //Fix dockspace issues
+
+	//float width = ImGui::GetMainViewport()->Size.x;
+	//ImVec2 pos = ImGui::GetMainViewport()->Pos;
+	//pos.y += menuBar;
+	//ImGui::SetNextWindowPos(pos);
+	//ImGui::SetNextWindowSize(ImVec2(width, 0.0f));
+
+	//ImGui::Begin("GUIButtons", NULL, ImGuiWindowFlags_NoScrollbar |
+	//	ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
+
+	//ImGui::SetCursorPosX(width / 2);
+
+	//if (ImGui::ImageButton((void*)(intptr_t)AssetManager::GetInstance()->GetTextureByName("PlayIcon")->GetTexID(), 
+	//	ImVec2(16.0f, 16.0f)))
+	//{
+
+	//}
+	//ImGui::SameLine();
+	//if (ImGui::ImageButton((void*)(intptr_t)AssetManager::GetInstance()->GetTextureByName("StopIcon")->GetTexID(),
+	//	ImVec2(16.0f, 16.0f)))
+	//{
+
+	//}
+
+	//ImGui::End();
+
+#pragma endregion
+
 #pragma region
 	ImGui::Begin("Game", NULL, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
 
@@ -299,8 +363,6 @@ void GUILayer::Render()
 	ImGui::Image((void*)(intptr_t)SceneManager::GetInstance()->GetRenderToTexID(), ImGui::GetContentRegionAvail());
 #endif
 
-
-	
 	ImGui::End();
 #pragma endregion
 
@@ -325,7 +387,7 @@ void GUILayer::Render()
 		ImPlot::SetNextPlotTicksY(positions, 3, labels);
 
 		if (ImPlot::BeginPlot("Heap Profiler", "Memory (MB)", "Heap",
-			ImVec2(-1, 0), 0, 0, ImPlotAxisFlags_Invert))
+			ImVec2(-1, 0), 0, 0, ImPlotAxisFlags_Invert | ImPlotFlags_NoLegend))
 		{
 			ImPlot::SetLegendLocation(ImPlotLocation_West, ImPlotOrientation_Vertical);
 			ImPlot::PlotBarsH("Default", Default, 3, 0.2, -0.2);
@@ -359,7 +421,6 @@ void GUILayer::Render()
 
 
 #pragma endregion
-
 #pragma region SH // <------ Current Scene Hierarchy
 
 	ImGui::Begin("Scene Hierarchy");
@@ -393,18 +454,48 @@ void GUILayer::Render()
 
 		for (Component* c : mCurrentSelectedNode->GetComponents())
 		{
-			if (ImGui::CollapsingHeader(c->GetType().c_str()))
+			switch (c->GetType())
 			{
-				if (c->GetType() == "Transform")
+			case Engine::COMPONENT_TRANSFORM:
+				if (ImGui::CollapsingHeader("Transform"))
 				{
 					TransformComponent(dynamic_cast<TransformComp*>(c));
 				}
-				else if (c->GetType() == "Sprite")
+				break;
+			case Engine::COMPONENT_SPRITE:
+				if (ImGui::CollapsingHeader("Sprite"))
 				{
 					SpriteComponent(dynamic_cast<SpriteComp*>(c));
 				}
+				break;
+			default:
+				break;
 			}
+			
 		}
+		
+		ImGui::Separator();
+
+		const char* comps[] = { "UI", "Script", "Physics"};
+
+		if (ImGui::Button("Add Component..", ImVec2(ImGui::GetContentRegionAvail().x, 0.0f)))
+		{
+			ImGui::OpenPopup("CompList");
+		}
+			
+		ImGui::SameLine();
+		if (ImGui::BeginPopup("CompList"))
+		{
+			ImGui::Text("Components");
+			ImGui::Separator();
+			for (int i = 0; i < IM_ARRAYSIZE(comps); i++)
+				if (ImGui::Selectable(comps[i]))
+				{
+
+				}
+			ImGui::EndPopup();
+		}
+
 	}
 
 	ImGui::End();
@@ -523,7 +614,11 @@ void GUILayer::Render()
 #endif
 
 #if GRAPHICS_LIBRARY ==  1
+	GLint last_program;
+	glGetIntegerv(GL_CURRENT_PROGRAM, &last_program);
+	glUseProgram(0);
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	glUseProgram(last_program);
 #elif GRAPHICS_LIBRARY == 0
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 #endif
@@ -532,11 +627,110 @@ void GUILayer::Render()
 	ImGui::UpdatePlatformWindows();
 	ImGui::RenderPlatformWindowsDefault();
 #endif
+
+#if GRAPHICS_LIBRARY ==  1
+	wglMakeCurrent(Device::GetDevice()->GetHDC(), Device::GetDevice()->GetHGLRC());
+#endif
 }
 
 void GUILayer::Update()
 {
 }
+
+#if GRAPHICS_LIBRARY ==  1
+void GUILayer::Win32_CreateWindow(ImGuiViewport* viewport)
+{
+	assert(viewport->RendererUserData == NULL);
+
+	RendererData* data = IM_NEW(RendererData);
+	CreateDeviceOpenGL2((HWND)viewport->PlatformHandle, data);
+	viewport->RendererUserData = data;
+}
+
+bool CreateDeviceOpenGL2(HWND hWnd, RendererData* data)
+{
+	if (!ActivateOpenGL2(hWnd))
+		return false;
+
+	data->hDC = GetDC(hWnd);
+
+	if (!Device::GetDevice()->GetHGLRC())
+	{
+		Device::GetDevice()->SetHGLRC(wglCreateContext(data->hDC));
+	}
+
+	return true;
+}
+
+bool ActivateOpenGL2(HWND hWnd)
+{
+	HDC hDc = GetDC(hWnd);
+
+	PIXELFORMATDESCRIPTOR pixelFormatDesc;
+	ZeroMemory(&pixelFormatDesc, sizeof(pixelFormatDesc));
+	pixelFormatDesc.nSize = sizeof(PIXELFORMATDESCRIPTOR);
+	pixelFormatDesc.nVersion = 1;
+	pixelFormatDesc.dwFlags = LPD_SUPPORT_OPENGL | PFD_DRAW_TO_WINDOW | PFD_DOUBLEBUFFER;
+	pixelFormatDesc.iPixelType = PFD_TYPE_RGBA;
+	pixelFormatDesc.cColorBits = 24;
+	pixelFormatDesc.cDepthBits = 32;
+	pixelFormatDesc.cStencilBits = 8;
+	pixelFormatDesc.iLayerType = PFD_MAIN_PLANE;
+
+	int pf = ChoosePixelFormat(hDc, &pixelFormatDesc);
+	if (pf == 0)
+	{
+		return false;
+	}
+
+	if (SetPixelFormat(hDc, pf, &pixelFormatDesc) == FALSE)
+	{
+		return false;
+	}
+
+	ReleaseDC(hWnd, hDc);
+	return true;
+}
+
+void GUILayer::Win32_RenderWindow(ImGuiViewport* viewport, void*)
+{
+	RendererData* data = (RendererData*)viewport->RendererUserData;
+
+	if (data)
+	{
+		// Activate the platform window DC in the OpenGL rendering context
+		wglMakeCurrent(data->hDC, Device::GetDevice()->GetHGLRC());
+	}
+}
+
+void GUILayer::Win32_SwapBuffers(ImGuiViewport* viewport, void*)
+{
+	RendererData* data = (RendererData*)viewport->RendererUserData;
+
+	if (data)
+	{
+		SwapBuffers(data->hDC);
+	}
+}
+
+void GUILayer::Win32_DestroyWindow(ImGuiViewport* viewport)
+{
+	if (viewport->RendererUserData != NULL)
+	{
+		RendererData* data = (RendererData*)viewport->RendererUserData;
+		CleanupDeviceOpenGL2((HWND)viewport->PlatformHandle, data);
+		IM_DELETE(data);
+		viewport->RendererUserData = NULL;
+	}
+}
+
+void CleanupDeviceOpenGL2(HWND hWnd, RendererData* data)
+{
+	wglMakeCurrent(NULL, NULL);
+	ReleaseDC(hWnd, data->hDC);
+}
+#endif
+
 
 void GUILayer::SpriteComponent(SpriteComp* c)
 {
