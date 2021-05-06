@@ -1,6 +1,8 @@
 #include "AssetManager.h"
 
 #include "StringHelper.h"
+#include "Utils\Logger.h"
+#include <sstream>
 
 #include <iostream>
 
@@ -17,6 +19,33 @@ namespace Engine
 #endif
 	}
 
+//	void AssetManager::ChangeTexture(Texture* tex, const std::string& path)
+//	{
+//		bool err = true;
+//		for (auto& mSupportedTexExtension : mInstance->mSupportedTexExtensions)
+//		{
+//			if (StringHelper::GetFileExtension(path) == mSupportedTexExtension)
+//			{
+//				err = false;
+//			}
+//		}
+//
+//		if (err)
+//		{
+//			std::ostringstream output;
+//			output << "The File extension : " << StringHelper::GetFileExtension(path) << " is not supported!\n";
+//
+//			Logger::LogError(output.str().c_str());
+//		}
+//
+//#if GRAPHICS_LIBRARY == 0
+//		tex->SetPath(path);
+//		dynamic_cast<D3D11Texture*>(tex)->CreateTextureFromFile(D3D11Device::GetInstance());
+//#elif GRAPHICS_LIBRARY == 1
+//		tex->SetPath(path);
+//#endif
+//	}
+
 	Texture* AssetManager::LoadTexture(const std::string& name, const std::string& path)
 	{
 		bool err = true;
@@ -30,8 +59,10 @@ namespace Engine
 
 		if (err)
 		{
-			std::cout << "The File extension : " << StringHelper::GetFileExtension(path) << " is not supported!" << std::endl;
-			
+			std::ostringstream output;
+			output << "The File extension : " << StringHelper::GetFileExtension(path) << " is not supported!\n";
+
+			Logger::LogError(output.str().c_str());
 			return nullptr;
 		}
 

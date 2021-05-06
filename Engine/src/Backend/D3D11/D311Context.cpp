@@ -222,8 +222,8 @@ namespace Engine
 		ZeroMemory(&depthBufferDesc, sizeof(depthBufferDesc));
 
 		// Set up the description of the depth buffer.
-		depthBufferDesc.Width = width;
-		depthBufferDesc.Height = height;
+		depthBufferDesc.Width = 1260;
+		depthBufferDesc.Height = 677;
 		depthBufferDesc.MipLevels = 1;
 		depthBufferDesc.ArraySize = 1;
 		depthBufferDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
@@ -316,7 +316,6 @@ namespace Engine
 		// Now set the rasterizer state.
 		mDeviceContext->RSSetState(mRasterState);
 
-
 		//---------------------------------
 		//blending
 		D3D11_BLEND_DESC omDesc;
@@ -326,7 +325,7 @@ namespace Engine
 		omDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
 		omDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
 		omDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
-		omDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+		omDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
 		omDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
 		omDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
@@ -346,43 +345,10 @@ namespace Engine
 		viewport.TopLeftX = 0.0f;
 		viewport.TopLeftY = 0.0f;
 
-		//---------------------------------
-		//Render to texture (for ImGUI viewport)
-		D3D11_TEXTURE2D_DESC textureDesc;
-		ZeroMemory(&textureDesc, sizeof(textureDesc));  
-		textureDesc.Width = width;
-		textureDesc.Height = height;
-		textureDesc.MipLevels = 1;
-		textureDesc.ArraySize = 1;
-		textureDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-		textureDesc.SampleDesc.Count = 1;
-		textureDesc.SampleDesc.Quality = 0;
-		textureDesc.Usage = D3D11_USAGE_DEFAULT;
-		textureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
-		textureDesc.CPUAccessFlags = 0;
-		textureDesc.MiscFlags = 0;
-		mDevice->CreateTexture2D(&textureDesc, nullptr, &mRTTRrenderTargetTexture);
-		
-		// Setup the description of the render target view.
-		D3D11_RENDER_TARGET_VIEW_DESC renderTargetViewDesc;
-		ZeroMemory(&renderTargetViewDesc, sizeof(renderTargetViewDesc));
-		renderTargetViewDesc.Format = textureDesc.Format;
-		renderTargetViewDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
-		renderTargetViewDesc.Texture2D.MipSlice = 0;
-		mDevice->CreateRenderTargetView(mRTTRrenderTargetTexture, &renderTargetViewDesc, &mRTTRenderTargetView);
-
-		// Setup the description of the shader resource view.
-		D3D11_SHADER_RESOURCE_VIEW_DESC shaderResourceViewDesc;
-		ZeroMemory(&shaderResourceViewDesc, sizeof(shaderResourceViewDesc));
-		shaderResourceViewDesc.Format = textureDesc.Format;
-		shaderResourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-		shaderResourceViewDesc.Texture2D.MostDetailedMip = 0;
-		shaderResourceViewDesc.Texture2D.MipLevels = 1;
-		mDevice->CreateShaderResourceView(mRTTRrenderTargetTexture, &shaderResourceViewDesc, &mRTTShaderResourceView);
-		//---------------------------------
-
 		D3D11Device::GetInstance()->SetDevice(mDevice);
 		D3D11Device::GetInstance()->SetDeviceContext(mDeviceContext);
+		D3D11Device::GetInstance()->SetDepthStencilView(mDepthStencilView);
+		D3D11Device::GetInstance()->SetRenderTargetView(mRenderTargetView);
 
 		// Create the viewport.
 		mDeviceContext->RSSetViewports(1, &viewport);
@@ -511,27 +477,16 @@ namespace Engine
 
 	void D311Context::RenderScene() 
 	{
-		mDeviceContext->ClearRenderTargetView(mRenderTargetView, DirectX::Colors::SeaGreen);
-
-		for (Layer* l : *Application::GetInstance()->GetStack())
-		{
-			l->Render();
-		}
-
 		/*for (ParticleSystem* ps : mParticleSystems)
 			ps->Render();*/
-
 	}
 
 	void D311Context::SwapBuffers()
 	{
-		mDeviceContext->OMSetRenderTargets(1, &mRTTRenderTargetView, mDepthStencilView);
-		mDeviceContext->ClearRenderTargetView(mRTTRenderTargetView, DirectX::Colors::SeaGreen);
-		RenderScene();
-
-		mDeviceContext->OMSetRenderTargets(1, &mRenderTargetView, mDepthStencilView); // Set back to back buffer
-		mDeviceContext->ClearDepthStencilView(mDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0u);
-		RenderScene();
+		for (Layer* l : *Application::GetInstance()->GetStack())
+		{
+			l->Render();
+		}
 
 		mSwapChain->Present(0, 0);
 	}

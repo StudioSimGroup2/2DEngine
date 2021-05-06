@@ -3,6 +3,7 @@
 #include <assert.h>
 #include <iostream>
 #include <Utils/StringHelper.h>
+#include <Utils/Logger.h>
 
 #include <stb/stb_image.h>
 
@@ -22,6 +23,9 @@ namespace Engine
 		mHeight = 32;
 
 		hr = CreateTextureFromFile(device);
+
+		if (hr != S_OK)
+			Logger::LogError("Could not load texture");
 	}
 
 	D3D11Texture::~D3D11Texture()

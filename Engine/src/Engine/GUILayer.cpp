@@ -157,13 +157,13 @@ void GUILayer::Render()
 #ifdef WINDOWS_PLATFORM
 	ImGui_ImplWin32_NewFrame();
 #endif
-	ImGui::NewFrame();
 
+	ImGui::NewFrame();
 
 #pragma region Menu Bar
 
 	ImGui::SetNextWindowBgAlpha(1);
-	//ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
+	ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 
 	// Menu
 	if (ImGui::BeginMainMenuBar())
@@ -290,6 +290,20 @@ void GUILayer::Render()
 
 #pragma endregion
 
+#pragma region
+	ImGui::Begin("Game", NULL, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+
+#if GRAPHICS_LIBRARY ==  1
+	ImGui::Image((void*)(intptr_t)SceneManager::GetInstance()->GetRenderToTexID(), ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0)); 
+#elif GRAPHICS_LIBRARY == 0
+	ImGui::Image((void*)(intptr_t)SceneManager::GetInstance()->GetRenderToTexID(), ImGui::GetContentRegionAvail());
+#endif
+
+
+	
+	ImGui::End();
+#pragma endregion
+
 #pragma region Profiler
 
 	ImS16 Default[3] = { 1, 1, 1 };
@@ -346,8 +360,6 @@ void GUILayer::Render()
 
 #pragma endregion
 
-	ImGui::ShowDemoWindow();
-
 #pragma region SH // <------ Current Scene Hierarchy
 
 	ImGui::Begin("Scene Hierarchy");
@@ -366,8 +378,6 @@ void GUILayer::Render()
 		else //if (!(selection_mask & (1 << node_clicked))) // Depending on selection behavior you want, may want to preserve selection when clicking on item that is part of the selection
 			selectionMask = (1 << nodeClicked);           // Click to single-select
 	}
-
-	//https://www.youtube.com/watch?v=Aog3mYBK7mA
 
 	ImGui::End();
 
@@ -400,7 +410,6 @@ void GUILayer::Render()
 	ImGui::End();
 
 #pragma endregion
-
 
 #pragma region Scene Hierarchy
 
@@ -506,7 +515,12 @@ void GUILayer::Render()
 
 #pragma endregion
 
+
 	ImGui::Render();
+
+#if GRAPHICS_LIBRARY ==  0
+	//Device::GetDevice()->ClearAndSetRenderTarget();
+#endif
 
 #if GRAPHICS_LIBRARY ==  1
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -533,19 +547,14 @@ void GUILayer::SpriteComponent(SpriteComp* c)
 
 	auto& ref = c->GetColour();
 
-	std::string path;
+	std::string path = c->GetTexture()->GetPath();
 	static ImVec4 colour = ImVec4(ref[0], ref[1],
 		ref[2], ref[3]);
 
-	if (c->GetTexture()->GetPath().length() > 25)
-	{
-		path = c->GetTexture()->GetPath().substr(25);
-		path = path.substr(path.find_first_of('\\'));
-	}
-	else
-	{
-		path = c->GetTexture()->GetPath();
-	}
+	if (path.find_last_of('\\') != std::string::npos)
+		path = path.substr(path.find_last_of('\\'));
+	else if (path.find_last_of('/') != std::string::npos)
+		path = path.substr(path.find_last_of('/'));
 
 	if (ImGui::Button(path.c_str()))
 	{
@@ -554,10 +563,10 @@ void GUILayer::SpriteComponent(SpriteComp* c)
 
 	if (ifd::FileDialog::Instance().IsDone("File Browser"))
 	{
-		if (ifd::FileDialog::Instance().HasResult())
+		if (ifd::FileDialog::Instance().HasResult() && ifd::FileDialog::Instance().GetResult().u8string() != c->GetTexture()->GetPath())
 		{
 			c->SetTexture(AssetManager::GetInstance()->LoadTexture(
-				"", ifd::FileDialog::Instance().GetResult().u8string()));
+				c->GetTexture()->GetName(), ifd::FileDialog::Instance().GetResult().u8string()));
 		}
 		ifd::FileDialog::Instance().Close();
 	}
