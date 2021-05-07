@@ -28,6 +28,10 @@ public:
 	inline float& GetZDepth() { return mZDepth; }
 	inline const XMMATRIX GetViewMatrix() const { return mView; }
 	inline const XMMATRIX GetProjectionMatrix() const { return mProjection; }
+
+	inline const XMMATRIX GetInverseViewMatrix() const { return XMMatrixInverse(nullptr, mView); }
+	inline const XMMATRIX GetInverseProjectionMatrix() const { return XMMatrixInverse(nullptr, mProjection); }
+
 	inline const float GetViewWidth() const { return mViewWidth; }
 	inline float& GetViewWidth() { return mViewWidth; }
 	inline const float GetViewHeight() const { return mViewHeight; }

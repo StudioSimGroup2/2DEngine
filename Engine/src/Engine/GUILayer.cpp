@@ -346,7 +346,7 @@ void GUILayer::Render()
 
 #pragma endregion
 
-	ImGui::ShowDemoWindow();
+	//ImGui::ShowDemoWindow();
 
 #pragma region SH // <------ Current Scene Hierarchy
 
@@ -683,6 +683,37 @@ void GUILayer::TileMapComponent(TileMapComp* c)
 {
 	ImGui::PushID("TileMap");
 
+	ImGui::Begin("Tile Editor");
+	/*static int selectionMask = (1 << 2);
+	int sceneIndex = 0;
+	int nodeClicked = -1;*/
+	static int TileID;
+	for (int i = 0; i < AssetManager::GetInstance()->GetAllTextures()->size(); i++) {
+		int  nhgfdjhgfdj = 0;
+		auto tex = AssetManager::GetInstance()->GetAllTextures()->at(i);
+		ImGui::PushID(i);
+		if (ImGui::ImageButton((void*)(intptr_t)tex->GetTexID(), ImVec2(tex->GetWidth(), tex->GetHeight())))
+		{
+			TileID = i + 1;
+
+		}
+		ImGui::SameLine();
+
+		//if (nodeClicked != -1)
+		//{
+		//	// Update selection state
+		//	// (process outside of tree loop to avoid visual inconsistencies during the clicking frame)
+		//	if (ImGui::GetIO().KeyCtrl)
+		//		selectionMask ^= (1 << nodeClicked);          // CTRL+click to toggle
+		//	else //if (!(selection_mask & (1 << node_clicked))) // Depending on selection behavior you want, may want to preserve selection when clicking on item that is part of the selection
+		//		selectionMask = (1 << nodeClicked);           // Click to single-select
+		//}
+		ImGui::PopID();
+	}
+	//find mouse pos in world space
+
+	ImGui::End();
+
 	if (ImGui::Button("Load TileMap"))
 	{
 		ifd::FileDialog::Instance().Open("TileMapLoader", "LoadTileMap", "TileMap (*.xml){.xml},.*");
@@ -701,7 +732,6 @@ void GUILayer::TileMapComponent(TileMapComp* c)
 
 	if (ImGui::Button("Save TileMap"))
 	{
-		//ifd::FileDialog::Instance().Open("File Browser", "LoadTileMap", "Texture File (*.xml){.xml},.*");
 		ifd::FileDialog::Instance().Save("TileMapSaver", "LoadTileMap", "Texture File, (*.xml) {.xml}, .*");
 	}
 
