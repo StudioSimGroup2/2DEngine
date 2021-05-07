@@ -4,9 +4,6 @@
 Engine::PhysicsComp::PhysicsComp() : Component()
 {
 	Init();
-	mGrounded;
-
-	
 }
 
 Engine::PhysicsComp::~PhysicsComp()
@@ -51,13 +48,24 @@ void Engine::PhysicsComp::UpdateForces(float dT)
 		//the weight of the character multiplied by gravity
 		mNetForce.y += mWeight;
 	}
+
+	//Limit Velocity to 200 units
+	if (mCurrentVelocity.x > mMaxSpeed)
+		mCurrentVelocity.x = mMaxSpeed;
+	if (mCurrentVelocity.y > mMaxSpeed)
+		mCurrentVelocity.y = mMaxSpeed;
+
+	if (mCurrentVelocity.x < -mMaxSpeed)
+		mCurrentVelocity.x = -mMaxSpeed;
+	if (mCurrentVelocity.y < -mMaxSpeed)
+		mCurrentVelocity.y = -mMaxSpeed;
 }
 
 void Engine::PhysicsComp::UpdateAcceleration()
 {
 	// Calculate acceleration
-	mNetAcceleration.x = mNetForce.x / mWeight;
-	mNetAcceleration.y = mNetForce.y / mWeight;
+	mNetAcceleration.x = mNetForce.x / mFriction;
+	mNetAcceleration.y = mNetForce.y / mFriction;
 }
 
 void Engine::PhysicsComp::Update()
@@ -101,5 +109,4 @@ void Engine::PhysicsComp::Update(float dT)
 	position += (mCurrentVelocity * dT) + (mNetAcceleration * 0.5f * (dT * dT));
 	
 	mParent->GetComponent<TransformComp>()->SetPosition(position.x, position.y);
-	Logger::LogMsg("Test Pos", mParent->GetComponent<TransformComp>()->GetPosition().y);
 }

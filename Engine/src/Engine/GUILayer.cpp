@@ -639,6 +639,7 @@ void GUILayer::PhysicsComponent(PhysicsComp* c)
 	float physMass = c->GetMass();
 	float physGrav = c->GetGravity();
 	float physFric = c->GetFriction();
+	float physMSpeed = c->GetMaxSpeed();
 
 	ImGui::PushID("mass");
 
@@ -665,7 +666,17 @@ void GUILayer::PhysicsComponent(PhysicsComp* c)
 	ImGui::Columns(2);
 	ImGui::Text("Friction");
 	ImGui::NextColumn();
-	ImGui::DragFloat("##friction", &physFric, 0.1f);
+	ImGui::DragFloat("##friction", &physFric, 0.1f, 0.1f, 1.0f);
+	ImGui::Columns(1);
+
+	ImGui::PopID();
+
+	ImGui::PushID("mspeed");
+
+	ImGui::Columns(2);
+	ImGui::Text("Max Speed");
+	ImGui::NextColumn();
+	ImGui::DragFloat("##max speed", &physMSpeed, 1.0f, 0.0f, 1000.0f);
 	ImGui::Columns(1);
 
 	ImGui::PopID();
@@ -673,6 +684,7 @@ void GUILayer::PhysicsComponent(PhysicsComp* c)
 	c->SetMass(physMass);
 	c->SetGravity(physGrav);
 	c->SetFriction(physFric);
+	c->SetMaxSpeed(physMSpeed);
 }
 
 void GUILayer::CreateNode(GameObject* go, int flags, int& index, int& nodeClicked, int& selectionMask)
