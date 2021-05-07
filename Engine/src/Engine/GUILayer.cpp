@@ -744,7 +744,9 @@ void GUILayer::TileMapComponent(TileMapComp* c)
 		}
 		ifd::FileDialog::Instance().Close();
 	}
-
+	vec2f mousePos = vec2f(InputManager::GetInstance()->GetMousePosition().x, InputManager::GetInstance()->GetMousePosition().y);
+	Logger::LogMsg("Mouse pos X:", mousePos.x);
+	Logger::LogMsg("Mouse pos Y:", mousePos.y);
 	ImGui::PopID();
 }
 
