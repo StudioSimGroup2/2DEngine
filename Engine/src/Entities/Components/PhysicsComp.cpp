@@ -64,8 +64,8 @@ void Engine::PhysicsComp::UpdateForces(float dT)
 void Engine::PhysicsComp::UpdateAcceleration()
 {
 	// Calculate acceleration
-	mNetAcceleration.x = mNetForce.x / mFriction;
-	mNetAcceleration.y = mNetForce.y / mFriction;
+	mNetAcceleration.x = mNetForce.x / mMass;
+	mNetAcceleration.y = mNetForce.y / mMass;
 }
 
 void Engine::PhysicsComp::Update()
@@ -107,6 +107,9 @@ void Engine::PhysicsComp::Update(float dT)
 	vec2f position = mParent->GetComponent<TransformComp>()->GetPosition();
 
 	position += (mCurrentVelocity * dT) + (mNetAcceleration * 0.5f * (dT * dT));
-	
+
+	Logger::LogMsg("Velocity", mCurrentVelocity.y);
+	Logger::LogMsg("Accel", mNetAcceleration.y);
+	//mCurrentVelocity.y -= mCurrentVelocity.y * mFriction;
 	mParent->GetComponent<TransformComp>()->SetPosition(position.x, position.y);
 }
