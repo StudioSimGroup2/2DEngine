@@ -397,6 +397,10 @@ void GUILayer::Render()
 				{
 					PhysicsComponent(dynamic_cast<PhysicsComp*>(c));
 				}
+				else if (c->GetType() == "TileMap")
+				{
+					TileMapComponent(dynamic_cast<TileMapComp*>(c));
+				}
 			}
 		}
 	}
@@ -553,7 +557,7 @@ void GUILayer::SpriteComponent(SpriteComp* c)
 
 	if (ImGui::Button(path.c_str()))
 	{
-		ifd::FileDialog::Instance().Open("File Browser", "Change Sprite Texture", "Texture File (*.png){.png},.*");
+		ifd::FileDialog::Instance().Open("File Browser", "LoadTileMap", "Texture File (*.png){.png},.*");
 	}
 
 	if (ifd::FileDialog::Instance().IsDone("File Browser"))
@@ -673,6 +677,45 @@ void GUILayer::PhysicsComponent(PhysicsComp* c)
 	c->SetMass(physMass);
 	c->SetGravity(physGrav);
 	c->SetFriction(physFric);
+}
+
+void GUILayer::TileMapComponent(TileMapComp* c)
+{
+	ImGui::PushID("TileMap");
+
+	if (ImGui::Button("Load TileMap"))
+	{
+		ifd::FileDialog::Instance().Open("TileMapLoader", "LoadTileMap", "TileMap (*.xml){.xml},.*");
+	}
+
+	if (ifd::FileDialog::Instance().IsDone("TileMapLoader"))
+	{
+		if (ifd::FileDialog::Instance().HasResult())
+		{
+			std::string TempString = ifd::FileDialog::Instance().GetResult().u8string();
+			c->LoadTileMap(TempString.c_str());
+			TileMap temp = c->GetTileMap();
+		}
+		ifd::FileDialog::Instance().Close();
+	}
+
+	if (ImGui::Button("Save TileMap"))
+	{
+		//ifd::FileDialog::Instance().Open("File Browser", "LoadTileMap", "Texture File (*.xml){.xml},.*");
+		ifd::FileDialog::Instance().Save("TileMapSaver", "LoadTileMap", "Texture File, (*.xml) {.xml}, .*");
+	}
+
+	if (ifd::FileDialog::Instance().IsDone("TileMapSaver"))
+	{
+		if (ifd::FileDialog::Instance().HasResult())
+		{
+			std::string TempString = ifd::FileDialog::Instance().GetResult().u8string();
+			c->SaveTileMap(ifd::FileDialog::Instance().GetResult().u8string());
+		}
+		ifd::FileDialog::Instance().Close();
+	}
+
+	ImGui::PopID();
 }
 
 void GUILayer::CreateNode(GameObject* go, int flags, int& index, int& nodeClicked, int& selectionMask)

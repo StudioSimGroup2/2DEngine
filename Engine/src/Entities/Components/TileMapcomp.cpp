@@ -17,6 +17,10 @@ namespace Engine
 	{
 	}
 
+	void TileMapComp::ChangeTexture()
+	{
+	}
+
 	void TileMapComp::Update()
 	{
 
@@ -42,13 +46,11 @@ namespace Engine
 				}
 				case 1:
 				{
-					int yotihypr = 0;
-					vec2f HelpME = vec2f(ForY * TILEHEIGHT, ForX * TILEWIDTH) + mParent->GetComponent<TransformComp>()->GetPosition();
-#if GRAPHICS_LIBRARY == 0
-					dynamic_cast<D3D11Renderer2D*>(mRenderer[pos])->Draw(HelpME, vec2f(0.0f), vec2f(1.0f), mTexture);
-#elif GRAPHICS_LIBRARY == 1
-					dynamic_cast<OGLRenderer2D*>(mRenderer[pos])->Draw(HelpME, vec2f(0.0f), vec2f(1.0f), mTexture);
-#endif
+	#if GRAPHICS_LIBRARY == 0
+					dynamic_cast<D3D11Renderer2D*>(mRenderer[pos])->Draw(vec2f(ForY * TILEHEIGHT, ForX * TILEWIDTH) + mParent->GetComponent<TransformComp>()->GetPosition(), vec2f(0.0f), vec2f(1.0f), mTexture);
+	#elif GRAPHICS_LIBRARY == 1
+					dynamic_cast<OGLRenderer2D*>(mRenderer[pos])->Draw(vec2f(ForY * TILEHEIGHT, ForX * TILEWIDTH) + mParent->GetComponent<TransformComp>()->GetPosition(), vec2f(0.0f), vec2f(1.0f), mTexture);
+	#endif
 					pos++;
 					break;
 				}
@@ -84,7 +86,7 @@ namespace Engine
 	{
 		
 		mType = "TileMap";
-		mTexture = AssetManager::GetInstance()->LoadTexture("Tile", "Assets/Textures/Stone.png");
+		mTexture = AssetManager::GetInstance()->LoadTexture("Tile", "Assets/Textures/TilesTest.png");
 		LoadTileMap("Assets/TileMaps/XML_Test.xml");
 		for (int X = 0; X < mTileMap.size(); X++)
 		{
@@ -98,6 +100,10 @@ namespace Engine
 				}
 				case 1:
 				{
+					//std::string RendererName = "Tile ";
+					//RendererName.append(std::to_string(X));
+					//RendererName.append(", ");
+					//RendererName.append(std::to_string(Y));
 					mRenderer.push_back(Device::CreateRenderer(AssetManager::GetInstance()->GetShaderByName("Default")));
 					break;
 				}

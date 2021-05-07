@@ -35,6 +35,15 @@ namespace Engine
 			return nullptr;
 		}
 
+		//Make sure we're not loading the same texture multiple times
+		for (Texture* TestTexture : mTextures)
+		{
+			if (path == TestTexture->GetPath())
+			{
+				return TestTexture;
+			}
+		}
+
 #if GRAPHICS_LIBRARY == 0
 		mInstance->mTextures.push_back(new D3D11Texture(D3D11Device::GetInstance(), name, path));
 #elif GRAPHICS_LIBRARY == 1

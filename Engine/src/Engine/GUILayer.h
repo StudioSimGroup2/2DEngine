@@ -22,6 +22,7 @@ private:
 	void SpriteComponent(SpriteComp* c);
 	void TransformComponent(TransformComp* c);
 	void PhysicsComponent(PhysicsComp* c);
+	void TileMapComponent(TileMapComp* c);
 	void CreateNode(GameObject* go, int flags, int& index, int& nodeClicked, int& selectionMask);
 };
 

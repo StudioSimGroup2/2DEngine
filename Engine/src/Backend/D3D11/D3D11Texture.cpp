@@ -18,8 +18,8 @@ namespace Engine
 
 		auto hr = S_OK;
 
-		mWidth = 32;
-		mHeight = 32;
+		//mWidth = 10;
+		mHeight = 64;
 
 		hr = CreateTextureFromFile(device);
 	}
@@ -36,16 +36,16 @@ namespace Engine
 		
 	}
 
-	void D3D11Texture::Load(int pos = 1) const
+	void D3D11Texture::Load(int pos = 0) const
 	{
-		mDeviceContext->VSSetShaderResources(0, pos, &mTextureView);
-		mDeviceContext->PSSetShaderResources(0, pos, &mTextureView);
+		mDeviceContext->VSSetShaderResources(pos, 1, &mTextureView);
+		mDeviceContext->PSSetShaderResources(pos, 1, &mTextureView);
 	}
 
-	void D3D11Texture::Unload(int pos = 1) const
+	void D3D11Texture::Unload(int pos = 0) const
 	{
-		mDeviceContext->VSSetShaderResources(0, pos, NULL);
-		mDeviceContext->PSSetShaderResources(0, pos, NULL);
+		mDeviceContext->VSSetShaderResources(pos, 1, NULL);
+		mDeviceContext->PSSetShaderResources(pos, 1, NULL);
 	}
 
 	HRESULT D3D11Texture::CreateTextureFromFile(D3D11Device* dev)

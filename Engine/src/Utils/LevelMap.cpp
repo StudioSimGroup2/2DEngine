@@ -4,13 +4,13 @@
 #include <iostream>
 #include <istream>
 
-TileMap LevelMap::LoadLevelMap(char* FilePath)
+TileMap LevelMap::LoadLevelMap(const std::string& FilePath)
 {
 	TileMap tilemap;
 
 	//Get the whole xml document.
 	TiXmlDocument doc;
-	if (!doc.LoadFile(FilePath))
+	if (!doc.LoadFile(FilePath.c_str()))
 	{
 		std::cerr << doc.ErrorDesc() << std::endl;
 	}
