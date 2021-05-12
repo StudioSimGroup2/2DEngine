@@ -49,18 +49,17 @@ namespace Engine
 		ID3D11BlendState* mTransparant = nullptr;
 		ID3D11RasterizerState* mRasterState = nullptr;
 
+#ifdef _DEBUG
+		ID3D11Debug* mDebug = nullptr;
+		ID3D11InfoQueue* mInfoQueue = nullptr;
+#endif
+
 		XMMATRIX mWorldMatrix;
 		XMMATRIX mOrthoMatrix;
 
 		//These should be in the GameScreenTest
 		std::vector<ParticleSystem*> mParticleSystems;
 
-		bool mEnableEditor = true; // Very curde, will set up an ImGUi properties struct later - Joe
-		bool mShowLoggingConsole = true;
 
-		// Render to texture for imgui
-		ID3D11Texture2D* mRTTRrenderTargetTexture = nullptr;			// Texture to render to 
-		ID3D11RenderTargetView* mRTTRenderTargetView = nullptr;		// Render target
-		ID3D11ShaderResourceView* mRTTShaderResourceView = nullptr;	// Shader resource view for the texture
 	};
 }

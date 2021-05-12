@@ -30,6 +30,6 @@ namespace Engine
 
 		ID3D11ShaderResourceView* mTextureView = nullptr;
 
-		ID3D11DeviceContext* mDeviceContext; // is this being used?
+		ID3D11DeviceContext* mDeviceContext; // is this being used? - yes it is i'm blind
 	};
 }

@@ -21,7 +21,7 @@ namespace Engine
 		bool GetRun() { return mRunning; }
 
 		Window& GetWindowData() { return *mWindow; }
-
+		
 		void Run();
 		void ForceShutdown();
 

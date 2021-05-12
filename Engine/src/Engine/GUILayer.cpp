@@ -147,6 +147,7 @@ GUILayer::GUILayer()
 		auto* srv = (ID3D11ShaderResourceView*)tex;
 
 		srv->Release();
+		srv = nullptr;
 #endif
 	};
 

@@ -53,6 +53,12 @@ namespace Engine
 			s = nullptr;
 		}
 
+		auto context = alcGetCurrentContext();
+		auto device = alcGetContextsDevice(context);
+		alcMakeContextCurrent(NULL);
+		alcDestroyContext(context);
+		alcCloseDevice(device);
+
 		delete mInstance;
 	}
 

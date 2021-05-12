@@ -195,6 +195,13 @@ namespace Engine
 		hr = D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, D3D11_CREATE_DEVICE_DEBUG, &featureLevel, 1,
 			D3D11_SDK_VERSION, &swapChainDesc, &mSwapChain, &mDevice, nullptr, &mDeviceContext);
 
+#ifdef _DEBUG
+		mDevice->QueryInterface(__uuidof(ID3D11Debug), (void**)&mDebug);
+		mDebug->QueryInterface(__uuidof(ID3D11InfoQueue), (void**)&mInfoQueue);
+		mInfoQueue->SetBreakOnSeverity(D3D11_MESSAGE_SEVERITY_CORRUPTION, true);
+		mInfoQueue->SetBreakOnSeverity(D3D11_MESSAGE_SEVERITY_ERROR, true);
+#endif
+
 		if (FAILED(hr))
 		{
 			return;
@@ -390,6 +397,8 @@ namespace Engine
 
 		D3D11Device::Shutdown();
 
+
+
 		if (mTransparant)
 		{
 			mTransparant->Release();
@@ -400,18 +409,6 @@ namespace Engine
 		{
 			mRasterState->Release();
 			mRasterState = nullptr;
-		}
-
-		if (mRTTShaderResourceView)
-		{
-			mRTTShaderResourceView->Release();
-			mRTTShaderResourceView = nullptr;
-		}
-
-		if (mRTTRrenderTargetTexture)
-		{
-			mRTTRrenderTargetTexture->Release();
-			mRTTRrenderTargetTexture = nullptr;
 		}
 
 		if (mRasterState)
@@ -438,12 +435,6 @@ namespace Engine
 			mDepthStencilBuffer = nullptr;
 		}
 
-		if (mRTTRenderTargetView)
-		{
-			mRTTRenderTargetView->Release();
-			mRTTRenderTargetView = nullptr;
-		}
-
 		if (mRenderTargetView)
 		{
 			mRenderTargetView->Release();
@@ -453,11 +444,14 @@ namespace Engine
 		if (mDevice)
 		{
 			mDevice->Release();
+			mDevice = nullptr;
 		}
 			
 		if (mDeviceContext)
 		{
+			mDeviceContext->Flush();
 			mDeviceContext->Release();
+			mDeviceContext = nullptr;
 		}
 
 		if (mSwapChain)
@@ -465,6 +459,21 @@ namespace Engine
 			mSwapChain->Release();
 			mSwapChain = nullptr;
 		}
+
+#ifdef _DEBUG
+		if (mInfoQueue)
+		{
+			mInfoQueue->Release();
+			mInfoQueue = nullptr;
+		}
+
+		if (mDebug)
+		{
+			mDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
+			mDebug->Release();
+			mDebug = nullptr;
+		}
+#endif
 	}
 
 	void D311Context::OnUpdate(float deltaTime)

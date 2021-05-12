@@ -15,7 +15,7 @@ namespace Engine
 	{
 	public:
 		FrameBuffer() {}
-		~FrameBuffer() = default;
+		~FrameBuffer() { if (mCreated) { delete mFrameBuffer; mFrameBuffer = nullptr; } }
 
 #if GRAPHICS_LIBRARY == 0
 		void CreateFrameBuffer(unsigned int width, unsigned int height) { mFrameBuffer = new D3D11FrameBuffer(width, height); mCreated = true; }
