@@ -580,7 +580,6 @@ void GUILayer::SpriteComponent(SpriteComp* c)
 	c->ToggleFlipY(flipY);
 	c->SetColour(colour.x, colour.y, colour.z, colour.w);
 
-
 	ImGui::PopID();
 }
 
@@ -624,9 +623,9 @@ void GUILayer::TransformComponent(TransformComp* c)
 
 	ImGui::PopID();
 
-	c->SetPosition(position[0], position[1]);
-	c->SetRotation(rotation[0], rotation[1]);
-	c->SetScale(scale[0], scale[1]);
+	c->SetPosition(vec2f(position[0], position[1]));
+	c->SetRotation(vec2f(rotation[0], rotation[1]));
+	c->SetScale(vec2f(scale[0], scale[1]));
 }
 
 void GUILayer::CreateNode(GameObject* go, int flags, int& index, int& nodeClicked, int& selectionMask)

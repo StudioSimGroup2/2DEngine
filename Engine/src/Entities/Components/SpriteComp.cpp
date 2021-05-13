@@ -37,9 +37,6 @@ namespace Engine
 
 	void SpriteComp::Render()
 	{
-		if (!mRenderer)
-			return;
-
 #if GRAPHICS_LIBRARY == 0
 		dynamic_cast<D3D11Renderer2D*>(mRenderer)->Draw(mParent->GetComponent<TransformComp>()->GetPosition(),
 			mParent->GetComponent<TransformComp>()->GetRotation(),

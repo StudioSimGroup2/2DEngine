@@ -1,22 +1,9 @@
 #include "ScriptingEngine.h"
 #include <SceneManager.h>
 #include <Entities/GameObject.h>
-#include <Utils/AssetManager.h>
-
-#define SOL_ALL_SAFETIES_ON 1
+#include <Utils/AssetManager.h>s
 
 #include <lua.hpp>
-#include <sol.hpp>
-
-struct Test
-{
-	int value = 300;
-
-	void SetVal(int h)
-	{
-		value = h;
-	}
-};
 
 namespace Engine
 {
@@ -24,34 +11,19 @@ namespace Engine
 	
 	void ScriptingEngine::Init()
 	{
-		sol::state lua;
-		lua.open_libraries(sol::lib::base);
+		state.open_libraries(sol::lib::base);
+
+		RegisterUserTypes();
 
 		GameObject* gameObject = SceneManager::GetInstance()->CreateObject();
 
-		lua["this"] = gameObject;
+		state["self"] = gameObject;
 
-		lua.new_usertype<GameObject>("GameObject",
-			"SetName", &GameObject::SetName,
-			"TransformComp", &GameObject::GetComponent<TransformComp>,
-			"SpriteComp", &GameObject::GetComponent<SpriteComp>);
+		state.script_file("Assets/Scripts/Player.lua");
 
-		lua.new_usertype<vec2f>("vec2f",
-			sol::call_constructor, sol::factories([](float x, float y) {return vec2f(x, y); }),
-			"x", &vec2f::x,
-			"y", &vec2f::y);
+		mfunc = state["OnUpdate"];
 
-		lua.new_usertype<TransformComp>("TransformComp",
-			"x", &TransformComp::SetX,
-			"y", &TransformComp::SetY,
-			"GetPos", &TransformComp::GetPosition,
-			"SetPos", &TransformComp::SetPosition);
-
-		lua.new_usertype<SpriteComp>("SpriteComp",
-			sol::call_constructor, sol::factories([](GameObject* go) { return go->AddComponent<SpriteComp>(new SpriteComp); }),
-			"SetTexture", &SpriteComp::SetTexturePath);
-
-		lua.script_file("Assets/Scripts/Player.lua");
+		state.set_function("OnKeyDown", [](uint32_t key) { return InputManager::GetInstance()->GetKeyDown(key); });
 	}
 
 	void ScriptingEngine::Shutdown()
@@ -68,5 +40,79 @@ namespace Engine
 		}
 
 		return mInstance;
+	}
+
+	void ScriptingEngine::Update()
+	{
+		/*auto gameObject = SceneManager::GetInstance()->GetSceneObjects().at(0);
+		state["self"] = gameObject;*/
+
+		mfunc();
+	}
+
+	void ScriptingEngine::RegisterUserTypes()
+	{
+		state.new_usertype<vec2f>("vec2f",
+			sol::constructors<
+			vec2f(),
+			vec2f(float, float)
+			>(),
+
+			"x", &vec2f::x,
+			"y", &vec2f::y);
+
+		state.new_usertype<Component>("Component",
+			"GetOwner", &Component::GetGameObject,
+			"GetType", &Component::GetType
+			);
+
+		state.new_usertype<TransformComp>("TransformComp",
+			sol::base_classes, sol::bases<Component>(),
+
+			"SetPosition", &TransformComp::SetPosition,
+			"GetPosition", &TransformComp::GetPosition,
+
+			"SetRotation", &TransformComp::SetRotation,
+			"GetRotation", &TransformComp::GetRotation,
+
+			"SetScale", &TransformComp::SetScale,
+			"GetScale", &TransformComp::GetScale
+			);
+
+		state.new_usertype<SpriteComp>("SpriteComp", sol::base_classes, sol::bases<Component>(),
+
+			"SetPath", &SpriteComp::SetTexturePath,
+
+			"SetTexture", &SpriteComp::SetTexture,
+			"GetTexture", &SpriteComp::GetTexture,
+
+			"SetFlipX", &SpriteComp::ToggleFlipX,
+			"GetFlipX", &SpriteComp::GetFlipX,
+
+			"SetFlipY", &SpriteComp::ToggleFlipY,
+			"GetFlipY", &SpriteComp::GetFlipY,
+
+			"SetColour", &SpriteComp::SetColour,
+			"GetColour", &SpriteComp::GetColour
+			);
+
+		state.new_usertype<GameObject>("GameObject",
+			"SetName", &GameObject::SetName,
+			"GetName", &GameObject::GetName,
+
+			"SetParent", &GameObject::AttachToParent,
+			"GetParent", &GameObject::GetParent,
+
+			"IsActive", &GameObject::IsEnabled,
+			"Enable", &GameObject::EnableObject,
+			"Disable", &GameObject::DisableObject,
+			
+			"MakeSprite", [](GameObject& go) { return go.AddComponent<SpriteComp>(new SpriteComp); },
+
+			"GetTransform", &GameObject::GetComponent<TransformComp>,
+			"GetSprite", &GameObject::GetComponent<SpriteComp>
+			);
+
+	
 	}
 }

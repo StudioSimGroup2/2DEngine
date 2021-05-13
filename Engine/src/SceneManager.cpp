@@ -1,4 +1,5 @@
 #include "SceneManager.h"
+#include "Scripting\ScriptingEngine.h"
 
 namespace Engine
 {
@@ -28,6 +29,8 @@ namespace Engine
 		{
 			go->Update();
 		}
+
+		ScriptingEngine::GetInstance()->Update();
 	}
 
 	void SceneManager::RenderScene()

@@ -362,7 +362,9 @@ project "Game"
         includedirs
         {
             "Engine/src",
-			"Engine/ext"
+			"Engine/ext",
+			"%{wks.location}/Lua/src",
+			"%{wks.location}/Sol2/src"
 		}
 
         links

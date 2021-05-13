@@ -12,15 +12,12 @@ namespace Engine
 		TransformComp(GameObject* parent);
 		~TransformComp() override;
 
-		void SetPosition(float x, float y) { mPosition.x = x; mPosition.y = y; }
-		void SetRotation(float x, float y) { mRotation.x = x; mRotation.y = y; }
-		void SetScale(float x, float y) { mScale.x = x; mScale.y = y; }
+		void SetPosition(vec2f& pos) { mPosition = pos; }
+		void SetRotation(vec2f& rot) { mRotation = rot; }
+		void SetScale(vec2f& scale) { mScale = scale; }
 
 		void Update() override;
 		void Render() override;
-
-		void SetX(float x) { mPosition.x = x; }
-		void SetY(float y) { mPosition.x = y; }
 
 		vec2f& GetPosition() { return mPosition; }
 		vec2f& GetRotation() { return mRotation; }

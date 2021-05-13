@@ -117,6 +117,58 @@ namespace Engine
 		}
 	}
 
+	bool InputManager::GetKeyDown(uint32_t key)
+	{
+		if (key <= 6)
+		{
+			if (mMouse[key] == MB_PRESS || mMouse[key] == MB_REPEAT)
+			{
+				return true;
+			}
+		}
+		else
+		{
+			if (mKeyboard[key] != KB_NOSTATE || mMouse[key] == KB_RELEASE)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	bool InputManager::GetKeyRepeat(uint32_t key)
+	{
+		if (key <= 6)
+		{
+			if (mMouse[key] == MB_REPEAT)
+				return true;
+		}
+		else
+		{
+			if (mKeyboard[key] == KB_REPEAT)
+				return true;
+		}
+
+		return false;
+	}
+
+	bool InputManager::GetKeyUp(uint32_t key)
+	{
+		if (key <= 6)
+		{
+			if (mMouse[key] == MB_RELEASE)
+				return true;
+		}
+		else
+		{
+			if (mKeyboard[key] == KB_RELEASE)
+				return true;
+		}
+
+		return false;
+	}
+
 	void InputManager::Shutdown()
 	{
 		if (mInstance == nullptr)

@@ -88,6 +88,10 @@ namespace Engine
 		vec2f SetMousePosition(const vec2f& mousePos) { return mMousePos = mousePos; }
 		vec2f GetMousePosition() const { return mMousePos; }
 
+		bool GetKeyDown(uint32_t key);
+		bool GetKeyRepeat(uint32_t key);
+		bool GetKeyUp(uint32_t key);
+
 		static void Shutdown();
 
 	private:
