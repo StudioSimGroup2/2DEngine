@@ -9,9 +9,19 @@
 #include <Engine/Defines.h>
 
 #include "imgui_impl_win32.h"
-
 #if GRAPHICS_LIBRARY ==  1
 #include "OpenGL/imgui_impl_opengl3.h"
+#ifdef _WIN64
+
+struct RendererData
+{
+	HDC hDC;
+};
+
+bool CreateDeviceOpenGL2(HWND hWnd, RendererData* data);
+void CleanupDeviceOpenGL2(HWND hWnd, RendererData* data);
+bool ActivateOpenGL2(HWND hWnd);
+#endif
 #elif GRAPHICS_LIBRARY ==  0
 #include "D3D11/imgui_impl_dx11.h"
 #endif
@@ -19,12 +29,12 @@
 #include <Engine/Renderer/Device.h>
 #include <Engine/Application.h>
 
-//#include <ImFileDialog/ImFileDialog.h>
+#include <ImFileDialog/ImFileDialog.h>
 #include <implot/implot.h>
 #include <CameraManager.h>
 
 #include <SceneManager.h>
-
+#include <imgui_internal.h>
 
 using namespace Engine;
 
@@ -38,20 +48,33 @@ GUILayer::GUILayer()
 	Application* app = Application::GetInstance();
 	io.DisplaySize = ImVec2(static_cast<float>(app->GetWindowData().GetWidth()), static_cast<float>(app->GetWindowData().GetHeight()));
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-
-	//OpenGL version does not currently support viewports
-#if GRAPHICS_LIBRARY ==  0
-	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable; 
-#endif
-
+	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 	io.ConfigDockingWithShift = true;
-
-	ImGui_ImplWin32_Init(dynamic_cast<Engine::WindowsSystem*>(&app->GetWindowData())->GetHWND());
+	io.IniFilename = "imgui.ini";
 
 #if GRAPHICS_LIBRARY ==  1
+	ImGui_ImplWin32_Init(dynamic_cast<Engine::WindowsSystem*>(&app->GetWindowData())->GetHWND(), true);
 	ImGui_ImplOpenGL3_Init("#version 460");
+
+	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+	{
+		ImGuiPlatformIO& platform_io = ImGui::GetPlatformIO();
+
+		// Store the hdc for this new window
+		assert(platform_io.Renderer_CreateWindow == NULL);
+		platform_io.Renderer_CreateWindow = Win32_CreateWindow;
+		assert(platform_io.Renderer_DestroyWindow == NULL);
+		platform_io.Renderer_DestroyWindow = Win32_DestroyWindow;
+		assert(platform_io.Renderer_SwapBuffers == NULL);
+		platform_io.Renderer_SwapBuffers = Win32_SwapBuffers;
+
+		// We need to activate the context before drawing
+		assert(platform_io.Platform_RenderWindow == NULL);
+		platform_io.Platform_RenderWindow = Win32_RenderWindow;
+	}
 #elif GRAPHICS_LIBRARY ==  0
+	ImGui_ImplWin32_Init(dynamic_cast<Engine::WindowsSystem*>(&app->GetWindowData())->GetHWND());
 	ImGui_ImplDX11_Init(Device::GetDevice()->GetDevice(), Device::GetDevice()->GetDeviceContext());
 #endif
 
@@ -64,82 +87,93 @@ GUILayer::GUILayer()
 		style.Colors[ImGuiCol_WindowBg].w = 1.0f;
 	}
 
-//	ifd::FileDialog::Instance().CreateTexture = [](uint8_t* data, int w, int h, char fmt) -> void*
-//	{
-//#if GRAPHICS_LIBRARY ==  1
-//		GLuint tex;
-//
-//		glGenTextures(1, &tex);
-//		glBindTexture(GL_TEXTURE_2D, tex);
-//		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-//		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-//		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-//		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-//		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, (fmt == 0) ? GL_BGRA : GL_RGBA, GL_UNSIGNED_BYTE, data);
-//		glGenerateMipmap(GL_TEXTURE_2D);
-//		glBindTexture(GL_TEXTURE_2D, 0);
-//#elif GRAPHICS_LIBRARY ==  0
-//		ID3D11ShaderResourceView* tex;
-//
-//		D3D11_TEXTURE2D_DESC desc;
-//		ZeroMemory(&desc, sizeof(desc));
-//		D3D11_SUBRESOURCE_DATA srd;
-//		ZeroMemory(&srd, sizeof(srd));
-//		ID3D11Texture2D* tex2d = nullptr;
-//		D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
-//		ZeroMemory(&srvDesc, sizeof(srvDesc));
-//
-//		desc.Width = static_cast<UINT>(w);
-//		desc.Height = static_cast<UINT>(h);
-//		desc.MipLevels = 1;
-//		desc.ArraySize = 1;
-//		desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-//		desc.SampleDesc.Count = 1;
-//		desc.Usage = D3D11_USAGE_DEFAULT;
-//		desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-//		desc.CPUAccessFlags = 0;
-//
-//		srd.pSysMem = data;
-//		srd.SysMemPitch = static_cast<UINT>(4 * w);
-//		srd.SysMemSlicePitch = 0;
-//
-//		Device::GetDevice()->GetDevice()->CreateTexture2D(&desc, &srd, &tex2d);
-//
-//		srvDesc.Format = desc.Format;
-//		srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-//		srvDesc.Texture2D.MipLevels = desc.MipLevels;
-//		srvDesc.Texture2D.MostDetailedMip = 0;
-//
-//		Device::GetDevice()->GetDevice()->CreateShaderResourceView(tex2d, &srvDesc, &tex);
-//#endif
-//		return (void*)(size_t)tex;
-//	};
-//
-//	ifd::FileDialog::Instance().DeleteTexture = [](void* tex)
-//	{
-//#if GRAPHICS_LIBRARY ==  1
-//		GLuint texID = (GLuint)(uintptr_t)(tex);
-//		glDeleteTextures(1, &texID);
-//#elif GRAPHICS_LIBRARY ==  0
-//		auto* srv = (ID3D11ShaderResourceView*)tex;
-//
-//		srv->Release();
-//#endif
-//	};
+	ifd::FileDialog::Instance().CreateTexture = [](uint8_t* data, int w, int h, char fmt) -> void*
+	{
+#if GRAPHICS_LIBRARY ==  1
+		GLuint tex;
+
+		glGenTextures(1, &tex);
+		glBindTexture(GL_TEXTURE_2D, tex);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, (fmt == 0) ? GL_BGRA : GL_RGBA, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, 0);
+#elif GRAPHICS_LIBRARY ==  0
+		ID3D11ShaderResourceView* tex;
+
+		D3D11_TEXTURE2D_DESC desc;
+		ZeroMemory(&desc, sizeof(desc));
+		D3D11_SUBRESOURCE_DATA srd;
+		ZeroMemory(&srd, sizeof(srd));
+		ID3D11Texture2D* tex2d = nullptr;
+		D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
+		ZeroMemory(&srvDesc, sizeof(srvDesc));
+
+		desc.Width = static_cast<UINT>(w);
+		desc.Height = static_cast<UINT>(h);
+		desc.MipLevels = 1;
+		desc.ArraySize = 1;
+		desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+		desc.SampleDesc.Count = 1;
+		desc.Usage = D3D11_USAGE_DEFAULT;
+		desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+		desc.CPUAccessFlags = 0;
+
+		srd.pSysMem = data;
+		srd.SysMemPitch = static_cast<UINT>(4 * w);
+		srd.SysMemSlicePitch = 0;
+
+		Device::GetDevice()->GetDevice()->CreateTexture2D(&desc, &srd, &tex2d);
+
+		srvDesc.Format = desc.Format;
+		srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+		srvDesc.Texture2D.MipLevels = desc.MipLevels;
+		srvDesc.Texture2D.MostDetailedMip = 0;
+
+		Device::GetDevice()->GetDevice()->CreateShaderResourceView(tex2d, &srvDesc, &tex);
+#endif
+		return (void*)(size_t)tex;
+	};
+
+	ifd::FileDialog::Instance().DeleteTexture = [](void* tex)
+	{
+#if GRAPHICS_LIBRARY ==  1
+		GLuint texID = (GLuint)(uintptr_t)(tex);
+		glDeleteTextures(1, &texID);
+#elif GRAPHICS_LIBRARY ==  0
+		auto* srv = (ID3D11ShaderResourceView*)tex;
+
+		srv->Release();
+		srv = nullptr;
+#endif
+	};
+
+	// idk why and i dont want to know 
+	// why on earth despite the fact opengl SHOULD be generating an id for each texture
+	// the play button is loaded in to the frame buffer...
+
+	/*std::filesystem::path p = std::filesystem::current_path().parent_path();
+	p /= "Engine\\Assets\\Editor\\Icons\\";
+	AssetManager::GetInstance()->LoadTexture("PlayIcon", p.string() + "right.png");
+	AssetManager::GetInstance()->LoadTexture("StopIcon", p.string() + "stop.png");*/
 }
 
 GUILayer::~GUILayer()
 {
 	SceneManager::Shutdown();
 
-	//ifd::FileDialog::Instance().Close();
+	ifd::FileDialog::Instance().Close();
 
 #if GRAPHICS_LIBRARY ==  1
 	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplWin32_Shutdown();
 #elif GRAPHICS_LIBRARY == 0
 	ImGui_ImplDX11_Shutdown();
-#endif
 	ImGui_ImplWin32_Shutdown();
+#endif
 
 	ImPlot::DestroyContext();
 	ImGui::DestroyContext();
@@ -156,17 +190,20 @@ void GUILayer::Render()
 #ifdef WINDOWS_PLATFORM
 	ImGui_ImplWin32_NewFrame();
 #endif
-	ImGui::NewFrame();
 
+	ImGui::NewFrame();
 
 #pragma region Menu Bar
 
 	ImGui::SetNextWindowBgAlpha(1);
-	//ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
+	ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
+
+	float menuBar;
 
 	// Menu
 	if (ImGui::BeginMainMenuBar())
 	{
+		menuBar = ImGui::GetWindowSize().y;
 		if (ImGui::BeginMenu("File"))
 		{
 			if (ImGui::MenuItem("New Project CTRL + N")) {
@@ -174,7 +211,7 @@ void GUILayer::Render()
 			}
 			if (ImGui::MenuItem("Open Project CTRL + O"))
 			{
-				//ifd::FileDialog::Instance().Open("File Browser", "Open a Project", "Engine Project File (*.prj){.png},.*");
+				ifd::FileDialog::Instance().Open("File Browser", "Open a Project", "Engine Project File (*.prj){.png},.*");
 			}
 			if (ImGui::MenuItem("Save Project CTRL + S"))
 			{
@@ -289,6 +326,47 @@ void GUILayer::Render()
 
 #pragma endregion
 
+#pragma region GUI Buttons //Fix dockspace issues
+
+	//float width = ImGui::GetMainViewport()->Size.x;
+	//ImVec2 pos = ImGui::GetMainViewport()->Pos;
+	//pos.y += menuBar;
+	//ImGui::SetNextWindowPos(pos);
+	//ImGui::SetNextWindowSize(ImVec2(width, 0.0f));
+
+	//ImGui::Begin("GUIButtons", NULL, ImGuiWindowFlags_NoScrollbar |
+	//	ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
+
+	//ImGui::SetCursorPosX(width / 2);
+
+	//if (ImGui::ImageButton((void*)(intptr_t)AssetManager::GetInstance()->GetTextureByName("PlayIcon")->GetTexID(), 
+	//	ImVec2(16.0f, 16.0f)))
+	//{
+
+	//}
+	//ImGui::SameLine();
+	//if (ImGui::ImageButton((void*)(intptr_t)AssetManager::GetInstance()->GetTextureByName("StopIcon")->GetTexID(),
+	//	ImVec2(16.0f, 16.0f)))
+	//{
+
+	//}
+
+	//ImGui::End();
+
+#pragma endregion
+
+#pragma region
+	ImGui::Begin("Game", NULL, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+
+#if GRAPHICS_LIBRARY ==  1
+	ImGui::Image((void*)(intptr_t)SceneManager::GetInstance()->GetRenderToTexID(), ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
+#elif GRAPHICS_LIBRARY == 0
+	ImGui::Image((void*)(intptr_t)SceneManager::GetInstance()->GetRenderToTexID(), ImGui::GetContentRegionAvail());
+#endif
+
+	ImGui::End();
+#pragma endregion
+
 #pragma region Profiler
 
 	ImS16 Default[3] = { 1, 1, 1 };
@@ -310,7 +388,7 @@ void GUILayer::Render()
 		ImPlot::SetNextPlotTicksY(positions, 3, labels);
 
 		if (ImPlot::BeginPlot("Heap Profiler", "Memory (MB)", "Heap",
-			ImVec2(-1, 0), 0, 0, ImPlotAxisFlags_Invert))
+			ImVec2(-1, 0), 0, 0, ImPlotAxisFlags_Invert | ImPlotFlags_NoLegend))
 		{
 			ImPlot::SetLegendLocation(ImPlotLocation_West, ImPlotOrientation_Vertical);
 			ImPlot::PlotBarsH("Default", Default, 3, 0.2, -0.2);
@@ -344,19 +422,14 @@ void GUILayer::Render()
 
 
 #pragma endregion
-
-	ImGui::ShowDemoWindow();
-
 #pragma region SH // <------ Current Scene Hierarchy
 
 	ImGui::Begin("Scene Hierarchy");
 	static int selectionMask = (1 << 2);
 	int sceneIndex = 0;
 	int nodeClicked = -1;
-
 	for (GameObject* go : SceneManager::GetInstance()->GetSceneObjects())
 		CreateNode(go, ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth, sceneIndex, nodeClicked, selectionMask);
-		
 
 	if (nodeClicked != -1)
 	{
@@ -382,28 +455,87 @@ void GUILayer::Render()
 
 		for (Component* c : mCurrentSelectedNode->GetComponents())
 		{
-			if (ImGui::CollapsingHeader(c->GetType().c_str()))
+			switch (c->GetType())
 			{
-				if (c->GetType() == "Transform")
+			case COMPONENT_TRANSFORM:
+				if (ImGui::CollapsingHeader("Transform"))
 				{
 					TransformComponent(dynamic_cast<TransformComp*>(c));
 				}
-				else if (c->GetType() == "Sprite")
+				break;
+
+			case COMPONENT_SPRITE:
+				if (ImGui::CollapsingHeader("Sprite"))
 				{
 					SpriteComponent(dynamic_cast<SpriteComp*>(c));
 				}
-				else if (c->GetType() == "Physics")
+				break;
+
+			case COMPONENT_PHYSICS:
+				if (ImGui::CollapsingHeader("Physics"))
 				{
 					PhysicsComponent(dynamic_cast<PhysicsComp*>(c));
 				}
+				break;
+
+			case COMPONENT_SCRIPT:
+				if (ImGui::CollapsingHeader("Script"))
+				{
+				}
+				break;
+
+			case COMPONENT_AUDIO:
+				if (ImGui::CollapsingHeader("Audio"))
+				{
+				}
+				break;
+
+			case COMPONENT_CAMERA:
+				if (ImGui::CollapsingHeader("Camera"))
+				{
+				}
+				break;
+
+			case COMPONENT_TILEMAP:
+				if (ImGui::CollapsingHeader("TileMap"))
+				{
+
+				}
+				break;
+
+
+			default:
+				break;
 			}
 		}
+
+		ImGui::Separator();
+
+		const char* comps[] = { "UI", "Script", "Physics" };
+
+		if (ImGui::Button("Add Component..", ImVec2(ImGui::GetContentRegionAvail().x, 0.0f)))
+		{
+			ImGui::OpenPopup("CompList");
+		}
+
+		ImGui::SameLine();
+		if (ImGui::BeginPopup("CompList"))
+		{
+			ImGui::Text("Components");
+			ImGui::Separator();
+			for (int i = 0; i < IM_ARRAYSIZE(comps); i++)
+				if (ImGui::Selectable(comps[i]))
+				{
+
+				}
+			ImGui::EndPopup();
+		}
+
 	}
 
 	ImGui::End();
 
 #pragma endregion
-
 
 #pragma region Scene Hierarchy
 
@@ -509,10 +641,19 @@ void GUILayer::Render()
 
 #pragma endregion
 
+
 	ImGui::Render();
 
+#if GRAPHICS_LIBRARY ==  0
+	//Device::GetDevice()->ClearAndSetRenderTarget();
+#endif
+
 #if GRAPHICS_LIBRARY ==  1
+	GLint last_program;
+	glGetIntegerv(GL_CURRENT_PROGRAM, &last_program);
+	glUseProgram(0);
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	glUseProgram(last_program);
 #elif GRAPHICS_LIBRARY == 0
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 #endif
@@ -521,49 +662,143 @@ void GUILayer::Render()
 	ImGui::UpdatePlatformWindows();
 	ImGui::RenderPlatformWindowsDefault();
 #endif
+
+#if GRAPHICS_LIBRARY ==  1
+	wglMakeCurrent(Device::GetDevice()->GetHDC(), Device::GetDevice()->GetHGLRC());
+#endif
 }
 
 void GUILayer::Update()
 {
 }
 
+#if GRAPHICS_LIBRARY ==  1
+void GUILayer::Win32_CreateWindow(ImGuiViewport* viewport)
+{
+	assert(viewport->RendererUserData == NULL);
+
+	RendererData* data = IM_NEW(RendererData);
+	CreateDeviceOpenGL2((HWND)viewport->PlatformHandle, data);
+	viewport->RendererUserData = data;
+}
+
+bool CreateDeviceOpenGL2(HWND hWnd, RendererData* data)
+{
+	if (!ActivateOpenGL2(hWnd))
+		return false;
+
+	data->hDC = GetDC(hWnd);
+
+	if (!Device::GetDevice()->GetHGLRC())
+	{
+		Device::GetDevice()->SetHGLRC(wglCreateContext(data->hDC));
+	}
+
+	return true;
+}
+
+bool ActivateOpenGL2(HWND hWnd)
+{
+	HDC hDc = GetDC(hWnd);
+
+	PIXELFORMATDESCRIPTOR pixelFormatDesc;
+	ZeroMemory(&pixelFormatDesc, sizeof(pixelFormatDesc));
+	pixelFormatDesc.nSize = sizeof(PIXELFORMATDESCRIPTOR);
+	pixelFormatDesc.nVersion = 1;
+	pixelFormatDesc.dwFlags = LPD_SUPPORT_OPENGL | PFD_DRAW_TO_WINDOW | PFD_DOUBLEBUFFER;
+	pixelFormatDesc.iPixelType = PFD_TYPE_RGBA;
+	pixelFormatDesc.cColorBits = 24;
+	pixelFormatDesc.cDepthBits = 32;
+	pixelFormatDesc.cStencilBits = 8;
+	pixelFormatDesc.iLayerType = PFD_MAIN_PLANE;
+
+	int pf = ChoosePixelFormat(hDc, &pixelFormatDesc);
+	if (pf == 0)
+	{
+		return false;
+	}
+
+	if (SetPixelFormat(hDc, pf, &pixelFormatDesc) == FALSE)
+	{
+		return false;
+	}
+
+	ReleaseDC(hWnd, hDc);
+	return true;
+}
+
+void GUILayer::Win32_RenderWindow(ImGuiViewport* viewport, void*)
+{
+	RendererData* data = (RendererData*)viewport->RendererUserData;
+
+	if (data)
+	{
+		// Activate the platform window DC in the OpenGL rendering context
+		wglMakeCurrent(data->hDC, Device::GetDevice()->GetHGLRC());
+	}
+}
+
+void GUILayer::Win32_SwapBuffers(ImGuiViewport* viewport, void*)
+{
+	RendererData* data = (RendererData*)viewport->RendererUserData;
+
+	if (data)
+	{
+		SwapBuffers(data->hDC);
+	}
+}
+
+void GUILayer::Win32_DestroyWindow(ImGuiViewport* viewport)
+{
+	if (viewport->RendererUserData != NULL)
+	{
+		RendererData* data = (RendererData*)viewport->RendererUserData;
+		CleanupDeviceOpenGL2((HWND)viewport->PlatformHandle, data);
+		IM_DELETE(data);
+		viewport->RendererUserData = NULL;
+	}
+}
+
+void CleanupDeviceOpenGL2(HWND hWnd, RendererData* data)
+{
+	wglMakeCurrent(NULL, NULL);
+	ReleaseDC(hWnd, data->hDC);
+}
+#endif
+
+
 void GUILayer::SpriteComponent(SpriteComp* c)
 {
 	ImGui::PushID("sprite");
- 
+
 	bool flipX = c->GetFlipX();
 	bool flipY = c->GetFlipY();
 
 	auto& ref = c->GetColour();
 
-	std::string path;
+	std::string path = c->GetTexture()->GetPath();
 	static ImVec4 colour = ImVec4(ref[0], ref[1],
 		ref[2], ref[3]);
 
-	if (c->GetTexture()->GetPath().length() > 25)
-	{
-		path = c->GetTexture()->GetPath().substr(25);
-		path = path.substr(path.find_first_of('\\'));
-	}
-	else
-	{
-		path = c->GetTexture()->GetPath();
-	}
+	if (path.find_last_of('\\') != std::string::npos)
+		path = path.substr(path.find_last_of('\\'));
+	else if (path.find_last_of('/') != std::string::npos)
+		path = path.substr(path.find_last_of('/'));
 
 	if (ImGui::Button(path.c_str()))
 	{
-		//ifd::FileDialog::Instance().Open("File Browser", "Change Sprite Texture", "Texture File (*.png){.png},.*");
+		ifd::FileDialog::Instance().Open("File Browser", "Change Sprite Texture", "Texture File (*.png){.png},.*");
 	}
 
-//	if (ifd::FileDialog::Instance().IsDone("File Browser"))
-//	{
-//		if (ifd::FileDialog::Instance().HasResult())
-//		{
-//			c->SetTexture(AssetManager::GetInstance()->LoadTexture(
-//				"", ifd::FileDialog::Instance().GetResult().u8string()));
-//		}
-//		ifd::FileDialog::Instance().Close();
-//	}
+	if (ifd::FileDialog::Instance().IsDone("File Browser"))
+	{
+		if (ifd::FileDialog::Instance().HasResult() && ifd::FileDialog::Instance().GetResult().u8string() != c->GetTexture()->GetPath())
+		{
+			c->SetTexture(AssetManager::GetInstance()->LoadTexture(
+				c->GetTexture()->GetName(), ifd::FileDialog::Instance().GetResult().u8string()));
+		}
+		ifd::FileDialog::Instance().Close();
+	}
 
 	ImGui::SameLine();
 	ImGui::Image((void*)(intptr_t)c->GetTexID(), ImVec2(32.0f, 32.0f));
@@ -579,10 +814,11 @@ void GUILayer::SpriteComponent(SpriteComp* c)
 	ImGui::SameLine();
 	ImGui::Checkbox("Y", &flipY);
 	ImGui::Columns(1);
-	
+
 	c->ToggleFlipX(flipX);
 	c->ToggleFlipY(flipY);
 	c->SetColour(colour.x, colour.y, colour.z, colour.w);
+
 
 	ImGui::PopID();
 }
@@ -596,7 +832,7 @@ void GUILayer::TransformComponent(TransformComp* c)
 	float scale[2] = { c->GetScale().x, c->GetScale().y };
 
 	float rotation[2] = { c->GetRotation().x, c->GetRotation().y };
-	
+
 	ImGui::PushID("position");
 
 	ImGui::Columns(2);
@@ -630,6 +866,36 @@ void GUILayer::TransformComponent(TransformComp* c)
 	c->SetPosition(vec2f(position[0], position[1]));
 	c->SetRotation(vec2f(rotation[0], rotation[1]));
 	c->SetScale(vec2f(scale[0], scale[1]));
+}
+
+void GUILayer::CreateNode(GameObject* go, int flags, int& index, int& nodeClicked, int& selectionMask)
+{
+	ImGui::PushID(index);
+	ImGuiTreeNodeFlags node_flags = flags;
+	const bool is_selected = (selectionMask & (1 << index)) != 0;
+	if (is_selected)
+		node_flags |= ImGuiTreeNodeFlags_Selected;
+
+	bool node_open = ImGui::TreeNodeEx((void*)(intptr_t)index, node_flags, go->GetName().c_str());
+
+	if (ImGui::IsItemClicked())
+	{
+		nodeClicked = index;
+		mCurrentSelectedNode = go;
+	}
+
+	if (node_open)
+	{
+		for (GameObject* child : go->GetChildren())
+		{
+			index++;
+			CreateNode(child, flags, index, nodeClicked, selectionMask);
+		}
+
+		ImGui::TreePop();
+	}
+	ImGui::PopID();
+	index++;
 }
 
 void GUILayer::PhysicsComponent(PhysicsComp* c)
@@ -671,35 +937,5 @@ void GUILayer::PhysicsComponent(PhysicsComp* c)
 	c->SetMass(physMass);
 	c->SetGravity(physGrav);
 	c->SetFriction(physFric);
-}
-
-void GUILayer::CreateNode(GameObject* go, int flags, int& index, int& nodeClicked, int& selectionMask)
-{
-	ImGui::PushID(index);
-	ImGuiTreeNodeFlags node_flags = flags;
-	const bool is_selected = (selectionMask & (1 << index)) != 0;
-	if (is_selected)
-		node_flags |= ImGuiTreeNodeFlags_Selected;
-
-	bool node_open = ImGui::TreeNodeEx((void*)(intptr_t)index, node_flags, go->GetName().c_str());
-
-	if (ImGui::IsItemClicked())
-	{
-		nodeClicked = index;
-		mCurrentSelectedNode = go;
-	}
-
-	if (node_open)
-	{
-		for (GameObject* child : go->GetChildren())
-		{
-			index++;
-			CreateNode(child, flags, index, nodeClicked, selectionMask);
-		}
-
-		ImGui::TreePop();
-	}
-	ImGui::PopID();
-	index++;
 }
 

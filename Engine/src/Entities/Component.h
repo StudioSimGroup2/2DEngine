@@ -17,19 +17,18 @@ namespace Engine
 	public:
 		Component();
 		Component(GameObject* parent);
-		virtual ~Component() {}
+		virtual ~Component() { mParent = nullptr; }
 
 		virtual void Update() = 0;
 		virtual void Render() = 0;
 
-		std::string GetType() const { return mType; }
+		int GetType() const { return mType; }
 
 		GameObject* GetGameObject() const { return mParent; }
 		void SetGameObject(GameObject* parent) { mParent = parent; }
 
 	protected:
-		//virtual void Init();
-		std::string mType;
+		int mType;
 		GameObject* mParent = nullptr;
 	};
 }

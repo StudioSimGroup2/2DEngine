@@ -16,7 +16,7 @@ Engine::PhysicsComp::~PhysicsComp()
 
 void Engine::PhysicsComp::Init()
 {
-	mType = "Physics";
+	mType = COMPONENT_PHYSICS;
 	//Initialize Net Forces
 	mNetForce.x = 0.0f;
 	mNetForce.y = 0.0f;

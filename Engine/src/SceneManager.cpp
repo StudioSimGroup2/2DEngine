@@ -1,6 +1,7 @@
 #include "SceneManager.h"
 #include "Scripting\ScriptingEngine.h"
 
+
 namespace Engine
 {
 	SceneManager* SceneManager::mInstance = nullptr;
@@ -15,7 +16,6 @@ namespace Engine
 
 	void SceneManager::Init()
 	{
-		
 	}
 
 	void SceneManager::LoadScene()
@@ -38,6 +38,7 @@ namespace Engine
 
 		mSceneObjects.push_back(mLevelMap);
 
+		mRenderToTex.CreateFrameBuffer(1260, 677);
 
 		mSceneLoaded = true;
 	}
@@ -54,10 +55,14 @@ namespace Engine
 
 	void SceneManager::RenderScene()
 	{
-		for (GameObject* go : mSceneObjects)
+		mRenderToTex.Load();
+
+        for (GameObject* go : mSceneObjects)
 		{
 			go->Render();
 		}
+
+        mRenderToTex.Unload();
 	}
 
 	void SceneManager::SaveScene()

@@ -36,18 +36,12 @@ namespace Engine
 			{
 				switch (secondPass)
 				{
-				case 0:
-				{
-					break;
-				}
 				case 1:
 				{
-					int yotihypr = 0;
-					vec2f HelpME = vec2f(ForY * TILEHEIGHT, ForX * TILEWIDTH) + mParent->GetComponent<TransformComp>()->GetPosition();
 #if GRAPHICS_LIBRARY == 0
-					dynamic_cast<D3D11Renderer2D*>(mRenderer[pos])->Draw(HelpME, vec2f(0.0f), vec2f(1.0f), mTexture);
+					dynamic_cast<D3D11Renderer2D*>(mRenderer[pos])->Draw(vec2f(ForY * TILEHEIGHT, ForX * TILEWIDTH) + mParent->GetComponent<TransformComp>()->GetPosition(), vec2f(0.0f), vec2f(1.0f), mTexture);
 #elif GRAPHICS_LIBRARY == 1
-					dynamic_cast<OGLRenderer2D*>(mRenderer[pos])->Draw(HelpME, vec2f(0.0f), vec2f(1.0f), mTexture);
+					dynamic_cast<OGLRenderer2D*>(mRenderer[pos])->Draw(vec2f(ForY * TILEHEIGHT, ForX * TILEWIDTH) + mParent->GetComponent<TransformComp>()->GetPosition(), vec2f(0.0f), vec2f(1.0f), mTexture);
 #endif
 					pos++;
 					break;
@@ -82,20 +76,17 @@ namespace Engine
 	}
 	void TileMapComp::Init()
 	{
-		
-		mType = "TileMap";
+		mType = COMPONENT_PHYSICS;
 		mTexture = AssetManager::GetInstance()->LoadTexture("Tile", "Assets/Textures/Stone.png");
+
 		LoadTileMap("Assets/TileMaps/XML_Test.xml");
+
 		for (int X = 0; X < mTileMap.size(); X++)
 		{
 			for (int Y = 0; Y < mTileMap[0].size(); Y++)
 			{
 				switch (mTileMap[X][Y])
 				{
-				case 0:
-				{
-					break;
-				}
 				case 1:
 				{
 					mRenderer.push_back(Device::CreateRenderer(AssetManager::GetInstance()->GetShaderByName("Default")));

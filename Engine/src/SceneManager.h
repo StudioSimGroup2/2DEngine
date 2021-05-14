@@ -2,6 +2,9 @@
 #include <Entities/GameObject.h>
 #include <vector>
 
+#include "Scene.h"
+#include "Engine\Renderer\FrameBuffer.h"
+
 //TODO: Load Scene
 
 namespace Engine
@@ -32,6 +35,8 @@ namespace Engine
 		bool IsSceneLoaded() { return (mSceneLoaded); }
 
 		static void Shutdown();
+
+		void* GetRenderToTexID() { return mRenderToTex.GetTexID(); }
 	private:
 		SceneManager() { }
 
@@ -40,6 +45,7 @@ namespace Engine
 		std::vector<GameObject*> mSceneObjects;
 
 		bool mSceneLoaded = false;
+		FrameBuffer mRenderToTex;
 	};
 }
 
