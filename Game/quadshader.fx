@@ -6,6 +6,16 @@ cbuffer MatrixBuffer
 	matrix worldMatrix;
 	matrix viewMatrix;
 	matrix projectionMatrix;
+    bool flipX;
+    bool flipY; // Todo checking padding
+};
+
+cbuffer ColourBuffer
+{
+    float r;
+    float g;
+    float b;
+    float a;
 };
 
 struct VS_INPUT
@@ -17,6 +27,7 @@ struct VS_INPUT
 struct PS_INPUT
 {
     float4 Pos : SV_POSITION;
+    float4 Col : COLOUR;
     float2 Tex : TEXCOORD0;
 };
 
@@ -36,17 +47,35 @@ PS_INPUT VS(VS_INPUT input)
     output.Pos = mul(input.Pos, worldMatrix);
     output.Pos = mul(output.Pos, viewMatrix);
     output.Pos = mul(output.Pos, projectionMatrix);
-   
-    output.Tex = input.Tex;
+    
+    if (!flipX)
+    {
+        output.Tex.x = input.Tex.x;
+    }
+    else
+    {
+        output.Tex.x = -input.Tex.x;
+    }
+    
+    if (!flipY)
+    {
+        output.Tex.y = input.Tex.y;
+    }
+    else
+    {
+        output.Tex.y = -input.Tex.y;
+    }
 	
+    output.Col = float4(r, g, b, a);
+    
     return output;
 }
 
 float4 PS(PS_INPUT IN) : SV_TARGET
 {
     float4 vColor = float4(1, 1, 1, 1);
-    
-    vColor = tx.Sample(linearSampler, IN.Tex);
+
+    vColor = IN.Col * tx.Sample(linearSampler, IN.Tex);
     
     return vColor;
 }

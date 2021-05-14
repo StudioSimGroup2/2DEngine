@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Glad/glad.h>
 #include "Utils/Texture.h"
 
 #define STB_IMAGE_IMPLEMENTATION
@@ -12,15 +13,16 @@ namespace Engine
 		OGLTexture(const std::string& name, const std::string& path);
 		~OGLTexture();
 
-		virtual void Load(int pos) const override;
-		virtual void Unload(int pos) const override;
+		void Load(int pos) const override;
+		void Unload(int pos) const override;
 
-		virtual const std::string& GetName() const override { return mName; }
+		virtual void* GetTexID() override { return(void*)(size_t)mID; }
 
 	private:
-		bool CreateTextureFromFile(const std::string& path);
+		bool CreateTextureFromFile();
 
-		unsigned int mID, mBoundSlot = -1;
+		GLuint mID;
+
 	};
 }
 

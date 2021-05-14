@@ -42,6 +42,8 @@ public:
 	std::vector<Camera*> AllCameras() const { return mCameras; }
 
 
+	static void Shutdown();
+
 private:
 	CameraManager() = default; // Create atleast 1 ortho Camera by default
 

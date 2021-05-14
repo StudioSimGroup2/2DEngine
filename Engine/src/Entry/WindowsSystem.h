@@ -6,6 +6,8 @@
 #include <Windows.h>
 #include <chrono>
 
+static bool shuttingDown = false;
+
 namespace Engine
 {
 	class WindowsSystem : public Window
@@ -22,8 +24,7 @@ namespace Engine
 		inline unsigned int GetWidth() const override { return mWidth; }
 		inline unsigned int GetHeight() const override { return mHeight; }
 
-	protected:
-		HWND mHWND;
+		HWND GetHWND() { return mHWND; }
 
 	private:
 		virtual void Init(const WindowData& data);
@@ -34,7 +35,12 @@ namespace Engine
 		unsigned int mWidth;
 		unsigned int mHeight;
 
+		HWND mHWND;
+
 		Context* mRenderer;
+
+		LPCWSTR mClassName = L"EngineWindowClass";
+		HINSTANCE mHInstance{};
 
 		// DeltaTime calculations
 		std::chrono::time_point<std::chrono::high_resolution_clock> mCurrentTime;
