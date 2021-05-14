@@ -101,5 +101,4 @@ void Engine::PhysicsComp::Update(float dT)
 	position += (mCurrentVelocity * dT) + (mNetAcceleration * 0.5f * (dT * dT));
 	
 	mParent->GetComponent<TransformComp>()->SetPosition(position);
-	Logger::LogMsg("Test Pos", mParent->GetComponent<TransformComp>()->GetPosition().y);
 }
