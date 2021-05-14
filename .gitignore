@@ -9,6 +9,8 @@
 *.user
 *.userosscache
 *.sln.docstates
+*.vcxproj
+*.vcxproj.filters
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -352,6 +354,8 @@ MigrationBackup/
 bin-int/
 
 *.sln
+
+*.filters
 
 *.vcxproj
 

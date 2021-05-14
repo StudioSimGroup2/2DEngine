@@ -392,6 +392,10 @@ void GUILayer::Render()
 				{
 					SpriteComponent(dynamic_cast<SpriteComp*>(c));
 				}
+				else if (c->GetType() == "Physics")
+				{
+					PhysicsComponent(dynamic_cast<PhysicsComp*>(c));
+				}
 			}
 		}
 	}
@@ -626,6 +630,47 @@ void GUILayer::TransformComponent(TransformComp* c)
 	c->SetPosition(vec2f(position[0], position[1]));
 	c->SetRotation(vec2f(rotation[0], rotation[1]));
 	c->SetScale(vec2f(scale[0], scale[1]));
+}
+
+void GUILayer::PhysicsComponent(PhysicsComp* c)
+{
+	float physMass = c->GetMass();
+	float physGrav = c->GetGravity();
+	float physFric = c->GetFriction();
+
+	ImGui::PushID("mass");
+
+	ImGui::Columns(2);
+	ImGui::Text("Mass");
+	ImGui::NextColumn();
+	ImGui::DragFloat("##mass", &physMass, 0.1f);
+	ImGui::Columns(1);
+
+	ImGui::PopID();
+
+	ImGui::PushID("gravity");
+
+	ImGui::Columns(2);
+	ImGui::Text("Gravity");
+	ImGui::NextColumn();
+	ImGui::DragFloat("##gravity", &physGrav, 0.1f);
+	ImGui::Columns(1);
+
+	ImGui::PopID();
+
+	ImGui::PushID("friction");
+
+	ImGui::Columns(2);
+	ImGui::Text("Friction");
+	ImGui::NextColumn();
+	ImGui::DragFloat("##friction", &physFric, 0.1f);
+	ImGui::Columns(1);
+
+	ImGui::PopID();
+
+	c->SetMass(physMass);
+	c->SetGravity(physGrav);
+	c->SetFriction(physFric);
 }
 
 void GUILayer::CreateNode(GameObject* go, int flags, int& index, int& nodeClicked, int& selectionMask)

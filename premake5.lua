@@ -385,18 +385,38 @@ project "Game"
 		defines "ENGINE_DEBUG_OGL"
 		runtime "Debug"
 		symbols "On"
+		
+		prebuildcommands
+        {
+            ("{COPY} %{wks.location}Engine/lib/OpenAL/DBG/OpenAL32.dll ../bin/" .. outputdir .. "/Game")
+        }
 
 	filter "configurations:DebugD3D11"
 		defines "ENGINE_DEBUG_D3D11"
 		runtime "Debug"
 		symbols "On"
+		
+		prebuildcommands
+        {
+            ("{COPY} %{wks.location}Engine/lib/OpenAL/DBG/OpenAL32.dll ../bin/" .. outputdir .. "/Game")
+        }
 
 	filter "configurations:ReleaseOGL"
 		defines "ENGINE_RELEASE_OGL"
 		runtime "Release"
 		optimize "On"
 		
+		prebuildcommands
+        {
+            ("{COPY} %{wks.location}Engine/lib/OpenAL/RLS/OpenAL32.dll ../bin/" .. outputdir .. "/Game")
+        }
+		
 	filter "configurations:ReleaseD3D11"
 		defines "ENGINE_RELEASE_D3D11"
 		runtime "Release"
 		optimize "On"
+		
+		prebuildcommands
+        {
+            ("{COPY} %{wks.location}Engine/lib/OpenAL/RLS/OpenAL32.dll ../bin/" .. outputdir .. "/Game")
+        }

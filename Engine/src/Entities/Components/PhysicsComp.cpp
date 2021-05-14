@@ -1,9 +1,22 @@
-#include "Physics.h"
+#include "PhysicsComp.h"
+#include "Entities/GameObject.h"
 
-Physics::Physics(vec2f* position) : mPosition(position)
+Engine::PhysicsComp::PhysicsComp() : Component()
 {
-	mGrounded = true;
+	Init();
+	mGrounded;
 
+	
+}
+
+Engine::PhysicsComp::~PhysicsComp()
+{
+
+}
+
+void Engine::PhysicsComp::Init()
+{
+	mType = "Physics";
 	//Initialize Net Forces
 	mNetForce.x = 0.0f;
 	mNetForce.y = 0.0f;
@@ -17,42 +30,47 @@ Physics::Physics(vec2f* position) : mPosition(position)
 	mCurrentVelocity.y = 0.0f;
 
 	mMass = 1.0f;
-	mWeight = mMass * GRAVITY;
 }
 
-Physics::~Physics()
-{
-
-}
-
-void Physics::UpdateForces(float dT)
+void Engine::PhysicsComp::UpdateForces(float dT)
 {
 	//Calculate new velocity using the formula v = u + at
 	mCurrentVelocity = mCurrentVelocity + (mNetAcceleration * dT);
+	mWeight = mMass * mGravity;
 	ResetForces();
 
 	if (mGrounded)
 	{
 		// When grounded, apply frictional force equal to the current velocity
 		// multiplied by a frictional coefficient
-		mNetForce.x += (mCurrentVelocity.x * -FRICTIONCOEF);
+		mNetForce.x += (mCurrentVelocity.x * -mFriction);
 	}
 	else
 	{
 		//When not grounded, apply gravitational force equal to
 		//the weight of the character multiplied by gravity
-		mNetForce.y -= mWeight;
+		mNetForce.y += mWeight;
 	}
 }
 
-void Physics::UpdateAcceleration()
+void Engine::PhysicsComp::UpdateAcceleration()
 {
 	// Calculate acceleration
 	mNetAcceleration.x = mNetForce.x / mWeight;
 	mNetAcceleration.y = mNetForce.y / mWeight;
 }
 
-void Physics::ResetForces()
+void Engine::PhysicsComp::Update()
+{
+	float dkfjdsf = float(0.016);
+	Update(dkfjdsf);
+}
+
+void Engine::PhysicsComp::Render()
+{
+}
+
+void Engine::PhysicsComp::ResetForces()
 {
 	//Clear the acting force buffer, and reset net forces to 0
 	actingForces.clear();
@@ -60,12 +78,12 @@ void Physics::ResetForces()
 	mNetForce.y = 0.0f;
 }
 
-void Physics::AddThrust(vec2f thrust)
+void Engine::PhysicsComp::AddThrust(vec2f thrust)
 {
 	actingForces.push_back(thrust);
 }
 
-void Physics::Update(float dT)
+void Engine::PhysicsComp::Update(float dT)
 {
 	//For each force currently being applied, add it to the total net force
 	for (int i = 0; i < actingForces.size(); i++)
@@ -78,6 +96,10 @@ void Physics::Update(float dT)
 	UpdateForces(dT);
 
 	//Calculate new position using formula s = ut + 1/2at^2
-	mPosition->x = mPosition->x + (mCurrentVelocity.x * dT) + (mNetAcceleration.x * 0.5f * (dT * dT));
-	mPosition->y = mPosition->y + (mCurrentVelocity.y * dT) + (mNetAcceleration.y * 0.5f * (dT * dT));
+	vec2f position = mParent->GetComponent<TransformComp>()->GetPosition();
+
+	position += (mCurrentVelocity * dT) + (mNetAcceleration * 0.5f * (dT * dT));
+	
+	mParent->GetComponent<TransformComp>()->SetPosition(position);
+	Logger::LogMsg("Test Pos", mParent->GetComponent<TransformComp>()->GetPosition().y);
 }

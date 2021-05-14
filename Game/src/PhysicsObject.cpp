@@ -1,14 +1,18 @@
 #include "PhysicsObject.h"
 
-PhysicsObject::PhysicsObject(char* name, vec2f* position, Texture* tex) : Sprite(name, position, tex)
+PhysicsObject::PhysicsObject(Device* dev, vec2f* position, char* name, Texture* tex) : Sprite(name, position, tex)
 {
-	mPhysics = new Physics(position);
+	mPhysics = new PhysicsComp();
+	//mAI = new AI(position);
 }
 
 PhysicsObject::~PhysicsObject()
 {
 	delete mPhysics;
+	//delete mAI;
+
 	mPhysics = nullptr;
+	//mAI = nullptr;
 }
 
 void PhysicsObject::Update(float deltaTime)

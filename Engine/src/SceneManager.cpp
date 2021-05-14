@@ -20,6 +20,25 @@ namespace Engine
 
 	void SceneManager::LoadScene()
 	{
+		GameObject* mPlayer = new GameObject();
+
+		mPlayer->SetName("Parent");
+
+		SpriteComp* spr = mPlayer->AddComponent(new SpriteComp);
+		mPlayer->GetComponent<TransformComp>()->SetPosition(vec2f(200.0f, 200.0f));
+		spr->SetTexture(AssetManager::GetInstance()->LoadTexture((char*)"Stone", (char*)"Assets/Textures/Stone.png"));
+		mPlayer->AddComponent(new PhysicsComp());
+
+		mSceneObjects.push_back(mPlayer);
+
+		GameObject* mLevelMap = new GameObject();
+		TileMapComp* TM = mLevelMap->AddComponent(new TileMapComp);
+		TM->LoadTileMap("Assets/TileMaps/XML_Test.xml");
+		mLevelMap->SetName("tileMapTest");
+
+		mSceneObjects.push_back(mLevelMap);
+
+
 		mSceneLoaded = true;
 	}
 

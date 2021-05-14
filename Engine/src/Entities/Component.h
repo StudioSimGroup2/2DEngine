@@ -5,6 +5,7 @@
 #   pragma warning (disable : 4251)
 
 #include "Engine/Core.h"
+#include "Common.h"
 #include <iostream>
 
 namespace Engine
@@ -27,6 +28,7 @@ namespace Engine
 		void SetGameObject(GameObject* parent) { mParent = parent; }
 
 	protected:
+		//virtual void Init();
 		std::string mType;
 		GameObject* mParent = nullptr;
 	};

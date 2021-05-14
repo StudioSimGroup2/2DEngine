@@ -1,7 +1,7 @@
 #include "ScriptingEngine.h"
 #include <SceneManager.h>
 #include <Entities/GameObject.h>
-#include <Utils/AssetManager.h>s
+#include <Utils/AssetManager.h>
 
 #include <lua.hpp>
 
@@ -44,9 +44,6 @@ namespace Engine
 
 	void ScriptingEngine::Update()
 	{
-		/*auto gameObject = SceneManager::GetInstance()->GetSceneObjects().at(0);
-		state["self"] = gameObject;*/
-
 		mfunc();
 	}
 

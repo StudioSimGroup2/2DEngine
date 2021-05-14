@@ -1,8 +1,8 @@
-#pragma once
+// #pragma once
 
-// disable: "<type> needs to have dll-interface to be used by clients'
-// Happens on STL member variables which are not public therefore is ok
-#   pragma warning (disable : 4251)
+// // disable: "<type> needs to have dll-interface to be used by clients'
+// // Happens on STL member variables which are not public therefore is ok
+// #   pragma warning (disable : 4251)
 
 //#include <OpenAL-Soft/al.h>
 //#include <OpenAL-Soft/alc.h>

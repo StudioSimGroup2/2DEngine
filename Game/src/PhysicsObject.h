@@ -1,15 +1,15 @@
 #pragma once
 #include "Sprite.h"
-#include "Physics.h"
-
+#include "..\src\Entities\Components\PhysicsComp.h"
 class PhysicsObject : public Sprite
 {
 public:
-    PhysicsObject(char* name, vec2f* position, Texture* tex);
+    PhysicsObject(Device* dev, vec2f* position, char* name, Texture* tex);
     ~PhysicsObject();
     void Update(float deltaTime);
     void Render();
 protected:
-    Physics* mPhysics;
+    PhysicsComp* mPhysics;
 private:
 };
+
