@@ -17,6 +17,53 @@ namespace Engine
 	{
 	}
 
+	void TileMapComp::ChangeTile(int ID, vec2i Pos)
+	{
+		if (Pos.x < 0 || Pos.y < 0)
+		{
+			return;
+		}
+		for (int X = 0; X < Pos.x; X++)
+		{
+			if (Pos.x >= mTileMap.size())
+			{
+				mTileMap.push_back(std::vector<int>());
+			}
+			for (int Y = 0; Y < Pos.y; Y++)
+			{
+				if (Pos.y >= mTileMap[Pos.x].size())
+				{
+					mTileMap[X].push_back(10);
+				}
+				if (Pos.y >= mTileMap[X].size())
+				{
+					mTileMap[X].push_back(10);
+				}
+			}
+		}
+		if (Pos.x >= mTileMap.size())
+		{
+			int i = 0;
+		}
+		for (int X = 0; X < Pos.x; X++)
+		{
+			if (Pos.y >= mTileMap[X].size())
+			{
+				int i = 0;
+			}
+		}
+		if (mTileMap[Pos.x][Pos.y] == ID)
+		{
+			return;
+		}
+		else
+		{
+			mTileMap[Pos.x][Pos.y] = ID;
+				
+		}		
+		//update the renderer
+	}
+
 	void TileMapComp::ChangeTexture()
 	{
 	}
@@ -100,10 +147,6 @@ namespace Engine
 				}
 				case 1:
 				{
-					//std::string RendererName = "Tile ";
-					//RendererName.append(std::to_string(X));
-					//RendererName.append(", ");
-					//RendererName.append(std::to_string(Y));
 					mRenderer.push_back(Device::CreateRenderer(AssetManager::GetInstance()->GetShaderByName("Default")));
 					break;
 				}

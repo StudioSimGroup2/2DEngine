@@ -745,8 +745,12 @@ void GUILayer::TileMapComponent(TileMapComp* c)
 		ifd::FileDialog::Instance().Close();
 	}
 	vec2f mousePos = vec2f(InputManager::GetInstance()->GetMousePosition().x, InputManager::GetInstance()->GetMousePosition().y);
-	Logger::LogMsg("Mouse pos X:", mousePos.x);
-	Logger::LogMsg("Mouse pos Y:", mousePos.y);
+	Logger::LogMsg("Mouse pos X:", int(mousePos.x / TILEHEIGHT));
+	Logger::LogMsg("Mouse pos Y:", int(mousePos.y / TILEHEIGHT));
+	if (InputManager::GetInstance())
+	{
+		c->ChangeTile(TileID, vec2i((mousePos.y / TILEHEIGHT), (mousePos.x / TILEWIDTH)));
+	}
 	ImGui::PopID();
 }
 

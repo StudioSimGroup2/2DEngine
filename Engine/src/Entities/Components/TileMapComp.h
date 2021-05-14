@@ -19,6 +19,7 @@ namespace Engine
 		void LoadTileMap(const std::string& FilePath) { mTileMap = LevelMap::LoadLevelMap(FilePath); };
 		void SaveTileMap(const std::string& FilePath) {LevelMap::SaveTileMap(mTileMap, FilePath); };
 		TileMap GetTileMap() { return mTileMap;  };
+		void ChangeTile(int ID, vec2i Pos);
 
 		void ChangeTexture();
 
