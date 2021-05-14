@@ -13,13 +13,6 @@ CameraManager* CameraManager::Get()
 
 CameraManager::~CameraManager()
 {
-	for (Camera* c : mCameras)
-	{
-		delete c;
-		c = nullptr;
-	}
-
-	mCameras.shrink_to_fit();
 }
 
 void CameraManager::Add(Camera* Camera)
@@ -100,6 +93,12 @@ void CameraManager::Shutdown()
 	if (mInstance == nullptr)
 		return;
 
+	for (Camera* c : mInstance->mCameras)
+	{
+		delete c;
+		c = nullptr;
+	}
+	mInstance->mCameras.clear();
 	delete mInstance;
 	mInstance = nullptr;
 }

@@ -390,8 +390,8 @@ namespace Engine
 		AssetManager::GetInstance()->LoadShader("Default", "quadshader.fx");
 
 		// Create two cameras
-		CameraManager::Get()->Add(Camera::Create(glm::vec4(0.0f, 0.0f, -1.0f, 1.0f)));
-		CameraManager::Get()->Add(Camera::Create(glm::vec4(-964.0f, 94.0f, -1.0f, 1.0f)));
+		CameraManager::Get()->Add(Camera::Create(glm::vec4(0.0f, 0.0f, -1.0f, 1.0f)));		// Camera manager deletes its cameras, no mem leak :)
+		CameraManager::Get()->Add(Camera::Create(glm::vec4(-964.0f, 94.0f, -1.0f, 1.0f)));	// Camera manager deletes its cameras, no mem leak :)
 		CameraManager::Get()->GetCameraByIndex(0)->SetName("Main Camera");
 		CameraManager::Get()->GetCameraByIndex(1)->SetStatic(true);
 		CameraManager::Get()->GetCameraByIndex(1)->SetName("Secondary Camera");
@@ -503,6 +503,8 @@ namespace Engine
 			mSwapChain->Release();
 			mSwapChain = nullptr;
 		}
+
+		CameraManager::Shutdown();
 	}
 
 	void D311Context::OnUpdate(float deltaTime)
