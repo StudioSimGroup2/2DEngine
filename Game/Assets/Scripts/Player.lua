@@ -1,13 +1,3 @@
-self:SetName("luaMario")
-self:GetTransform():SetPosition(vec2f.new(250, 250))
-print("init")
-self:MakeSprite()
-self:GetSprite():SetPath("Assets/Textures/Mario.png")
-print("created SpriteComp")
-
-function OnStart()
-    
-end
 
 function OnUpdate()
     pos = self:GetTransform():GetPosition()

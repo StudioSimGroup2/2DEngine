@@ -13,7 +13,7 @@ namespace Engine
 		void Load();
 		void Unload();
 
-		void* GetTexID() { return(void*)(size_t)mID; }
+		void* GetTexID() { return(void*)(size_t)mTexture; }
 
 	private:
 		GLuint mID;

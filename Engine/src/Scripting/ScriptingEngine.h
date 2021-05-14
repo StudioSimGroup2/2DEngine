@@ -8,6 +8,8 @@
 
 namespace Engine
 {
+	class GameObject;
+
 	class ENGINE_API ScriptingEngine
 	{
 	public:
@@ -17,7 +19,7 @@ namespace Engine
 
 		static ScriptingEngine* GetInstance();
 
-		void Update(); // Temporary!
+		sol::state& GetState() { return mState; }
 
 	private:
 		void RegisterUserTypes();
@@ -26,8 +28,6 @@ namespace Engine
 
 		static ScriptingEngine* mInstance;
 
-		sol::state state;
-
-		sol::protected_function mfunc;
+		sol::state mState;;
 	};
 }

@@ -3,6 +3,8 @@
 #include <Entities/GameObject.h>
 #include <Utils/AssetManager.h>
 
+#include <string>
+
 #include <lua.hpp>
 
 namespace Engine
@@ -11,19 +13,11 @@ namespace Engine
 	
 	void ScriptingEngine::Init()
 	{
-		state.open_libraries(sol::lib::base);
+		mState.open_libraries(sol::lib::base);
 
 		RegisterUserTypes();
 
-		GameObject* gameObject = SceneManager::GetInstance()->CreateObject();
-
-		state["self"] = gameObject;
-
-		state.script_file("Assets/Scripts/Player.lua");
-
-		mfunc = state["OnUpdate"];
-
-		state.set_function("OnKeyDown", [](uint32_t key) { return InputManager::GetInstance()->GetKeyDown(key); });
+		mState.set_function("OnKeyDown", [](uint32_t key) { return InputManager::GetInstance()->GetKeyDown(key); });
 	}
 
 	void ScriptingEngine::Shutdown()
@@ -42,14 +36,9 @@ namespace Engine
 		return mInstance;
 	}
 
-	void ScriptingEngine::Update()
-	{
-		mfunc();
-	}
-
 	void ScriptingEngine::RegisterUserTypes()
 	{
-		state.new_usertype<vec2f>("vec2f",
+		mState.new_usertype<vec2f>("vec2f",
 			sol::constructors<
 			vec2f(),
 			vec2f(float, float)
@@ -58,12 +47,12 @@ namespace Engine
 			"x", &vec2f::x,
 			"y", &vec2f::y);
 
-		state.new_usertype<Component>("Component",
+		mState.new_usertype<Component>("Component",
 			"GetOwner", &Component::GetGameObject,
 			"GetType", &Component::GetType
 			);
 
-		state.new_usertype<TransformComp>("TransformComp",
+		mState.new_usertype<TransformComp>("TransformComp",
 			sol::base_classes, sol::bases<Component>(),
 
 			"SetPosition", &TransformComp::SetPosition,
@@ -76,7 +65,7 @@ namespace Engine
 			"GetScale", &TransformComp::GetScale
 			);
 
-		state.new_usertype<SpriteComp>("SpriteComp", sol::base_classes, sol::bases<Component>(),
+		mState.new_usertype<SpriteComp>("SpriteComp", sol::base_classes, sol::bases<Component>(),
 
 			"SetPath", &SpriteComp::SetTexturePath,
 
@@ -93,7 +82,7 @@ namespace Engine
 			"GetColour", &SpriteComp::GetColour
 			);
 
-		state.new_usertype<GameObject>("GameObject",
+		mState.new_usertype<GameObject>("GameObject",
 			"SetName", &GameObject::SetName,
 			"GetName", &GameObject::GetName,
 
@@ -109,7 +98,5 @@ namespace Engine
 			"GetTransform", &GameObject::GetComponent<TransformComp>,
 			"GetSprite", &GameObject::GetComponent<SpriteComp>
 			);
-
-	
 	}
 }

@@ -4,8 +4,6 @@
 #include <Utils/Math.h>
 #include <vector>
 
-
-
 namespace Engine
 {
 	class ENGINE_API PhysicsComp : public Component

@@ -151,14 +151,10 @@ GUILayer::GUILayer()
 #endif
 	};
 
-	// idk why and i dont want to know 
-	// why on earth despite the fact opengl SHOULD be generating an id for each texture
-	// the play button is loaded in to the frame buffer...
-
-	/*std::filesystem::path p = std::filesystem::current_path().parent_path();
+	std::filesystem::path p = std::filesystem::current_path().parent_path();
 	p /= "Engine\\Assets\\Editor\\Icons\\";
 	AssetManager::GetInstance()->LoadTexture("PlayIcon", p.string() + "right.png");
-	AssetManager::GetInstance()->LoadTexture("StopIcon", p.string() + "stop.png");*/
+	AssetManager::GetInstance()->LoadTexture("StopIcon", p.string() + "stop.png");
 }
 
 GUILayer::~GUILayer()
@@ -481,6 +477,7 @@ void GUILayer::Render()
 			case COMPONENT_SCRIPT:
 				if (ImGui::CollapsingHeader("Script"))
 				{
+					ScriptComponent(dynamic_cast<ScriptComp*>(c));
 				}
 				break;
 
@@ -787,10 +784,10 @@ void GUILayer::SpriteComponent(SpriteComp* c)
 
 	if (ImGui::Button(path.c_str()))
 	{
-		ifd::FileDialog::Instance().Open("File Browser", "Change Sprite Texture", "Texture File (*.png){.png},.*");
+		ifd::FileDialog::Instance().Open("Texture File Browser", "Change Sprite Texture", "Texture File (*.png){.png},.*");
 	}
 
-	if (ifd::FileDialog::Instance().IsDone("File Browser"))
+	if (ifd::FileDialog::Instance().IsDone("Texture File Browser"))
 	{
 		if (ifd::FileDialog::Instance().HasResult() && ifd::FileDialog::Instance().GetResult().u8string() != c->GetTexture()->GetPath())
 		{
@@ -818,7 +815,6 @@ void GUILayer::SpriteComponent(SpriteComp* c)
 	c->ToggleFlipX(flipX);
 	c->ToggleFlipY(flipY);
 	c->SetColour(colour.x, colour.y, colour.z, colour.w);
-
 
 	ImGui::PopID();
 }
@@ -937,5 +933,36 @@ void GUILayer::PhysicsComponent(PhysicsComp* c)
 	c->SetMass(physMass);
 	c->SetGravity(physGrav);
 	c->SetFriction(physFric);
+}
+
+void GUILayer::ScriptComponent(ScriptComp* c)
+{
+	ImGui::PushID("script");
+
+	std::string path = c->GetFile();
+	if (path.empty())
+		path = "None";
+
+	if (path.find_last_of('\\') != std::string::npos)
+		path = path.substr(path.find_last_of('\\'));
+	else if (path.find_last_of('/') != std::string::npos)
+		path = path.substr(path.find_last_of('/'));
+
+	if (ImGui::Button(path.c_str()))
+	{
+		ifd::FileDialog::Instance().Open("Script File Browser", "Change Script File", "Script File (*.lua){.lua},.*");
+	}
+
+	if (ifd::FileDialog::Instance().IsDone("Script File Browser"))
+	{
+		if (ifd::FileDialog::Instance().HasResult() && ifd::FileDialog::Instance().GetResult().u8string() != c->GetFile())
+		{
+			c->RemoveScript();
+			c->AddScript(ifd::FileDialog::Instance().GetResult().u8string());
+		}
+		ifd::FileDialog::Instance().Close();
+	}
+
+	ImGui::PopID();
 }
 

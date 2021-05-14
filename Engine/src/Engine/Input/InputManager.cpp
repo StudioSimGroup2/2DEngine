@@ -43,7 +43,6 @@ namespace Engine
 		{
 			mKBPressed[key] = false;
 		}
-
 	}
 
 	void InputManager::BindCommandToButton(uint32_t key, const std::function<void()>& callback)

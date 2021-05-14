@@ -70,6 +70,6 @@ namespace Engine
 	void SpriteComp::Init()
 	{
 		mRenderer = Device::CreateRenderer(AssetManager::GetInstance()->GetShaderByName("Default"));
-		mType = 1;
+		mType = COMPONENT_SPRITE;
 	}
 }

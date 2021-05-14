@@ -1,23 +1,31 @@
 #pragma once
 
 #include "../Component.h"
+#include "Utils\Script.h"
+
 
 namespace Engine
 {
-	class ENGINE_API ScriptComponent : public Component
+	class ENGINE_API ScriptComp : public Component
 	{
-		ScriptComponent();
-		ScriptComponent(GameObject* parent);
-		~ScriptComponent() override;
+	public:
+		ScriptComp();
+		ScriptComp(GameObject* parent);
+		~ScriptComp() override;
 
 		void Update() override;
 		void Render() override;
 
-		void AddScript();
-		void RemoveScript();
+		std::string& GetFile() { return mPath; }
+
+		void AddScript(const std::string& file);
+		void RemoveScript() { mPath.clear(); };
 
 	private:
-		//Script* mScript;
+		void Init();
 
+		std::string mPath;
+
+		Script mScript;
 	};
 }

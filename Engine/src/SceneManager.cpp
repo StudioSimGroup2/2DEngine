@@ -20,6 +20,8 @@ namespace Engine
 
 	void SceneManager::LoadScene()
 	{
+		ScriptingEngine::GetInstance()->Init();
+		
 		GameObject* mPlayer = new GameObject();
 
 		mPlayer->SetName("Parent");
@@ -28,6 +30,7 @@ namespace Engine
 		mPlayer->GetComponent<TransformComp>()->SetPosition(vec2f(200.0f, 200.0f));
 		spr->SetTexture(AssetManager::GetInstance()->LoadTexture((char*)"Stone", (char*)"Assets/Textures/Stone.png"));
 		mPlayer->AddComponent(new PhysicsComp());
+		mPlayer->AddComponent(new ScriptComp());
 
 		mSceneObjects.push_back(mPlayer);
 
@@ -35,6 +38,8 @@ namespace Engine
 		TileMapComp* TM = mLevelMap->AddComponent(new TileMapComp);
 		TM->LoadTileMap("Assets/TileMaps/XML_Test.xml");
 		mLevelMap->SetName("tileMapTest");
+
+		mLevelMap->AddComponent(new ScriptComp());
 
 		mSceneObjects.push_back(mLevelMap);
 
@@ -49,8 +54,6 @@ namespace Engine
 		{
 			go->Update();
 		}
-
-		ScriptingEngine::GetInstance()->Update();
 	}
 
 	void SceneManager::RenderScene()

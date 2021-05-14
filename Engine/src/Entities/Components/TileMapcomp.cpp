@@ -76,7 +76,7 @@ namespace Engine
 	}
 	void TileMapComp::Init()
 	{
-		mType = COMPONENT_PHYSICS;
+		mType = COMPONENT_TILEMAP;
 		mTexture = AssetManager::GetInstance()->LoadTexture("Tile", "Assets/Textures/Stone.png");
 
 		LoadTileMap("Assets/TileMaps/XML_Test.xml");
