@@ -19,8 +19,12 @@ namespace Engine
 		Component(GameObject* parent);
 		virtual ~Component() { mParent = nullptr; }
 
+		virtual void Start() = 0;
 		virtual void Update() = 0;
 		virtual void Render() = 0;
+
+		virtual void InternalUpdate() = 0;
+		virtual void InternalRender() = 0;
 
 		int GetType() const { return mType; }
 
@@ -28,7 +32,7 @@ namespace Engine
 		void SetGameObject(GameObject* parent) { mParent = parent; }
 
 	protected:
-		int mType;
+		int mType = -1;
 		GameObject* mParent = nullptr;
 	};
 }

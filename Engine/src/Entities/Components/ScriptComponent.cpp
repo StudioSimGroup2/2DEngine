@@ -32,6 +32,8 @@ namespace Engine
 	{
 		if (mPath.empty())
 			return;
+
+		mScript.CallRender(mParent);
 	}
 
 	void ScriptComp::AddScript(const std::string& file)
@@ -44,5 +46,13 @@ namespace Engine
 	void ScriptComp::Init()
 	{
 		mType = COMPONENT_SCRIPT;
+	}
+
+	void ScriptComp::InternalUpdate()
+	{
+	}
+
+	void ScriptComp::InternalRender()
+	{
 	}
 }

@@ -2,8 +2,10 @@
 #include <Engine/Layer.h>
 
 #include <Entities/GameObject.h>
-
-// This is the editor interface
+#include "MenuBarWidget.h"
+#include "SceneHierarchyWidget.h"
+#include "InspectorWidget.h"
+#include "LoggerWidget.h"
 
 struct ImGuiViewport;
 
@@ -28,14 +30,10 @@ public:
 #endif
 
 private:
-
-	GameObject* mCurrentSelectedNode = nullptr;
-
-	void SpriteComponent(SpriteComp* c);
-	void TransformComponent(TransformComp* c);
-	void PhysicsComponent(PhysicsComp* c);
-	void ScriptComponent(ScriptComp* c);
-	void CreateNode(GameObject* go, int flags, int& index, int& nodeClicked, int& selectionMask);
+	MenuBarWidget mMenuBar;
+	SceneHierarchyWidget mSceneHierarchy;
+	InspectorWidget mInspector;
+	LoggerWidget mLogger;
 };
 
 

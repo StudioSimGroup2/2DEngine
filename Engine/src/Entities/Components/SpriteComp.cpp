@@ -59,6 +59,9 @@ namespace Engine
 
 	void* SpriteComp::GetTexID()
 	{
+		if (!mTexture)
+			return nullptr;
+
 #if GRAPHICS_LIBRARY == 0
 		return dynamic_cast<D3D11Texture*>(mTexture)->GetTexID();
 
@@ -71,5 +74,17 @@ namespace Engine
 	{
 		mRenderer = Device::CreateRenderer(AssetManager::GetInstance()->GetShaderByName("Default"));
 		mType = COMPONENT_SPRITE;
+	}
+
+	void SpriteComp::Start()
+	{
+	}
+
+	void SpriteComp::InternalUpdate()
+	{
+	}
+
+	void SpriteComp::InternalRender()
+	{
 	}
 }

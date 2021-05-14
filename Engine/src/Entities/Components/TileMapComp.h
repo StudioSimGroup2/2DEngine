@@ -19,7 +19,6 @@ namespace Engine
 		void LoadTileMap(char* FilePath) { mTileMap = LevelMap::LoadLevelMap(FilePath); };
 		TileMap GetTileMap() { return mTileMap;  };
 
-
 		void Update();
 		void Render();
 	private:
@@ -28,5 +27,10 @@ namespace Engine
 
 		Texture* mTexture = nullptr;
 		std::vector<Renderer2D*> mRenderer;
+
+		// Inherited via Component
+		virtual void Start() override;
+		virtual void InternalUpdate() override;
+		virtual void InternalRender() override;
 	};
 }

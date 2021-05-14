@@ -18,6 +18,9 @@ namespace Engine
 
 	void OGLRenderer2D::Draw(vec2f& position, vec2f& rotation, vec2f& scale, Texture* textureToRender)
 	{
+		if (!textureToRender)
+			return;
+		
 		mShader->Load();
 
 		Camera* camera = CameraManager::Get()->GetPrimaryCamera();

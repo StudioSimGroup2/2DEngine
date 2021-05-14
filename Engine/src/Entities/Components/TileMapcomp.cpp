@@ -98,4 +98,16 @@ namespace Engine
 			}
 		}
 	}
+
+	void TileMapComp::Start()
+	{
+	}
+
+	void TileMapComp::InternalUpdate()
+	{
+	}
+
+	void TileMapComp::InternalRender()
+	{
+	}
 }

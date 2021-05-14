@@ -16,7 +16,7 @@ namespace Engine
 
 		void ResetForces();
 
-		void chageGrounded() { mGrounded != mGrounded; };
+		void chageGrounded() { /*mGrounded != mGrounded; */; };
 		void AddThrust(vec2f thrust);
 
 		float GetMass() { return mMass; }
@@ -47,6 +47,11 @@ namespace Engine
 		// Inherited via Component
 		virtual void Update() override;
 		virtual void Render() override;
+
+		// Inherited via Component
+		virtual void Start() override;
+		virtual void InternalUpdate() override;
+		virtual void InternalRender() override;
 	};
 
 }

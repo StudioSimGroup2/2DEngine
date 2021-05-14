@@ -13,6 +13,7 @@ namespace Engine
 		ScriptComp(GameObject* parent);
 		~ScriptComp() override;
 
+		void Start() { mScript.CallStart(mParent); }
 		void Update() override;
 		void Render() override;
 
@@ -27,5 +28,9 @@ namespace Engine
 		std::string mPath;
 
 		Script mScript;
+
+		// Inherited via Component
+		virtual void InternalUpdate() override;
+		virtual void InternalRender() override;
 	};
 }

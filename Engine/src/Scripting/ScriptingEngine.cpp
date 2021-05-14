@@ -86,7 +86,7 @@ namespace Engine
 			"SetName", &GameObject::SetName,
 			"GetName", &GameObject::GetName,
 
-			"SetParent", &GameObject::AttachToParent,
+			"SetParent", &GameObject::Attach, // this might not work
 			"GetParent", &GameObject::GetParent,
 
 			"IsActive", &GameObject::IsEnabled,

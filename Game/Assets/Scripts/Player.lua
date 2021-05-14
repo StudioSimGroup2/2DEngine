@@ -1,4 +1,9 @@
 
+function OnStart()
+    print("doing something")
+    self:GetSprite():SetPath("Assets/Textures/Stone.png")
+end
+
 function OnUpdate()
     pos = self:GetTransform():GetPosition()
 

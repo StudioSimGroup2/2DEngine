@@ -70,6 +70,18 @@ void Engine::PhysicsComp::Render()
 {
 }
 
+void Engine::PhysicsComp::Start()
+{
+}
+
+void Engine::PhysicsComp::InternalUpdate()
+{
+}
+
+void Engine::PhysicsComp::InternalRender()
+{
+}
+
 void Engine::PhysicsComp::ResetForces()
 {
 	//Clear the acting force buffer, and reset net forces to 0

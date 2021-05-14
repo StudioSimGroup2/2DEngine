@@ -12,8 +12,6 @@ namespace Engine
 		
 		glGenTextures(1, &mID);
 
-		Logger::LogWarn("tex id", mID);
-
 		CreateTextureFromFile();
 	}
 

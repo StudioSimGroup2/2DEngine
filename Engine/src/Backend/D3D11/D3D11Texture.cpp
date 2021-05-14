@@ -13,8 +13,8 @@ namespace Engine
 {
 	D3D11Texture::D3D11Texture(D3D11Device* device, const std::string& name, const std::string& path)
 	{
-		mName = std::string(name);
-		mPath = std::string(path);
+		mName = name;
+		mPath = path;
 		mDeviceContext = device->GetDeviceContext();
 
 		auto hr = S_OK;

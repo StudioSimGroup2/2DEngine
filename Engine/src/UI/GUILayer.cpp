@@ -30,8 +30,6 @@ bool ActivateOpenGL2(HWND hWnd);
 #include <Engine/Application.h>
 
 #include <ImFileDialog/ImFileDialog.h>
-#include <implot/implot.h>
-#include <CameraManager.h>
 
 #include <SceneManager.h>
 #include <imgui_internal.h>
@@ -42,7 +40,6 @@ GUILayer::GUILayer()
 {
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
-	ImPlot::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 
 	Application* app = Application::GetInstance();
@@ -159,7 +156,7 @@ GUILayer::GUILayer()
 
 GUILayer::~GUILayer()
 {
-	SceneManager::Shutdown();
+	SceneManager::Shutdown(); // This shouldn't be here
 
 	ifd::FileDialog::Instance().Close();
 
@@ -171,7 +168,6 @@ GUILayer::~GUILayer()
 	ImGui_ImplWin32_Shutdown();
 #endif
 
-	ImPlot::DestroyContext();
 	ImGui::DestroyContext();
 }
 
@@ -189,138 +185,10 @@ void GUILayer::Render()
 
 	ImGui::NewFrame();
 
-#pragma region Menu Bar
-
 	ImGui::SetNextWindowBgAlpha(1);
 	ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 
-	float menuBar;
-
-	// Menu
-	if (ImGui::BeginMainMenuBar())
-	{
-		menuBar = ImGui::GetWindowSize().y;
-		if (ImGui::BeginMenu("File"))
-		{
-			if (ImGui::MenuItem("New Project CTRL + N")) {
-				// No Impl
-			}
-			if (ImGui::MenuItem("Open Project CTRL + O"))
-			{
-				ifd::FileDialog::Instance().Open("File Browser", "Open a Project", "Engine Project File (*.prj){.png},.*");
-			}
-			if (ImGui::MenuItem("Save Project CTRL + S"))
-			{
-				//ifd::FileDialog::Instance().Open("File Browser", "Open a texture", "Image file (*.png;*.jpg;*.jpeg;*.bmp;*.tga){.png,.jpg,.jpeg,.bmp,.tga},.*");
-			}
-			if (ImGui::MenuItem("Save Project As CTRL + SHIFT + S"))
-			{
-
-			}
-			if (ImGui::MenuItem("Recent Projects"))
-			{
-
-			}
-			ImGui::Separator();
-			if (ImGui::MenuItem("Import Project"))
-			{
-
-			}
-			if (ImGui::MenuItem("Export Project"))
-			{
-
-			}
-			ImGui::Separator();
-			if (ImGui::MenuItem("Preferences"))
-			{
-
-			}
-			ImGui::EndMenu();
-		}
-
-		if (ImGui::BeginMenu("Create"))
-		{
-			if (ImGui::MenuItem("Sprite"))
-			{
-			}
-			if (ImGui::MenuItem("Audio File"))
-			{
-			}
-			if (ImGui::MenuItem("Texture"))
-			{
-			}
-
-			ImGui::EndMenu();
-		}
-
-		if (ImGui::BeginMenu("Edit"))
-		{
-			if (ImGui::MenuItem("Undo CTRL + Z"))
-			{
-				// No Impl
-			}
-			if (ImGui::MenuItem("Redo CTRL + Y"))
-			{
-				// No Impl
-			}
-			ImGui::EndMenu();
-		}
-
-		if (ImGui::BeginMenu("Build"))
-		{
-			if (ImGui::MenuItem("Run"))
-			{
-				// No Impl
-			}
-			if (ImGui::MenuItem("Debug"))
-			{
-				// No Impl
-			}
-			ImGui::EndMenu();
-		}
-
-		if (ImGui::BeginMenu("View"))
-		{
-			if (ImGui::MenuItem("Asset Manager"))
-			{
-				// No Impl
-			}
-			if (ImGui::MenuItem("Console"))
-			{
-				// No Impl
-			}
-			if (ImGui::MenuItem("Inspector"))
-			{
-				// No Impl
-			}
-			if (ImGui::MenuItem("Scene Hierarchy"))
-			{
-				// No Impl
-			}
-			if (ImGui::MenuItem("Audio Manager"))
-			{
-				// No Impl
-			}
-			if (ImGui::MenuItem("Profiler"))
-			{
-				// No Impl
-			}
-			ImGui::EndMenu();
-		}
-
-		if (ImGui::BeginMenu("Help"))
-		{
-			if (ImGui::MenuItem("About"))
-			{
-				// No Impl
-			}
-			ImGui::EndMenu();
-		}
-
-		ImGui::EndMainMenuBar();
-	}
-
-#pragma endregion
+	mMenuBar.Render();
 
 #pragma region GUI Buttons //Fix dockspace issues
 
@@ -352,7 +220,21 @@ void GUILayer::Render()
 #pragma endregion
 
 #pragma region
-	ImGui::Begin("Game", NULL, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+	ImGui::Begin("Game", NULL, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_MenuBar);
+
+	if (ImGui::BeginMenuBar())
+	{
+		if (ImGui::MenuItem("Play")) 
+		{
+			SceneManager::GetInstance()->DisableEditorMode();
+		}
+
+		if (ImGui::MenuItem("Stop")) 
+		{
+			SceneManager::GetInstance()->EnableEditorMode();
+		}
+	}
+	ImGui::EndMenuBar();
 
 #if GRAPHICS_LIBRARY ==  1
 	ImGui::Image((void*)(intptr_t)SceneManager::GetInstance()->GetRenderToTexID(), ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
@@ -365,279 +247,13 @@ void GUILayer::Render()
 
 #pragma region Profiler
 
-	ImS16 Default[3] = { 1, 1, 1 };
-	ImS16 Renderer[3] = { 1, 1, 1 };
-	ImS16 Assets[3] = { 1, 1, 1 };
-
-	static const char* labels[] = { "Default", "Renderer", "Assets" };
-	static const double positions[] = { 0, 1, 2 };
-
-	ImGui::Begin("Profiler", NULL);
-	ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-	ImGui::Text("Graphics Card Name: %s", Device::GetDeviceData().mGraphicsCardName.c_str());
-	ImGui::Text("Estimated Total Memory: %iMB", Device::GetDeviceData().mGraphicsCardTotalMemory);
-	ImGui::Text("Renderer API: %s", Device::GetDeviceData().mRendererAPI.c_str());
-	ImGui::Separator();
-	if (ImGui::CollapsingHeader("Heap"))
-	{
-		ImPlot::SetNextPlotLimits(0, 110, -0.5, 9.5, ImGuiCond_Always);
-		ImPlot::SetNextPlotTicksY(positions, 3, labels);
-
-		if (ImPlot::BeginPlot("Heap Profiler", "Memory (MB)", "Heap",
-			ImVec2(-1, 0), 0, 0, ImPlotAxisFlags_Invert | ImPlotFlags_NoLegend))
-		{
-			ImPlot::SetLegendLocation(ImPlotLocation_West, ImPlotOrientation_Vertical);
-			ImPlot::PlotBarsH("Default", Default, 3, 0.2, -0.2);
-		}
-		ImPlot::EndPlot();
-	}
-	ImGui::End();
-
 #pragma endregion
 
-#pragma region Logger
+	mSceneHierarchy.Render();
+	mInspector.Render(SceneHierarchyWidget::GetNode());
+	mLogger.Render();
 
-
-	if (true) {
-		ImGui::Begin("Logger");
-
-		std::string sen;
-		for (std::string s : Logger::GetTextBuffer())	// Format the logs into one giant string... not ideal, as we cant do fancy colouring.
-			sen += s;
-		ImGui::Text("%s", sen.c_str());
-
-		if (ImGui::GetScrollY() >= ImGui::GetScrollMaxY())	// Auto scroll to bottom
-			ImGui::SetScrollHereY(1.0f);
-
-		ImGui::End();
-	}
-
-	if (Logger::GetTextBuffer().size() > 512) { // Clear the console once it exceeds 512 logs
-		Logger::GetTextBuffer().erase(Logger::GetTextBuffer().begin(), Logger::GetTextBuffer().begin() + 256);
-	}
-
-
-#pragma endregion
-#pragma region SH // <------ Current Scene Hierarchy
-
-	ImGui::Begin("Scene Hierarchy");
-	static int selectionMask = (1 << 2);
-	int sceneIndex = 0;
-	int nodeClicked = -1;
-	for (GameObject* go : SceneManager::GetInstance()->GetSceneObjects())
-		CreateNode(go, ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth, sceneIndex, nodeClicked, selectionMask);
-
-	if (nodeClicked != -1)
-	{
-		// Update selection state
-		// (process outside of tree loop to avoid visual inconsistencies during the clicking frame)
-		if (ImGui::GetIO().KeyCtrl)
-			selectionMask ^= (1 << nodeClicked);          // CTRL+click to toggle
-		else //if (!(selection_mask & (1 << node_clicked))) // Depending on selection behavior you want, may want to preserve selection when clicking on item that is part of the selection
-			selectionMask = (1 << nodeClicked);           // Click to single-select
-	}
-
-	ImGui::End();
-
-#pragma endregion 
-
-#pragma region Inspector
-
-	ImGui::Begin("Inspector");
-
-	if (mCurrentSelectedNode != nullptr)
-	{
-		ImGui::Text(mCurrentSelectedNode->GetName().c_str());
-
-		for (Component* c : mCurrentSelectedNode->GetComponents())
-		{
-			switch (c->GetType())
-			{
-			case COMPONENT_TRANSFORM:
-				if (ImGui::CollapsingHeader("Transform"))
-				{
-					TransformComponent(dynamic_cast<TransformComp*>(c));
-				}
-				break;
-
-			case COMPONENT_SPRITE:
-				if (ImGui::CollapsingHeader("Sprite"))
-				{
-					SpriteComponent(dynamic_cast<SpriteComp*>(c));
-				}
-				break;
-
-			case COMPONENT_PHYSICS:
-				if (ImGui::CollapsingHeader("Physics"))
-				{
-					PhysicsComponent(dynamic_cast<PhysicsComp*>(c));
-				}
-				break;
-
-			case COMPONENT_SCRIPT:
-				if (ImGui::CollapsingHeader("Script"))
-				{
-					ScriptComponent(dynamic_cast<ScriptComp*>(c));
-				}
-				break;
-
-			case COMPONENT_AUDIO:
-				if (ImGui::CollapsingHeader("Audio"))
-				{
-				}
-				break;
-
-			case COMPONENT_CAMERA:
-				if (ImGui::CollapsingHeader("Camera"))
-				{
-				}
-				break;
-
-			case COMPONENT_TILEMAP:
-				if (ImGui::CollapsingHeader("TileMap"))
-				{
-
-				}
-				break;
-
-
-			default:
-				break;
-			}
-		}
-
-		ImGui::Separator();
-
-		const char* comps[] = { "UI", "Script", "Physics" };
-
-		if (ImGui::Button("Add Component..", ImVec2(ImGui::GetContentRegionAvail().x, 0.0f)))
-		{
-			ImGui::OpenPopup("CompList");
-		}
-
-		ImGui::SameLine();
-		if (ImGui::BeginPopup("CompList"))
-		{
-			ImGui::Text("Components");
-			ImGui::Separator();
-			for (int i = 0; i < IM_ARRAYSIZE(comps); i++)
-				if (ImGui::Selectable(comps[i]))
-				{
-
-				}
-			ImGui::EndPopup();
-		}
-
-	}
-
-	ImGui::End();
-
-#pragma endregion
-
-#pragma region Scene Hierarchy
-
-	//ImGui::Begin("Scene Hierarchy");
-
-	//ImGui::Separator();
-	//ImGui::Text("Scene");
-	//ImGui::Separator();
-
-	//ImGui::Text("MARIO AND TILE MAP WILL GO HERE LATER!");
-	//ImGui::Text("REQUIRES OTHERS TO EXPOSE DATA FOR ME");
-
-	//int index = 0;
-	////for (ParticleSystem* ps : mParticleSystems) {
-	////	char label[20] = { 0 };
-	////	sprintf_s(label, "Particle system %d", index);
-	////	if (ImGui::TreeNode(label)) {
-	////		ps->ShowEmmiterIcon(true);
-	////		ImGui::Columns(2, "locations");
-	////		ImGui::Text("Velocity");
-	////		ImGui::Spacing();
-	////		ImGui::Text("Emitter Position");
-	////		ImGui::Spacing();
-	////		ImGui::Spacing();
-	////		ImGui::Text("Emitter Size");
-	////		ImGui::Spacing();
-	////		ImGui::Spacing();
-	////		ImGui::Text("Emission Rate\n(seconds)");
-	////		ImGui::Spacing();
-	////		ImGui::Text("Gravity");
-	////		ImGui::Spacing();
-	////		ImGui::Text("Lifetime (seconds)");
-	////		ImGui::Spacing();
-	////		ImGui::Text("Texture");
-
-	////		ImGui::NextColumn();
-
-	////		ImGui::DragFloat2("##Velocity", &mParticleSystems[index]->GetVelocity().x, 1.0f);
-	////		ImGui::DragFloat2("##Pos", &mParticleSystems[index]->GetPosition().x, 1.0f);
-	////		ImGui::DragFloat2("##Size", &mParticleSystems[index]->GetSize().x, 1.0f);
-	////		ImGui::DragFloat("##Rate", &mParticleSystems[index]->GetRate(), .025f);
-	////		ImGui::Spacing();
-	////		ImGui::Spacing();
-	////		ImGui::Spacing();
-	////		ImGui::DragFloat("##Gravity", &mParticleSystems[index]->GetGravity(), 1.0f);
-	////		ImGui::DragFloat("##Lifetime", &mParticleSystems[index]->GetLifetime(), 0.25f);
-	////		//ImGui::Image(, ImVec2(32,32)); // Sprite used in particle system
-
-	////		ImGui::TreePop();
-	////		ImGui::Columns();
-	////	}
-	////	else
-	////		ps->ShowEmmiterIcon(false);
-
-	////	index++;
-	////}
-
-	////Display Properties of Characters
-	////index = 0;
-	////for (Character* Characters : mGameScreenManager->getScreen()->GetCharacters())
-	////{
-	////	char label[256] = { 0 };
-	////	sprintf_s(label, "Character: %s", Characters->GetName().c_str());
-	////	if (ImGui::TreeNode(label)) {
-	////		ImGui::TreePop();
-	////	}
-	////}
-
-	//ImGui::Separator();
-	//ImGui::Text("Cameras");
-	//ImGui::Separator();
-
-	//index = 0;
-	//for (Camera* c : CameraManager::Get()->AllCameras()) {
-	//	char label[10] = { 0 };
-	//	sprintf_s(label, "Camera %d", index);
-	//	if (ImGui::TreeNode(label)) {
-	//		ImGui::Columns(2, "locations");
-	//		ImGui::Text("Position");
-	//		ImGui::Spacing();
-	//		ImGui::Text("Z-Depth");
-	//		ImGui::Spacing();
-	//		ImGui::Text("Near plane");
-	//		ImGui::Spacing();
-	//		ImGui::Text("Far plane");
-	//		ImGui::Spacing();
-	//		ImGui::Text("Static camera");
-
-	//		ImGui::NextColumn();
-
-	//		//ImGui::DragFloat2("##Pos", &c->GetEye().x, 1);
-	//		//ImGui::DragFloat("##Z-Depth", &c->GetZDepth(), 1, 0.0f);
-	//		//ImGui::SliderFloat("##Near plane", &c->GetNearPlane(), 0, 10, "%.1f");
-	//		//ImGui::SliderFloat("##Far plane", &c->GetFarPlane(), 1, 200, "%.1f");
-	//		//ImGui::Checkbox("##Static camera", &c->IsStatic());
-
-	//		ImGui::TreePop();
-	//		ImGui::Columns();
-	//	}
-	//	index++;
-	//}
-	//ImGui::End();
-
-#pragma endregion
-
+	ImGui::ShowDemoWindow();
 
 	ImGui::Render();
 
@@ -762,207 +378,4 @@ void CleanupDeviceOpenGL2(HWND hWnd, RendererData* data)
 	ReleaseDC(hWnd, data->hDC);
 }
 #endif
-
-
-void GUILayer::SpriteComponent(SpriteComp* c)
-{
-	ImGui::PushID("sprite");
-
-	bool flipX = c->GetFlipX();
-	bool flipY = c->GetFlipY();
-
-	auto& ref = c->GetColour();
-
-	std::string path = c->GetTexture()->GetPath();
-	static ImVec4 colour = ImVec4(ref[0], ref[1],
-		ref[2], ref[3]);
-
-	if (path.find_last_of('\\') != std::string::npos)
-		path = path.substr(path.find_last_of('\\'));
-	else if (path.find_last_of('/') != std::string::npos)
-		path = path.substr(path.find_last_of('/'));
-
-	if (ImGui::Button(path.c_str()))
-	{
-		ifd::FileDialog::Instance().Open("Texture File Browser", "Change Sprite Texture", "Texture File (*.png){.png},.*");
-	}
-
-	if (ifd::FileDialog::Instance().IsDone("Texture File Browser"))
-	{
-		if (ifd::FileDialog::Instance().HasResult() && ifd::FileDialog::Instance().GetResult().u8string() != c->GetTexture()->GetPath())
-		{
-			c->SetTexture(AssetManager::GetInstance()->LoadTexture(
-				c->GetTexture()->GetName(), ifd::FileDialog::Instance().GetResult().u8string()));
-		}
-		ifd::FileDialog::Instance().Close();
-	}
-
-	ImGui::SameLine();
-	ImGui::Image((void*)(intptr_t)c->GetTexID(), ImVec2(32.0f, 32.0f));
-
-	ImGui::Text("Color");
-	ImGui::SameLine();
-	ImGui::ColorEdit4("##colpicker", (float*)&colour, ImGuiColorEditFlags_NoDragDrop);
-
-	ImGui::Columns(2);
-	ImGui::Text("Flip");
-	ImGui::NextColumn();
-	ImGui::Checkbox("X", &flipX);
-	ImGui::SameLine();
-	ImGui::Checkbox("Y", &flipY);
-	ImGui::Columns(1);
-
-	c->ToggleFlipX(flipX);
-	c->ToggleFlipY(flipY);
-	c->SetColour(colour.x, colour.y, colour.z, colour.w);
-
-	ImGui::PopID();
-}
-
-void GUILayer::TransformComponent(TransformComp* c)
-{
-	float position[2];
-	position[0] = c->GetPosition().x;
-	position[1] = c->GetPosition().y;
-
-	float scale[2] = { c->GetScale().x, c->GetScale().y };
-
-	float rotation[2] = { c->GetRotation().x, c->GetRotation().y };
-
-	ImGui::PushID("position");
-
-	ImGui::Columns(2);
-	ImGui::Text("Position");
-	ImGui::NextColumn();
-	ImGui::DragFloat2("##position", &position[0], 0.1f);
-	ImGui::Columns(1);
-
-	ImGui::PopID();
-
-	ImGui::PushID("rotation");
-
-	ImGui::Columns(2);
-	ImGui::Text("Rotation");
-	ImGui::NextColumn();
-	ImGui::DragFloat2("##rotation", &rotation[0], 0.1f);
-	ImGui::Columns(1);
-
-	ImGui::PopID();
-
-	ImGui::PushID("scale");
-
-	ImGui::Columns(2);
-	ImGui::Text("Scale");
-	ImGui::NextColumn();
-	ImGui::DragFloat2("##scale", &scale[0], 0.1f);
-	ImGui::Columns(1);
-
-	ImGui::PopID();
-
-	c->SetPosition(vec2f(position[0], position[1]));
-	c->SetRotation(vec2f(rotation[0], rotation[1]));
-	c->SetScale(vec2f(scale[0], scale[1]));
-}
-
-void GUILayer::CreateNode(GameObject* go, int flags, int& index, int& nodeClicked, int& selectionMask)
-{
-	ImGui::PushID(index);
-	ImGuiTreeNodeFlags node_flags = flags;
-	const bool is_selected = (selectionMask & (1 << index)) != 0;
-	if (is_selected)
-		node_flags |= ImGuiTreeNodeFlags_Selected;
-
-	bool node_open = ImGui::TreeNodeEx((void*)(intptr_t)index, node_flags, go->GetName().c_str());
-
-	if (ImGui::IsItemClicked())
-	{
-		nodeClicked = index;
-		mCurrentSelectedNode = go;
-	}
-
-	if (node_open)
-	{
-		for (GameObject* child : go->GetChildren())
-		{
-			index++;
-			CreateNode(child, flags, index, nodeClicked, selectionMask);
-		}
-
-		ImGui::TreePop();
-	}
-	ImGui::PopID();
-	index++;
-}
-
-void GUILayer::PhysicsComponent(PhysicsComp* c)
-{
-	float physMass = c->GetMass();
-	float physGrav = c->GetGravity();
-	float physFric = c->GetFriction();
-
-	ImGui::PushID("mass");
-
-	ImGui::Columns(2);
-	ImGui::Text("Mass");
-	ImGui::NextColumn();
-	ImGui::DragFloat("##mass", &physMass, 0.1f);
-	ImGui::Columns(1);
-
-	ImGui::PopID();
-
-	ImGui::PushID("gravity");
-
-	ImGui::Columns(2);
-	ImGui::Text("Gravity");
-	ImGui::NextColumn();
-	ImGui::DragFloat("##gravity", &physGrav, 0.1f);
-	ImGui::Columns(1);
-
-	ImGui::PopID();
-
-	ImGui::PushID("friction");
-
-	ImGui::Columns(2);
-	ImGui::Text("Friction");
-	ImGui::NextColumn();
-	ImGui::DragFloat("##friction", &physFric, 0.1f);
-	ImGui::Columns(1);
-
-	ImGui::PopID();
-
-	c->SetMass(physMass);
-	c->SetGravity(physGrav);
-	c->SetFriction(physFric);
-}
-
-void GUILayer::ScriptComponent(ScriptComp* c)
-{
-	ImGui::PushID("script");
-
-	std::string path = c->GetFile();
-	if (path.empty())
-		path = "None";
-
-	if (path.find_last_of('\\') != std::string::npos)
-		path = path.substr(path.find_last_of('\\'));
-	else if (path.find_last_of('/') != std::string::npos)
-		path = path.substr(path.find_last_of('/'));
-
-	if (ImGui::Button(path.c_str()))
-	{
-		ifd::FileDialog::Instance().Open("Script File Browser", "Change Script File", "Script File (*.lua){.lua},.*");
-	}
-
-	if (ifd::FileDialog::Instance().IsDone("Script File Browser"))
-	{
-		if (ifd::FileDialog::Instance().HasResult() && ifd::FileDialog::Instance().GetResult().u8string() != c->GetFile())
-		{
-			c->RemoveScript();
-			c->AddScript(ifd::FileDialog::Instance().GetResult().u8string());
-		}
-		ifd::FileDialog::Instance().Close();
-	}
-
-	ImGui::PopID();
-}
 

@@ -1,7 +1,6 @@
 #include "SceneManager.h"
 #include "Scripting\ScriptingEngine.h"
 
-
 namespace Engine
 {
 	SceneManager* SceneManager::mInstance = nullptr;
@@ -14,45 +13,38 @@ namespace Engine
 		return mInstance;
 	}
 
-	void SceneManager::Init()
-	{
-	}
-
 	void SceneManager::LoadScene()
 	{
 		ScriptingEngine::GetInstance()->Init();
 		
-		GameObject* mPlayer = new GameObject();
-
-		mPlayer->SetName("Parent");
-
-		SpriteComp* spr = mPlayer->AddComponent(new SpriteComp);
-		mPlayer->GetComponent<TransformComp>()->SetPosition(vec2f(200.0f, 200.0f));
-		spr->SetTexture(AssetManager::GetInstance()->LoadTexture((char*)"Stone", (char*)"Assets/Textures/Stone.png"));
-		mPlayer->AddComponent(new PhysicsComp());
-		mPlayer->AddComponent(new ScriptComp());
-
-		mSceneObjects.push_back(mPlayer);
-
-		GameObject* mLevelMap = new GameObject();
-		TileMapComp* TM = mLevelMap->AddComponent(new TileMapComp);
-		TM->LoadTileMap("Assets/TileMaps/XML_Test.xml");
-		mLevelMap->SetName("tileMapTest");
-
-		mLevelMap->AddComponent(new ScriptComp());
-
-		mSceneObjects.push_back(mLevelMap);
-
 		mRenderToTex.CreateFrameBuffer(1260, 677);
-
 		mSceneLoaded = true;
+	}
+
+	void SceneManager::PlayScene()
+	{
+		mEditorMode = false;
+		for (GameObject* go : mSceneObjects)
+		{
+			go->Start();
+		}
 	}
 
 	void SceneManager::UpdateScene()
 	{
-		for (GameObject* go : mSceneObjects)
+		if (mEditorMode)
 		{
-			go->Update();
+			for (GameObject* go : mSceneObjects)
+			{
+				go->InternalUpdate();
+			}
+		}
+		else
+		{
+			for (GameObject* go : mSceneObjects)
+			{
+				go->Update();
+			}
 		}
 	}
 

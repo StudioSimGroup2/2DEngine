@@ -30,3 +30,15 @@ void Engine::TransformComp::Init()
 	mRotation = vec2f(0);
 	mType = 0;
 }
+
+void Engine::TransformComp::Start()
+{
+}
+
+void Engine::TransformComp::InternalUpdate()
+{
+}
+
+void Engine::TransformComp::InternalRender()
+{
+}

@@ -38,6 +38,9 @@ namespace Engine
 
 	void D3D11Renderer2D::Draw(vec2f& position, vec2f& rotation, vec2f& scale, Texture* textureToRender)
 	{
+		if (textureToRender == nullptr)
+			return;
+		
 		Camera* camera = CameraManager::Get()->GetPrimaryCamera();
 
 		XMMATRIX mScale = XMMatrixScaling(scale.x * 1.0f, scale.y * 1.0f, 1.0f);

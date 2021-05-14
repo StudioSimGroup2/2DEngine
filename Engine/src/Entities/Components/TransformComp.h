@@ -16,6 +16,10 @@ namespace Engine
 		void SetRotation(vec2f& rot) { mRotation = rot; }
 		void SetScale(vec2f& scale) { mScale = scale; }
 
+		virtual void Start() override;
+		virtual void InternalUpdate() override;
+		virtual void InternalRender() override;
+
 		void Update() override;
 		void Render() override;
 
