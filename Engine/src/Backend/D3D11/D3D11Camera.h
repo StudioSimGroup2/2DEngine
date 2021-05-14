@@ -9,6 +9,8 @@
 #include <GLM/ext/matrix_transform.hpp>
 
 #include "..\..\Camera.h"
+#include "Engine/Defines.h"
+
 using namespace DirectX;
 
 
@@ -24,7 +26,6 @@ public:
 
 	const XMMATRIX GetViewMatrix() const override { return mView; }
 	const XMMATRIX GetProjectionMatrix() const override { return mProjection; }
-
 
 private:
 	XMMATRIX mView, mProjection;
