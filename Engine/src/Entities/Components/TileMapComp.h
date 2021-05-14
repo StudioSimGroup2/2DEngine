@@ -17,7 +17,7 @@ namespace Engine
 
 		void SetTileMap(TileMap InMap) {mTileMap = InMap; };
 		void LoadTileMap(const std::string& FilePath) { mTileMap = LevelMap::LoadLevelMap(FilePath); };
-		void SaveTileMap(const std::string& FilePath) {LevelMap::SaveTileMap(mTileMap, FilePath); };
+		void SaveTileMap(const std::string& FilePath, vec2i Size) {LevelMap::SaveTileMap(mTileMap, FilePath); };
 		TileMap GetTileMap() { return mTileMap;  };
 		void ChangeTile(int ID, vec2i Pos);
 
@@ -30,6 +30,7 @@ namespace Engine
 		TileMap mTileMap;
 
 		Texture* mTexture = nullptr;
+		Texture* DefaultTexture = nullptr;
 		std::vector<Texture*> mTexArray;
 		std::vector<Renderer2D*> mRenderer;
 		int TextureWidth = 1, TextureHeight = 1;

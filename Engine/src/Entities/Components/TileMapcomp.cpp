@@ -23,21 +23,19 @@ namespace Engine
 		{
 			return;
 		}
-		for (int X = 0; X < Pos.x; X++)
+
+		//Make current tilemap bigger if the mouse postion lies outside the tilemap boundries
+		for (int X = 0; X <= Pos.x; X++)
 		{
 			if (Pos.x >= mTileMap.size())
 			{
 				mTileMap.push_back(std::vector<int>());
 			}
-			for (int Y = 0; Y < Pos.y; Y++)
+			for (int Y = 0; Y <= Pos.y; Y++)
 			{
-				if (Pos.y >= mTileMap[Pos.x].size())
-				{
-					mTileMap[X].push_back(10);
-				}
 				if (Pos.y >= mTileMap[X].size())
 				{
-					mTileMap[X].push_back(10);
+					mTileMap[X].push_back(0);
 				}
 			}
 		}
@@ -52,14 +50,15 @@ namespace Engine
 				int i = 0;
 			}
 		}
+		//if tile is that currently selected. Do nothing
+		//else change tile to that selected
 		if (mTileMap[Pos.x][Pos.y] == ID)
 		{
 			return;
 		}
 		else
 		{
-			mTileMap[Pos.x][Pos.y] = ID;
-				
+			mTileMap[Pos.x][Pos.y] = ID;				
 		}		
 		//update the renderer
 	}
@@ -78,32 +77,45 @@ namespace Engine
 		if (mRenderer.empty())
 			return;
 
-		int pos = 0;
+		//int pos = 0;
 		int ForX = 0;
 		int ForY = 0;
 		for (std::vector<int> firstPass : mTileMap)
 		{
 			for (int secondPass : firstPass)
 			{
-				switch (secondPass)
+				//switch (secondPass)
+				//{
+				//case 0:
+				//{
+				//	break;
+				//}
+				//case 1:
+				//{
+
+				//	pos++;
+				//	break;
+				//}
+				//default:
+				//	break;
+				//}
+				if (secondPass < mTexArray.size())
 				{
-				case 0:
+#if GRAPHICS_LIBRARY == 0
+					dynamic_cast<D3D11Renderer2D*>(mRenderer[0])->Draw(vec2f(ForY * TILEHEIGHT, ForX * TILEWIDTH) + mParent->GetComponent<TransformComp>()->GetPosition(), vec2f(0.0f), vec2f(1.0f), mTexArray[secondPass]);
+#elif GRAPHICS_LIBRARY == 1
+					dynamic_cast<OGLRenderer2D*>(mRenderer[pos])->Draw(vec2f(ForY * TILEHEIGHT, ForX * TILEWIDTH) + mParent->GetComponent<TransformComp>()->GetPosition(), vec2f(0.0f), vec2f(1.0f), mTexArray[0]);
+#endif
+				}
+				else
 				{
-					break;
+#if GRAPHICS_LIBRARY == 0
+					dynamic_cast<D3D11Renderer2D*>(mRenderer[0])->Draw(vec2f(ForY * TILEHEIGHT, ForX * TILEWIDTH) + mParent->GetComponent<TransformComp>()->GetPosition(), vec2f(0.0f), vec2f(1.0f), DefaultTexture);
+#elif GRAPHICS_LIBRARY == 1
+					dynamic_cast<OGLRenderer2D*>(mRenderer[pos])->Draw(vec2f(ForY * TILEHEIGHT, ForX * TILEWIDTH) + mParent->GetComponent<TransformComp>()->GetPosition(), vec2f(0.0f), vec2f(1.0f), mTexArray[0]);
+#endif
 				}
-				case 1:
-				{
-	#if GRAPHICS_LIBRARY == 0
-					dynamic_cast<D3D11Renderer2D*>(mRenderer[pos])->Draw(vec2f(ForY * TILEHEIGHT, ForX * TILEWIDTH) + mParent->GetComponent<TransformComp>()->GetPosition(), vec2f(0.0f), vec2f(1.0f), mTexture);
-	#elif GRAPHICS_LIBRARY == 1
-					dynamic_cast<OGLRenderer2D*>(mRenderer[pos])->Draw(vec2f(ForY * TILEHEIGHT, ForX * TILEWIDTH) + mParent->GetComponent<TransformComp>()->GetPosition(), vec2f(0.0f), vec2f(1.0f), mTexture);
-	#endif
-					pos++;
-					break;
-				}
-				default:
-					break;
-				}
+				
 				ForY++;
 			}
 			ForY = 0;
@@ -116,13 +128,13 @@ namespace Engine
 			dynamic_cast<D3D11Renderer2D*>(child)->Draw(mParent->GetComponent<TransformComp>()->GetPosition(),
 				mParent->GetComponent<TransformComp>()->GetRotation(),
 				mParent->GetComponent<TransformComp>()->GetScale(),
-				mTexture
+				mTexArray[0]
 			);
 #elif GRAPHICS_LIBRARY == 1
 			dynamic_cast<OGLRenderer2D*>(child)->Draw(mParent->GetComponent<TransformComp>()->GetPosition(),
 				mParent->GetComponent<TransformComp>()->GetRotation(),
 				mParent->GetComponent<TransformComp>()->GetScale(),
-				mTexture
+				mTexArray[0]
 			);
 #endif
 		}
@@ -133,9 +145,16 @@ namespace Engine
 	{
 		
 		mType = "TileMap";
-		mTexture = AssetManager::GetInstance()->LoadTexture("Tile", "Assets/Textures/TilesTest.png");
+		//DefaultTexture for if texture array is out of range
+		DefaultTexture = AssetManager::GetInstance()->LoadTexture("Tile", "Assets/Textures/Mario.png");
+
+		mTexture = AssetManager::GetInstance()->LoadTexture("Tile", "Assets/Textures/Blank.png");
+		mTexArray.push_back(mTexture);
+		mTexture = AssetManager::GetInstance()->LoadTexture("Tile", "Assets/Textures/TilesTest.png"); 
+		mTexArray.push_back(mTexture);
 		LoadTileMap("Assets/TileMaps/XML_Test.xml");
-		for (int X = 0; X < mTileMap.size(); X++)
+		mRenderer.push_back(Device::CreateRenderer(AssetManager::GetInstance()->GetShaderByName("Default")));
+		/*for (int X = 0; X < mTileMap.size(); X++)
 		{
 			for (int Y = 0; Y < mTileMap[0].size(); Y++)
 			{
@@ -147,13 +166,13 @@ namespace Engine
 				}
 				case 1:
 				{
-					mRenderer.push_back(Device::CreateRenderer(AssetManager::GetInstance()->GetShaderByName("Default")));
+					
 					break;
 				}
 				default:
 					break;
 				}
 			}
-		}
+		}*/
 	}
 }

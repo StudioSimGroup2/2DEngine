@@ -689,12 +689,11 @@ void GUILayer::TileMapComponent(TileMapComp* c)
 	int nodeClicked = -1;*/
 	static int TileID;
 	for (int i = 0; i < AssetManager::GetInstance()->GetAllTextures()->size(); i++) {
-		int  nhgfdjhgfdj = 0;
 		auto tex = AssetManager::GetInstance()->GetAllTextures()->at(i);
 		ImGui::PushID(i);
 		if (ImGui::ImageButton((void*)(intptr_t)tex->GetTexID(), ImVec2(tex->GetWidth(), tex->GetHeight())))
 		{
-			TileID = i + 1;
+			TileID = i;
 
 		}
 		ImGui::SameLine();
@@ -740,7 +739,7 @@ void GUILayer::TileMapComponent(TileMapComp* c)
 		if (ifd::FileDialog::Instance().HasResult())
 		{
 			std::string TempString = ifd::FileDialog::Instance().GetResult().u8string();
-			c->SaveTileMap(ifd::FileDialog::Instance().GetResult().u8string());
+			c->SaveTileMap(ifd::FileDialog::Instance().GetResult().u8string(),vec2i(c->GetTileMap().size(), c->GetTileMap()[0].size()));
 		}
 		ifd::FileDialog::Instance().Close();
 	}
