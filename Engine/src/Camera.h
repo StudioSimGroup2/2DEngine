@@ -6,6 +6,7 @@
 #include <GLM/ext/matrix_transform.hpp>
 
 #include "Engine\Renderer\Context.h"
+#include "Engine\Defines.h"
 
 #if GRAPHICS_LIBRARY == 0 // D3D
 	#include <directxmath.h>
