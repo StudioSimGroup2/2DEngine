@@ -12,7 +12,7 @@
 #endif
 #define ASSERT(cond, msg) if (!cond) { std::cerr << "Assert failed: " << msg << ".\nFile: " << __FILE__ << ", line: " << __LINE__ << std::endl; abort(); }
 
-// TODO - JoeB: Create an interface for a Camera, then implement the OpenGL and D3D versions seperately 
+
 class Camera
 {
 public:
@@ -79,7 +79,7 @@ protected:
 	bool mPrimary;			// Is this the active camera
 	bool mStatic;			// Can the camera move? 
 
+	Camera();	// Private as you want to call Camera::Create()!!!
 	virtual void UpdateMovement(float deltaTime) = 0;
-
 	
 };

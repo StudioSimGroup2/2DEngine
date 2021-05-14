@@ -7,6 +7,13 @@
 #endif
 
 
+Camera::Camera()
+	: mEye(glm::vec4(0.0f, 0.0f, -1.0f, 1.0f)), mAt(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)), mUp(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f)),
+	mName("-New Camera-"), mZDepth(1), mViewWidth(1280), mViewHeight(720), mNearPlane(0.1f), mFarPlane(100.0f), mMovementSpeed(100.0f),
+	mPrimary(false), mStatic(false)
+{
+}
+
 Camera* Camera::Create(glm::vec4 Eye, glm::vec4 At, glm::vec4 Up, float ViewWidth, float ViewHeight, const std::string& Name) 
 {
 

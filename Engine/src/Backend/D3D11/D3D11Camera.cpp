@@ -1,21 +1,8 @@
 #include <Backend/D3D11/D3D11Camera.h>
 
 D3DCamera::D3DCamera()
+	: mView(XMMatrixIdentity()), mProjection(XMMatrixIdentity())
 {
-	mEye = glm::vec4(0.0f, 0.0f, -1.0f, 1.0f);
-	mAt = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
-	mUp = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
-	mName = "-New Camera-";
-	mZDepth = 1;
-	mView = XMMatrixIdentity();
-	mProjection = XMMatrixIdentity();
-	mViewWidth = 1280;
-	mViewHeight = 720;
-	mNearPlane = 0.1f;
-	mFarPlane = 100.0f;
-	mMovementSpeed = 100.0f;
-	mPrimary = false;
-	mStatic = false;
 }
 
 D3DCamera::D3DCamera(XMFLOAT4 Eye, XMFLOAT4 At, XMFLOAT4 Up, float ViewWidth, float ViewHeight, const std::string& Name)
