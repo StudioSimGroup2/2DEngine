@@ -1,20 +1,48 @@
 #include <Backend/D3D11/D3D11Camera.h>
 
-Camera::Camera()
-	: mEye(XMFLOAT4(0.0f, 0.0f, -1.0f, 1.0f)), mAt(XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)), mUp(XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f)),
-	mZDepth(1), mView(XMMATRIX(XMMatrixIdentity())), mProjection(XMMATRIX(XMMatrixIdentity())), mViewWidth(1280), mViewHeight(720), 
-	mNearPlane(0.1f), mFarPlane(100.0f), mMovementSpeed(100.0f), mPrimary(false), mStatic(false)
+D3DCamera::D3DCamera()
+	: mView(XMMatrixIdentity()), mProjection(XMMatrixIdentity())
 {
 }
 
-Camera::Camera(XMFLOAT4 Eye, XMFLOAT4 At, XMFLOAT4 Up, float ViewWidth, float ViewHeight)
-	: mEye(Eye), mAt(At), mUp(Up), mZDepth(1), mView(XMMATRIX(XMMatrixIdentity())), mProjection(XMMATRIX(XMMatrixIdentity())),
-	mViewWidth(ViewWidth), mViewHeight(ViewHeight), mNearPlane(0.1f), mFarPlane(100.0f), 
-	mMovementSpeed(100.0f), mPrimary(false), mStatic(false)
+D3DCamera::D3DCamera(XMFLOAT4 Eye, XMFLOAT4 At, XMFLOAT4 Up, float ViewWidth, float ViewHeight, const std::string& Name)
 {
+	mEye = ToGLM(Eye);
+	mAt = ToGLM(At);
+	mUp = ToGLM(Up);
+	mName = Name;
+	mZDepth = 1;
+	mView = XMMatrixIdentity();
+	mProjection = XMMatrixIdentity();
+	mViewWidth = ViewWidth;
+	mViewHeight = ViewHeight;
+	mNearPlane = 0.1f;
+	mFarPlane = 100.0f;
+	mMovementSpeed = 100.0f;
+	mPrimary = false;
+	mStatic = false;
 }
 
-void Camera::Update(float deltaTime)
+D3DCamera::D3DCamera(glm::vec4 Eye, glm::vec4 At, glm::vec4 Up, float ViewWidth, float ViewHeight, const std::string& Name)
+{
+	mEye = Eye;
+	mAt = At;
+	mUp = Up;
+	mName = Name;
+	mZDepth = 1;
+	mView = XMMatrixIdentity();
+	mProjection = XMMatrixIdentity();
+	mViewWidth = ViewWidth;
+	mViewHeight = ViewHeight;
+	mNearPlane = 0.1f;
+	mFarPlane = 100.0f;
+	mMovementSpeed = 100.0f;
+	mPrimary = false;
+	mStatic = false;
+}
+
+
+void D3DCamera::Update(float deltaTime)
 {
 	if (!mStatic)
 		UpdateMovement(deltaTime);
@@ -28,15 +56,15 @@ void Camera::Update(float deltaTime)
 	mEye.z = -mZDepth; // Flip the z-depth, Higher Z-depth = object will render infront of others!
 	mAt.z = 0.001f;
 
-	XMVECTOR Eye = XMLoadFloat4(&mEye);
-	XMVECTOR At = XMLoadFloat4(&mAt);
-	XMVECTOR Up = XMLoadFloat4(&mUp);
+	XMVECTOR Eye = XMLoadFloat4(&ToXM(mEye));
+	XMVECTOR At = XMLoadFloat4(&ToXM(mAt));
+	XMVECTOR Up = XMLoadFloat4(&ToXM(mUp));
 
 	mView = XMMatrixLookAtLH(Eye, At, Up);
 	mProjection = XMMatrixOrthographicLH(mViewWidth, mViewHeight, mNearPlane, mFarPlane); // Need to tweek the quads verts to use this version
 }
 
-void Camera::UpdateMovement(float deltaTime)
+void D3DCamera::UpdateMovement(float deltaTime)
 {
 	float speed = mMovementSpeed * deltaTime;
 	if (GetAsyncKeyState(0x57)) // W key
