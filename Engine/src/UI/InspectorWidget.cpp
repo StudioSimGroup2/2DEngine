@@ -1,6 +1,7 @@
 #include "InspectorWidget.h"
 
 #include "imgui.h"
+#include "imgui_stdlib.h"
 
 #include "Entities/GameObject.h"
 #include "ImFileDialog\ImFileDialog.h"
@@ -13,7 +14,9 @@ namespace Engine
 
 		if (go != nullptr)
 		{
-			ImGui::Text(go->GetName().c_str());
+			std::string name = go->GetName();
+			
+			ImGui::InputText("###name", &name);
 
 			for (Component* c : go->GetComponents())
 			{
@@ -93,7 +96,11 @@ namespace Engine
 					}
 				ImGui::EndPopup();
 			}
+
+			if (!name.empty())
+				go->SetName(name);
 		}
+
 
 		ImGui::End();
 	}

@@ -25,7 +25,7 @@ namespace Engine
 		void Load() { if (mCreated) mFrameBuffer->Load(); }
 		void Unload() { if (mCreated) mFrameBuffer->Unload(); }
 
-		void* GetTexID() { if (mCreated) return mFrameBuffer->GetTexID(); }
+		void* GetTexID() { if (mCreated) return mFrameBuffer->GetTexID(); return nullptr; }
 
 	private:
 		bool mCreated = false;

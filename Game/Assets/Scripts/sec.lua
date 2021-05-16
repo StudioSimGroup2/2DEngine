@@ -1,13 +1,10 @@
-function OnUpdate()
-    pos = self:GetTransform():GetPosition()
+local health = 1000
 
-    if (OnKeyDown(87) == true)
+function OnUpdate()
+    health = health - 1
+
+    if (health == 0)
     then
-        pos.y = pos.y - 1
-        self:GetTransform():SetPosition(pos)
-    elseif (OnKeyDown(83) == true)
-    then
-        pos.y = pos.y + 1
-        self:GetTransform():SetPosition(pos)
+        print("sec died")
     end
 end

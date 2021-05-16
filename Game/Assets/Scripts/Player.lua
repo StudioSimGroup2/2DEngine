@@ -1,24 +1,12 @@
+local health = 30
 
 function OnStart()
-    print("doing something")
-    self:GetSprite():SetPath("Assets/Textures/Stone.png")
 end
 
 function OnUpdate()
-    pos = self:GetTransform():GetPosition()
-
-    if (OnKeyDown(65) == true)
+    health = health - 1
+    if (health == 0)
     then
-        pos.x = pos.x - 1
-        self:GetSprite():SetFlipX(true)
-        self:GetTransform():SetPosition(pos)
-    elseif (OnKeyDown(68) == true)
-    then
-        pos.x = pos.x + 1
-        self:GetSprite():SetFlipX(false)
-        self:GetTransform():SetPosition(pos)
+        print("player died")
     end
 end
-
-
-

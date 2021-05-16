@@ -33,6 +33,22 @@ namespace Engine
 
 		unsigned char* source = stbi_load(mPath.c_str(), &mWidth, &mHeight, &nrChannels, 0);
 
+		if (nrChannels == 3)
+		{
+			int size = mWidth * mHeight * 4;
+			unsigned char* temp = new unsigned char[size];
+
+			for (int i = 0; i < mWidth * mHeight; i++)
+			{
+				temp[i * 4] = source[i * 3];
+				temp[i * 4 + 1] = source[i * 3 + 1];
+				temp[i * 4 + 2] = source[i * 3 + 2];
+				temp[i * 4 + 3] = 255;
+
+				source = temp;
+			}
+		}
+
 		glBindTexture(GL_TEXTURE_2D, mID);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, mWidth, mHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, source);
 

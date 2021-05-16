@@ -1,4 +1,5 @@
 #pragma once
+
 #include <string>
 #include <sol.hpp>
 
@@ -21,6 +22,8 @@ namespace Engine
 		sol::protected_function mStart;
 		sol::protected_function mUpdate;
 		sol::protected_function mRender;
+
+		sol::environment mEnvironment;
 	};
 }
 

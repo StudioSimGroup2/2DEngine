@@ -1,6 +1,7 @@
 #pragma once
 
 #define SOL_ALL_SAFETIES_ON 1
+#pragma warning (disable : 4251)
 
 #include <Engine/Core.h>
 
@@ -27,6 +28,8 @@ namespace Engine
 		ScriptingEngine() {}
 
 		static ScriptingEngine* mInstance;
+
+		sol::environment mGlobalEnvironment;
 
 		sol::state mState;;
 	};

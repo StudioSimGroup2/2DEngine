@@ -35,7 +35,6 @@ public:
 	Game()
 	{
 		AddLayer(new GameLayer());
-		ScriptingEngine::GetInstance()->Init();
 	}
 
 	~Game()

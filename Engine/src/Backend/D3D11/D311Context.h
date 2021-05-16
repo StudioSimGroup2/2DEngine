@@ -58,7 +58,7 @@ namespace Engine
 		XMMATRIX mOrthoMatrix;
 
 		//These should be in the GameScreenTest
-		std::vector<ParticleSystem*> mParticleSystems;
+		//std::vector<ParticleSystem*> mParticleSystems;
 
 
 	};

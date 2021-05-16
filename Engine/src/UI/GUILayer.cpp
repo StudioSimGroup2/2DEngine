@@ -236,6 +236,27 @@ void GUILayer::Render()
 	}
 	ImGui::EndMenuBar();
 
+	ImVec2 gameScreenA = { ImGui::GetWindowContentRegionMin().x + ImGui::GetWindowPos().x, ImGui::GetWindowContentRegionMin().y + ImGui::GetWindowPos().y };
+	ImVec2 gameScreenB = { ImGui::GetWindowContentRegionMax().x + ImGui::GetWindowPos().x, ImGui::GetWindowContentRegionMax().y + ImGui::GetWindowPos().y };
+
+	ImVec2 mouseOffset = ImGui::GetMousePos();
+	ImVec2 mouseOffsetA = ImGui::GetMousePos();
+
+	mouseOffset.x -= gameScreenA.x;
+	mouseOffset.y -= gameScreenA.y;
+
+	if (mouseOffset.x < 0.0f)
+		mouseOffset.x = 0.0f;
+
+	if (mouseOffset.y < 0.0f)
+		mouseOffset.y = 0.0f;
+
+	if (mouseOffset.x > (gameScreenB.x - gameScreenA.x))
+		mouseOffset.x = gameScreenB.x - gameScreenA.x;
+
+	if (mouseOffset.y > (gameScreenB.y - gameScreenA.y))
+		mouseOffset.y = gameScreenB.y - gameScreenA.y;
+
 #if GRAPHICS_LIBRARY ==  1
 	ImGui::Image((void*)(intptr_t)SceneManager::GetInstance()->GetRenderToTexID(), ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
 #elif GRAPHICS_LIBRARY == 0
@@ -252,8 +273,6 @@ void GUILayer::Render()
 	mSceneHierarchy.Render();
 	mInspector.Render(SceneHierarchyWidget::GetNode());
 	mLogger.Render();
-
-	ImGui::ShowDemoWindow();
 
 	ImGui::Render();
 

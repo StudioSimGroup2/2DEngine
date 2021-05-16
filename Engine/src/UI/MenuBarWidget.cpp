@@ -58,7 +58,7 @@ namespace Engine
 			{
 				if (ImGui::MenuItem("Empy Game Object"))
 				{
-					std::cout << SceneManager::GetInstance()->CreateObject() << std::endl;
+					SceneManager::GetInstance()->CreateObject();
 				}
 
 				if (ImGui::MenuItem("Empty Child GameObject"))

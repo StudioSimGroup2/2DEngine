@@ -14,6 +14,7 @@ namespace Engine
 	void ScriptingEngine::Init()
 	{
 		mState.open_libraries(sol::lib::base);
+		mGlobalEnvironment = sol::environment(mState, sol::create, mState.globals());
 
 		RegisterUserTypes();
 
