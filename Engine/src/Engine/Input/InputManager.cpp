@@ -43,7 +43,6 @@ namespace Engine
 		{
 			mKBPressed[key] = false;
 		}
-
 	}
 
 	void InputManager::BindCommandToButton(uint32_t key, const std::function<void()>& callback)
@@ -96,7 +95,7 @@ namespace Engine
 					mMBPressedPrev[i] = true;
 					HandleCallbacks(i);
 				}
-				else if (mMouse[i] != KB_REPEAT && mMBPressedPrev[i])
+				else if (mMouse[i] != MB_REPEAT && mMBPressedPrev[i])
 				{
 					mMouse[i] = MB_REPEAT;
 				}
@@ -115,6 +114,58 @@ namespace Engine
 				}
 			}
 		}
+	}
+
+	bool InputManager::GetKeyDown(uint32_t key)
+	{
+		if (key <= 6)
+		{
+			if (mMouse[key] == MB_PRESS || mMouse[key] == MB_REPEAT)
+			{
+				return true;
+			}
+		}
+		else
+		{
+			if (mKeyboard[key] != KB_NOSTATE || mMouse[key] == KB_RELEASE)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	bool InputManager::GetKeyRepeat(uint32_t key)
+	{
+		if (key <= 6)
+		{
+			if (mMouse[key] == MB_REPEAT)
+				return true;
+		}
+		else
+		{
+			if (mKeyboard[key] == KB_REPEAT)
+				return true;
+		}
+
+		return false;
+	}
+
+	bool InputManager::GetKeyUp(uint32_t key)
+	{
+		if (key <= 6)
+		{
+			if (mMouse[key] == MB_RELEASE)
+				return true;
+		}
+		else
+		{
+			if (mKeyboard[key] == KB_RELEASE)
+				return true;
+		}
+
+		return false;
 	}
 
 	void InputManager::Shutdown()

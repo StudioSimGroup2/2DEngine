@@ -144,7 +144,6 @@ namespace Engine
 	void TileMapComp::Init()
 	{
 		
-		mType = "TileMap";
 		//DefaultTexture for if texture array is out of range
 		DefaultTexture = AssetManager::GetInstance()->LoadTexture("Tile", "Assets/Textures/Mario.png");
 
@@ -169,6 +168,7 @@ namespace Engine
 		mTexArray.push_back(mTexture);
 		mTexture = AssetManager::GetInstance()->LoadTexture("Tile", "Assets/Textures/Numbers/nine.png");
 		mTexArray.push_back(mTexture);
+		mType = COMPONENT_TILEMAP;
 		LoadTileMap("Assets/TileMaps/XML_Test.xml");
 		mRenderer.push_back(Device::CreateRenderer(AssetManager::GetInstance()->GetShaderByName("Default")));
 		/*for (int X = 0; X < mTileMap.size(); X++)
@@ -177,10 +177,6 @@ namespace Engine
 			{
 				switch (mTileMap[X][Y])
 				{
-				case 0:
-				{
-					break;
-				}
 				case 1:
 				{
 					
@@ -191,5 +187,17 @@ namespace Engine
 				}
 			}
 		}*/
+	}
+
+	void TileMapComp::Start()
+	{
+	}
+
+	void TileMapComp::InternalUpdate()
+	{
+	}
+
+	void TileMapComp::InternalRender()
+	{
 	}
 }

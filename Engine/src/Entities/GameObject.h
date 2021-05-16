@@ -9,32 +9,34 @@
 #include "Component.h"
 #include "ComponentIncludes.h"
 
+#include <iostream>
+
 namespace Engine
 {
 	class ENGINE_API GameObject
 	{
 	public:
 		GameObject();
-		GameObject(GameObject* parent);
 		~GameObject();
 
 		void Start();
 		void Update();
-		void FixedUpdate();
 		void Render();
-		void OnEnable();
-		void OnDisable();
+
+		void InternalUpdate();
+		void InternalRender();
+
+		void Attach(GameObject* parent);
+		void RemoveParent();
 
 		void EnableObject() { mStatus = true; }
 		void DisableObject() { mStatus = false; }
 		bool IsEnabled() { return mStatus; }
 
-		void AttachToParent(GameObject* child) { mChildren.push_back(child); }
-		void SetParent(GameObject* parent) { mParent = parent; }
-		void SetName(const std::string& name) { mName = name; }
+		void SetName(const std::string& name) { if (!name.empty()) mName = name; }
 
 		GameObject* GetParent() const { return mParent; }
-		std::vector<GameObject*> GetChildren() const { return mChildren; }
+		std::vector<GameObject*> GetChildren() { return mChildren; }
 
 		std::string& GetName() { return mName; }
 
@@ -71,6 +73,7 @@ namespace Engine
 		GameObject* mParent = nullptr;
 
 	private:
+		void AddChild(GameObject* go) { mChildren.push_back(go); }
 		void InitTransformComponent();
 		
 		std::string mName;

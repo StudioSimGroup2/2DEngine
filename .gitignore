@@ -356,3 +356,7 @@ bin-int/
 *.sln
 
 *.filters
+
+*.vcxproj
+
+Engine/Engine.vcxproj.filters

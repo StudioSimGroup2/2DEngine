@@ -1,6 +1,9 @@
 #pragma once
+#include <Entities/GameObject.h>
+#include <vector>
 
 #include "Scene.h"
+#include "Engine\Renderer\FrameBuffer.h"
 
 //TODO: Load Scene
 
@@ -10,31 +13,42 @@ namespace Engine
 	{
 	public:
 		static SceneManager* GetInstance();
-		
-		void Init();
 
 		// TODO: Read from file
 		void LoadScene();
 
-		void PlayScene() { mCurrScene->Init(); }
-		void UpdateScene() { mCurrScene->Update(); }
-		void RenderScene() { mCurrScene->Render(); }
+		void PlayScene();
+		void UpdateScene();
+		void RenderScene();
 
 		void SaveScene();
 
-		std::vector<GameObject*> GetSceneObjects() { return mCurrScene->GetSceneObjects(); }
+		void EnableEditorMode() { mEditorMode = true; }
+		void DisableEditorMode() { mEditorMode = false; }
+
+		GameObject* CreateObject();
+		//void CreateObject(GameObject* parent);
+
+		GameObject* DestroyObject();
+
+		std::vector<GameObject*>& GetSceneObjects() { return mSceneObjects; }
 
 		bool IsSceneLoaded() { return (mSceneLoaded); }
 
 		static void Shutdown();
+
+		void* GetRenderToTexID() { return mRenderToTex.GetTexID(); }
 	private:
 		SceneManager() { }
 
 		static SceneManager* mInstance;
 
+		std::vector<GameObject*> mSceneObjects;
+
 		bool mSceneLoaded = false;
 
-		Scene* mCurrScene;
+		bool mEditorMode = true;
+		FrameBuffer mRenderToTex;
 	};
 }
 

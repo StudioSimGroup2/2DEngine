@@ -85,13 +85,13 @@ namespace Engine
 		}
 
 		DestroyWindow(mHWND);
-		UnregisterClass(mClassName, mHInstance);
+		UnregisterClassW(mClassName, mHInstance);
 	}
 
 	void WindowsSystem::Init(const WindowData& data)
 	{
-		WNDCLASSEX wndclass;
-		ZeroMemory(&wndclass, sizeof(WNDCLASSEX));
+		WNDCLASSEXW wndclass;
+		ZeroMemory(&wndclass, sizeof(WNDCLASSEXW));
 		wndclass.cbClsExtra = NULL;
 		wndclass.cbSize = sizeof(WNDCLASSEX);
 		wndclass.cbWndExtra = NULL;
@@ -107,9 +107,9 @@ namespace Engine
 		wndclass.lpfnWndProc = &WndProc;
 
 		// TODO: Error checking
-		RegisterClassEx(&wndclass);
+		RegisterClassExW(&wndclass);
 
-		mHWND = CreateWindowEx(WS_EX_OVERLAPPEDWINDOW, mClassName, L"Sleepy Engine", WS_VISIBLE | WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, 1280, 720, NULL, NULL, mHInstance, this);
+		mHWND = CreateWindowExW(WS_EX_OVERLAPPEDWINDOW, mClassName, L"Engine", WS_VISIBLE | WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, 1280, 720, NULL, NULL, mHInstance, this);
 
 #if GRAPHICS_LIBRARY == 1
 		mRenderer = new OpenGLContext(mHWND, mWidth, mHeight, true, false);
@@ -145,7 +145,8 @@ namespace Engine
 
 		case WM_MOUSEMOVE:
 		{
-			InputManager::GetInstance()->SetMousePosition(vec2f((float)LOWORD(lParam), (float)HIWORD(lParam)));
+			const auto& vec = vec2f((float)LOWORD(lParam), (float)HIWORD(lParam));
+			InputManager::GetInstance()->SetMousePosition(vec);
 		}
 		break;
 

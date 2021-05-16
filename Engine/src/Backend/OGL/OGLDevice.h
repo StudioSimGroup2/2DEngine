@@ -38,11 +38,15 @@ namespace Engine
 	class OGLDevice
 	{
 	public:
+		void SetHDC(HDC hDC) { mHDC = hDC; }
 		void SetHGLRC(HGLRC hglrc) { mHGLRC = hglrc; }
+		void SetHWND(HWND hWnd) { mHWND = hWnd; }
 
 		void SetDeviceData(const DeviceData& devData) { mDeviceData = devData; }
 
 		HGLRC GetHGLRC() { return mHGLRC; }
+		HDC GetHDC() { return mHDC; }
+		HWND GetHWND() { return mHWND; }
 
 		DeviceData GetDeviceData() { return mDeviceData; }
 
@@ -56,6 +60,8 @@ namespace Engine
 		static OGLDevice* mInstance;
 
 		HGLRC mHGLRC;
+		HDC mHDC;
+		HWND mHWND;
 
 		DeviceData mDeviceData;
 	};

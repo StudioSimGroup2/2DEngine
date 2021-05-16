@@ -6,6 +6,7 @@
 
 #include <vector>
 #include <string>
+#include <algorithm>
 
 #include <Engine/Core.h>
 
@@ -20,6 +21,7 @@ namespace Engine
 	{
 	public:
 		void LoadShader(const std::string& name, const std::string& path);
+		void ChangeTexture(Texture* tex, const std::string& path);
 		//static void LoadTexture(Device* device, const std::string& name, const std::string& path);
 		Texture* LoadTexture(const std::string& name, const std::string& path);
 

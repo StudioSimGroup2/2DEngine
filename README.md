@@ -33,3 +33,7 @@ This engine is currently being developed by members of the Sleepy Team group for
 - OpenAL Soft
 - Glad
 - dr_wav
+- ImFileDialog
+- ImPlot
+- Lua
+- Sol2

@@ -105,9 +105,11 @@ namespace Engine
 		glGenVertexArrays(1, &mRequiredVAO);
 		glBindVertexArray(mRequiredVAO);
 
+		OGLDevice::GetInstance()->SetHDC(mDeviceContext);
 		OGLDevice::GetInstance()->SetHGLRC(mRenderContext);
+		OGLDevice::GetInstance()->SetHWND(mHWND);
 
-		AssetManager::GetInstance()->LoadShader("Default", "default.glsl");
+		AssetManager::GetInstance()->LoadShader("Default", "Assets/Shaders/default.glsl");
 
 		CameraManager::Get()->Add(Camera::Create(glm::vec4(0.0f, 0.0f, -1.0f, 1.0f)));		// CameraManager cleans up cameras 
 		CameraManager::Get()->Add(Camera::Create(glm::vec4(-964.0f, 94.0f, -1.0f, 1.0f))); // CameraManager cleans up cameras
@@ -130,10 +132,6 @@ namespace Engine
 
 	void OpenGLContext::SwapBuffers()
 	{
-		glClearColor(0.180392161f, 0.545098066f, 0.341176480f, 1.000000000f);
-		//glClearColor(0.0f, 0.4f, 0.4f, 1.000000000f);
-		glClear(GL_COLOR_BUFFER_BIT);
-
 		for (Layer* l : *Application::GetInstance()->GetStack())
 		{
 			l->Render();

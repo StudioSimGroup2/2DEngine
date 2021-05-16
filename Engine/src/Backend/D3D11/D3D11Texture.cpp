@@ -3,6 +3,7 @@
 #include <assert.h>
 #include <iostream>
 #include <Utils/StringHelper.h>
+#include <Utils/Logger.h>
 
 #include <stb/stb_image.h>
 
@@ -12,8 +13,8 @@ namespace Engine
 {
 	D3D11Texture::D3D11Texture(D3D11Device* device, const std::string& name, const std::string& path)
 	{
-		mName = std::string(name);
-		mPath = std::string(path);
+		mName = name;
+		mPath = path;
 		mDeviceContext = device->GetDeviceContext();
 
 		auto hr = S_OK;
@@ -22,6 +23,9 @@ namespace Engine
 		mHeight = 64;
 
 		hr = CreateTextureFromFile(device);
+
+		if (hr != S_OK)
+			Logger::LogError("Could not load texture");
 	}
 
 	D3D11Texture::~D3D11Texture()

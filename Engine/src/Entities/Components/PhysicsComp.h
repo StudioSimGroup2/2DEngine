@@ -4,8 +4,6 @@
 #include <Utils/Math.h>
 #include <vector>
 
-
-
 namespace Engine
 {
 	class ENGINE_API PhysicsComp : public Component
@@ -18,7 +16,7 @@ namespace Engine
 
 		void ResetForces();
 
-		void chageGrounded() { mGrounded != mGrounded; };
+		void chageGrounded() { /*mGrounded != mGrounded; */; };
 		void AddThrust(vec2f thrust);
 
 		float GetMass() { return mMass; }
@@ -32,13 +30,11 @@ namespace Engine
 		std::vector<vec2f> actingForces;
 
 	private:
-		void UpdateForces(float dT);
-		void UpdateAcceleration();
+		void UpdateForces(float dT, vec2f accel);
 
 		bool mGrounded = false;
 		vec2f mNetForce;
 		vec2f mThrust;
-		vec2f mNetAcceleration;
 		vec2f mCurrentVelocity;
 		vec2f* mPosition;
 		float mMass;
@@ -49,6 +45,11 @@ namespace Engine
 		// Inherited via Component
 		virtual void Update() override;
 		virtual void Render() override;
+
+		// Inherited via Component
+		virtual void Start() override;
+		virtual void InternalUpdate() override;
+		virtual void InternalRender() override;
 	};
 
 }
