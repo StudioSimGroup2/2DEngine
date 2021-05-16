@@ -15,10 +15,11 @@ namespace Engine
 		TileMapComp(GameObject* parent);
 		~TileMapComp() override;
 
-		void SetTileMap(TileMap InMap) {mTileMap = InMap; };
+		void SetTileMap(TileMap InMap) { mTileMap = InMap; };
 		void LoadTileMap(const std::string& FilePath) { mTileMap = LevelMap::LoadLevelMap(FilePath); };
-		void SaveTileMap(const std::string& FilePath, vec2i Size) {LevelMap::SaveTileMap(mTileMap, FilePath); };
-		TileMap GetTileMap() { return mTileMap;  };
+		void SaveTileMap(const std::string& FilePath, vec2i Size) { LevelMap::SaveTileMap(mTileMap, FilePath); };
+		TileMap GetTileMap() { return mTileMap; };
+		std::vector<Texture*> GetTextures() { return mTexArray; };
 		void ChangeTile(int ID, vec2i Pos);
 
 		void ChangeTexture();

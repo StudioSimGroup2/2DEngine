@@ -148,9 +148,26 @@ namespace Engine
 		//DefaultTexture for if texture array is out of range
 		DefaultTexture = AssetManager::GetInstance()->LoadTexture("Tile", "Assets/Textures/Mario.png");
 
-		mTexture = AssetManager::GetInstance()->LoadTexture("Tile", "Assets/Textures/Blank.png");
+		//defult textures for map painting 
+		mTexture = AssetManager::GetInstance()->LoadTexture("Tile", "Assets/Textures/Numbers/zero.png");
 		mTexArray.push_back(mTexture);
-		mTexture = AssetManager::GetInstance()->LoadTexture("Tile", "Assets/Textures/TilesTest.png"); 
+		mTexture = AssetManager::GetInstance()->LoadTexture("Tile", "Assets/Textures/Numbers/one.png");
+		mTexArray.push_back(mTexture);
+		mTexture = AssetManager::GetInstance()->LoadTexture("Tile", "Assets/Textures/Numbers/two.png");
+		mTexArray.push_back(mTexture);
+		mTexture = AssetManager::GetInstance()->LoadTexture("Tile", "Assets/Textures/Numbers/three.png");
+		mTexArray.push_back(mTexture);
+		mTexture = AssetManager::GetInstance()->LoadTexture("Tile", "Assets/Textures/Numbers/four.png");
+		mTexArray.push_back(mTexture);
+		mTexture = AssetManager::GetInstance()->LoadTexture("Tile", "Assets/Textures/Numbers/five.png");
+		mTexArray.push_back(mTexture);
+		mTexture = AssetManager::GetInstance()->LoadTexture("Tile", "Assets/Textures/Numbers/six.png");
+		mTexArray.push_back(mTexture);
+		mTexture = AssetManager::GetInstance()->LoadTexture("Tile", "Assets/Textures/Numbers/seven.png");
+		mTexArray.push_back(mTexture);
+		mTexture = AssetManager::GetInstance()->LoadTexture("Tile", "Assets/Textures/Numbers/eight.png");
+		mTexArray.push_back(mTexture);
+		mTexture = AssetManager::GetInstance()->LoadTexture("Tile", "Assets/Textures/Numbers/nine.png");
 		mTexArray.push_back(mTexture);
 		LoadTileMap("Assets/TileMaps/XML_Test.xml");
 		mRenderer.push_back(Device::CreateRenderer(AssetManager::GetInstance()->GetShaderByName("Default")));

@@ -683,35 +683,32 @@ void GUILayer::TileMapComponent(TileMapComp* c)
 {
 	ImGui::PushID("TileMap");
 
-	ImGui::Begin("Tile Editor");
-	/*static int selectionMask = (1 << 2);
-	int sceneIndex = 0;
-	int nodeClicked = -1;*/
-	static int TileID;
-	for (int i = 0; i < AssetManager::GetInstance()->GetAllTextures()->size(); i++) {
-		auto tex = AssetManager::GetInstance()->GetAllTextures()->at(i);
-		ImGui::PushID(i);
-		if (ImGui::ImageButton((void*)(intptr_t)tex->GetTexID(), ImVec2(tex->GetWidth(), tex->GetHeight())))
-		{
-			TileID = i;
+		ImGui::Begin("Tile Editor");
+		/*static int selectionMask = (1 << 2);
+		int sceneIndex = 0;
+		int nodeClicked = -1;*/
+		static int TileID;
+	
+		for (int i = 0; i < c->GetTextures().size(); i++) {
+			auto tex = c->GetTextures().at(i);
+			ImGui::PushID(i);
+			if (ImGui::ImageButton((void*)(intptr_t)tex->GetTexID(), ImVec2(tex->GetWidth(), tex->GetHeight())))
+			{
+				TileID = i;
 
+			}
+			ImGui::SameLine();
+			ImGui::PopID();
+
+			vec2f mousePos = vec2f(InputManager::GetInstance()->GetMousePosition().x, InputManager::GetInstance()->GetMousePosition().y);
+			Logger::LogMsg("Mouse pos X:", int(mousePos.x / TILEHEIGHT));
+			Logger::LogMsg("Mouse pos Y:", int(mousePos.y / TILEHEIGHT));
+			if (InputManager::GetInstance())
+			{
+				c->ChangeTile(TileID, vec2i((mousePos.y / TILEHEIGHT), (mousePos.x / TILEWIDTH)));
+			}
 		}
-		ImGui::SameLine();
-
-		//if (nodeClicked != -1)
-		//{
-		//	// Update selection state
-		//	// (process outside of tree loop to avoid visual inconsistencies during the clicking frame)
-		//	if (ImGui::GetIO().KeyCtrl)
-		//		selectionMask ^= (1 << nodeClicked);          // CTRL+click to toggle
-		//	else //if (!(selection_mask & (1 << node_clicked))) // Depending on selection behavior you want, may want to preserve selection when clicking on item that is part of the selection
-		//		selectionMask = (1 << nodeClicked);           // Click to single-select
-		//}
-		ImGui::PopID();
-	}
-	//find mouse pos in world space
-
-	ImGui::End();
+		ImGui::End();
 
 	if (ImGui::Button("Load TileMap"))
 	{
@@ -743,13 +740,7 @@ void GUILayer::TileMapComponent(TileMapComp* c)
 		}
 		ifd::FileDialog::Instance().Close();
 	}
-	vec2f mousePos = vec2f(InputManager::GetInstance()->GetMousePosition().x, InputManager::GetInstance()->GetMousePosition().y);
-	Logger::LogMsg("Mouse pos X:", int(mousePos.x / TILEHEIGHT));
-	Logger::LogMsg("Mouse pos Y:", int(mousePos.y / TILEHEIGHT));
-	if (InputManager::GetInstance())
-	{
-		c->ChangeTile(TileID, vec2i((mousePos.y / TILEHEIGHT), (mousePos.x / TILEWIDTH)));
-	}
+
 	ImGui::PopID();
 }
 
