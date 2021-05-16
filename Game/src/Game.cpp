@@ -1,6 +1,5 @@
 #include <Engine.h>
 
-#include "GameScreenManager.h"
 #include "SceneManager.h"
 #include "Scene.h"
 #include <Scripting/ScriptingEngine.h>

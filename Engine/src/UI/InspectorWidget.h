@@ -19,5 +19,6 @@ namespace Engine
 		void RenderSpriteComponent(SpriteComp* c);
 		void RenderPhysicsComponent(PhysicsComp* c);
 		void RenderScriptComponent(ScriptComp* c);
+		void TileMapComponent(TileMapComp* c);
 	};
 }

@@ -71,12 +71,26 @@ namespace Engine
 
 				if (ImGui::MenuItem("Sprite"))
 				{
-					SceneHierarchyWidget::GetNode()->AddComponent<SpriteComp>(new SpriteComp);
+					if (SceneHierarchyWidget::GetNode() != nullptr)
+					{
+						SceneHierarchyWidget::GetNode()->AddComponent<SpriteComp>(new SpriteComp);
+					}
+				}
+
+				if (ImGui::MenuItem("TileMap"))
+				{
+					if (SceneHierarchyWidget::GetNode() != nullptr)
+					{
+						SceneHierarchyWidget::GetNode()->AddComponent<TileMapComp>(new TileMapComp);
+					}
 				}
 
 				if (ImGui::MenuItem("Script"))
 				{
-					SceneHierarchyWidget::GetNode()->AddComponent<ScriptComp>(new ScriptComp);
+					if (SceneHierarchyWidget::GetNode() != nullptr)
+					{
+						SceneHierarchyWidget::GetNode()->AddComponent<ScriptComp>(new ScriptComp);
+					}
 				}
 
 				ImGui::EndMenu();

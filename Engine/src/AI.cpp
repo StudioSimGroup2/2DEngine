@@ -22,7 +22,7 @@ void AI::Update(float deltaTime)
 		}
 	case(WANDER):
 		{
-		srand(deltaTime);
+		srand(float(deltaTime));
 		CreatePath(AllNodes[rand() % AllNodes.size()]->ID);
 		break;
 		}

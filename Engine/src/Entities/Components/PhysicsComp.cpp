@@ -5,8 +5,6 @@ Engine::PhysicsComp::PhysicsComp() : Component()
 {
 	Init();
 	mGrounded;
-
-	
 }
 
 Engine::PhysicsComp::~PhysicsComp()
@@ -21,10 +19,6 @@ void Engine::PhysicsComp::Init()
 	mNetForce.x = 0.0f;
 	mNetForce.y = 0.0f;
 
-	//Initialize Net Acceleration
-	mNetAcceleration.x = 0.0f;
-	mNetAcceleration.y = 0.0f;
-
 	//Initialize Velocity
 	mCurrentVelocity.x = 0.0f;
 	mCurrentVelocity.y = 0.0f;
@@ -32,10 +26,10 @@ void Engine::PhysicsComp::Init()
 	mMass = 1.0f;
 }
 
-void Engine::PhysicsComp::UpdateForces(float dT)
+void Engine::PhysicsComp::UpdateForces(float dT, vec2f accel)
 {
 	//Calculate new velocity using the formula v = u + at
-	mCurrentVelocity = mCurrentVelocity + (mNetAcceleration * dT);
+	mCurrentVelocity = mCurrentVelocity + (accel * dT);
 	mWeight = mMass * mGravity;
 	ResetForces();
 
@@ -51,13 +45,6 @@ void Engine::PhysicsComp::UpdateForces(float dT)
 		//the weight of the character multiplied by gravity
 		mNetForce.y += mWeight;
 	}
-}
-
-void Engine::PhysicsComp::UpdateAcceleration()
-{
-	// Calculate acceleration
-	mNetAcceleration.x = mNetForce.x / mWeight;
-	mNetAcceleration.y = mNetForce.y / mWeight;
 }
 
 void Engine::PhysicsComp::Update()
@@ -104,13 +91,13 @@ void Engine::PhysicsComp::Update(float dT)
 		mNetForce.y += actingForces[i].y;
 	}
 
-	UpdateAcceleration();
-	UpdateForces(dT);
+	vec2f acceleration = vec2f(mNetForce.x / mWeight, mNetForce.y / mWeight);
+	UpdateForces(dT, acceleration);
 
 	//Calculate new position using formula s = ut + 1/2at^2
 	vec2f position = mParent->GetComponent<TransformComp>()->GetPosition();
 
-	position += (mCurrentVelocity * dT) + (mNetAcceleration * 0.5f * (dT * dT));
+	position += (mCurrentVelocity * dT) + (acceleration * 0.5f * (dT * dT));
 	
 	mParent->GetComponent<TransformComp>()->SetPosition(position);
 }

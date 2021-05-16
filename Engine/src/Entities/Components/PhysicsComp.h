@@ -30,13 +30,11 @@ namespace Engine
 		std::vector<vec2f> actingForces;
 
 	private:
-		void UpdateForces(float dT);
-		void UpdateAcceleration();
+		void UpdateForces(float dT, vec2f accel);
 
 		bool mGrounded = false;
 		vec2f mNetForce;
 		vec2f mThrust;
-		vec2f mNetAcceleration;
 		vec2f mCurrentVelocity;
 		vec2f* mPosition;
 		float mMass;

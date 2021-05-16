@@ -127,6 +127,7 @@ inline Vector2<T>::operator Vector2<float>() const
     return { static_cast<float>(this->x), static_cast<float>(this->y) };
 }
 
+typedef Vector2<int> vec2i;
 typedef Vector2<float> vec2f;
 typedef Vector2<double> vec2d;
 

@@ -65,7 +65,7 @@ namespace Engine
 				case COMPONENT_TILEMAP:
 					if (ImGui::CollapsingHeader("TileMap"))
 					{
-
+						TileMapComponent(dynamic_cast<TileMapComp*>(c));
 					}
 					break;
 
@@ -282,6 +282,71 @@ namespace Engine
 			{
 				c->RemoveScript();
 				c->AddScript(ifd::FileDialog::Instance().GetResult().u8string());
+			}
+			ifd::FileDialog::Instance().Close();
+		}
+
+		ImGui::PopID();
+	}
+
+	void InspectorWidget::TileMapComponent(TileMapComp* c)
+	{
+		ImGui::PushID("TileMap");
+
+		ImGui::Begin("Tile Editor");
+		/*static int selectionMask = (1 << 2);
+		int sceneIndex = 0;
+		int nodeClicked = -1;*/
+		static int TileID;
+
+		for (int i = 0; i < c->GetTextures().size(); i++) {
+			auto tex = c->GetTextures().at(i);
+			ImGui::PushID(i);
+			if (ImGui::ImageButton((void*)(intptr_t)tex->GetTexID(), ImVec2(tex->GetWidth(), tex->GetHeight())))
+			{
+				TileID = i;
+
+			}
+			ImGui::SameLine();
+			ImGui::PopID();
+			if (ImGui::GetIO().MouseDown[0])
+			{
+				vec2f mousePos = vec2f(InputManager::GetInstance()->GetMousePosition().x, InputManager::GetInstance()->GetMousePosition().y);
+				/*Logger::LogMsg("Mouse pos X:", int(mousePos.x / TILEHEIGHT));
+				Logger::LogMsg("Mouse pos Y:", int(mousePos.y / TILEHEIGHT));*/
+				c->ChangeTile(TileID, vec2i((mousePos.y / TILEHEIGHT), (mousePos.x / TILEWIDTH)));
+			}
+
+		}
+		ImGui::End();
+
+		if (ImGui::Button("Load TileMap"))
+		{
+			ifd::FileDialog::Instance().Open("TileMapLoader", "LoadTileMap", "TileMap (*.xml){.xml},.*");
+		}
+
+		if (ifd::FileDialog::Instance().IsDone("TileMapLoader"))
+		{
+			if (ifd::FileDialog::Instance().HasResult())
+			{
+				std::string TempString = ifd::FileDialog::Instance().GetResult().u8string();
+				c->LoadTileMap(TempString.c_str());
+				TileMap temp = c->GetTileMap();
+			}
+			ifd::FileDialog::Instance().Close();
+		}
+
+		if (ImGui::Button("Save TileMap"))
+		{
+			ifd::FileDialog::Instance().Save("TileMapSaver", "LoadTileMap", "Texture File, (*.xml) {.xml}, .*");
+		}
+
+		if (ifd::FileDialog::Instance().IsDone("TileMapSaver"))
+		{
+			if (ifd::FileDialog::Instance().HasResult())
+			{
+				std::string TempString = ifd::FileDialog::Instance().GetResult().u8string();
+				c->SaveTileMap(ifd::FileDialog::Instance().GetResult().u8string(), vec2i(c->GetTileMap().size(), c->GetTileMap()[0].size()));
 			}
 			ifd::FileDialog::Instance().Close();
 		}

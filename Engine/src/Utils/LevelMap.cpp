@@ -4,13 +4,13 @@
 #include <iostream>
 #include <istream>
 
-TileMap LevelMap::LoadLevelMap(char* FilePath)
+TileMap LevelMap::LoadLevelMap(const std::string& FilePath)
 {
 	TileMap tilemap;
 
 	//Get the whole xml document.
 	TiXmlDocument doc;
-	if (!doc.LoadFile(FilePath))
+	if (!doc.LoadFile(FilePath.c_str()))
 	{
 		std::cerr << doc.ErrorDesc() << std::endl;
 	}
@@ -71,6 +71,13 @@ TileMap LevelMap::LoadLevelMap(char* FilePath)
 
 void LevelMap::SaveTileMap(TileMap Map, std::string Address)
 {
+
+	int MaxHeight = Map.size();
+	int MaxWidth = Map[0].size();
+	for (int q = 1; q < MaxHeight; q++)
+	{
+		MaxWidth = std::max(int(Map[q].size()), MaxWidth);
+	}
 	//------------------------------------------------------------------------
 	//Test for saving to XML file
 	TiXmlDocument Doc;
@@ -78,8 +85,8 @@ void LevelMap::SaveTileMap(TileMap Map, std::string Address)
 	Doc.LinkEndChild(Header);
 	TiXmlElement* Root = new TiXmlElement("map");
 	Root->SetAttribute("version", "1.0");
-	Root->SetAttribute("width", Map[0].size());
-	Root->SetAttribute("height", Map.size());
+	Root->SetAttribute("width", MaxWidth);
+	Root->SetAttribute("height", MaxHeight);
 	Root->SetAttribute("tilewidth", "32");
 	Root->SetAttribute("tileheight", "32");
 
@@ -92,7 +99,14 @@ void LevelMap::SaveTileMap(TileMap Map, std::string Address)
 		for (int j = 0; j < atoi(Root->Attribute("width")); j++)
 		{
 			TiXmlElement* TestTile = new TiXmlElement("tile");
-			TestTile->SetAttribute("id", Map[i][j]);
+			if (j < Map[i].size())
+			{
+				TestTile->SetAttribute("id", Map[i][j]);
+			}
+			else
+			{
+				TestTile->SetAttribute("id", 0);
+			}
 			TestElement->LinkEndChild(TestTile);
 		}
 		
