@@ -108,8 +108,8 @@ void Engine::PhysicsComp::Update(float dT)
 
 	position += (mCurrentVelocity * dT) + (mNetAcceleration * 0.5f * (dT * dT));
 
-	Logger::LogMsg("Velocity", mCurrentVelocity.y);
-	Logger::LogMsg("Accel", mNetAcceleration.y);
+	//Logger::LogMsg("Velocity", mCurrentVelocity.y);
+	//Logger::LogMsg("Accel", mNetAcceleration.y);
 	//mCurrentVelocity.y -= mCurrentVelocity.y * mFriction;
 	mParent->GetComponent<TransformComp>()->SetPosition(position.x, position.y);
 }

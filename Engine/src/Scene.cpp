@@ -47,6 +47,8 @@ namespace Engine
 		GameObject* mLevelMap = new GameObject();
 		TileMapComp* TM = mLevelMap->AddComponent(new TileMapComp);
 		TM->LoadTileMap("Assets/TileMaps/XML_Test.xml");
+		TilemapCollisionComp* TMCol = mLevelMap->AddComponent(new TilemapCollisionComp(mLevelMap));
+
 		mLevelMap->SetName("tileMapTest");
 
 		mSceneObjects.push_back(mLevelMap);
