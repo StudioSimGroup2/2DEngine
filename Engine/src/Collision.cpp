@@ -2,24 +2,30 @@
 
 bool Collision::Update(std::vector<Engine::GameObject*> gameObjects)
 {
+	bool colVal = false;
+
 	for (Engine::GameObject* object1 : gameObjects)
 	{
 		for (Engine::GameObject* object2 : gameObjects)
 		{
+			if (object1 == object2)
+				break;
+
 			if (object1->GetComponent<Engine::ObjectCollisionComp>() != NULL && object2->GetComponent<Engine::ObjectCollisionComp>() != NULL)
 			{
 				Box2D box1 = object1->GetComponent<Engine::ObjectCollisionComp>()->GetColBox();
 				Box2D box2 = object2->GetComponent<Engine::ObjectCollisionComp>()->GetColBox();
 
 				if (box1.GetPosition().x < box2.GetPosition().x + box2.GetSize().x &&
-					box1.GetPosition().x + box1.GetSize().x > box2.GetPosition().x &&
+					box1.GetPosition().x + box1.GetSize().x > box2.GetPosition().x&&
 					box1.GetPosition().y < box2.GetPosition().y + box2.GetSize().y &&
 					box1.GetPosition().y + box1.GetSize().y > box2.GetPosition().y)
 				{
-					return true;
+					colVal = true;
+					break;
 				}
 				else
-					return false;
+					colVal = false;
 			}
 
 			if (object1->GetComponent<Engine::ObjectCollisionComp>() != NULL && object2->GetComponent<Engine::TilemapCollisionComp>() != NULL)
@@ -34,10 +40,11 @@ bool Collision::Update(std::vector<Engine::GameObject*> gameObjects)
 						box1.GetPosition().y < box2.GetPosition().y + box2.GetSize().y &&
 						box1.GetPosition().y + box1.GetSize().y > box2.GetPosition().y)
 					{
-						return true;
+						colVal = true;
+						break;
 					}
 					else
-						return false;
+						colVal = false;
 				}
 				
 			}
@@ -54,13 +61,21 @@ bool Collision::Update(std::vector<Engine::GameObject*> gameObjects)
 						box1.GetPosition().y < box2.GetPosition().y + box2.GetSize().y &&
 						box1.GetPosition().y + box1.GetSize().y > box2.GetPosition().y)
 					{
-						return true;
+						colVal = true;
+						break;
 					}
 					else
-						return false;
+						colVal = false;
 				}
 			}
 
 		}
 	}
+
+	if (colVal == true)
+	{
+		int a = 0;
+	}
+
+	return colVal;
 }

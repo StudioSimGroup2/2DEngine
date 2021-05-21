@@ -41,6 +41,7 @@ namespace Engine
 		mPlayer->GetComponent<TransformComp>()->SetPosition(200.0f, 200.0f);
 		spr->SetTexture(AssetManager::GetInstance()->LoadTexture((char*)"Stone", (char*)"Assets/Textures/Stone.png"));
 		mPlayer->AddComponent(new PhysicsComp());
+		mPlayer->AddComponent(new ObjectCollisionComp(mPlayer));
 		
 		mSceneObjects.push_back(mPlayer);
 
@@ -86,7 +87,13 @@ namespace Engine
 		{
 			go->Update();
 		}
-		collisionCheck.Update(mSceneObjects);
+
+		bool test = collisionCheck.Update(mSceneObjects);
+
+		if (test == true)
+		{
+			Logger::LogMsg("Something Collided");
+		}
 	}
 
 	void Scene::FixedUpdate()

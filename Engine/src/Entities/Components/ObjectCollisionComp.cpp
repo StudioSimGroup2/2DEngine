@@ -28,6 +28,7 @@ void Engine::ObjectCollisionComp::Init()
 
 void Engine::ObjectCollisionComp::Update()
 {
+	colBox.SetPosition(mParent->GetComponent<TransformComp>()->GetPosition());
 }
 
 void Engine::ObjectCollisionComp::Render()

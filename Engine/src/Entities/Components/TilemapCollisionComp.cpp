@@ -30,8 +30,8 @@ void Engine::TilemapCollisionComp::CreateColBoxes()
 				Box2D tempColBox;
 
 				vec2f tempPos;
-				tempPos.x = (xPosVal * 32) + 16;
-				tempPos.y = (yPosVal * 32) + 16;
+				tempPos.x = (xPosVal * 32);
+				tempPos.y = (yPosVal * 32);
 
 				tempColBox.SetPosition(tempPos);
 
@@ -44,11 +44,11 @@ void Engine::TilemapCollisionComp::CreateColBoxes()
 				collisionBoxes.push_back(tempColBox);
 			}
 
-			yPosVal += 1;
+			xPosVal += 1;
 		}
 
-		yPosVal = 0;
-		xPosVal += 1;
+		xPosVal = 0;
+		yPosVal += 1;
 	}
 
 	int a = 0;
