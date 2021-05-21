@@ -311,6 +311,7 @@ namespace Engine
 			ImGui::PopID();
 			if (ImGui::GetIO().MouseDown[0])
 			{
+				//TODO change mousepos to use world pos of camera 
 				vec2f mousePos = vec2f(InputManager::GetInstance()->GetMousePosition().x, InputManager::GetInstance()->GetMousePosition().y);
 				/*Logger::LogMsg("Mouse pos X:", int(mousePos.x / TILEHEIGHT));
 				Logger::LogMsg("Mouse pos Y:", int(mousePos.y / TILEHEIGHT));*/
@@ -320,6 +321,8 @@ namespace Engine
 		}
 		ImGui::End();
 
+		//Load TileMap
+		//----------------------------------------------------------------------------------------------
 		if (ImGui::Button("Load TileMap"))
 		{
 			ifd::FileDialog::Instance().Open("TileMapLoader", "LoadTileMap", "TileMap (*.xml){.xml},.*");
@@ -335,7 +338,10 @@ namespace Engine
 			}
 			ifd::FileDialog::Instance().Close();
 		}
+		//----------------------------------------------------------------------------------------------
 
+		//Save TileMap
+		//----------------------------------------------------------------------------------------------
 		if (ImGui::Button("Save TileMap"))
 		{
 			ifd::FileDialog::Instance().Save("TileMapSaver", "LoadTileMap", "Texture File, (*.xml) {.xml}, .*");
@@ -350,6 +356,7 @@ namespace Engine
 			}
 			ifd::FileDialog::Instance().Close();
 		}
+		//----------------------------------------------------------------------------------------------
 
 		ImGui::PopID();
 	}

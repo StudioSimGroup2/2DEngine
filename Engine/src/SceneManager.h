@@ -15,18 +15,21 @@ namespace Engine
 		static SceneManager* GetInstance();
 
 		// TODO: Read from file
-		void LoadScene();
+		void CreateScene();
 
 		void PlayScene();
 		void UpdateScene();
 		void RenderScene();
 
+		void LoadScene(std::string path);
 		void SaveScene();
+		void ClearScene();
 
 		void EnableEditorMode() { mEditorMode = true; }
 		void DisableEditorMode() { mEditorMode = false; }
 
 		GameObject* CreateObject();
+		GameObject* CreateObject(GameObject*);
 		//void CreateObject(GameObject* parent);
 
 		GameObject* DestroyObject();

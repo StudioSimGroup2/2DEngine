@@ -54,6 +54,44 @@ namespace Engine
 				ImGui::EndMenu();
 			}
 
+			//ImGui::ShowDemoWindow();
+			if (ImGui::BeginMenu("Scene"))
+			{
+				//Save Scene
+				//----------------------------------------------------------------------------------------------
+				if (ImGui::MenuItem("Save scene"))
+				{
+				}
+				//----------------------------------------------------------------------------------------------
+				
+				//Load Scene
+				//----------------------------------------------------------------------------------------------
+				if (ImGui::Button("Load scene"))
+				{
+					ifd::FileDialog::Instance().Open("abcd", "abcd", "abcd (*.xml){.xml},.*");
+				}
+				if (ifd::FileDialog::Instance().IsDone("abcd"))
+				{
+					if (ifd::FileDialog::Instance().HasResult())
+					{
+						std::string TempString = ifd::FileDialog::Instance().GetResult().u8string();
+						SceneManager::GetInstance()->LoadScene(TempString);
+					}
+					ifd::FileDialog::Instance().Close();
+				}
+				//----------------------------------------------------------------------------------------------
+
+				//Clear Scene
+				//----------------------------------------------------------------------------------------------
+				if (ImGui::MenuItem("Clear scene"))
+				{
+					SceneManager::GetInstance()->ClearScene();
+				}
+				//----------------------------------------------------------------------------------------------
+
+				ImGui::EndMenu();
+			}
+
 			if (ImGui::BeginMenu("Create"))
 			{
 				if (ImGui::MenuItem("Empy Game Object"))
