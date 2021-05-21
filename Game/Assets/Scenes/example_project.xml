@@ -3,32 +3,28 @@
 	<entities>
 		<gameobject name="First GameObject">
 			<components>
-				<transform x="12.0" y="65.0"></transform>
+				<transform PosX="102.0" PosY="65.0"></transform>
 				<sprite path="Assets/Textures/mario.png" colour="0 0 0 0" FlipX="1" FlipY="0"></sprite>
 				<physics></physics>
-				<script></script>
-				<tilemap></tilemap>
+				<script path="Assets/Scripts/Player.lua"></script>
+				<tilemap path="Assets/TileMaps/Tanvit.xml"></tilemap>
 			</components>
 		</gameobject>
 		<gameobject name="Second GameObject">
 			<components>
-				<transform x="56.0" y="2.0"></transform>
-				<script>
-					<path>"Assets/Scripts/Player.lua"</path>
-				</script>
+				<transform PosX="56.0" PosY="2.0"></transform>
+				<script path="Assets/Scripts/Player.lua"></script>
 			</components>
 		</gameobject>
 		<gameobject name="Second GameObject">
 			<components>
-				<transform x="78.0" y="9.0"></transform>
-				<script>
-					<path></path>
-				</script>
+				<transform PosX="78.0" PosY="9.0"></transform>
+				<script path=""></script>
 			</components>
 			<children>
 				<gameobject>
 					<components>
-						<transform x="12.0" y="65.0"></transform>
+						<transform PosX="12.0" PosY="65.0"></transform>
 						<sprite path="Assets/Textures/mario.png" colour="0 0 0 0" FlipX="0" FlipY="0"></sprite>
 					</components>
 				</gameobject>

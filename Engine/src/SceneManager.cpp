@@ -98,8 +98,8 @@ namespace Engine
 
 						//get pos
 						vec2f Pos;
-						Pos.x = atof(CurrentComp->Attribute("x"));
-						Pos.y = atof(CurrentComp->Attribute("y"));
+						Pos.x = atof(CurrentComp->Attribute("PosX"));
+						Pos.y = atof(CurrentComp->Attribute("PosY"));
 						//set Pos to newobject
 						TransformComp* Transform = NewObject->GetComponent<TransformComp>();
 						Transform->SetPosition(Pos);
@@ -133,15 +133,31 @@ namespace Engine
 					}
 					else if (CompType == "physics")
 					{
-						int i = 0;
+						//mass / gravity / friction
+						PhysicsComp* NewPhysics = new PhysicsComp;
+						NewObject->AddComponent<PhysicsComp>(NewPhysics);
 					}
 					else if (CompType == "script")
 					{
-						int i = 0;
+						//Path
+						ScriptComp* NewScript = new ScriptComp;
+						NewObject->AddComponent<ScriptComp>(NewScript);
+						std::string path = CurrentComp->Attribute("path");
+						if (path != "")
+						{
+							NewObject->GetComponent<ScriptComp>()->AddScript(path);
+						}
 					}					
 					else if (CompType == "tilemap")
 					{
-						int i = 0;
+						//path
+						TileMapComp* NewtileMap = new TileMapComp;
+						NewObject->AddComponent<TileMapComp>(NewtileMap);
+						std::string path = CurrentComp->Attribute("path");
+						if (path != "")
+						{
+							NewObject->GetComponent<TileMapComp>()->LoadTileMap(CurrentComp->Attribute("path"));
+						}
 					}
 				}
 				//Create object in hierarchy
@@ -150,8 +166,52 @@ namespace Engine
 		}
 	}
 
-	void SceneManager::SaveScene()
+	void SceneManager::SaveScene(std::string path)
 	{
+		//Test for saving to XML file
+		TiXmlDocument Doc;
+		TiXmlDeclaration* Header = new TiXmlDeclaration("1.0", "", "");
+		Doc.LinkEndChild(Header);
+		TiXmlElement* Root = new TiXmlElement("PROJECT");
+		TiXmlElement* Ent = new TiXmlElement("entities");
+		Root->LinkEndChild(Ent);
+		//add all game objects
+		for (GameObject* go : mSceneObjects)
+		{
+			TiXmlElement* GameObj = new TiXmlElement("gameobject");
+			GameObj->SetAttribute("name", go->GetName().c_str());
+			TiXmlElement* components = new TiXmlElement("components");
+			for (Component* Comp : go->GetComponents())
+			{
+				switch (Comp->GetType())
+				{
+				case  COMPONENT_TRANSFORM:
+				{
+					TiXmlElement* Transform = new TiXmlElement("transform");
+					Transform->SetAttribute("PosX", go->GetComponent<TransformComp>()->GetPosition().x);
+					Transform->SetAttribute("PosY", go->GetComponent<TransformComp>()->GetPosition().y);
+
+					Transform->SetAttribute("RotX", go->GetComponent<TransformComp>()->GetRotation().x);
+					Transform->SetAttribute("RotY", go->GetComponent<TransformComp>()->GetRotation().y);
+
+					Transform->SetAttribute("ScaleX", go->GetComponent<TransformComp>()->GetScale().x);
+					Transform->SetAttribute("ScaleY", go->GetComponent<TransformComp>()->GetScale().x);
+
+					components->LinkEndChild(Transform);
+				}
+				case COMPONENT_SPRITE:
+				{
+
+				}
+				default:
+				{
+
+				}
+				}
+				//add childeren
+			}
+			Ent->LinkEndChild(GameObj);
+		}
 	}
 	void SceneManager::ClearScene()
 	{

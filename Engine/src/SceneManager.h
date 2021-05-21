@@ -22,7 +22,7 @@ namespace Engine
 		void RenderScene();
 
 		void LoadScene(std::string path);
-		void SaveScene();
+		void SaveScene(std::string path);
 		void ClearScene();
 
 		void EnableEditorMode() { mEditorMode = true; }

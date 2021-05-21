@@ -56,26 +56,36 @@ namespace Engine
 
 			//ImGui::ShowDemoWindow();
 			if (ImGui::BeginMenu("Scene"))
-			{
-				//Save Scene
-				//----------------------------------------------------------------------------------------------
-				if (ImGui::MenuItem("Save scene"))
-				{
-				}
-				//----------------------------------------------------------------------------------------------
-				
+			{			
 				//Load Scene
 				//----------------------------------------------------------------------------------------------
 				if (ImGui::Button("Load scene"))
 				{
-					ifd::FileDialog::Instance().Open("abcd", "abcd", "abcd (*.xml){.xml},.*");
+					ifd::FileDialog::Instance().Open("SceneLoader", "Load", "Load (*.xml){.xml},.*");
 				}
-				if (ifd::FileDialog::Instance().IsDone("abcd"))
+				if (ifd::FileDialog::Instance().IsDone("SceneLoader"))
 				{
 					if (ifd::FileDialog::Instance().HasResult())
 					{
 						std::string TempString = ifd::FileDialog::Instance().GetResult().u8string();
 						SceneManager::GetInstance()->LoadScene(TempString);
+					}
+					ifd::FileDialog::Instance().Close();
+				}
+				//----------------------------------------------------------------------------------------------
+				
+				//Save Scene
+				//----------------------------------------------------------------------------------------------
+				if (ImGui::Button("Save scene"))
+				{
+					ifd::FileDialog::Instance().Save("SceneSaver", "Save", "Save (*.xml){.xml},.*");
+				}
+				if (ifd::FileDialog::Instance().IsDone("SceneSaver"))
+				{
+					if (ifd::FileDialog::Instance().HasResult())
+					{
+						std::string TempString = ifd::FileDialog::Instance().GetResult().u8string();
+						SceneManager::GetInstance()->SaveScene(TempString);
 					}
 					ifd::FileDialog::Instance().Close();
 				}
