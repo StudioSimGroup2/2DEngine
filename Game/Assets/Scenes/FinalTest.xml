@@ -4,9 +4,9 @@
         <gameobject name="First GameObject">
             <components>
                 <transform PosX="102" PosY="65" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
-                <sprite path="Assets/Textures/mario.png" Colour="0 0 0 0" FlipX="1" FlipY="0" />
+                <sprite path="Assets\Textures\Mario.png" Colour="0 0 0 0" FlipX="1" FlipY="0" />
                 <physics />
-                <script path="Assets/Scripts/Player.lua" />
+                <script path="Assets\Scripts\Player.lua" />
                 <tilemap path="Assets/TileMaps/Tanvit.xml" />
             </components>
         </gameobject>

@@ -26,6 +26,9 @@ namespace Engine
 
 		void Update();
 		void Render();
+
+		std::string getpath() { return mFilePath; };
+		void Setpath(std::string path) { mFilePath = path; };
 	private:
 		void Init();
 		TileMap mTileMap;
@@ -35,6 +38,8 @@ namespace Engine
 		std::vector<Texture*> mTexArray;
 		std::vector<Renderer2D*> mRenderer;
 		int TextureWidth = 1, TextureHeight = 1;
+
+		std::string mFilePath;
 
 		// Inherited via Component
 		virtual void Start() override;

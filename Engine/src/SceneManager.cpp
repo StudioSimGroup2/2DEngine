@@ -117,6 +117,7 @@ namespace Engine
 						if (path != "")
 						{
 							NewSprite->SetTexture(AssetManager::GetInstance()->LoadTexture(NewObject->GetName(), path));
+							NewSprite->Setpath(path);
 						}
 						//Colour
 
@@ -149,7 +150,9 @@ namespace Engine
 						std::string path = CurrentComp->Attribute("path");
 						if (path != "")
 						{
-							NewObject->GetComponent<ScriptComp>()->AddScript(path);
+							NewScript->AddScript(path);
+							NewScript->Setpath(path);
+
 						}
 					}					
 					else if (CompType == "tilemap")
@@ -160,7 +163,8 @@ namespace Engine
 						std::string path = CurrentComp->Attribute("path");
 						if (path != "")
 						{
-							NewObject->GetComponent<TileMapComp>()->LoadTileMap(CurrentComp->Attribute("path"));
+							NewtileMap->LoadTileMap(path);
+							NewtileMap->Setpath(path);
 						}
 					}
 				}
@@ -208,7 +212,7 @@ namespace Engine
 				case COMPONENT_SPRITE:
 				{
 					TiXmlElement* Sprite = new TiXmlElement("sprite");
-					Sprite->SetAttribute("path", "");
+					Sprite->SetAttribute("path", go->GetComponent<SpriteComp>()->getpath().c_str());
 					Sprite->SetAttribute("Colour", "0 0 0 0");
 
 					int flipX = 0, flipY = 0;
@@ -235,7 +239,7 @@ namespace Engine
 				case COMPONENT_SCRIPT:
 				{
 					TiXmlElement* script = new TiXmlElement("script");
-					script->SetAttribute("path", "");
+					script->SetAttribute("path", go->GetComponent<ScriptComp>()->getpath().c_str());
 
 					components->LinkEndChild(script);
 					break;
@@ -243,7 +247,7 @@ namespace Engine
 				case COMPONENT_TILEMAP:
 				{
 					TiXmlElement* tileMap = new TiXmlElement("tilemap");
-					tileMap->SetAttribute("path", "");
+					tileMap->SetAttribute("path", go->GetComponent<TileMapComp>()->getpath().c_str());
 
 					components->LinkEndChild(tileMap);
 					break;
