@@ -15,8 +15,9 @@ namespace Engine
 		~TilemapCollisionComp();
 
 		void CreateColBoxes();
-
 		void Init();
+
+		std::vector<Box2D> GetColBoxes() { return collisionBoxes; }
 
 	private:
 		TileMap mTilemap;

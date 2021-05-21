@@ -3,7 +3,6 @@
 #include "../Component.h"
 #include "Common.h"
 #include "../Box2D.h"
-#include <vector>
 
 namespace Engine
 {

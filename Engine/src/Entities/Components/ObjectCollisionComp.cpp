@@ -1,4 +1,5 @@
 #include "ObjectCollisionComp.h"
+#include "Entities\GameObject.h"
 
 Engine::ObjectCollisionComp::ObjectCollisionComp()
 {
@@ -16,7 +17,6 @@ Engine::ObjectCollisionComp::~ObjectCollisionComp()
 
 void Engine::ObjectCollisionComp::Init()
 {
-
 	mType = "Object Collision";
 
 	vec2f position = mParent->GetComponent<TransformComp>()->GetPosition();
@@ -24,7 +24,6 @@ void Engine::ObjectCollisionComp::Init()
 
 	vec2f size = (32.0f, 32.0f);
 	colBox.SetSize(size);
-
 }
 
 void Engine::ObjectCollisionComp::Update()
