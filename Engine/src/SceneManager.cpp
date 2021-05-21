@@ -113,7 +113,11 @@ namespace Engine
 						//Texture / colour / flip X / flip Y
 						SpriteComp* NewSprite = new SpriteComp();
 						//Texture
-						NewSprite->SetTexture(AssetManager::GetInstance()->LoadTexture(NewObject->GetName(),CurrentComp->Attribute("path")));
+						std::string path = CurrentComp->Attribute("path");
+						if (path != "")
+						{
+							NewSprite->SetTexture(AssetManager::GetInstance()->LoadTexture(NewObject->GetName(), path));
+						}
 						//Colour
 
 						//flipX
@@ -170,7 +174,7 @@ namespace Engine
 	{
 		//Test for saving to XML file
 		TiXmlDocument Doc;
-		TiXmlDeclaration* Header = new TiXmlDeclaration("1.0", "", "");
+		TiXmlDeclaration* Header = new TiXmlDeclaration("1.0", "UTF-8", "");
 		Doc.LinkEndChild(Header);
 		TiXmlElement* Root = new TiXmlElement("PROJECT");
 		TiXmlElement* Ent = new TiXmlElement("entities");
@@ -181,6 +185,7 @@ namespace Engine
 			TiXmlElement* GameObj = new TiXmlElement("gameobject");
 			GameObj->SetAttribute("name", go->GetName().c_str());
 			TiXmlElement* components = new TiXmlElement("components");
+			GameObj->LinkEndChild(components);
 			for (Component* Comp : go->GetComponents())
 			{
 				switch (Comp->GetType())
@@ -198,21 +203,68 @@ namespace Engine
 					Transform->SetAttribute("ScaleY", go->GetComponent<TransformComp>()->GetScale().x);
 
 					components->LinkEndChild(Transform);
+					break;
 				}
 				case COMPONENT_SPRITE:
 				{
+					TiXmlElement* Sprite = new TiXmlElement("sprite");
+					Sprite->SetAttribute("path", "");
+					Sprite->SetAttribute("Colour", "0 0 0 0");
 
+					int flipX = 0, flipY = 0;
+					if (go->GetComponent<SpriteComp>()->GetFlipX())
+					{
+						flipX = 1;
+					}
+					if (go->GetComponent<SpriteComp>()->GetFlipY())
+					{
+						flipY = 1;
+					}
+					Sprite->SetAttribute("FlipX", flipX);
+					Sprite->SetAttribute("FlipY", flipY);
+					components->LinkEndChild(Sprite);
+					break;
+				}
+				case COMPONENT_PHYSICS:
+				{
+					TiXmlElement* physics = new TiXmlElement("physics");
+
+					components->LinkEndChild(physics);
+					break;
+				}
+				case COMPONENT_SCRIPT:
+				{
+					TiXmlElement* script = new TiXmlElement("script");
+					script->SetAttribute("path", "");
+
+					components->LinkEndChild(script);
+					break;
+				}
+				case COMPONENT_TILEMAP:
+				{
+					TiXmlElement* tileMap = new TiXmlElement("tilemap");
+					tileMap->SetAttribute("path", "");
+
+					components->LinkEndChild(tileMap);
+					break;
 				}
 				default:
 				{
-
+					break;
 				}
 				}
 				//add childeren
 			}
 			Ent->LinkEndChild(GameObj);
 		}
+
+		Doc.LinkEndChild(Root);
+		if (!Doc.SaveFile(path.c_str()));
+		{
+			std::cerr << Doc.ErrorDesc() << std::endl;
+		}
 	}
+
 	void SceneManager::ClearScene()
 	{
 		mSceneObjects.clear();

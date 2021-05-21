@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<PROJECT>
+    <entities>
+        <gameobject name="First GameObject">
+            <components>
+                <transform PosX="102" PosY="65" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+            </components>
+        </gameobject>
+        <gameobject name="Second GameObject">
+            <components>
+                <transform PosX="56" PosY="2" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+            </components>
+        </gameobject>
+        <gameobject name="Second GameObject">
+            <components>
+                <transform PosX="78" PosY="9" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+            </components>
+        </gameobject>
+    </entities>
+</PROJECT>
