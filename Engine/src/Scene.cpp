@@ -86,6 +86,7 @@ namespace Engine
 		{
 			go->Update();
 		}
+		collisionCheck.Update(mSceneObjects);
 	}
 
 	void Scene::FixedUpdate()

@@ -5,3 +5,4 @@
 #include "Components/TileMapComp.h"
 #include "Components/PhysicsComp.h"
 #include "Components/TilemapCollisionComp.h"
+#include "Components/ObjectCollisionComp.h"

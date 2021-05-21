@@ -5,6 +5,7 @@
 #include <Engine/Core.h>
 #include <Engine/Renderer/Device.h>
 #include <Entities/GameObject.h>
+#include "Collision.h"
 
 namespace Engine
 {
@@ -25,6 +26,7 @@ namespace Engine
 
 	private:
 		std::vector<GameObject*> mSceneObjects;
+		Collision collisionCheck;
 	};
 }
 
