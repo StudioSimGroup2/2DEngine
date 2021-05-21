@@ -29,7 +29,7 @@ namespace Engine
 		GameObject* CreateObject();
 		//void CreateObject(GameObject* parent);
 
-		GameObject* DestroyObject();
+		void DestroyObject(GameObject* go);
 
 		std::vector<GameObject*>& GetSceneObjects() { return mSceneObjects; }
 
@@ -49,6 +49,8 @@ namespace Engine
 
 		bool mEditorMode = true;
 		FrameBuffer mRenderToTex;
+
+		static int mCounter;
 	};
 }
 
