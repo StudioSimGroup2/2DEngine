@@ -11,8 +11,12 @@
 #include "Backend/OGL/OGLRenderer2D.h"
 #endif
 
+#include "CameraManager.h"
+
 namespace Engine
 {
+	class CameraComp;
+	class GameObject;
 	class ENGINE_API Device
 	{
 	public:
@@ -20,6 +24,7 @@ namespace Engine
 #if GRAPHICS_LIBRARY == 0
 		static D3D11Device* GetDevice() { return D3D11Device::GetInstance(); }
 		static D3D11Renderer2D* CreateRenderer(Shader* shader) { return new D3D11Renderer2D(shader, GetDevice()); }
+		//static D3DCamera* CreateCamera() { return CameraManager::Add()}
 #elif GRAPHICS_LIBRARY == 1
 		static OGLDevice* GetDevice() { return OGLDevice::GetInstance(); }
 		static OGLRenderer2D* CreateRenderer(Shader* shader) { return new OGLRenderer2D(shader); }
@@ -27,6 +32,5 @@ namespace Engine
 
 		static DeviceData GetDeviceData() { return GetDevice()->GetDeviceData(); }
 	};
-
-
+	
 }

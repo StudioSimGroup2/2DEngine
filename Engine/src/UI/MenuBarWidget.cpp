@@ -73,7 +73,7 @@ namespace Engine
 				{
 					if (SceneHierarchyWidget::GetNode() != nullptr)
 					{
-						SceneHierarchyWidget::GetNode()->AddComponent<SpriteComp>(new SpriteComp);
+						SceneHierarchyWidget::GetNode()->AddComponent<SpriteComp>(new SpriteComp(SceneHierarchyWidget::GetNode()));
 					}
 				}
 
@@ -81,7 +81,15 @@ namespace Engine
 				{
 					if (SceneHierarchyWidget::GetNode() != nullptr)
 					{
-						SceneHierarchyWidget::GetNode()->AddComponent<TileMapComp>(new TileMapComp);
+						SceneHierarchyWidget::GetNode()->AddComponent<TileMapComp>(new TileMapComp(SceneHierarchyWidget::GetNode()));
+					}
+				}
+
+				if (ImGui::MenuItem("Camera"))
+				{
+					if (SceneHierarchyWidget::GetNode() != nullptr)
+					{
+						SceneHierarchyWidget::GetNode()->AddComponent<CameraComp>(new CameraComp(SceneHierarchyWidget::GetNode()));
 					}
 				}
 

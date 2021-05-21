@@ -97,7 +97,7 @@ void ParticleSystem::Update(float dt)
 
 			case Emmitter::Circle:
 				float rad = mSize.x * sqrtf(rand() % 11 * 0.1f);	// Returns a value between 0 - 1
-				float theta = (rand() % 11 * 0.1f) * 2 * 3.14159265359;
+				float theta = (rand() % 11 * 0.1f) * 2 * 3.14159265359f;
 				p->Position.x = mPosition.x + rad * cos(theta);
 				p->Position.y = mPosition.y + rad * sin(theta);
 				break;
@@ -158,7 +158,7 @@ void ParticleSystem::InitParticles(size_t count)
 
 			// Generate random point inside circle
 			float rad = mSize.x * sqrtf(rand() % 11 * 0.1f);
-			float theta = (rand() % 11 * 0.1f) * 2 * 3.14159265359;
+			float theta = (rand() % 11 * 0.1f) * 2 * 3.14159265359f;
 
 			// Convert to cartesian coords
 			p->Position.x = mPosition.x + rad * cos(theta);

@@ -1,5 +1,6 @@
 #include "SceneManager.h"
 #include "Scripting\ScriptingEngine.h"
+#include "CameraManager.h"
 
 namespace Engine
 {
@@ -15,6 +16,10 @@ namespace Engine
 
 	void SceneManager::LoadScene()
 	{
+		auto camera = CameraManager::Get()->Add(vec2f(0.0f, 0.0f), true);		// Camera manager deletes its cameras, no mem leak :)         
+		camera->SetName("Main Camera");
+		camera->SetPrimary(true);
+		
 		ScriptingEngine::GetInstance()->Init();
 		
 		mRenderToTex.CreateFrameBuffer(1260, 677);

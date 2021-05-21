@@ -8,6 +8,7 @@
 #define TILEWIDTH 32
 #define TILEHEIGHT 32
 
+#define ASSERT(cond, msg) if (!cond) { std::cerr << "Assert failed: " << msg << ".\nFile: " << __FILE__ << ", line: " << __LINE__ << std::endl; abort(); }
 //#define ENGINE_RESOURCES_DIR (std::filesystem::absolute(std::filesystem::current_path().parent_path() /= "Engine/Resources/"))
 //#define GAME_RESOURCES_DIR (std::filesystem::absolute(std::filesystem::current_path() /= "Resources/"))
 

@@ -59,6 +59,7 @@ namespace Engine
 				case COMPONENT_CAMERA:
 					if (ImGui::CollapsingHeader("Camera"))
 					{
+						RenderCameraComponent(dynamic_cast<CameraComp*>(c));
 					}
 					break;
 
@@ -350,6 +351,15 @@ namespace Engine
 			}
 			ifd::FileDialog::Instance().Close();
 		}
+
+		ImGui::PopID();
+	}
+
+	void InspectorWidget::RenderCameraComponent(CameraComp* c)
+	{
+		ImGui::PushID("Camera");
+
+		ImGui::Text("c");
 
 		ImGui::PopID();
 	}

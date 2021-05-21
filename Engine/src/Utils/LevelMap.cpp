@@ -114,7 +114,7 @@ void LevelMap::SaveTileMap(TileMap Map, std::string Address)
 
 	
 	Doc.LinkEndChild(Root);
-	if (!Doc.SaveFile(Address.c_str()));
+	if (!Doc.SaveFile(Address.c_str()))
 	{
 		std::cerr << Doc.ErrorDesc() << std::endl;
 	}

@@ -23,7 +23,7 @@ namespace Engine
 		
 		mShader->Load();
 
-		Camera* camera = CameraManager::Get()->GetPrimaryCamera();
+		CameraComp* camera = CameraManager::Get()->GetPrimaryCamera();
 
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(position.x, position.y, 0.0f));
