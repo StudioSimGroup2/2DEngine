@@ -84,59 +84,62 @@ namespace Engine
 			//Loop through all GameObjects
 			for (TiXmlElement* CurrentObject = root->FirstChildElement(); CurrentObject != NULL; CurrentObject = CurrentObject->NextSiblingElement())
 			{
-				GameObject* NewObject = new GameObject();
+				GameObject* NewObject = CreateObject();
+				
 				NewObject->SetName(CurrentObject->Attribute("name"));
 				TiXmlElement* comps = CurrentObject->FirstChildElement();
 				for (TiXmlElement* CurrentComp = comps->FirstChildElement(); CurrentComp != NULL; CurrentComp = CurrentComp->NextSiblingElement())
 				{
-					//transform / sprite / physics / script /  tilemap / 
-					//transform
-					std::string CompName = CurrentComp->Value();
-					if (CompName == "transform")
+					//transform / sprite / physics / script /  tilemap
+					std::string CompType = CurrentComp->Value();
+					if (CompType == "transform")
 					{
 						//Position / Rotation / scale
 
-						//get transform pos
+						//get pos
 						vec2f Pos;
 						Pos.x = atof(CurrentComp->Attribute("x"));
 						Pos.y = atof(CurrentComp->Attribute("y"));
-						//TODO add
-						//rotation
-						//scale
-
 						//set Pos to newobject
 						TransformComp* Transform = NewObject->GetComponent<TransformComp>();
 						Transform->SetPosition(Pos);
+
+						//TODO add
+						//rotation
+						//scale						
 					}
-					else if (CompName == "sprite")
+					else if (CompType == "sprite")
 					{
 						//Texture / colour / flip X / flip Y
-						SpriteComp* NewSprite = new SpriteComp();	
-						std::string temp = CurrentComp->Attribute("path");
+						SpriteComp* NewSprite = new SpriteComp();
+						//Texture
 						NewSprite->SetTexture(AssetManager::GetInstance()->LoadTexture(NewObject->GetName(),CurrentComp->Attribute("path")));
 						//Colour
-						if (CurrentComp->Attribute("FlipX") == "1")
+
+						//flipX
+						std::string FX = CurrentComp->Attribute("FlipX");
+						if (FX == "1")
 						{
 							NewSprite->ToggleFlipX(true);
 						}
-						if (CurrentComp->Attribute("FlipY") == "1")
+						//flipY
+						std::string FY = CurrentComp->Attribute("FlipY");
+						if (FY == "1")
 						{
 							NewSprite->ToggleFlipY(true);
 						}
 
 						NewObject->AddComponent<SpriteComp>(NewSprite);
-						int i = 0;
-						//CurrentComp
 					}
-					else if (CompName == "physics")
+					else if (CompType == "physics")
 					{
 						int i = 0;
 					}
-					else if (CompName == "script")
+					else if (CompType == "script")
 					{
 						int i = 0;
 					}					
-					else if (CompName == "tilemap")
+					else if (CompType == "tilemap")
 					{
 						int i = 0;
 					}
