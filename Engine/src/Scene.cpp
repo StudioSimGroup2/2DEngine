@@ -54,6 +54,13 @@ namespace Engine
 
 		mSceneObjects.push_back(mLevelMap);
 
+		GameObject* testLine = new GameObject();
+		LineCollisionComp* LTest = testLine->AddComponent(new LineCollisionComp);
+		LTest->SetPoint1(vec2f(0.0f, 500.0f));
+		LTest->SetPoint2(vec2f(300.0f, 500.0f));
+
+		mSceneObjects.push_back(testLine);
+
 		/*AudioManager::GetInstance()->LoadSound("z", "zip.wav");
 		AudioManager::GetInstance()->PlaySoundFile("z", 0.2, false);*/
 	}
@@ -88,11 +95,14 @@ namespace Engine
 			go->Update();
 		}
 
-		bool test = collisionCheck.Update(mSceneObjects);
-
-		if (test == true)
+		if (Collision::CheckCollision(mSceneObjects[0], mSceneObjects[1]))
 		{
-			Logger::LogMsg("Something Collided");
+			Logger::LogMsg("Tilemap, Player Collided");
+		}
+
+		if (Collision::CheckCollision(mSceneObjects[0], mSceneObjects[2]))
+		{
+			Logger::LogMsg("Line, Player Collided");
 		}
 	}
 

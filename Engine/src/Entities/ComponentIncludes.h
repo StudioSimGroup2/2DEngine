@@ -6,3 +6,4 @@
 #include "Components/PhysicsComp.h"
 #include "Components/TilemapCollisionComp.h"
 #include "Components/ObjectCollisionComp.h"
+#include "Components/LineCollisionComp.h"

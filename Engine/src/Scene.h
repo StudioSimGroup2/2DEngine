@@ -26,7 +26,6 @@ namespace Engine
 
 	private:
 		std::vector<GameObject*> mSceneObjects;
-		Collision collisionCheck;
 	};
 }
 
