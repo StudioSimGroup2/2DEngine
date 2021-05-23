@@ -201,7 +201,11 @@ namespace Engine
 				
 				if (ifd::FileDialog::Instance().HasResult() && result != path)
 				{
-					c->SetTexture(AssetManager::GetInstance()->LoadTexture(result, ifd::FileDialog::Instance().GetResult().u8string()));
+					std::string Texpath = ifd::FileDialog::Instance().GetResult().u8string();
+					c->SetTexture(AssetManager::GetInstance()->LoadTexture(result, Texpath));
+					int startPos = Texpath.find("Assets");
+					Texpath.erase(0, startPos);
+					c->Setpath(Texpath);
 				}
 			}
 
@@ -295,7 +299,11 @@ namespace Engine
 			if (ifd::FileDialog::Instance().HasResult() && ifd::FileDialog::Instance().GetResult().u8string() != c->GetFile())
 			{
 				c->RemoveScript();
-				c->AddScript(ifd::FileDialog::Instance().GetResult().u8string());
+				std::string Scriptpath = ifd::FileDialog::Instance().GetResult().u8string();
+				c->AddScript(Scriptpath);
+				int startPos = Scriptpath.find("Assets");
+				Scriptpath.erase(0, startPos);
+				c->Setpath(Scriptpath);
 			}
 			ifd::FileDialog::Instance().Close();
 		}
@@ -325,6 +333,7 @@ namespace Engine
 			ImGui::PopID();
 			if (ImGui::GetIO().MouseDown[0])
 			{
+				//TODO change mousepos to use world pos of camera 
 				vec2f mousePos = vec2f(InputManager::GetInstance()->GetMousePosition().x, InputManager::GetInstance()->GetMousePosition().y);
 				/*Logger::LogMsg("Mouse pos X:", int(mousePos.x / TILEHEIGHT));
 				Logger::LogMsg("Mouse pos Y:", int(mousePos.y / TILEHEIGHT));*/
@@ -334,6 +343,8 @@ namespace Engine
 		}
 		ImGui::End();
 
+		//Load TileMap
+		//----------------------------------------------------------------------------------------------
 		if (ImGui::Button("Load TileMap"))
 		{
 			ifd::FileDialog::Instance().Open("TileMapLoader", "LoadTileMap", "TileMap (*.xml){.xml},.*");
@@ -344,12 +355,18 @@ namespace Engine
 			if (ifd::FileDialog::Instance().HasResult())
 			{
 				std::string TempString = ifd::FileDialog::Instance().GetResult().u8string();
+				int startPos = TempString.find("Assets");
+				TempString.erase(0, startPos);
 				c->LoadTileMap(TempString.c_str());
-				TileMap temp = c->GetTileMap();
+				c->Setpath(TempString);
+				//TileMap temp = c->GetTileMap();
 			}
 			ifd::FileDialog::Instance().Close();
 		}
+		//----------------------------------------------------------------------------------------------
 
+		//Save TileMap
+		//----------------------------------------------------------------------------------------------
 		if (ImGui::Button("Save TileMap"))
 		{
 			ifd::FileDialog::Instance().Save("TileMapSaver", "LoadTileMap", "Texture File, (*.xml) {.xml}, .*");
@@ -360,10 +377,14 @@ namespace Engine
 			if (ifd::FileDialog::Instance().HasResult())
 			{
 				std::string TempString = ifd::FileDialog::Instance().GetResult().u8string();
-				c->SaveTileMap(ifd::FileDialog::Instance().GetResult().u8string(), vec2i(c->GetTileMap().size(), c->GetTileMap()[0].size()));
+				int startPos = TempString.find("Game");
+				TempString.erase(0, startPos);
+				c->SaveTileMap(TempString, vec2i(c->GetTileMap().size(), c->GetTileMap()[0].size()));
+				c->Setpath(TempString);
 			}
 			ifd::FileDialog::Instance().Close();
 		}
+		//----------------------------------------------------------------------------------------------
 
 		ImGui::PopID();
 	}

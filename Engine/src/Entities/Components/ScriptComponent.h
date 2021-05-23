@@ -22,6 +22,9 @@ namespace Engine
 		void AddScript(const std::string& file);
 		void RemoveScript() { mPath.clear(); };
 
+		std::string getpath() { return mPath; };
+		void Setpath(std::string path) { mPath = path; };
+
 	private:
 		void Init();
 

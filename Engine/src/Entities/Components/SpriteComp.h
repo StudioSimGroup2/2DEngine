@@ -35,11 +35,14 @@ namespace Engine
 		float (&GetColour())[4] { return mRenderer->GetColour(); }
 
 		void* GetTexID();
+		std::string getpath() { return mFilePath; };
+		void Setpath(std::string path) { mFilePath = path; };
 	private:
 		void Init();
 
 		Texture* mTexture = nullptr;
 		Renderer2D* mRenderer = nullptr;
+		std::string mFilePath;
 
 
 	};

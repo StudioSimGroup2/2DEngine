@@ -104,7 +104,7 @@ namespace Engine
 #if GRAPHICS_LIBRARY == 0
 					dynamic_cast<D3D11Renderer2D*>(mRenderer[0])->Draw(vec2f(ForY * TILEHEIGHT, ForX * TILEWIDTH) + mParent->GetComponent<TransformComp>()->GetPosition(), vec2f(0.0f), vec2f(1.0f), mTexArray[secondPass]);
 #elif GRAPHICS_LIBRARY == 1
-					dynamic_cast<OGLRenderer2D*>(mRenderer[pos])->Draw(vec2f(ForY * TILEHEIGHT, ForX * TILEWIDTH) + mParent->GetComponent<TransformComp>()->GetPosition(), vec2f(0.0f), vec2f(1.0f), mTexArray[0]);
+					dynamic_cast<OGLRenderer2D*>(mRenderer[0])->Draw(vec2f(ForY * TILEHEIGHT, ForX * TILEWIDTH) + mParent->GetComponent<TransformComp>()->GetPosition(), vec2f(0.0f), vec2f(1.0f), mTexArray[0]);
 #endif
 				}
 				else
@@ -112,7 +112,7 @@ namespace Engine
 #if GRAPHICS_LIBRARY == 0
 					dynamic_cast<D3D11Renderer2D*>(mRenderer[0])->Draw(vec2f(ForY * TILEHEIGHT, ForX * TILEWIDTH) + mParent->GetComponent<TransformComp>()->GetPosition(), vec2f(0.0f), vec2f(1.0f), DefaultTexture);
 #elif GRAPHICS_LIBRARY == 1
-					dynamic_cast<OGLRenderer2D*>(mRenderer[pos])->Draw(vec2f(ForY * TILEHEIGHT, ForX * TILEWIDTH) + mParent->GetComponent<TransformComp>()->GetPosition(), vec2f(0.0f), vec2f(1.0f), mTexArray[0]);
+					dynamic_cast<OGLRenderer2D*>(mRenderer[0])->Draw(vec2f(ForY * TILEHEIGHT, ForX * TILEWIDTH) + mParent->GetComponent<TransformComp>()->GetPosition(), vec2f(0.0f), vec2f(1.0f), mTexArray[0]);
 #endif
 				}
 				
