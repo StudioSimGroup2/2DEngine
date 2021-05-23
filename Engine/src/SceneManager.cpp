@@ -4,6 +4,7 @@
 namespace Engine
 {
 	SceneManager* SceneManager::mInstance = nullptr;
+	int SceneManager::mCounter = 0;
 	
 	SceneManager* SceneManager::GetInstance()
 	{
@@ -283,16 +284,29 @@ namespace Engine
 		return go;
 	}
 
-	GameObject* SceneManager::CreateObject(GameObject*)
+	void SceneManager::DestroyObject(GameObject* go)
 	{
-		return nullptr;
-	}
+		auto index = std::find_if(mSceneObjects.begin(), mSceneObjects.end(),
+			[&](const GameObject* object) {return go == object; });
 
-	GameObject* SceneManager::DestroyObject()
-	{
-		std::cout << "Called Destroy Object" << std::endl;
+		if (index != mSceneObjects.end())
+		{
+			GameObject* objectToDelete = mSceneObjects.at(std::distance(mSceneObjects.begin(), index));
+			mSceneObjects.erase(index);
 
-		return nullptr;
+			if (objectToDelete->GetParent() != nullptr)
+			{
+				objectToDelete->GetParent()->RemoveChild(objectToDelete);
+			}
+
+			for (GameObject* child : objectToDelete->GetChildren())
+			{
+				DestroyObject(child);
+			}
+
+			delete objectToDelete;
+			objectToDelete = nullptr;
+		}
 	}
 
 	void SceneManager::Shutdown()

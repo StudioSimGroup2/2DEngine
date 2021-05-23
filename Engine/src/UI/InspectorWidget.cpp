@@ -3,8 +3,11 @@
 #include "imgui.h"
 #include "imgui_stdlib.h"
 
-#include "Entities/GameObject.h"
 #include "ImFileDialog\ImFileDialog.h"
+
+#include "Entities/GameObject.h"
+#include "SceneManager.h"
+#include "SceneHierarchyWidget.h"
 
 namespace Engine
 {
@@ -18,6 +21,17 @@ namespace Engine
 			
 			ImGui::InputText("###name", &name);
 
+			ImGui::SameLine();
+
+			if (ImGui::Button("Delete"))
+			{
+				SceneManager::GetInstance()->DestroyObject(go);
+				go = nullptr;
+				SceneHierarchyWidget::ClearNode();
+				ImGui::End();
+				return;
+			}
+				
 			for (Component* c : go->GetComponents())
 			{
 				switch (c->GetType())
