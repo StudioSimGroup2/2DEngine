@@ -1,0 +1,154 @@
+FORMAT: 1A
+HOST: https://polls.apiblueprint.org/
+
+# Tanvirk2013 
+
+Documentation for scripting in Sleepy Engine
+
+# Group Game Object
+Represents the Game Object the script is attached to
+
+<table>
+    <tr>
+        <td> self </td>
+        <td> Get the game object that the script is attached to </td>
+    </tr>
+    <tr>
+        <td> GetName() </td>
+        <td> Get the the name of the Game Object </td>
+    </tr>
+    <tr>
+        <td> SetName() </td>
+        <td> Set the the name of the Game Object </td>
+    </tr>
+    <tr>
+        <td> SetParent() </td>
+        <td> Set the the parent of the Game Object </td>
+    </tr>    
+    <tr>
+        <td> GetParent() </td>
+        <td> Get the the parent of the Game Object </td>
+    </tr>
+    <tr>
+        <td> IsActive() </td>
+        <td> Returns true or false whether the Game Object is active or not </td>
+    <tr>
+        <td> Enable() </td>
+        <td> Enable the Game Object </td>
+    </tr>
+    <tr>
+        <td> Disable() </td>
+        <td> Disable the Game Object </td>
+    </tr>
+    <tr>
+        <td> MakeSprite() </td>
+        <td> Create a Sprite Component of the Game Object </td>
+    </tr>  
+    <tr>
+        <td> GetTransform() </td>
+        <td> Get the Game Object's Transform Component </td>
+    </tr>  
+    <tr>
+        <td> GetSprite() </td>
+        <td> Get the Game Object's Sprite Component </td>
+    </tr>  
+</table>
+
+---
+
+# Group Component
+Base class for all components
+
+<table>
+    <tr>
+        <td> GetOwner() </td>
+        <td> Get the Component's Game Object </td>
+    </tr>
+    <tr>
+        <td> GetType() </td>
+        <td> Get the Component's type</td>
+    </tr>
+</table>
+
+---
+
+# Group Transform
+Transform Component
+
+<table>
+    <tr>
+        <td> GetTransform():GetPosition() </td>
+        <td> Get the position </td>
+        <td> Returns a vec2f </td>
+    </tr>
+    <tr>
+        <td> GetTransform():SetPosition() </td>
+        <td> Sets the position </td> 
+        <td> Takes in a vec2f </td>
+    </tr>
+    <tr>
+        <td> GetTransform():GetRotation() </td>
+        <td> Get the rotation </td>
+        <td> Returns a vec2f </td>
+    </tr>
+    <tr>
+        <td> GetTransform():SetRotation() </td>
+        <td> Sets the rotation </td> 
+        <td> Takes in a vec2f </td>
+    </tr>
+    <tr>
+        <td> GetTransform():GetScale() </td>
+        <td> Get the scale </td>
+        <td> Returns a vec2f </td>
+    </tr>
+    <tr>
+        <td> GetTransform():SetScale() </td>
+        <td> Sets the scale </td> 
+        <td> Takes in a vec2f </td>
+    </tr>
+</table>
+---
+
+# Group Sprite
+Sprite Component
+
+<table>
+    <tr>
+        <td> SetPath() </td>
+        <td> Set the Texture Path </td>
+        <td>Takes in a path to the png file</td>
+    </tr>
+    <tr>
+        <td> SetFlipX() </td>
+        <td> Set the flip on the X axis </td>
+        <td>Takes in true or false</td>
+    </tr>
+    <tr>
+        <td> GetFlipX() </td>
+        <td> Get the flip on the X axis </td>
+        <td>Returns true or false</td>
+    </tr>
+    <tr>
+        <td> SetFlipY() </td>
+        <td> Set the flip on the Y axis </td>
+        <td>Takes in true or false</td>
+    </tr>
+        <tr>
+        <td> GetFlipY() </td>
+        <td> Get the flip on the Y axis </td>
+        <td>Returns true or false</td>
+    </tr>
+</table>
+---
+
+# Group Registered Functions
+
+
+<table>
+    <tr>
+        <td> OnKeyDown() </td>
+        <td> Returns true if the keycode specified is pressed </td>
+        <td>Takes in a keycode</td>
+    </tr>
+</table>
+---
