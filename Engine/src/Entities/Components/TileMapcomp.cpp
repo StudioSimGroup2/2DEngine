@@ -10,11 +10,29 @@ namespace Engine
 	{
 		Init();
 	}
+
 	TileMapComp::TileMapComp(GameObject* parent)
 	{
 	}
+
 	TileMapComp::~TileMapComp()
 	{
+		mParent = nullptr;
+		if (!mTexArray.empty())
+			mTexArray.clear();
+		
+		if (!mRenderer.empty())
+		{
+			for (auto r : mRenderer)
+			{
+				delete r;
+			}
+
+			mRenderer.clear();
+		}
+
+		mTexture = nullptr;
+		DefaultTexture = nullptr;
 	}
 
 	void TileMapComp::ChangeTile(int ID, vec2i Pos)
@@ -84,27 +102,12 @@ namespace Engine
 		{
 			for (int secondPass : firstPass)
 			{
-				//switch (secondPass)
-				//{
-				//case 0:
-				//{
-				//	break;
-				//}
-				//case 1:
-				//{
-
-				//	pos++;
-				//	break;
-				//}
-				//default:
-				//	break;
-				//}
 				if (secondPass < mTexArray.size())
 				{
 #if GRAPHICS_LIBRARY == 0
 					dynamic_cast<D3D11Renderer2D*>(mRenderer[0])->Draw(vec2f(ForY * TILEHEIGHT, ForX * TILEWIDTH) + mParent->GetComponent<TransformComp>()->GetPosition(), vec2f(0.0f), vec2f(1.0f), mTexArray[secondPass]);
 #elif GRAPHICS_LIBRARY == 1
-					dynamic_cast<OGLRenderer2D*>(mRenderer[pos])->Draw(vec2f(ForY * TILEHEIGHT, ForX * TILEWIDTH) + mParent->GetComponent<TransformComp>()->GetPosition(), vec2f(0.0f), vec2f(1.0f), mTexArray[0]);
+					dynamic_cast<OGLRenderer2D*>(mRenderer[0])->Draw(vec2f(ForY * TILEHEIGHT, ForX * TILEWIDTH) + mParent->GetComponent<TransformComp>()->GetPosition(), vec2f(0.0f), vec2f(1.0f), mTexArray[0]);
 #endif
 				}
 				else
@@ -112,7 +115,7 @@ namespace Engine
 #if GRAPHICS_LIBRARY == 0
 					dynamic_cast<D3D11Renderer2D*>(mRenderer[0])->Draw(vec2f(ForY * TILEHEIGHT, ForX * TILEWIDTH) + mParent->GetComponent<TransformComp>()->GetPosition(), vec2f(0.0f), vec2f(1.0f), DefaultTexture);
 #elif GRAPHICS_LIBRARY == 1
-					dynamic_cast<OGLRenderer2D*>(mRenderer[pos])->Draw(vec2f(ForY * TILEHEIGHT, ForX * TILEWIDTH) + mParent->GetComponent<TransformComp>()->GetPosition(), vec2f(0.0f), vec2f(1.0f), mTexArray[0]);
+					dynamic_cast<OGLRenderer2D*>(mRenderer[0])->Draw(vec2f(ForY * TILEHEIGHT, ForX * TILEWIDTH) + mParent->GetComponent<TransformComp>()->GetPosition(), vec2f(0.0f), vec2f(1.0f), mTexArray[0]);
 #endif
 				}
 				
@@ -171,22 +174,6 @@ namespace Engine
 		mType = COMPONENT_TILEMAP;
 		LoadTileMap("Assets/TileMaps/XML_Test.xml");
 		mRenderer.push_back(Device::CreateRenderer(AssetManager::GetInstance()->GetShaderByName("Default")));
-		/*for (int X = 0; X < mTileMap.size(); X++)
-		{
-			for (int Y = 0; Y < mTileMap[0].size(); Y++)
-			{
-				switch (mTileMap[X][Y])
-				{
-				case 1:
-				{
-					
-					break;
-				}
-				default:
-					break;
-				}
-			}
-		}*/
 	}
 
 	void TileMapComp::Start()

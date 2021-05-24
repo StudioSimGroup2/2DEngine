@@ -28,7 +28,7 @@ namespace Engine
 		mGUILayer = new GUILayer();
 		AddLayer(mGUILayer);
 
-		SceneManager::GetInstance()->LoadScene();
+		SceneManager::GetInstance()->CreateScene();
 	}
 
 	Application::~Application()

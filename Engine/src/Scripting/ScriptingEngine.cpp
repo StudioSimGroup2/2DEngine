@@ -19,6 +19,7 @@ namespace Engine
 		RegisterUserTypes();
 
 		mState.set_function("OnKeyDown", [](uint32_t key) { return InputManager::GetInstance()->GetKeyDown(key); });
+		mState.set_function("OnKeyUp", [](uint32_t key) { return InputManager::GetInstance()->GetKeyUp(key); });
 	}
 
 	void ScriptingEngine::Shutdown()
@@ -42,7 +43,8 @@ namespace Engine
 		mState.new_usertype<vec2f>("vec2f",
 			sol::constructors<
 			vec2f(),
-			vec2f(float, float)
+			vec2f(float, float),
+			vec2f(vec2f&)
 			>(),
 
 			"x", &vec2f::x,

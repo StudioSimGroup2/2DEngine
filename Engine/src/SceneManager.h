@@ -15,21 +15,24 @@ namespace Engine
 		static SceneManager* GetInstance();
 
 		// TODO: Read from file
-		void LoadScene();
+		void CreateScene();
 
 		void PlayScene();
 		void UpdateScene();
 		void RenderScene();
 
-		void SaveScene();
+		void LoadScene(std::string path);
+		void SaveScene(std::string path);
+		void ClearScene();
 
 		void EnableEditorMode() { mEditorMode = true; }
 		void DisableEditorMode() { mEditorMode = false; }
 
 		GameObject* CreateObject();
+		GameObject* CreateObject(GameObject*);
 		//void CreateObject(GameObject* parent);
 
-		GameObject* DestroyObject();
+		void DestroyObject(GameObject* go);
 
 		std::vector<GameObject*>& GetSceneObjects() { return mSceneObjects; }
 
@@ -49,6 +52,8 @@ namespace Engine
 
 		bool mEditorMode = true;
 		FrameBuffer mRenderToTex;
+
+		static int mCounter;
 	};
 }
 

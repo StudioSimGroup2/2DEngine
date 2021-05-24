@@ -15,17 +15,9 @@ namespace Engine
 			delete c;
 			c = nullptr;
 		}
+		
+		mComponents.clear();
 		mComponents.shrink_to_fit();
-
-		//TODO Add children back to the scene hierachy 
-		for (GameObject* child : mChildren)
-		{
-			child->RemoveParent();
-			delete child;
-			child = nullptr;
-		}
-
-		mChildren.shrink_to_fit();
 	}
 
 	void GameObject::Start()
@@ -72,7 +64,23 @@ namespace Engine
 
 	void GameObject::RemoveParent()
 	{
+		mParent->GetChildren();
 		mParent = nullptr;
+	}
+
+	void GameObject::RemoveChild(GameObject* go)
+	{
+		if (mChildren.empty())
+			return;
+
+		auto index = std::find_if(mChildren.begin(), mChildren.end(),
+			[&](const GameObject* object) {return go == object; });
+
+		if (index != mChildren.end())
+		{
+			GameObject* objectToDelete = mChildren.at(std::distance(mChildren.begin(), index));
+			mChildren.erase(index);
+		}
 	}
 
 	void GameObject::InitTransformComponent()

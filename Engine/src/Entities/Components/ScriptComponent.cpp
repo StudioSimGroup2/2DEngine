@@ -18,6 +18,8 @@ namespace Engine
 	ScriptComp::~ScriptComp()
 	{
 		mPath.clear();
+
+		mParent = nullptr;
 	}
 
 	void ScriptComp::Update()
