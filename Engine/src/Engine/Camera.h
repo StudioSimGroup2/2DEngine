@@ -38,10 +38,12 @@ namespace Engine
 		void SetFOV(float fov) {}
 		void SetNear(float cNear) { mNearPlane = cNear; }
 		void SetFar(float cFar) { mFarPlane = cFar; }
+		void SetDepth(float depth) { mZDepth = depth; }
 
 		float GetFOV() { return 0.0f; }
 		float GetNear() { return mNearPlane; }
 		float GetFar() { return mFarPlane; }
+		float GetDepth() { return mZDepth; }
 		
 	protected:
 		DirectX::XMMATRIX mView, mProjection;

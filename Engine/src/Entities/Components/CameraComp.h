@@ -15,10 +15,12 @@ namespace Engine
 		void SetFOV(float fov) { mCamera->SetFOV(fov); }
 		void SetNear(float cNear) { mCamera->SetNear(cNear); }
 		void SetFar(float cFar) { mCamera->SetFar(cFar); }
+		void SetDepth(float depth) { mCamera->SetDepth(depth); }
 
 		float GetFOV() { return mCamera->GetFOV(); }
 		float GetNear() { return mCamera->GetNear(); }
 		float GetFar() { return mCamera->GetFar(); }
+		float GetDepth() { return mCamera->GetDepth(); }
 
 		// Inherited via Component
 		virtual void Start() override;

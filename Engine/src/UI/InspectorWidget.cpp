@@ -360,6 +360,7 @@ namespace Engine
 		float fov = c->GetFOV();
 		float cNear = c->GetNear(); // camera near clipping
 		float cFar = c->GetFar(); // camera far clipping
+		float depth = c->GetDepth();
 
 		ImGui::PushID("fov");
 
@@ -391,9 +392,20 @@ namespace Engine
 
 		ImGui::PopID();
 
+		ImGui::PushID("depth");
+
+		ImGui::Columns(2);
+		ImGui::Text("Depth");
+		ImGui::NextColumn();
+		ImGui::DragFloat("##depth", &depth, 0.1f);
+		ImGui::Columns(1);
+
+		ImGui::PopID();
+
 		c->SetFar(cFar);
 		c->SetFOV(fov);
 		c->SetNear(cNear);
+		c->SetDepth(depth);
 	}
 
 	InspectorWidget::InspectorWidget()
