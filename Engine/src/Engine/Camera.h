@@ -34,6 +34,14 @@ namespace Engine
 
 		DirectX::XMMATRIX GetProjectionMatrix() { return mProjection; }
 		DirectX::XMMATRIX GetViewMatrix() { return mView; }
+
+		void SetFOV(float fov) {}
+		void SetNear(float cNear) { mNearPlane = cNear; }
+		void SetFar(float cFar) { mFarPlane = cFar; }
+
+		float GetFOV() { return 0.0f; }
+		float GetNear() { return mNearPlane; }
+		float GetFar() { return mFarPlane; }
 		
 	protected:
 		DirectX::XMMATRIX mView, mProjection;

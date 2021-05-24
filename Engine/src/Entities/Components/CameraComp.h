@@ -12,6 +12,14 @@ namespace Engine
 		CameraComp(GameObject* parent);
 		~CameraComp() override;
 
+		void SetFOV(float fov) { mCamera->SetFOV(fov); }
+		void SetNear(float cNear) { mCamera->SetNear(cNear); }
+		void SetFar(float cFar) { mCamera->SetFar(cFar); }
+
+		float GetFOV() { return mCamera->GetFOV(); }
+		float GetNear() { return mCamera->GetNear(); }
+		float GetFar() { return mCamera->GetFar(); }
+
 		// Inherited via Component
 		virtual void Start() override;
 
@@ -23,11 +31,9 @@ namespace Engine
 
 		virtual void InternalRender() override;
 
-
 	private:
 		void Init();
 
 		Camera* mCamera = nullptr;
-
 	};
 }
