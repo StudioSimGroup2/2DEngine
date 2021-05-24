@@ -169,9 +169,9 @@ namespace Engine
 						}
 					}
 				}
-				//Create object in hierarchy
-
 			}
+			// TODO:
+			// Lots of pointers left here should clean them up when done with them
 		}
 	}
 
@@ -268,6 +268,9 @@ namespace Engine
 		{
 			std::cerr << Doc.ErrorDesc() << std::endl;
 		}
+
+		// TODO:
+		// Lots of pointers left here should clean them up when done with them
 	}
 
 	void SceneManager::ClearScene()
