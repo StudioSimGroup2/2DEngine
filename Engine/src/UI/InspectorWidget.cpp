@@ -357,9 +357,37 @@ namespace Engine
 
 	void InspectorWidget::RenderCameraComponent(CameraComp* c)
 	{
-		ImGui::PushID("Camera");
+		float fov = 120.0f; // camera fov
+		float cNear = 0.2f; // camera near clipping
+		float cFar = 200.0f;; // camera far clipping
 
-		ImGui::Text("c");
+		ImGui::PushID("fov");
+
+		ImGui::Columns(2);
+		ImGui::Text("FOV");
+		ImGui::NextColumn();
+		ImGui::DragFloat("##friction", &fov, 0.1f);
+		ImGui::Columns(1);
+
+		ImGui::PopID();
+
+		ImGui::PushID("near");
+
+		ImGui::Columns(2);
+		ImGui::Text("Near");
+		ImGui::NextColumn();
+		ImGui::DragFloat("##near", &cNear, 0.1f);
+		ImGui::Columns(1);
+
+		ImGui::PopID();
+
+		ImGui::PushID("far");
+
+		ImGui::Columns(2);
+		ImGui::Text("Far");
+		ImGui::NextColumn();
+		ImGui::DragFloat("##far", &cFar, 0.1f);
+		ImGui::Columns(1);
 
 		ImGui::PopID();
 	}

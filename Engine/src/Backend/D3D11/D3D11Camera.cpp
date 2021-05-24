@@ -1,7 +1,7 @@
 #include <Backend/D3D11/D3D11Camera.h>
 namespace Engine
 {
-	D3DCamera::D3DCamera(XMFLOAT4 Eye, XMFLOAT4 At, XMFLOAT4 Up, float ViewWidth, float ViewHeight, const std::string& Name)
+	D3DCamera::D3DCamera(XMFLOAT4 Eye, XMFLOAT4 At, XMFLOAT4 Up, float ViewWidth, float ViewHeight, const std::string& Name, bool editor)
 	{
 		mEye = ToGLM(Eye);
 		mAt = ToGLM(At);
@@ -17,9 +17,10 @@ namespace Engine
 		mMovementSpeed = 100.0f;
 		mPrimary = false;
 		mStatic = false;
+		mEditorCamera = editor;
 	}
 
-	D3DCamera::D3DCamera(glm::vec4 Eye, glm::vec4 At, glm::vec4 Up, float ViewWidth, float ViewHeight, const std::string& Name)
+	D3DCamera::D3DCamera(glm::vec4 Eye, glm::vec4 At, glm::vec4 Up, float ViewWidth, float ViewHeight, const std::string& Name, bool editor)
 	{
 		mEye = Eye;
 		mAt = At;
@@ -35,6 +36,7 @@ namespace Engine
 		mMovementSpeed = 100.0f;
 		mPrimary = false;
 		mStatic = false;
+		mEditorCamera = editor;
 	}
 
 	void D3DCamera::Update(vec2f position)

@@ -19,6 +19,7 @@ namespace Engine
 		auto camera = CameraManager::Get()->Add(vec2f(0.0f, 0.0f), true);		// Camera manager deletes its cameras, no mem leak :)         
 		camera->SetName("Main Camera");
 		camera->SetPrimary(true);
+		camera->SetEditorCamera(true);
 		
 		ScriptingEngine::GetInstance()->Init();
 		

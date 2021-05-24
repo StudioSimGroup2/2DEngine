@@ -30,6 +30,9 @@ namespace Engine
 		OGLCamera* camera = new OGLCamera(glm::vec4(pos.x, pos.y, 0.0f, 0.0f));
 #endif
 
+		if (isEditorCamera)
+			camera->SetEditorCamera(true);
+
 		mCameras.push_back(camera);
 
 		if (mCameras.size() == 1)
@@ -123,6 +126,9 @@ namespace Engine
 
 	void CameraManager::CBCycleNext()
 	{
+		if (mInstance->mCameras.size() <= 1)
+			return;
+
 		size_t range = mInstance->mCameras.size();
 		size_t currentCamera = CameraManager::Get()->GetPrimaryCameraIndex();
 		if (++currentCamera >= range)
@@ -133,8 +139,11 @@ namespace Engine
 
 	void CameraManager::CBCyclePrevious()
 	{
+		if (mInstance->mCameras.size() <= 1)
+			return;
+
 		size_t currentCamera = CameraManager::Get()->GetPrimaryCameraIndex();
-		if (--currentCamera < 0)
+		if ((currentCamera - 1) < 0)
 			currentCamera = mInstance->mCameras.size() - 1; // Wrap around when out of range
 
 		CameraManager::Get()->SetPrimaryCamera(currentCamera);

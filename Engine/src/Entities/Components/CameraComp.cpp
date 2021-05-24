@@ -44,6 +44,11 @@ namespace Engine
 
 	void CameraComp::InternalUpdate()
 	{
+#if GRAPHICS_LIBRARY == 0
+		dynamic_cast<D3DCamera*>(mCamera)->Update(mParent->GetComponent<TransformComp>()->GetPosition());
+#elif GRAPHICS_LIBRARY == 1
+		dynamic_cast<OGLCamera*>(mCamera)->Update(mParent->GetComponent<TransformComp>()->GetPosition());
+#endif
 	}
 
 	void CameraComp::InternalRender()

@@ -23,8 +23,8 @@ namespace Engine
 	{
 	public:
 		D3DCamera();
-		D3DCamera(XMFLOAT4 Eye, XMFLOAT4 At = XMFLOAT4(0, 0, 0, 1), XMFLOAT4 Up = XMFLOAT4(0, 1, 0, 1), float ViewWidth = 1280, float ViewHeight = 720, const std::string& Name = "-New Camera-");
-		D3DCamera(glm::vec4 Eye, glm::vec4 At = glm::vec4(0, 0, 0, 1), glm::vec4 Up = glm::vec4(0, 1, 0, 1), float ViewWidth = 1280, float ViewHeight = 720, const std::string& Name = "-New Camera-");
+		D3DCamera(XMFLOAT4 Eye, XMFLOAT4 At = XMFLOAT4(0, 0, 0, 1), XMFLOAT4 Up = XMFLOAT4(0, 1, 0, 1), float ViewWidth = 1280, float ViewHeight = 720, const std::string& Name = "-New Camera-", bool editor = false);
+		D3DCamera(glm::vec4 Eye, glm::vec4 At = glm::vec4(0, 0, 0, 1), glm::vec4 Up = glm::vec4(0, 1, 0, 1), float ViewWidth = 1280, float ViewHeight = 720, const std::string& Name = "-New Camera-", bool editor = false);
 		~D3DCamera() = default;
 
 		void Update(vec2f position, float deltaTime) override;  // Updates the view and projection matrices
