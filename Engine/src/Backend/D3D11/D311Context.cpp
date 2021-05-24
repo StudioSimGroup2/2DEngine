@@ -1,7 +1,6 @@
 #include "D311Context.h"
 #include "Engine/Application.h"
 #include <Utils/AssetManager.h>
-#include <Backend/D3D11/D3D11Camera.h>
 #include <CameraManager.h>
 
 namespace Engine
@@ -365,13 +364,6 @@ namespace Engine
 
         // Could camera stuff be put inside SceneManager?
 		// Create two cameras
-		CameraManager::Get()->Add(Camera::Create(glm::vec4(0.0f, 0.0f, -1.0f, 1.0f)));		// Camera manager deletes its cameras, no mem leak :)         
-		CameraManager::Get()->Add(Camera::Create(glm::vec4(-964.0f, 94.0f, -1.0f, 1.0f)));	// Camera manager deletes its cameras, no mem leak :)
-		CameraManager::Get()->GetCameraByIndex(0)->SetName("Main Camera");
-		CameraManager::Get()->GetCameraByIndex(1)->SetStatic(true);
-		CameraManager::Get()->GetCameraByIndex(1)->SetName("Secondary Camera");
-
-
 
 		InputManager::GetInstance()->BindCommandToButton(KEY_Q, &CameraManager::Get()->CBCycleNext);
 		InputManager::GetInstance()->BindCommandToButton(KEY_E, &CameraManager::Get()->CBCyclePrevious);

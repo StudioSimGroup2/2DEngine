@@ -73,6 +73,7 @@ namespace Engine
 				case COMPONENT_CAMERA:
 					if (ImGui::CollapsingHeader("Camera"))
 					{
+						RenderCameraComponent(dynamic_cast<CameraComp*>(c));
 					}
 					break;
 
@@ -387,6 +388,59 @@ namespace Engine
 		//----------------------------------------------------------------------------------------------
 
 		ImGui::PopID();
+	}
+
+	void InspectorWidget::RenderCameraComponent(CameraComp* c)
+	{
+		float fov = c->GetFOV();
+		float cNear = c->GetNear(); // camera near clipping
+		float cFar = c->GetFar(); // camera far clipping
+		float depth = c->GetDepth();
+
+		ImGui::PushID("fov");
+
+		ImGui::Columns(2);
+		ImGui::Text("FOV");
+		ImGui::NextColumn();
+		ImGui::DragFloat("##friction", &fov, 0.1f);
+		ImGui::Columns(1);
+
+		ImGui::PopID();
+
+		ImGui::PushID("near");
+
+		ImGui::Columns(2);
+		ImGui::Text("Near");
+		ImGui::NextColumn();
+		ImGui::DragFloat("##near", &cNear, 0.1f);
+		ImGui::Columns(1);
+
+		ImGui::PopID();
+
+		ImGui::PushID("far");
+
+		ImGui::Columns(2);
+		ImGui::Text("Far");
+		ImGui::NextColumn();
+		ImGui::DragFloat("##far", &cFar, 0.1f);
+		ImGui::Columns(1);
+
+		ImGui::PopID();
+
+		ImGui::PushID("depth");
+
+		ImGui::Columns(2);
+		ImGui::Text("Depth");
+		ImGui::NextColumn();
+		ImGui::DragFloat("##depth", &depth, 0.1f);
+		ImGui::Columns(1);
+
+		ImGui::PopID();
+
+		c->SetFar(cFar);
+		c->SetFOV(fov);
+		c->SetNear(cNear);
+		c->SetDepth(depth);
 	}
 
 	InspectorWidget::InspectorWidget()

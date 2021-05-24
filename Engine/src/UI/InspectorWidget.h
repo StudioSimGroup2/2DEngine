@@ -20,5 +20,6 @@ namespace Engine
 		void RenderPhysicsComponent(PhysicsComp* c);
 		void RenderScriptComponent(ScriptComp* c);
 		void TileMapComponent(TileMapComp* c);
+		void RenderCameraComponent(CameraComp* c);
 	};
 }

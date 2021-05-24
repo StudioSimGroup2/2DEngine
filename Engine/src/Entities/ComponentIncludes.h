@@ -5,6 +5,7 @@
 #include "Components/TileMapComp.h"
 #include "Components/PhysicsComp.h"
 #include "Components/ScriptComponent.h"
+#include "Components/CameraComp.h"
 
 namespace Engine
 {
