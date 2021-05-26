@@ -18,11 +18,10 @@ namespace Engine
 
 		virtual void* GetTexID() override { return(void*)(size_t)mID; }
 
-	private:
 		bool CreateTextureFromFile();
 
+	private:
 		GLuint mID;
-
 	};
 }
 

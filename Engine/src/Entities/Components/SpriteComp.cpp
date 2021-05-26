@@ -27,7 +27,7 @@ namespace Engine
 			mRenderer = nullptr;
 		}
 
-		Component::~Component();
+		mParent = nullptr;
 	}
 
 	void SpriteComp::Update()
@@ -37,9 +37,6 @@ namespace Engine
 
 	void SpriteComp::Render()
 	{
-		if (!mRenderer)
-			return;
-
 #if GRAPHICS_LIBRARY == 0
 		dynamic_cast<D3D11Renderer2D*>(mRenderer)->Draw(mParent->GetComponent<TransformComp>()->GetPosition(),
 			mParent->GetComponent<TransformComp>()->GetRotation(),
@@ -55,8 +52,17 @@ namespace Engine
 #endif
 	}
 
+	void SpriteComp::SetTexturePath(const std::string path)
+	{
+		SetTexture(AssetManager::GetInstance()->LoadTexture(mParent->GetName() + " Tex", path));
+		mFilePath = path;
+	}
+
 	void* SpriteComp::GetTexID()
 	{
+		if (!mTexture)
+			return nullptr;
+
 #if GRAPHICS_LIBRARY == 0
 		return dynamic_cast<D3D11Texture*>(mTexture)->GetTexID();
 
@@ -68,6 +74,18 @@ namespace Engine
 	void SpriteComp::Init()
 	{
 		mRenderer = Device::CreateRenderer(AssetManager::GetInstance()->GetShaderByName("Default"));
-		mType = "Sprite";
+		mType = COMPONENT_SPRITE;
+	}
+
+	void SpriteComp::Start()
+	{
+	}
+
+	void SpriteComp::InternalUpdate()
+	{
+	}
+
+	void SpriteComp::InternalRender()
+	{
 	}
 }

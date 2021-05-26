@@ -8,11 +8,15 @@ namespace Engine
 	public:
 		virtual ~Texture() = default;
 
-		virtual void Load(int pos = 1) const = 0;
-		virtual void Unload(int pos = 1) const = 0;
+		virtual void Load(int pos = 0) const = 0;
+		virtual void Unload(int pos = 0) const = 0;
 
-		const std::string& const GetName() { return mName; }
-		const std::string& const GetPath() { return mPath; }
+		const std::string& GetName() { return mName; }
+		const std::string& GetPath() { return mPath; }
+
+		void SetName(const std::string& name) { mName = name; }
+		void SetPath(const std::string& path) { mPath = path; }
+
 		virtual int GetWidth() { return mWidth; }
 		virtual int GetHeight() { return mHeight; }
 

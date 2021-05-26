@@ -4,6 +4,7 @@
 
 #include "Input/InputManager.h"
 #include "Memory/MemoryManager.h"
+#include <SceneManager.h>
 
 namespace Engine
 {
@@ -26,6 +27,8 @@ namespace Engine
 
 		mGUILayer = new GUILayer();
 		AddLayer(mGUILayer);
+
+		SceneManager::GetInstance()->CreateScene();
 	}
 
 	Application::~Application()

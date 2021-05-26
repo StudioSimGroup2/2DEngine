@@ -39,8 +39,8 @@ namespace ifd {
 		void RemoveFavorite(const std::string& path);
 		void AddFavorite(const std::string& path);
 		inline const std::vector<std::string>& GetFavorites() { return m_favorites; }
-		inline void SetZoom(float z) { 
-			m_zoom = std::min<float>(25.0f, std::max<float>(1.0f, z)); 
+		inline void SetZoom(float z) {
+			m_zoom = std::min<float>(25.0f, std::max<float>(1.0f, z));
 			m_refreshIconPreview();
 		}
 		inline float GetZoom() { return m_zoom; }

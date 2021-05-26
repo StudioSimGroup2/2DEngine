@@ -9,47 +9,10 @@ namespace Engine
 	{
 		// Load info from file here
 
-		GameObject* mPlayer = new GameObject();
-		
-		mPlayer->SetName("Parent");
+		// MOVED TO SCENEMANAGER.CPP
 
-		//GameObject* firstChild = new GameObject(mPlayer);
-		//firstChild->SetName("I am a child");
-
-		//GameObject* secondChild = new GameObject(firstChild);
-		//secondChild->SetName("I am a grandchild");
-		//GameObject* mTest = new GameObject();
-
-		//GameObject* thirdChild = new GameObject(mTest);
-		//thirdChild->SetName("child");
-
-		//mTest->SetName("Object B");
-
-		//GameObject* childLess = new GameObject();
-		//childLess->SetName("nO Child");
-
-		//mSceneObjects.push_back(mPlayer);
-		//mSceneObjects.push_back(mTest);
-		//mSceneObjects.push_back(childLess);
-
-
-		///// <summary>
-		///// sprite class needs to be removed its useless now that we're actually setting up components
-		///// </summary>
-
-		SpriteComp* spr = mPlayer->AddComponent(new SpriteComp);
-		//mPlayer->GetComponent<TransformComp>()->SetPosition(200.0f, 200.0f);
-		spr->SetTexture(AssetManager::GetInstance()->LoadTexture((char*)"Stone", (char*)"Assets/Textures/Stone.png"));
-		
-		mSceneObjects.push_back(mPlayer);
-
-		//ParticleProperties prop(vec2f(100, -100), 3, "Assets/Textures/Stone.png"); // "Resources\\Textures\\stone.dds"
-		//mParticleSystems.emplace_back(new ParticleSystem(D3D11Device::GetInstance(), vec2f(300, 300), prop, 150, Emmitter::Square));
-		//mParticleSystems[0]->SetGravity(100);
-		//mParticleSystems[0]->SetRate(0.1); // Particles per second
-
-		//AudioManager::GetInstance()->LoadSound("z", "zip.wav");
-		//AudioManager::GetInstance()->PlaySoundFile("z", 0.2, false);
+		/*AudioManager::GetInstance()->LoadSound("z", "zip.wav");
+		AudioManager::GetInstance()->PlaySoundFile("z", 0.2, false);*/
 	}
 
 	Scene::~Scene()

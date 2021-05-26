@@ -16,6 +16,12 @@ namespace Engine
 		void Update() override;
 		void Render() override;
 
+		// Inherited via Component
+		virtual void Start() override;
+		virtual void InternalUpdate() override;
+		virtual void InternalRender() override;
+
+		void SetTexturePath(const std::string path);
 		void SetTexture(Texture* texture) { mTexture = texture; }
 		Texture* GetTexture() const { return mTexture; }
 		
@@ -29,10 +35,15 @@ namespace Engine
 		float (&GetColour())[4] { return mRenderer->GetColour(); }
 
 		void* GetTexID();
+		std::string getpath() { return mFilePath; };
+		void Setpath(std::string path) { mFilePath = path; };
 	private:
 		void Init();
 
 		Texture* mTexture = nullptr;
 		Renderer2D* mRenderer = nullptr;
+		std::string mFilePath;
+
+
 	};
 }

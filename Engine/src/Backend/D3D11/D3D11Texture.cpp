@@ -3,6 +3,7 @@
 #include <assert.h>
 #include <iostream>
 #include <Utils/StringHelper.h>
+#include <Utils/Logger.h>
 
 #include <stb/stb_image.h>
 
@@ -12,16 +13,19 @@ namespace Engine
 {
 	D3D11Texture::D3D11Texture(D3D11Device* device, const std::string& name, const std::string& path)
 	{
-		mName = std::string(name);
-		mPath = std::string(path);
+		mName = name;
+		mPath = path;
 		mDeviceContext = device->GetDeviceContext();
 
 		auto hr = S_OK;
 
-		mWidth = 32;
-		mHeight = 32;
+		//mWidth = 10;
+		mHeight = 64;
 
 		hr = CreateTextureFromFile(device);
+
+		if (hr != S_OK)
+			Logger::LogError("Could not load texture");
 	}
 
 	D3D11Texture::~D3D11Texture()
@@ -36,16 +40,16 @@ namespace Engine
 		
 	}
 
-	void D3D11Texture::Load(int pos = 1) const
+	void D3D11Texture::Load(int pos = 0) const
 	{
-		mDeviceContext->VSSetShaderResources(0, pos, &mTextureView);
-		mDeviceContext->PSSetShaderResources(0, pos, &mTextureView);
+		mDeviceContext->VSSetShaderResources(pos, 1, &mTextureView);
+		mDeviceContext->PSSetShaderResources(pos, 1, &mTextureView);
 	}
 
-	void D3D11Texture::Unload(int pos = 1) const
+	void D3D11Texture::Unload(int pos = 0) const
 	{
-		mDeviceContext->VSSetShaderResources(0, pos, NULL);
-		mDeviceContext->PSSetShaderResources(0, pos, NULL);
+		mDeviceContext->VSSetShaderResources(pos, 1, NULL);
+		mDeviceContext->PSSetShaderResources(pos, 1, NULL);
 	}
 
 	HRESULT D3D11Texture::CreateTextureFromFile(D3D11Device* dev)

@@ -1,68 +1,90 @@
 #include "GameObject.h"
 
-Engine::GameObject::GameObject()
+namespace Engine
 {
-	InitTransformComponent();
-}
-
-Engine::GameObject::GameObject(GameObject* parent)
-{
-	mParent = parent; parent->AttachToParent(this);
-	InitTransformComponent();
-}
-
-Engine::GameObject::~GameObject()
-{
-	for (Component* c : mComponents)
+	GameObject::GameObject()
 	{
-		delete c;
-		c = nullptr;
-	}
-	mComponents.shrink_to_fit();
+		InitTransformComponent();
 
-	//TODO Add children back to the scene hierachy 
-	for (GameObject* child : mChildren)
+	}
+
+	GameObject::~GameObject()
 	{
-		child->SetParent(nullptr);
-		child = nullptr;
+		for (Component* c : mComponents)
+		{
+			delete c;
+			c = nullptr;
+		}
+		
+		mComponents.clear();
+		mComponents.shrink_to_fit();
 	}
-}
 
-void Engine::GameObject::Start()
-{
-}
+	void GameObject::Start()
+	{
+		for (Component* c : mComponents)
+			c->Start();
+	}
 
-void Engine::GameObject::Update()
-{
-	if (!mStatus)
-		return;
+	void GameObject::Update()
+	{
+		if (!mStatus)
+			return;
 
-	for (Component* c : mComponents)
-		c->Update();
-}
+		for (Component* c : mComponents)
+			c->Update();
+	}
 
-void Engine::GameObject::FixedUpdate()
-{
-}
+	void GameObject::Render()
+	{
+		if (!mStatus)
+			return;
 
-void Engine::GameObject::Render()
-{
-	if (!mStatus)
-		return;
+		for (Component* c : mComponents)
+			c->Render();
+	}
 
-	for (Component* c : mComponents)
-		c->Render();
-}
+	void GameObject::InternalUpdate()
+	{
+		for (Component* c : mComponents)
+			c->InternalUpdate();
+	}
 
-void Engine::GameObject::OnEnable()
-{
-}
+	void GameObject::InternalRender()
+	{
+		for (Component* c : mComponents)
+			c->InternalRender();
+	}
 
-void Engine::GameObject::OnDisable()
-{
-}
+	void GameObject::Attach(GameObject* parent)
+	{
+		mParent = parent;
+		mParent->AddChild(this);
+	}
 
-void Engine::GameObject::InitTransformComponent()
-{
-	AddComponent<TransformComp>(new TransformComp);
+	void GameObject::RemoveParent()
+	{
+		mParent->GetChildren();
+		mParent = nullptr;
+	}
+
+	void GameObject::RemoveChild(GameObject* go)
+	{
+		if (mChildren.empty())
+			return;
+
+		auto index = std::find_if(mChildren.begin(), mChildren.end(),
+			[&](const GameObject* object) {return go == object; });
+
+		if (index != mChildren.end())
+		{
+			GameObject* objectToDelete = mChildren.at(std::distance(mChildren.begin(), index));
+			mChildren.erase(index);
+		}
+	}
+
+	void GameObject::InitTransformComponent()
+	{
+		AddComponent<TransformComp>(new TransformComp);
+	}
 }

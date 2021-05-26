@@ -38,12 +38,15 @@ namespace Engine
 
 	void D3D11Renderer2D::Draw(vec2f& position, vec2f& rotation, vec2f& scale, Texture* textureToRender)
 	{
-		Camera* camera = CameraManager::Get()->GetPrimaryCamera();
+		if (textureToRender == nullptr)
+			return;
+		
+		auto camera = CameraManager::Get()->GetPrimaryCamera();
 
 		XMMATRIX mScale = XMMatrixScaling(scale.x * 1.0f, scale.y * 1.0f, 1.0f);
-		XMMATRIX mRotate = XMMatrixRotationX(rotation.x) * XMMatrixRotationY(rotation.y) * XMMatrixRotationZ(0.0f);
+		XMMATRIX mRotate =	XMMatrixRotationZ(rotation.x);
 		XMMATRIX mTranslate = XMMatrixTranslation(position.x, -position.y, 0.0f);
-		XMMATRIX world = mScale * mRotate * mTranslate;
+		XMMATRIX world = mTranslate* mRotate * mScale;
 
 		ConstantBuffer cb;
 		cb.mProjection = XMMatrixTranspose(camera->GetProjectionMatrix());
@@ -126,12 +129,11 @@ namespace Engine
 		D3D11_SUBRESOURCE_DATA InitData = {};
 		InitData.pSysMem = vertices;
 		hr = dev->CreateBuffer(&bd, &InitData, &mVertexBuffer);
-		ASSERT(!FAILED(hr), "Error creating vertex buffer");
 
 		// I dont think these are working corretly
 		WORD indices[] = {
-			2, 1, 0,
-			5, 4, 3,
+			0, 1, 2,
+			3, 4, 5,
 		};
 
 		bd.Usage = D3D11_USAGE_DEFAULT;
@@ -140,7 +142,6 @@ namespace Engine
 		bd.CPUAccessFlags = 0;
 		InitData.pSysMem = indices;
 		hr = dev->CreateBuffer(&bd, &InitData, &mIndexBuffer);
-		ASSERT(!FAILED(hr), "Error creating Index buffer");
 
 		bd.Usage = D3D11_USAGE_DEFAULT;
 		bd.ByteWidth = sizeof(ConstantBuffer);
@@ -148,7 +149,6 @@ namespace Engine
 		bd.CPUAccessFlags = 0;
 
 		hr = dev->CreateBuffer(&bd, nullptr, &mConstantBuffer);
-		ASSERT(!FAILED(hr), "Error creating Constant buffer");
 
 		bd.Usage = D3D11_USAGE_DEFAULT;
 		bd.ByteWidth = sizeof(ColourBuffer);
@@ -156,6 +156,6 @@ namespace Engine
 		bd.CPUAccessFlags = 0;
 
 		hr = dev->CreateBuffer(&bd, nullptr, &mColourBuffer);
-		ASSERT(!FAILED(hr), "Error creating Constant buffer");
+
 	}
 }

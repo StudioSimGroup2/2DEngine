@@ -34,9 +34,10 @@ project "Engine"
 	
 	links
 	{
-		--"OpenAL32.lib",
+		"OpenAL32.lib",
 		"ImGui",
-		"TinyXML"
+		"TinyXML",
+		"Lua"
 	}
 
     includedirs
@@ -45,18 +46,20 @@ project "Engine"
 		"%{prj.name}/ext",
 		"%{wks.location}/Imgui/src",
 		"%{wks.location}/Imgui/ext",
-		"%{wks.location}/TinyXML/src"
+		"%{wks.location}/TinyXML/src",
+		"%{wks.location}/Lua/src",
+		"%{wks.location}/Sol2/src"
     }
 
     filter "system:windows"
-        cppdialect "C++17"
         staticruntime "On"
         systemversion "latest"
 
         defines
         {
             "WINDOWS_PLATFORM",
-            "ENGINE_BUILD_DLL"
+            "ENGINE_BUILD_DLL",
+			"WIN32"
         }
 
         postbuildcommands
@@ -65,10 +68,14 @@ project "Engine"
         }
 
     filter "configurations:DebugOGL"
-        defines "ENGINE_DEBUG_OGL"
+        defines 
+		{ 
+			"ENGINE_DEBUG_OGL",
+			"DEBUG"
+		}
+
         symbols "On"
 		runtime "Debug"
-		buildoptions "/MTd"
 		excludes
 		{
 			"%{prj.name}/src/Backend/D3D11/**.h",
@@ -81,10 +88,13 @@ project "Engine"
 		}
 
 	filter "configurations:DebugD3D11"
-        defines "ENGINE_DEBUG_D3D11"
+	    defines 
+		{ 
+			"ENGINE_DEBUG_D3D11",
+			"DEBUG"
+		}
         symbols "On"
 		runtime "Debug"
-		buildoptions "/MTd"
 		excludes
 		{
 			"%{prj.name}/src/Backend/OGL/**.h",
@@ -97,7 +107,11 @@ project "Engine"
 		}
 
     filter "configurations:ReleaseOGL"
-        defines "ENGINE_RELEASE_OGL"
+		defines 
+		{ 
+			"ENGINE_RELEASE_OGL",
+			"NDEBUG"
+		}
         optimize "On"
 		runtime "Release"
 		excludes
@@ -112,7 +126,11 @@ project "Engine"
 		}
 	
 	filter "configurations:ReleaseD3D11"
-        defines "ENGINE_RELEASE_D3D11"
+        defines 
+		{ 
+			"ENGINE_RELEASE_D3D11",
+			"NDEBUG"
+		}
         optimize "On"
 		runtime "Release"
 		excludes
@@ -150,16 +168,19 @@ project "ImGui"
 	}
 
         filter "system:windows"
-		cppdialect "C++17"
 		staticruntime "On"
 		systemversion "latest"
+		defines
+        {
+            "WINDOWS_PLATFORM",
+			"WIN32"
+        }
 
 
     filter "configurations:DebugOGL"
 	    defines "ENGINE_DEBUG_OGL"
         symbols "On"
 		runtime "Debug"
-		buildoptions "/MTd"
 		excludes
 		{
 			"%{prj.name}/src/D3D11/**.h",
@@ -170,7 +191,6 @@ project "ImGui"
 	    defines "ENGINE_DEBUG_D3D11"
         symbols "On"
 		runtime "Debug"
-		buildoptions "/MTd"
 		excludes
 		{
 			"%{prj.name}/src/OpenGL/**.h",
@@ -196,6 +216,88 @@ project "ImGui"
 			"%{prj.name}/src/OpenGL/**.h",
 			"%{prj.name}/src/OpenGL/**.cpp"
 		}		 
+
+project "Lua"
+    location "Lua"
+    kind "StaticLib"
+    language "C++"
+	
+	files
+    {
+		"%{prj.name}/src/**.h",
+		"%{prj.name}/src/**.c",
+    }
+
+    targetdir ("bin/".. outputdir .. "/%{prj.name}")
+    objdir ("bin-int/".. outputdir .. "/%{prj.name}")
+	
+        filter "system:windows"
+		staticruntime "On"
+		systemversion "latest"  
+		defines {"WIN32"}
+		
+	   filter "configurations:DebugOGL"
+		defines "ENGINE_DEBUG_OGL"
+        symbols "On"
+		runtime "Debug"
+
+	filter "configurations:DebugD3D11"
+	    defines "ENGINE_DEBUG_D3D11"
+        symbols "On"
+		runtime "Debug"
+
+    filter "configurations:ReleaseOGL"
+	    defines "ENGINE_RELEASE_OGL"
+        optimize "On"
+		runtime "Release"
+	
+	filter "configurations:ReleaseD3D11"
+	    defines "ENGINE_RELEASE_D3D11"
+        optimize "On"
+		runtime "Release"
+		
+project "Sol2"
+    location "Sol2"
+    kind "StaticLib"
+    language "C++"
+	
+	files
+    {
+		"%{prj.name}/src/**.hpp"
+    }
+
+	links
+	{
+		"Lua"
+	}
+
+    targetdir ("bin/".. outputdir .. "/%{prj.name}")
+    objdir ("bin-int/".. outputdir .. "/%{prj.name}")
+	
+        filter "system:windows"
+		staticruntime "On"
+		systemversion "latest"  
+		defines {"WIN32"}
+		
+	   filter "configurations:DebugOGL"
+		defines "ENGINE_DEBUG_OGL"
+        symbols "On"
+		runtime "Debug"
+
+	filter "configurations:DebugD3D11"
+	    defines "ENGINE_DEBUG_D3D11"
+        symbols "On"
+		runtime "Debug"
+
+    filter "configurations:ReleaseOGL"
+	    defines "ENGINE_RELEASE_OGL"
+        optimize "On"
+		runtime "Release"
+	
+	filter "configurations:ReleaseD3D11"
+	    defines "ENGINE_RELEASE_D3D11"
+        optimize "On"
+		runtime "Release"
 
 project "TinyXML"
     location "TinyXML"
@@ -226,14 +328,12 @@ project "TinyXML"
 	    defines "ENGINE_DEBUG_OGL"
         symbols "On"
 		runtime "Debug"
-		buildoptions "/MTd"
 
 	filter "configurations:DebugD3D11"
 	    defines "ENGINE_DEBUG_D3D11"
         symbols "On"
 		runtime "Debug"
-		buildoptions "/MTd"
-
+		
     filter "configurations:ReleaseOGL"
 	    defines "ENGINE_RELEASE_OGL"
         optimize "On"
@@ -243,6 +343,7 @@ project "TinyXML"
 	    defines "ENGINE_RELEASE_D3D11"
         optimize "On"
 		runtime "Release"
+
 
 project "Game"
         location "Game"
@@ -261,7 +362,9 @@ project "Game"
         includedirs
         {
             "Engine/src",
-			"Engine/ext"
+			"Engine/ext",
+			"%{wks.location}/Lua/src",
+			"%{wks.location}/Sol2/src"
 		}
 
         links
@@ -270,7 +373,6 @@ project "Game"
         }
 
         filter "system:windows"
-		cppdialect "C++17"
 		staticruntime "On"
 		systemversion "latest"
 
@@ -283,20 +385,38 @@ project "Game"
 		defines "ENGINE_DEBUG_OGL"
 		runtime "Debug"
 		symbols "On"
-		buildoptions "/MTd"
+		
+		prebuildcommands
+        {
+            ("{COPY} %{wks.location}Engine/lib/OpenAL/DBG/OpenAL32.dll ../bin/" .. outputdir .. "/Game")
+        }
 
 	filter "configurations:DebugD3D11"
 		defines "ENGINE_DEBUG_D3D11"
 		runtime "Debug"
 		symbols "On"
-		buildoptions "/MTd"
+		
+		prebuildcommands
+        {
+            ("{COPY} %{wks.location}Engine/lib/OpenAL/DBG/OpenAL32.dll ../bin/" .. outputdir .. "/Game")
+        }
 
 	filter "configurations:ReleaseOGL"
 		defines "ENGINE_RELEASE_OGL"
 		runtime "Release"
 		optimize "On"
 		
+		prebuildcommands
+        {
+            ("{COPY} %{wks.location}Engine/lib/OpenAL/RLS/OpenAL32.dll ../bin/" .. outputdir .. "/Game")
+        }
+		
 	filter "configurations:ReleaseD3D11"
 		defines "ENGINE_RELEASE_D3D11"
 		runtime "Release"
 		optimize "On"
+		
+		prebuildcommands
+        {
+            ("{COPY} %{wks.location}Engine/lib/OpenAL/RLS/OpenAL32.dll ../bin/" .. outputdir .. "/Game")
+        }

@@ -1,6 +1,6 @@
 #pragma once
 
-#pragma comment(lib, "OpenGL32.lib") // Assuming the user has microsoft SDK. F for linux users
+#pragma comment(lib, "OpenGL32.lib") 
 #include <Windows.h>
 #include <Glad/glad.h>
 

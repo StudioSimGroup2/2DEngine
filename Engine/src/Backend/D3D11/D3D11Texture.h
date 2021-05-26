@@ -24,11 +24,12 @@ namespace Engine
 
 		void* GetTexID() override { return (void*)(size_t)mTextureView; }
 
-	private:
 		HRESULT CreateTextureFromFile(D3D11Device* dev);
+
+	private:
 
 		ID3D11ShaderResourceView* mTextureView = nullptr;
 
-		ID3D11DeviceContext* mDeviceContext;
+		ID3D11DeviceContext* mDeviceContext; // is this being used? - yes it is i'm blind
 	};
 }

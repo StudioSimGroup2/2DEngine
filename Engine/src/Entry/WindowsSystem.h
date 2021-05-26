@@ -39,7 +39,7 @@ namespace Engine
 
 		Context* mRenderer;
 
-		LPCWSTR mClassName = L"EngineWindowClass";
+		LPCWSTR mClassName = L"abc";
 		HINSTANCE mHInstance{};
 
 		// DeltaTime calculations

@@ -1,6 +1,8 @@
 #include "AssetManager.h"
 
 #include "StringHelper.h"
+#include "Utils\Logger.h"
+#include <sstream>
 
 #include <iostream>
 
@@ -17,6 +19,33 @@ namespace Engine
 #endif
 	}
 
+//	void AssetManager::ChangeTexture(Texture* tex, const std::string& path)
+//	{
+//		bool err = true;
+//		for (auto& mSupportedTexExtension : mInstance->mSupportedTexExtensions)
+//		{
+//			if (StringHelper::GetFileExtension(path) == mSupportedTexExtension)
+//			{
+//				err = false;
+//			}
+//		}
+//
+//		if (err)
+//		{
+//			std::ostringstream output;
+//			output << "The File extension : " << StringHelper::GetFileExtension(path) << " is not supported!\n";
+//
+//			Logger::LogError(output.str().c_str());
+//		}
+//
+//#if GRAPHICS_LIBRARY == 0
+//		tex->SetPath(path);
+//		dynamic_cast<D3D11Texture*>(tex)->CreateTextureFromFile(D3D11Device::GetInstance());
+//#elif GRAPHICS_LIBRARY == 1
+//		tex->SetPath(path);
+//#endif
+//	}
+
 	Texture* AssetManager::LoadTexture(const std::string& name, const std::string& path)
 	{
 		bool err = true;
@@ -30,9 +59,20 @@ namespace Engine
 
 		if (err)
 		{
-			std::cout << "The File extension : " << StringHelper::GetFileExtension(path) << " is not supported!" << std::endl;
-			
+			std::ostringstream output;
+			output << "The File extension : " << StringHelper::GetFileExtension(path) << " is not supported!\n";
+
+			Logger::LogError(output.str().c_str());
 			return nullptr;
+		}
+
+		//Make sure we're not loading the same texture multiple times
+		for (Texture* TestTexture : mTextures)
+		{
+			if (path == TestTexture->GetPath())
+			{
+				return TestTexture;
+			}
 		}
 
 #if GRAPHICS_LIBRARY == 0
@@ -67,12 +107,12 @@ namespace Engine
 		return mInstance->mTextures.at(std::distance(mInstance->mTextures.begin(), index));
 	}
 
-	// Sound* AssetManager::GetSoundByName(const std::string& name)
-	// {
-		// /*auto match = std::find_if(mInstance->mShaders.begin(), mInstance->mShaders.begin(), [](const Sound* s) { return s->GetNa(); });
-		// return mInstance->mShaders.at(std::distance(mInstance->mShaders.begin(), match));*/
-		// return nullptr;
-	// }
+	//Sound* AssetManager::GetSoundByName(const std::string& name)
+	//{
+	//	/*auto match = std::find_if(mInstance->mShaders.begin(), mInstance->mShaders.begin(), [](const Sound* s) { return s->GetNa(); });
+	//	return mInstance->mShaders.at(std::distance(mInstance->mShaders.begin(), match));*/
+	//	return nullptr;
+	//}
 
 	void AssetManager::RemoveShader(const std::string& name)
 	{

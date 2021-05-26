@@ -38,9 +38,15 @@ namespace Engine
 		void SetDevice(ID3D11Device* dev) { mDevice = dev; }
 		void SetDeviceContext(ID3D11DeviceContext* devCon) { mDeviceContext = devCon; }
 		void SetDeviceData(const DeviceData& devData) { mDeviceData = devData; }
+		void SetDepthStencilView(ID3D11DepthStencilView* dSV) { mDepthStencilView = dSV; };
+		void SetRenderTargetView(ID3D11RenderTargetView* rTV) { mRenderTargetView = rTV; }
 
 		ID3D11Device* GetDevice() { return mDevice; }
 		ID3D11DeviceContext* GetDeviceContext() { return mDeviceContext; }
+		ID3D11DepthStencilView* GetDepthStencilView() { return mDepthStencilView; }
+		ID3D11RenderTargetView* GetRenderTargetView() { return mRenderTargetView; }
+
+		void ClearAndSetRenderTarget();
 
 		DeviceData GetDeviceData() { return mDeviceData; }
 
@@ -57,5 +63,8 @@ namespace Engine
 		ID3D11DeviceContext* mDeviceContext = nullptr;
 
 		DeviceData mDeviceData;
+
+		ID3D11DepthStencilView* mDepthStencilView = nullptr;
+		ID3D11RenderTargetView* mRenderTargetView = nullptr;
 	};
 }

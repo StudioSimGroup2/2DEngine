@@ -16,8 +16,8 @@ namespace Engine
 		Scene();
 		~Scene();
 
-		void Init(); // When object is added to scene in editor mode
-		void Start(); // When the scene starts
+		void Init(); 
+		void Start(); 
 		void Update();
 		void FixedUpdate();
 		void LateUpdate();
