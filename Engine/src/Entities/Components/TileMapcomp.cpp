@@ -11,8 +11,9 @@ namespace Engine
 		Init();
 	}
 
-	TileMapComp::TileMapComp(GameObject* parent)
+	TileMapComp::TileMapComp(GameObject* parent) : Component(parent)
 	{
+		Init();
 	}
 
 	TileMapComp::~TileMapComp()
