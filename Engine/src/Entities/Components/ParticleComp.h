@@ -32,7 +32,8 @@ namespace Engine
 
 		void SetRate(float rate) { mParticleSystem->SetRate(rate); }
 		void SetGravity(float ammount) { mParticleSystem->SetGravity(ammount); }
-
+		void SetLifetime(float lifetime) { mParticleSystem->SetLifetime(lifetime); }
+		void SetVelocity(vec2f velocity) { mParticleSystem->SetVelocity(velocity); }
 
 		//void ShowEmmiterIcon(bool flag) { mShowEmmiterIcon = flag; }
 

@@ -26,16 +26,16 @@ namespace Engine {
 		vec2f emmitterPos = mParent->GetComponent<TransformComp>()->GetPosition();
 		vec2f particleScale = mParent->GetComponent<TransformComp>()->GetScale();
 
-		//ParticleSystem(const vec2f & emmitterPos, const Particle & particle, size_t count, const Emmitter & emmiter = Emmitter::Square);
 		Particle layout;
-		layout.Lifetime = 3; // 3 seconds
-		layout.Alive = false; // 3 seconds
+		layout.Lifetime = 30; 
+		layout.Alive = false;
 		layout.Velocity = vec2f(10, 10);
 		layout.Style = ParticleTexture::Custom;
 		layout.Scale = particleScale;
 
 		mParticleSystem = new ParticleSystem(emmitterPos, layout, 150);
-		mParticleSystem->SetRate(10);
+		mParticleSystem->SetRate(3);
+		mParticleSystem->SetGravity(0.4f);
 	}
 
 	void ParticleComp::Start()

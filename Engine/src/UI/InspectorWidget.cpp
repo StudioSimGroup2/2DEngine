@@ -512,6 +512,8 @@ namespace Engine
 
 		c->SetRate(rate);
 		c->SetGravity(gravity);
+		c->SetLifetime(lifetime);
+		c->SetVelocity(velocity);
 	}
 
 	InspectorWidget::InspectorWidget()

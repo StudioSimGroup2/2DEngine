@@ -63,7 +63,8 @@ namespace Engine
 		void SetGravity(float gravity) { mGravity = gravity; }
 		void SetRate(float rate) { mRate = rate; }
 		void SetSize(const vec2f& size) { mSize = size; }
-		void SetLifetime(const float lifetime) { mParticleProperties.Lifetime = lifetime; }
+		void SetLifetime(float lifetime) { mParticleProperties.Lifetime = lifetime; }
+		void SetVelocity(vec2f velocity) { mParticleProperties.Velocity = velocity; }
 
 		float GetParticleCount() { return mParticleCount; }
 		vec2f& GetPosition() { return mPosition; }

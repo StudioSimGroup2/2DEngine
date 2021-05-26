@@ -59,13 +59,12 @@ namespace Engine
 	void ParticleSystem::Init()
 	{
 		mRenderer = Device::CreateRenderer(AssetManager::GetInstance()->GetShaderByName("Default"));
-		//mType = "Sprite";
 	}
 
 	void ParticleSystem::Update()
 	{
-		//mCurrentRate += dt;
-		mCurrentRate += 0.16f; // TODO: Requires DT
+#define DT 0.016f
+		mCurrentRate += DT; // TODO: Requires DT
 
 		// Update the emmiter icons location
 		//switch (mEmmiter)
@@ -86,7 +85,7 @@ namespace Engine
 			}
 
 			//p->Lifetime -= dt;
-			p->Lifetime -= 0.16f;
+			p->Lifetime -= DT;
 
 			// If a partical is "dead"
 			if (p->Lifetime <= 0.0f) {
@@ -109,12 +108,8 @@ namespace Engine
 				}
 			}
 
-			//p->Velocity.y += mGravity * dt;
-			//p->Position += p->Velocity * dt;
-
-			// TODO: Requires DT
-			p->Velocity.y += mGravity * 0.16f;
-			p->Position += p->Velocity * 0.16f;
+			p->Velocity.y += mGravity * DT;
+			p->Position += p->Velocity * DT;
 			
 		}
 
@@ -124,12 +119,11 @@ namespace Engine
 	{
 		for (Particle* p : mParticles) {
 			if (p->Alive) {
-				//p->Texture->Draw();
 				if (!mRenderer)
 					return;
 
 #if GRAPHICS_LIBRARY == 0
-				dynamic_cast<D3D11Renderer2D*>(mRenderer)->Draw(p->Position, vec2f(0,0), vec2f(p->Scale.x, p->Scale.y), p->Texture);
+				dynamic_cast<D3D11Renderer2D*>(mRenderer)->Draw(p->Position, vec2f(0,0), p->Scale, p->Texture);
 #elif GRAPHICS_LIBRARY == 1
 				dynamic_cast<OGLRenderer2D*>(mRenderer)->Draw(mParent->GetComponent<TransformComp>()->GetPosition(),
 					mParent->GetComponent<TransformComp>()->GetRotation(),
