@@ -11,11 +11,10 @@ namespace Engine
 	{
 	public:
 		TilemapCollisionComp();
-		TilemapCollisionComp(GameObject* parent);
 		~TilemapCollisionComp();
 
 		void CreateColBoxes();
-		void Init();
+		virtual void Init() override;
 
 		std::vector<Box2D> GetColBoxes() { return collisionBoxes; }
 

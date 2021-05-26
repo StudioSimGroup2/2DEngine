@@ -31,8 +31,6 @@ namespace Engine
 		void DisableEditorMode() { mEditorMode = false; }
 
 		GameObject* CreateObject();
-		GameObject* CreateObject(GameObject*);
-		//void CreateObject(GameObject* parent);
 
 		void DestroyObject(GameObject* go);
 

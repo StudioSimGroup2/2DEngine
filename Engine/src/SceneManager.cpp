@@ -104,8 +104,7 @@ namespace Engine
 		GameObject* NewObject = CreateObject();
 		if (ParentObj != nullptr)
 		{
-			NewObject->SetParent(ParentObj);
-			ParentObj->AddChild(NewObject);
+			NewObject->Attach(ParentObj);
 		}
 
 		NewObject->SetName(CurrentObject->Attribute("name"));
@@ -133,7 +132,7 @@ namespace Engine
 			else if (CompType == "sprite")
 			{
 				//Texture / colour / flip X / flip Y
-				SpriteComp* NewSprite = new SpriteComp();
+				SpriteComp* NewSprite = NewObject->AddComponent<SpriteComp>(new SpriteComp);
 				//Texture
 				std::string path = CurrentComp->Attribute("path");
 				if (path != "")
@@ -155,33 +154,27 @@ namespace Engine
 				{
 					NewSprite->ToggleFlipY(true);
 				}
-
-				NewObject->AddComponent<SpriteComp>(NewSprite);
 			}
 			else if (CompType == "physics")
 			{
 				//mass / gravity / friction
-				PhysicsComp* NewPhysics = new PhysicsComp;
-				NewObject->AddComponent<PhysicsComp>(NewPhysics);
+				PhysicsComp* NewPhysics = NewObject->AddComponent<PhysicsComp>(new PhysicsComp);
 			}
 			else if (CompType == "script")
 			{
 				//Path
-				ScriptComp* NewScript = new ScriptComp;
-				NewObject->AddComponent<ScriptComp>(NewScript);
+				ScriptComp* NewScript = NewObject->AddComponent<ScriptComp>(new ScriptComp);
 				std::string path = CurrentComp->Attribute("path");
 				if (path != "")
 				{
 					NewScript->AddScript(path);
 					NewScript->Setpath(path);
-
 				}
 			}
 			else if (CompType == "tilemap")
 			{
 				//path
-				TileMapComp* NewtileMap = new TileMapComp;
-				NewObject->AddComponent<TileMapComp>(NewtileMap);
+				TileMapComp* NewtileMap = NewObject->AddComponent<TileMapComp>(new TileMapComp);
 				std::string path = CurrentComp->Attribute("path");
 				if (path != "")
 				{
@@ -192,8 +185,7 @@ namespace Engine
 			else if (CompType == "camera")
 			{
 				int i = 0;
-				CameraComp* NewCamera = new CameraComp(NewObject);
-				NewObject->AddComponent<CameraComp>(NewCamera);
+				CameraComp* NewCamera = NewObject->AddComponent<CameraComp>(new CameraComp);
 				NewCamera->SetFOV(atof(CurrentComp->Attribute("FOV")));
 				NewCamera->SetNear(atof(CurrentComp->Attribute("Near")));
 				NewCamera->SetFar(atof(CurrentComp->Attribute("Far")));
@@ -351,7 +343,8 @@ namespace Engine
 	{
 		GameObject* go = new GameObject();
 		mSceneObjects.push_back(go);
-		go->SetName("Unnamed Object " + std::to_string(mSceneObjects.size()));
+		mCounter++;
+		go->SetName("Unnamed Object " + std::to_string(mCounter));
 
 		return go;
 	}

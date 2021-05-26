@@ -8,11 +8,6 @@ namespace Engine
 {
 	TileMapComp::TileMapComp()
 	{
-		Init();
-	}
-
-	TileMapComp::TileMapComp(GameObject* parent)
-	{
 	}
 
 	TileMapComp::~TileMapComp()

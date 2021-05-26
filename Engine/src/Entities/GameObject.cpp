@@ -2,10 +2,11 @@
 
 namespace Engine
 {
+	int GameObject::mComponentID = 0;
+	
 	GameObject::GameObject()
 	{
 		InitTransformComponent();
-
 	}
 
 	GameObject::~GameObject()

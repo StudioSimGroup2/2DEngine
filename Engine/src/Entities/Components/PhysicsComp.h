@@ -11,7 +11,9 @@ namespace Engine
 	public:
 		PhysicsComp();
 		~PhysicsComp();
-		void Init();
+
+		virtual void Init() override;
+
 		void Update(float dT);
 
 		void ResetForces();

@@ -1,14 +1,8 @@
 #include "TilemapCollisionComp.h"
 #include "Entities/GameObject.h"
 
-Engine::TilemapCollisionComp::TilemapCollisionComp() : Component()
+Engine::TilemapCollisionComp::TilemapCollisionComp()
 {
-	Init();
-}
-
-Engine::TilemapCollisionComp::TilemapCollisionComp(GameObject* parent) : Component(parent)
-{
-	Init();
 }
 
 Engine::TilemapCollisionComp::~TilemapCollisionComp()

@@ -9,10 +9,10 @@ namespace Engine
 	{
 	public:
 		LineCollisionComp();
-		LineCollisionComp(GameObject* parent);
 		~LineCollisionComp();
 
-		void Init();
+		virtual void Init() override;
+
 		float GetLength();
 
 		vec2f GetPoint1() { return point1; }

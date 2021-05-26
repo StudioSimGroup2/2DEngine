@@ -121,7 +121,7 @@ namespace Engine
 				{
 					if (SceneHierarchyWidget::GetNode() != nullptr)
 					{
-						SceneHierarchyWidget::GetNode()->AddComponent<SpriteComp>(new SpriteComp(SceneHierarchyWidget::GetNode()));
+						SceneHierarchyWidget::GetNode()->AddComponent<SpriteComp>(new SpriteComp);
 					}
 				}
 
@@ -129,7 +129,7 @@ namespace Engine
 				{
 					if (SceneHierarchyWidget::GetNode() != nullptr)
 					{
-						SceneHierarchyWidget::GetNode()->AddComponent<TileMapComp>(new TileMapComp(SceneHierarchyWidget::GetNode()));
+						SceneHierarchyWidget::GetNode()->AddComponent<TileMapComp>(new TileMapComp);
 					}
 				}
 
@@ -137,7 +137,7 @@ namespace Engine
 				{
 					if (SceneHierarchyWidget::GetNode() != nullptr)
 					{
-						SceneHierarchyWidget::GetNode()->AddComponent<CameraComp>(new CameraComp(SceneHierarchyWidget::GetNode()));
+						SceneHierarchyWidget::GetNode()->AddComponent<CameraComp>(new CameraComp);
 					}
 				}
 

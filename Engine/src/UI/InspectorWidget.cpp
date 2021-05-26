@@ -31,9 +31,13 @@ namespace Engine
 				ImGui::End();
 				return;
 			}
-				
+
 			for (Component* c : go->GetComponents())
 			{
+				bool close = true;
+				
+				ImGui::PushID(c->GetID());
+
 				switch (c->GetType())
 				{
 				case COMPONENT_TRANSFORM:
@@ -44,78 +48,56 @@ namespace Engine
 					break;
 
 				case COMPONENT_SPRITE:
-					if (ImGui::CollapsingHeader("Sprite"))
+					if (ImGui::CollapsingHeader("Sprite", &close))
 					{
 						RenderSpriteComponent(dynamic_cast<SpriteComp*>(c));
-						//Delete Comp
-						if (ImGui::Button("X"))
-						{
-							c->GetGameObject()->RemoveComponent(c);
-						}
 					}
 					break;
 
 				case COMPONENT_PHYSICS:
-					if (ImGui::CollapsingHeader("Physics"))
+					if (ImGui::CollapsingHeader("Physics", &close))
 					{
 						RenderPhysicsComponent(dynamic_cast<PhysicsComp*>(c));
-						//Delete Comp
-						if (ImGui::Button("X"))
-						{
-							c->GetGameObject()->RemoveComponent(c);
-						}
 					}
 					break;
 
 				case COMPONENT_SCRIPT:
-					if (ImGui::CollapsingHeader("Script"))
+					if (ImGui::CollapsingHeader("Script", &close))
 					{
 						RenderScriptComponent(dynamic_cast<ScriptComp*>(c));
-						//Delete Comp
-						if (ImGui::Button("X"))
-						{
-							c->GetGameObject()->RemoveComponent(c);
-						}
 					}
 					break;
 
 				case COMPONENT_AUDIO:
-					if (ImGui::CollapsingHeader("Audio"))
+					if (ImGui::CollapsingHeader("Audio", &close))
 					{
-						//Delete Comp
-						if (ImGui::Button("X"))
-						{
-							c->GetGameObject()->RemoveComponent(c);
-						}
 					}
 					break;
 
 				case COMPONENT_CAMERA:
-					if (ImGui::CollapsingHeader("Camera"))
+					if (ImGui::CollapsingHeader("Camera", &close))
 					{
 						RenderCameraComponent(dynamic_cast<CameraComp*>(c));
-						//Delete Comp
-						if (ImGui::Button("X"))
-						{
-							c->GetGameObject()->RemoveComponent(c);
-						}
 					}
 					break;
 
 				case COMPONENT_TILEMAP:
-					if (ImGui::CollapsingHeader("TileMap"))
+					if (ImGui::CollapsingHeader("TileMap", &close))
 					{
 						TileMapComponent(dynamic_cast<TileMapComp*>(c));
-						//Delete Comp
-						if (ImGui::Button("X"))
-						{
-							c->GetGameObject()->RemoveComponent(c);
-						}
 					}
 					break;
 				default:
 					break;
 				}
+
+				if (!close)
+				{
+					c->GetGameObject()->RemoveComponent(c);
+					close = true;
+				}
+
+				ImGui::PopID();
 			}
 
 			ImGui::Separator();
@@ -135,7 +117,7 @@ namespace Engine
 				for (int i = 0; i < IM_ARRAYSIZE(comps); i++)
 					if (ImGui::Selectable(comps[i]))
 					{
-
+						std::cout << std::endl;
 					}
 				ImGui::EndPopup();
 			}
@@ -465,9 +447,14 @@ namespace Engine
 
 		ImGui::PopID();
 
-		c->SetFar(cFar);
+		if (cFar > cNear)
+			c->SetFar(cFar);
+
 		c->SetFOV(fov);
-		c->SetNear(cNear);
+
+		if (cNear > 0.1f && cFar > cNear)
+			c->SetNear(cNear);
+
 		c->SetDepth(depth);
 	}
 

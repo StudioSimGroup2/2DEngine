@@ -12,8 +12,9 @@ namespace Engine
 	{
 	public:
 		TileMapComp();
-		TileMapComp(GameObject* parent);
 		~TileMapComp() override;
+
+		virtual void Init() override;
 
 		void SetTileMap(TileMap InMap) { mTileMap = InMap; };
 		void LoadTileMap(const std::string& FilePath) { mTileMap = LevelMap::LoadLevelMap(FilePath); };
@@ -30,7 +31,6 @@ namespace Engine
 		std::string getpath() { return mFilePath; };
 		void Setpath(std::string path) { mFilePath = path; };
 	private:
-		void Init();
 		TileMap mTileMap;
 
 		Texture* mTexture = nullptr;

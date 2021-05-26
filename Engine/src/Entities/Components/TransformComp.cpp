@@ -1,13 +1,7 @@
 #include "TransformComp.h"
 
-Engine::TransformComp::TransformComp() : Component()
+Engine::TransformComp::TransformComp()
 {
-	Init();
-}
-
-Engine::TransformComp::TransformComp(GameObject* parent) : Component(parent)
-{
-	Init();
 }
 
 Engine::TransformComp::~TransformComp()

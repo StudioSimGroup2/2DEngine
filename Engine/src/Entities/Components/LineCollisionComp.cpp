@@ -2,12 +2,6 @@
 
 Engine::LineCollisionComp::LineCollisionComp()
 {
-	Init();
-}
-
-Engine::LineCollisionComp::LineCollisionComp(GameObject* parent) : Component(parent)
-{
-	Init();
 }
 
 Engine::LineCollisionComp::~LineCollisionComp()

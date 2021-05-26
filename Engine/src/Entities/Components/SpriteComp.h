@@ -10,8 +10,9 @@ namespace Engine
 	{
 	public:
 		SpriteComp();
-		SpriteComp(GameObject* parent);
 		~SpriteComp() override;
+
+		virtual void Init() override;
 
 		void Update() override;
 		void Render() override;
@@ -38,7 +39,6 @@ namespace Engine
 		std::string getpath() { return mFilePath; };
 		void Setpath(std::string path) { mFilePath = path; };
 	private:
-		void Init();
 
 		Texture* mTexture = nullptr;
 		Renderer2D* mRenderer = nullptr;

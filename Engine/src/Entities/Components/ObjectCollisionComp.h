@@ -10,10 +10,9 @@ namespace Engine
 	{
 	public:
 		ObjectCollisionComp();
-		ObjectCollisionComp(GameObject* parent);
 		~ObjectCollisionComp();
 
-		void Init();
+		virtual void Init() override;
 
 		Box2D GetColBox() { return colBox; }
 	private:

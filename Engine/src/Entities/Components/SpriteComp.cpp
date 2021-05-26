@@ -6,14 +6,8 @@
 
 namespace Engine
 {
-	SpriteComp::SpriteComp() : Component()
+	SpriteComp::SpriteComp()
 	{
-		Init();
-	}
-
-	SpriteComp::SpriteComp(GameObject* parent) : Component(parent)
-	{
-		Init();
 	}
 
 	SpriteComp::~SpriteComp()

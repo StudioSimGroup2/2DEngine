@@ -3,12 +3,6 @@
 
 Engine::ObjectCollisionComp::ObjectCollisionComp()
 {
-	Init();
-}
-
-Engine::ObjectCollisionComp::ObjectCollisionComp(GameObject* parent) : Component(parent)
-{
-	Init();
 }
 
 Engine::ObjectCollisionComp::~ObjectCollisionComp()

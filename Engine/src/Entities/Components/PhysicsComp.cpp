@@ -1,10 +1,8 @@
 #include "PhysicsComp.h"
 #include "Entities/GameObject.h"
 
-Engine::PhysicsComp::PhysicsComp() : Component()
+Engine::PhysicsComp::PhysicsComp()
 {
-	Init();
-	mGrounded;
 }
 
 Engine::PhysicsComp::~PhysicsComp()
