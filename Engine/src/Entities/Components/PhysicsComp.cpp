@@ -4,7 +4,11 @@
 Engine::PhysicsComp::PhysicsComp() : Component()
 {
 	Init();
-	mGrounded;
+}
+
+Engine::PhysicsComp::PhysicsComp(GameObject* parent) : Component(parent)
+{
+	Init();
 }
 
 Engine::PhysicsComp::~PhysicsComp()
@@ -37,6 +41,9 @@ void Engine::PhysicsComp::UpdateForces(float dT, vec2f accel)
 	{
 		// When grounded, apply frictional force equal to the current velocity
 		// multiplied by a frictional coefficient
+		mNetForce.y = 0;
+		mCurrentVelocity.y = 0;
+		mNetAcceleration.y = 0;
 		mNetForce.x += (mCurrentVelocity.x * -mFriction);
 	}
 	else
@@ -45,6 +52,24 @@ void Engine::PhysicsComp::UpdateForces(float dT, vec2f accel)
 		//the weight of the character multiplied by gravity
 		mNetForce.y += mWeight;
 	}
+
+	//Limit Velocity to 200 units
+	if (mCurrentVelocity.x > mMaxSpeed)
+		mCurrentVelocity.x = mMaxSpeed;
+	if (mCurrentVelocity.y > mMaxSpeed)
+		mCurrentVelocity.y = mMaxSpeed;
+
+	if (mCurrentVelocity.x < -mMaxSpeed)
+		mCurrentVelocity.x = -mMaxSpeed;
+	if (mCurrentVelocity.y < -mMaxSpeed)
+		mCurrentVelocity.y = -mMaxSpeed;
+}
+
+void Engine::PhysicsComp::UpdateAcceleration()
+{
+	// Calculate acceleration
+	mNetAcceleration.x = mNetForce.x / mMass;
+	mNetAcceleration.y = mNetForce.y / mMass;
 }
 
 void Engine::PhysicsComp::Update()
@@ -97,7 +122,7 @@ void Engine::PhysicsComp::Update(float dT)
 	//Calculate new position using formula s = ut + 1/2at^2
 	vec2f position = mParent->GetComponent<TransformComp>()->GetPosition();
 
-	position += (mCurrentVelocity * dT) + (acceleration * 0.5f * (dT * dT));
-	
-	mParent->GetComponent<TransformComp>()->SetPosition(position);
+	position += (mCurrentVelocity * dT) + (mNetAcceleration * 0.5f * (dT * dT));
+
+	mParent->GetComponent<TransformComp>()->SetPosition(position.x, position.y);
 }
