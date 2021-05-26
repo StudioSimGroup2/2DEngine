@@ -149,6 +149,15 @@ namespace Engine
 					}
 				}
 
+
+				if (ImGui::MenuItem("Particle system"))
+				{
+					if (SceneHierarchyWidget::GetNode() != nullptr)
+					{
+						SceneHierarchyWidget::GetNode()->AddComponent<ParticleComp>(new ParticleComp(SceneHierarchyWidget::GetNode()));
+					}
+				}
+
 				ImGui::EndMenu();
 			}
 

@@ -84,6 +84,13 @@ namespace Engine
 					}
 					break;
 
+				case COMPONENT_PARTICLE:
+					if (ImGui::CollapsingHeader("Particle system"))
+					{
+						RenderParticleComponent(dynamic_cast<ParticleComp*>(c));
+					}
+					break;
+
 
 				default:
 					break;
@@ -441,6 +448,70 @@ namespace Engine
 		c->SetFOV(fov);
 		c->SetNear(cNear);
 		c->SetDepth(depth);
+	}
+
+	void InspectorWidget::RenderParticleComponent(ParticleComp* c)
+	{
+		float count = c->GetParticleCount();
+		float rate = c->GetRate();
+		float gravity = c->GetGravity();
+		float lifetime = c->GetLifetime();
+		vec2f velocity = c->GetVelocity();
+
+		ImGui::PushID("count");
+		ImGui::Columns(2);
+		ImGui::Text("Particle count");
+		ImGui::NextColumn();
+		ImGui::DragFloat("##Count", &count, 0.1f);
+		ImGui::Columns(1);
+		ImGui::PopID();
+
+		ImGui::PushID("rate");
+		ImGui::Columns(2);
+		ImGui::Text("Emmission rate");
+		ImGui::NextColumn();
+		ImGui::DragFloat("##Rate", &rate, 0.1f);
+		ImGui::Columns(1);
+		ImGui::PopID();
+
+		ImGui::PushID("gravity");
+		ImGui::Columns(2);
+		ImGui::Text("Gravity");
+		ImGui::NextColumn();
+		ImGui::DragFloat("##Gravity", &gravity, 0.1f);
+		ImGui::Columns(1);
+		ImGui::PopID();
+
+		ImGui::PushID("lifetime");
+		ImGui::Columns(2);
+		ImGui::Text("Lifetime");
+		ImGui::NextColumn();
+		ImGui::DragFloat("##Lifetime", &lifetime, 0.1f);
+		ImGui::Columns(1);
+		ImGui::PopID();
+
+		ImGui::PushID("velocity");
+		ImGui::Columns(2);
+		ImGui::Text("Velocity");
+		ImGui::NextColumn();
+		ImGui::DragFloat2("##Velocity", &velocity.x, 0.1f);
+		ImGui::Columns(1);
+		ImGui::PopID();
+
+
+
+	/*	ImGui::SameLine();
+		if (c->GetTexture()) {
+#if GRAPHICS_LIBRARY == 0
+			D3D11Texture* t = dynamic_cast<D3D11Texture*>(c->GetTexture());
+#elif GRAPHICS_LIBRARY == 1
+			OGLTexture* t = dynamic_cast<OGLTexture*>(c->GetTexture());
+#endif
+			ImGui::Image((void*)(intptr_t)t->GetTexID(), ImVec2(32.0f, 32.0f));
+		}*/
+
+		c->SetRate(rate);
+		c->SetGravity(gravity);
 	}
 
 	InspectorWidget::InspectorWidget()

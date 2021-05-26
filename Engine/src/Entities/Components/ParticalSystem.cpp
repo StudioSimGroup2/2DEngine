@@ -4,57 +4,57 @@
 #if GRAPHICS_LIBRARY == 0 //DX11
 namespace Engine
 {
-	//ParticleSystem::ParticleSystem()
-	//	: mPosition(vec2f(100, 100)), mSize(vec2f(100, 100)), mParticleProperties(), mParticleCount(0), mEmmiter(Emmitter::Square)
-	//{
-	//	srand(time(NULL));
-	//	mGravity = 0.0f;
-	//	mRate = 0.0f;
-	//	mCurrentRate = 0.0f;
-	//}
-	//
-	//ParticleSystem::ParticleSystem(const vec2f& emmitterPos, const ParticleProperties& particle, size_t count, const Emmitter& emmiter)
-	//	: mDevice(device), mPosition(emmitterPos), mParticleProperties(particle), mParticleCount(count), mEmmiter(emmiter)
-	//{
-	//	srand(time(NULL));
-	//	mGravity = 0.0f;
-	//	mRate = 0.0f;
-	//	mCurrentRate = 0.0f;
-	//
-	//	mParticleProperties = particle;
-	//	mParticleProperties.Position = mPosition;
-	//	mParticleProperties.Alive = false;
-	//	mSize = vec2f(100, 100);
-	//
-	//	InitParticles(mParticleCount);
-	//}
-	//
-	//ParticleSystem::ParticleSystem(const vec2f& emmitterPos, const vec2f& emmitterSize, const ParticleProperties& particle, size_t count, const Emmitter& emmiter)
-	//	: mDevice(device), mPosition(emmitterPos), mSize(emmitterSize), mParticleProperties(particle), mParticleCount(count), mEmmiter(emmiter)
-	//{
-	//	srand(time(NULL));
-	//	mGravity = 0.0f;
-	//	mRate = 0.0f;
-	//	mCurrentRate = 0.0f;
-	//
-	//	mParticleProperties = particle;
-	//	mParticleProperties.Position = mPosition;
-	//	mParticleProperties.Alive = false;
-	//
-	//	InitParticles(mParticleCount);
-	//
-	//}
-	//
-	//ParticleSystem::~ParticleSystem()
-	//{
-	//	for (ParticleProperties* p : mParticles) {
-	//		if (p)
-	//			delete p->Texture;
-	//	}
-	//	mParticles.clear();
-	//
-	//	//delete mEmmiterIcon; // Cannot delete atm because its sprite takes a pointer to a position 
-	//}
+	ParticleSystem::ParticleSystem()
+		: mPosition(vec2f(100, 100)), mSize(vec2f(100, 100)), mParticleProperties(), mParticleCount(0), mEmmiter(Emmitter::Square)
+	{
+		srand(time(NULL));
+		mGravity = 0.0f;
+		mRate = 0.0f;
+		mCurrentRate = 0.0f;
+	}
+	
+	ParticleSystem::ParticleSystem(const vec2f& emmitterPos, const Particle& particle, size_t count, const Emmitter& emmiter)
+		:  mPosition(emmitterPos), mParticleProperties(particle), mParticleCount(count), mEmmiter(emmiter)
+	{
+		srand(time(NULL));
+		mGravity = 0.0f;
+		mRate = 0.0f;
+		mCurrentRate = 0.0f;
+	
+		mParticleProperties = particle;
+		mParticleProperties.Position = mPosition;
+		mParticleProperties.Alive = false;
+		mSize = vec2f(100, 100);
+	
+		InitParticles(mParticleCount);
+	}
+	
+	ParticleSystem::ParticleSystem(const vec2f& emmitterPos, const vec2f& emmitterSize, const Particle& particle, size_t count, const Emmitter& emmiter)
+		: mPosition(emmitterPos), mSize(emmitterSize), mParticleProperties(particle), mParticleCount(count), mEmmiter(emmiter)
+	{
+		srand(time(NULL));
+		mGravity = 0.0f;
+		mRate = 0.0f;
+		mCurrentRate = 0.0f;
+	
+		mParticleProperties = particle;
+		mParticleProperties.Position = mPosition;
+		mParticleProperties.Alive = false;
+	
+		InitParticles(mParticleCount);
+	
+	}
+	
+	ParticleSystem::~ParticleSystem()
+	{
+		for (Particle* p : mParticles) {
+			if (p)
+				delete p->Texture;
+		}
+		mParticles.clear();
+	
+		//delete mEmmiterIcon; // Cannot delete atm because its sprite takes a pointer to a position 
+	}
 
 	void ParticleSystem::Init()
 	{
@@ -93,6 +93,7 @@ namespace Engine
 				p->Alive = false;
 				p->Velocity = mParticleProperties.Velocity;
 				p->Lifetime = mParticleProperties.Lifetime;
+				p->Scale = mParticleProperties.Scale;
 
 				switch (mEmmiter) {
 				case Emmitter::Square:
@@ -128,7 +129,7 @@ namespace Engine
 					return;
 
 #if GRAPHICS_LIBRARY == 0
-				dynamic_cast<D3D11Renderer2D*>(mRenderer)->Draw(p->Position, vec2f(0,0), vec2f(1, 1), p->Texture);
+				dynamic_cast<D3D11Renderer2D*>(mRenderer)->Draw(p->Position, vec2f(0,0), vec2f(p->Scale.x, p->Scale.y), p->Texture);
 #elif GRAPHICS_LIBRARY == 1
 				dynamic_cast<OGLRenderer2D*>(mRenderer)->Draw(mParent->GetComponent<TransformComp>()->GetPosition(),
 					mParent->GetComponent<TransformComp>()->GetRotation(),
@@ -151,10 +152,11 @@ namespace Engine
 
 	void ParticleSystem::InitParticles(size_t count)
 	{
+		mRenderer = Device::CreateRenderer(AssetManager::GetInstance()->GetShaderByName("Default"));
+
 		switch (mEmmiter)
 		{
 		case Emmitter::Square: {
-
 
 			for (int i = 0; i < count; i++) {
 
@@ -222,7 +224,7 @@ namespace Engine
 		switch (particle->Style)
 		{
 		case ParticleTexture::Custom: {
-			Texture* tex = AssetManager::GetInstance()->LoadTexture("Square", "Assets\\Textures\\Particle System Inbuilt\\Square.dds");
+			Texture* tex = AssetManager::GetInstance()->LoadTexture("Square", "Assets\\Textures\\Particle System Inbuilt\\Square.png");
 			particle->Texture = tex;
 			break;
 		}

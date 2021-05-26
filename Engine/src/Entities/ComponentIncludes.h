@@ -6,6 +6,7 @@
 #include "Components/PhysicsComp.h"
 #include "Components/ScriptComponent.h"
 #include "Components/CameraComp.h"
+#include "Components/ParticleComp.h"
 
 namespace Engine
 {
@@ -17,6 +18,7 @@ namespace Engine
 		COMPONENT_AUDIO,
 		COMPONENT_CAMERA,
 		COMPONENT_TILEMAP,
-		COMPONENT_PHYSICS
+		COMPONENT_PHYSICS,
+		COMPONENT_PARTICLE
 	};
 }

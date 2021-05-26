@@ -1,35 +1,45 @@
 #pragma once
-#include "Entities/GameObject.h"
-#include "Utils/Texture.h"
 
+#include "../Component.h"
+#include "ParticalSystem.h"	// TODO: Move into the src folder when done
 
-namespace Engine {
-
-	enum class ParticleTexture
-	{
-		Custom = 0,
-		Circle,
-		Square,
-		Triangle
-	};
-
-	struct Particle
+namespace Engine
+{
+	class ENGINE_API ParticleComp : public Component
 	{
 	public:
+		ParticleComp();
+		ParticleComp(GameObject* parent);
+		~ParticleComp() override;
 
-		Particle();
-		~Particle();	
+
+		virtual void Start() override;
+		virtual void InternalUpdate() override;
+		virtual void InternalRender() override;
+
+		void Update() override;
+		void Render() override;
+
+		float GetParticleCount() { return mParticleSystem->GetParticleCount(); }
+		float& GetRate() { return mParticleSystem->GetRate(); }
+		float& GetGravity() { return mParticleSystem->GetGravity(); }
+		float GetLifetime() const { return mParticleSystem->GetLifetime(); }
+		vec2f& GetVelocity() { return mParticleSystem->GetVelocity(); }
+		Texture* GetTexture() { return mParticleSystem->GetTexture(); }
+		Emmitter& GetEmmiter() { return mParticleSystem->GetEmmiter(); }
 
 
-		vec2f Position;		/* Local position of a single partical */
-		vec2f Velocity;
-		float Lifetime;		/* Measured in Seconds */
-		const char* TexturePath;
-		bool Alive;
-		ParticleTexture Style;
-		Texture* Texture;
+
+		void SetRate(float rate) { mParticleSystem->SetRate(rate); }
+		void SetGravity(float ammount) { mParticleSystem->SetGravity(ammount); }
+
+
+		//void ShowEmmiterIcon(bool flag) { mShowEmmiterIcon = flag; }
+
+
 	private:
+		void Init();
+
+		ParticleSystem* mParticleSystem;
 	};
-
 }
-

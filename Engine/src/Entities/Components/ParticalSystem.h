@@ -12,12 +12,33 @@
 #include <Engine/Renderer/Device.h>
 #include <Engine/Renderer/Renderer2D.h>
 
-#include "../Component.h"
 #include <Utils/Texture.h>
-#include "Entities/Components/ParticleComp.h"
 
 namespace Engine
 {
+	enum class ParticleTexture
+	{
+		Custom = 0,
+		Circle,
+		Square,
+		Triangle
+	};
+
+	struct Particle
+	{
+		//Particle();
+		//~Particle();
+
+
+		vec2f Position;		/* Local position of a single partical */
+		vec2f Scale;
+		vec2f Velocity;
+		float Lifetime;		/* Measured in Seconds */
+		const char* TexturePath;
+		bool Alive;
+		ParticleTexture Style;
+		Texture* Texture;
+	};
 
 	enum class Emmitter
 	{
@@ -26,29 +47,33 @@ namespace Engine
 		Cone
 	};
 
-	class ENGINE_API ParticleSystem : public Component
+	class ParticleSystem
 	{
 	public:
-		//ParticleSystem();
-		//ParticleSystem(const vec2f& emmitterPos, size_t count, const Emmitter& emmiter = Emmitter::Square);
-		//ParticleSystem(const vec2f& emmitterPos, size_t count, const Emmitter& emmiter = Emmitter::Square);
-		//~ParticleSystem() override;
+		ParticleSystem();
+		ParticleSystem(const vec2f& emmitterPos, const Particle& particle, size_t count, const Emmitter& emmiter = Emmitter::Square);
+		ParticleSystem(const vec2f& emmitterPos, const vec2f& emmitterSize, const Particle& particle, size_t count, const Emmitter& emmiter = Emmitter::Square);
+		~ParticleSystem();
 
-		void Update() override;
-		void Render() override;
+		void Update();
+		void Render();
 
 		void SetPosition(const vec2f& position) { mPosition = position; }
+		void SetParticleScale(const vec2f& scale) { mParticleProperties.Scale = scale; }
 		void SetGravity(float gravity) { mGravity = gravity; }
 		void SetRate(float rate) { mRate = rate; }
 		void SetSize(const vec2f& size) { mSize = size; }
 		void SetLifetime(const float lifetime) { mParticleProperties.Lifetime = lifetime; }
 
+		float GetParticleCount() { return mParticleCount; }
 		vec2f& GetPosition() { return mPosition; }
+		vec2f& GetScale() { return mParticleProperties.Scale; }
 		vec2f& GetSize() { return mSize; }
 		float& GetRate() { return mRate; }
 		float& GetGravity() { return mGravity; }
 		float& GetLifetime() { return mParticleProperties.Lifetime; }
 		vec2f& GetVelocity() { return mParticleProperties.Velocity; }
+		Texture* GetTexture() { return mParticleProperties.Texture; }
 		Emmitter& GetEmmiter() { return mEmmiter; }
 		void ShowEmmiterIcon(bool flag) { mShowEmmiterIcon = flag; }
 

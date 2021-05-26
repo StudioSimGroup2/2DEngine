@@ -21,5 +21,6 @@ namespace Engine
 		void RenderScriptComponent(ScriptComp* c);
 		void TileMapComponent(TileMapComp* c);
 		void RenderCameraComponent(CameraComp* c);
+		void RenderParticleComponent(ParticleComp* c);
 	};
 }
