@@ -54,15 +54,6 @@ namespace Engine
 
 		mSceneObjects.push_back(mLevelMap);
 
-		GameObject* testLine = new GameObject();
-		LineCollisionComp* LTest = testLine->AddComponent(new LineCollisionComp);
-		LTest->SetPoint1(vec2f(0.0f, 240.0f));
-		LTest->SetPoint2(vec2f(300.0f, 240.0f));
-
-		testLine->SetName("LineTest");
-
-		mSceneObjects.push_back(testLine);
-
 		/*AudioManager::GetInstance()->LoadSound("z", "zip.wav");
 		AudioManager::GetInstance()->PlaySoundFile("z", 0.2, false);*/
 	}
