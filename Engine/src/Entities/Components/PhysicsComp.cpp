@@ -6,6 +6,11 @@ Engine::PhysicsComp::PhysicsComp() : Component()
 	Init();
 }
 
+Engine::PhysicsComp::PhysicsComp(GameObject* parent) : Component(parent)
+{
+	Init();
+}
+
 Engine::PhysicsComp::~PhysicsComp()
 {
 
@@ -40,6 +45,9 @@ void Engine::PhysicsComp::UpdateForces(float dT)
 	{
 		// When grounded, apply frictional force equal to the current velocity
 		// multiplied by a frictional coefficient
+		mNetForce.y = 0;
+		mCurrentVelocity.y = 0;
+		mNetAcceleration.y = 0;
 		mNetForce.x += (mCurrentVelocity.x * -mFriction);
 	}
 	else

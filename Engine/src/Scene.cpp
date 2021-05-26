@@ -93,16 +93,26 @@ namespace Engine
 		for (GameObject* go : mSceneObjects)
 		{
 			go->Update();
-		}
 
-		if (Collision::CheckCollision(mSceneObjects[0], mSceneObjects[1]))
-		{
-			Logger::LogMsg("Tilemap, Player Collided");
-		}
+			if (go->GetComponent<Engine::TilemapCollisionComp>() != NULL)
+			{
+				for (GameObject* compObj : mSceneObjects)
+				{
+					if (compObj == go)
+					{
+						break;
+					}
 
-		if (Collision::CheckCollision(mSceneObjects[0], mSceneObjects[2]))
-		{
-			Logger::LogMsg("Line, Player Collided");
+					if (Collision::CheckCollision(go, compObj))
+					{
+						compObj->GetComponent<Engine::PhysicsComp>()->SetGrounded(true);
+					}
+					else
+					{
+						compObj->GetComponent<Engine::PhysicsComp>()->SetGrounded(false);
+					}
+				}
+			}
 		}
 	}
 
