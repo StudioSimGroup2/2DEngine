@@ -22,7 +22,7 @@
 				<script path=""></script>
 			</components>
 			<children>
-				<gameobject>
+				<gameobject name="third object">
 					<components>
 						<transform PosX="12.0" PosY="65.0"></transform>
 						<sprite path="Assets/Textures/mario.png" colour="0 0 0 0" FlipX="0" FlipY="0"></sprite>
