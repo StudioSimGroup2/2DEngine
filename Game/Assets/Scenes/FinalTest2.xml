@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<PROJECT>
+    <entities>
+        <gameobject name="First GameObject">
+            <components>
+                <transform PosX="102" PosY="65" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <sprite path="Assets\Textures\Mario.png" Colour="0 0 0 0" FlipX="1" FlipY="0" />
+                <physics />
+                <script path="Assets\Scripts\Player.lua" />
+                <tilemap path="Assets/TileMaps/Tanvit.xml" />
+            </components>
+        </gameobject>
+        <gameobject name="Second GameObject">
+            <components>
+                <transform PosX="56" PosY="2" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <script path="Assets/Scripts/Player.lua" />
+            </components>
+        </gameobject>
+        <gameobject name="Second GameObject">
+            <components>
+                <transform PosX="78" PosY="9" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <script path="" />
+                <camera FOV="0" Near="0" Far="100" Depth="1" />
+            </components>
+        </gameobject>
+    </entities>
+</PROJECT>

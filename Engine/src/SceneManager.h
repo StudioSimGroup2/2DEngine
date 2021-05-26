@@ -22,7 +22,9 @@ namespace Engine
 		void RenderScene();
 
 		void LoadScene(std::string path);
+		void LoadObject();
 		void SaveScene(std::string path);
+		void SaveObject(TiXmlElement* components, GameObject* CurrentObj);
 		void ClearScene();
 
 		void EnableEditorMode() { mEditorMode = true; }

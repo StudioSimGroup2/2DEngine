@@ -174,6 +174,16 @@ namespace Engine
 							NewtileMap->Setpath(path);
 						}
 					}
+					else if (CompType == "camera")
+					{
+						int i = 0;
+						CameraComp* NewCamera = new CameraComp(NewObject);
+						NewObject->AddComponent<CameraComp>(NewCamera);
+						NewCamera->SetFOV (atof(CurrentComp->Attribute("FOV")));
+						NewCamera->SetNear(atof(CurrentComp->Attribute("Near")));
+						NewCamera->SetFar(atof(CurrentComp->Attribute("Far")));
+						NewCamera->SetDepth (atof(CurrentComp->Attribute("Depth")));
+					}
 				}
 			}
 			// TODO:
@@ -181,92 +191,31 @@ namespace Engine
 		}
 	}
 
+	void SceneManager::LoadObject()
+	{
+	}
+
 	void SceneManager::SaveScene(std::string path)
 	{
-		//Test for saving to XML file
+		//Save scene to an XML file for later loading
 		TiXmlDocument Doc;
 		TiXmlDeclaration* Header = new TiXmlDeclaration("1.0", "UTF-8", "");
 		Doc.LinkEndChild(Header);
 		TiXmlElement* Root = new TiXmlElement("PROJECT");
 		TiXmlElement* Ent = new TiXmlElement("entities");
 		Root->LinkEndChild(Ent);
+
+
 		//add all game objects
 		for (GameObject* go : mSceneObjects)
 		{
-			TiXmlElement* GameObj = new TiXmlElement("gameobject");
-			GameObj->SetAttribute("name", go->GetName().c_str());
-			TiXmlElement* components = new TiXmlElement("components");
-			GameObj->LinkEndChild(components);
-			for (Component* Comp : go->GetComponents())
+			if (go->GetParent() == nullptr)
 			{
-				switch (Comp->GetType())
-				{
-				case  COMPONENT_TRANSFORM:
-				{
-					TiXmlElement* Transform = new TiXmlElement("transform");
-					Transform->SetAttribute("PosX", go->GetComponent<TransformComp>()->GetPosition().x);
-					Transform->SetAttribute("PosY", go->GetComponent<TransformComp>()->GetPosition().y);
-
-					Transform->SetAttribute("RotX", go->GetComponent<TransformComp>()->GetRotation().x);
-					Transform->SetAttribute("RotY", go->GetComponent<TransformComp>()->GetRotation().y);
-
-					Transform->SetAttribute("ScaleX", go->GetComponent<TransformComp>()->GetScale().x);
-					Transform->SetAttribute("ScaleY", go->GetComponent<TransformComp>()->GetScale().x);
-
-					components->LinkEndChild(Transform);
-					break;
-				}
-				case COMPONENT_SPRITE:
-				{
-					TiXmlElement* Sprite = new TiXmlElement("sprite");
-					Sprite->SetAttribute("path", go->GetComponent<SpriteComp>()->getpath().c_str());
-					Sprite->SetAttribute("Colour", "0 0 0 0");
-
-					int flipX = 0, flipY = 0;
-					if (go->GetComponent<SpriteComp>()->GetFlipX())
-					{
-						flipX = 1;
-					}
-					if (go->GetComponent<SpriteComp>()->GetFlipY())
-					{
-						flipY = 1;
-					}
-					Sprite->SetAttribute("FlipX", flipX);
-					Sprite->SetAttribute("FlipY", flipY);
-					components->LinkEndChild(Sprite);
-					break;
-				}
-				case COMPONENT_PHYSICS:
-				{
-					TiXmlElement* physics = new TiXmlElement("physics");
-
-					components->LinkEndChild(physics);
-					break;
-				}
-				case COMPONENT_SCRIPT:
-				{
-					TiXmlElement* script = new TiXmlElement("script");
-					script->SetAttribute("path", go->GetComponent<ScriptComp>()->getpath().c_str());
-
-					components->LinkEndChild(script);
-					break;
-				}
-				case COMPONENT_TILEMAP:
-				{
-					TiXmlElement* tileMap = new TiXmlElement("tilemap");
-					tileMap->SetAttribute("path", go->GetComponent<TileMapComp>()->getpath().c_str());
-
-					components->LinkEndChild(tileMap);
-					break;
-				}
-				default:
-				{
-					break;
-				}
-				}
-				//add childeren
-			}
-			Ent->LinkEndChild(GameObj);
+				TiXmlElement* GameObj = new TiXmlElement("gameobject");
+				GameObj->SetAttribute("name", go->GetName().c_str());
+				SaveObject(GameObj, go);
+				Ent->LinkEndChild(GameObj);
+			}			
 		}
 
 		Doc.LinkEndChild(Root);
@@ -277,6 +226,105 @@ namespace Engine
 
 		// TODO:
 		// Lots of pointers left here should clean them up when done with them
+	}
+
+	void SceneManager::SaveObject(TiXmlElement* GameObj, GameObject* CurrentGameObj)
+	{
+		TiXmlElement* components = new TiXmlElement("components");
+		GameObj->LinkEndChild(components);
+		//Loop through all the components of a game object and add them as node to a XML file
+		for (Component* Comp : CurrentGameObj->GetComponents())
+		{
+			switch (Comp->GetType())
+			{
+			case  COMPONENT_TRANSFORM:
+			{
+				TiXmlElement* Transform = new TiXmlElement("transform");
+				Transform->SetAttribute("PosX", CurrentGameObj->GetComponent<TransformComp>()->GetPosition().x);
+				Transform->SetAttribute("PosY", CurrentGameObj->GetComponent<TransformComp>()->GetPosition().y);
+
+				Transform->SetAttribute("RotX", CurrentGameObj->GetComponent<TransformComp>()->GetRotation().x);
+				Transform->SetAttribute("RotY", CurrentGameObj->GetComponent<TransformComp>()->GetRotation().y);
+
+				Transform->SetAttribute("ScaleX", CurrentGameObj->GetComponent<TransformComp>()->GetScale().x);
+				Transform->SetAttribute("ScaleY", CurrentGameObj->GetComponent<TransformComp>()->GetScale().x);
+
+				components->LinkEndChild(Transform);
+				break;
+			}
+			case COMPONENT_SPRITE:
+			{
+				TiXmlElement* Sprite = new TiXmlElement("sprite");
+				Sprite->SetAttribute("path", CurrentGameObj->GetComponent<SpriteComp>()->getpath().c_str());
+				Sprite->SetAttribute("Colour", "0 0 0 0");
+
+				int flipX = 0, flipY = 0;
+				if (CurrentGameObj->GetComponent<SpriteComp>()->GetFlipX())
+				{
+					flipX = 1;
+				}
+				if (CurrentGameObj->GetComponent<SpriteComp>()->GetFlipY())
+				{
+					flipY = 1;
+				}
+				Sprite->SetAttribute("FlipX", flipX);
+				Sprite->SetAttribute("FlipY", flipY);
+				components->LinkEndChild(Sprite);
+				break;
+			}
+			case COMPONENT_PHYSICS:
+			{
+				TiXmlElement* physics = new TiXmlElement("physics");
+
+				components->LinkEndChild(physics);
+				break;
+			}
+			case COMPONENT_SCRIPT:
+			{
+				TiXmlElement* script = new TiXmlElement("script");
+				script->SetAttribute("path", CurrentGameObj->GetComponent<ScriptComp>()->getpath().c_str());
+
+				components->LinkEndChild(script);
+				break;
+			}
+			case COMPONENT_TILEMAP:
+			{
+				TiXmlElement* tileMap = new TiXmlElement("tilemap");
+				tileMap->SetAttribute("path", CurrentGameObj->GetComponent<TileMapComp>()->getpath().c_str());
+
+				components->LinkEndChild(tileMap);
+				break;
+			}
+			case COMPONENT_CAMERA:
+			{
+				//FOV / Near / Far / Depth
+				TiXmlElement* Camera = new TiXmlElement("camera");
+				Camera->SetAttribute("FOV", CurrentGameObj->GetComponent<CameraComp>()->GetFOV());
+				Camera->SetAttribute("Near", CurrentGameObj->GetComponent<CameraComp>()->GetNear());
+				Camera->SetAttribute("Far", CurrentGameObj->GetComponent<CameraComp>()->GetFar());
+				Camera->SetAttribute("Depth", CurrentGameObj->GetComponent<CameraComp>()->GetDepth());
+				components->LinkEndChild(Camera);
+				break;
+			}
+			default:
+			{
+				break;
+			}
+			}			
+		}
+		for (GameObject* go2 : CurrentGameObj->GetChildren())
+		{
+			//Loop through all the components of a game object and add them as node to a XML file
+			TiXmlElement* Children = new TiXmlElement("children");
+			GameObj->LinkEndChild(Children);
+
+			TiXmlElement* ChildGameObj = new TiXmlElement("gameobject");
+			ChildGameObj->SetAttribute("name", go2->GetName().c_str());
+			TiXmlElement* ChildComponents = new TiXmlElement("components");
+			ChildGameObj->LinkEndChild(ChildComponents);
+			SaveObject(ChildComponents, go2);
+			Children->LinkEndChild(ChildGameObj);
+		}
 	}
 
 	void SceneManager::ClearScene()

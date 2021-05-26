@@ -14,10 +14,8 @@ namespace Engine
 		Init();
 	}
 
-	CameraComp::CameraComp(GameObject* parent)
+	CameraComp::CameraComp(GameObject* parent) : Component(parent)
 	{
-		mParent = parent;
-		
 		Init();
 	}
 
