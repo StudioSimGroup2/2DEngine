@@ -117,35 +117,47 @@ namespace Engine
 					}
 				}
 
+				ImGui::Separator();
+
 				if (ImGui::MenuItem("Sprite"))
 				{
-					if (SceneHierarchyWidget::GetNode() != nullptr)
+					if (SceneHierarchyWidget::GetNode() == nullptr)
 					{
-						SceneHierarchyWidget::GetNode()->AddComponent<SpriteComp>(new SpriteComp);
+						SceneManager::GetInstance()->CreateObject()->AddComponent<SpriteComp>(new SpriteComp);
+					}
+					else
+					{
+						auto go =  SceneManager::GetInstance()->CreateObject();
+						go->AddComponent<SpriteComp>(new SpriteComp);
+						go->Attach(SceneHierarchyWidget::GetNode());
 					}
 				}
 
 				if (ImGui::MenuItem("TileMap"))
 				{
-					if (SceneHierarchyWidget::GetNode() != nullptr)
+					if (SceneHierarchyWidget::GetNode() == nullptr)
 					{
-						SceneHierarchyWidget::GetNode()->AddComponent<TileMapComp>(new TileMapComp);
+						SceneManager::GetInstance()->CreateObject()->AddComponent<TileMapComp>(new TileMapComp);
+					}
+					else
+					{
+						auto go = SceneManager::GetInstance()->CreateObject();
+						go->AddComponent<TileMapComp>(new TileMapComp);
+						go->Attach(SceneHierarchyWidget::GetNode());
 					}
 				}
 
 				if (ImGui::MenuItem("Camera"))
 				{
-					if (SceneHierarchyWidget::GetNode() != nullptr)
+					if (SceneHierarchyWidget::GetNode() == nullptr)
 					{
-						SceneHierarchyWidget::GetNode()->AddComponent<CameraComp>(new CameraComp);
+						SceneManager::GetInstance()->CreateObject()->AddComponent<CameraComp>(new CameraComp);
 					}
-				}
-
-				if (ImGui::MenuItem("Script"))
-				{
-					if (SceneHierarchyWidget::GetNode() != nullptr)
+					else
 					{
-						SceneHierarchyWidget::GetNode()->AddComponent<ScriptComp>(new ScriptComp);
+						auto go = SceneManager::GetInstance()->CreateObject();
+						go->AddComponent<CameraComp>(new CameraComp);
+						go->Attach(SceneHierarchyWidget::GetNode());
 					}
 				}
 

@@ -201,7 +201,6 @@ namespace Engine
 				LoadObject(Child, NewObject);
 			}
 		}
-
 	}
 
 	void SceneManager::SaveScene(std::string path)

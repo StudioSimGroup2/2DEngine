@@ -102,7 +102,7 @@ namespace Engine
 
 			ImGui::Separator();
 
-			const char* comps[] = { "UI", "Script", "Physics" };
+			const char* comps[] = { "Sprite", "Script", "Audio", "Camera", "TileMap", "Physics" };
 
 			if (ImGui::Button("Add Component..", ImVec2(ImGui::GetContentRegionAvail().x, 0.0f)))
 			{
@@ -117,7 +117,34 @@ namespace Engine
 				for (int i = 0; i < IM_ARRAYSIZE(comps); i++)
 					if (ImGui::Selectable(comps[i]))
 					{
-						std::cout << std::endl;
+						switch (i + 1)
+						{
+						case COMPONENT_SPRITE:
+							SceneHierarchyWidget::GetNode()->AddComponent<SpriteComp>(new SpriteComp);
+							break;
+
+						case COMPONENT_PHYSICS:
+							SceneHierarchyWidget::GetNode()->AddComponent<PhysicsComp>(new PhysicsComp);
+							break;
+
+						case COMPONENT_SCRIPT:
+							SceneHierarchyWidget::GetNode()->AddComponent<ScriptComp>(new ScriptComp);
+							break;
+
+						case COMPONENT_AUDIO:
+
+							break;
+
+						case COMPONENT_CAMERA:
+							SceneHierarchyWidget::GetNode()->AddComponent<CameraComp>(new CameraComp);
+							break;
+
+						case COMPONENT_TILEMAP:
+							SceneHierarchyWidget::GetNode()->AddComponent<TileMapComp>(new TileMapComp);
+							break;
+						default:
+							break;
+						}
 					}
 				ImGui::EndPopup();
 			}
