@@ -47,6 +47,11 @@ namespace Engine
 					if (ImGui::CollapsingHeader("Sprite"))
 					{
 						RenderSpriteComponent(dynamic_cast<SpriteComp*>(c));
+						//Delete Comp
+						if (ImGui::Button("X"))
+						{
+							c->GetGameObject()->RemoveComponent(c);
+						}
 					}
 					break;
 
@@ -54,6 +59,11 @@ namespace Engine
 					if (ImGui::CollapsingHeader("Physics"))
 					{
 						RenderPhysicsComponent(dynamic_cast<PhysicsComp*>(c));
+						//Delete Comp
+						if (ImGui::Button("X"))
+						{
+							c->GetGameObject()->RemoveComponent(c);
+						}
 					}
 					break;
 
@@ -61,12 +71,22 @@ namespace Engine
 					if (ImGui::CollapsingHeader("Script"))
 					{
 						RenderScriptComponent(dynamic_cast<ScriptComp*>(c));
+						//Delete Comp
+						if (ImGui::Button("X"))
+						{
+							c->GetGameObject()->RemoveComponent(c);
+						}
 					}
 					break;
 
 				case COMPONENT_AUDIO:
 					if (ImGui::CollapsingHeader("Audio"))
 					{
+						//Delete Comp
+						if (ImGui::Button("X"))
+						{
+							c->GetGameObject()->RemoveComponent(c);
+						}
 					}
 					break;
 
@@ -74,6 +94,11 @@ namespace Engine
 					if (ImGui::CollapsingHeader("Camera"))
 					{
 						RenderCameraComponent(dynamic_cast<CameraComp*>(c));
+						//Delete Comp
+						if (ImGui::Button("X"))
+						{
+							c->GetGameObject()->RemoveComponent(c);
+						}
 					}
 					break;
 
@@ -81,10 +106,13 @@ namespace Engine
 					if (ImGui::CollapsingHeader("TileMap"))
 					{
 						TileMapComponent(dynamic_cast<TileMapComp*>(c));
+						//Delete Comp
+						if (ImGui::Button("X"))
+						{
+							c->GetGameObject()->RemoveComponent(c);
+						}
 					}
 					break;
-
-
 				default:
 					break;
 				}

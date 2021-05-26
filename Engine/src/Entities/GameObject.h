@@ -72,6 +72,19 @@ namespace Engine
 
 			return comp;
 		}
+		inline void RemoveComponent(Component* Comp)
+		{
+			int i = 0;
+			for (Component* Test : mComponents)
+			{
+				if (Test == Comp)
+				{
+					mComponents.erase(mComponents.begin() + i);
+					break;
+				}
+				i++;
+			}
+		}
 		void AddChild(GameObject* go) { mChildren.push_back(go); }
 
 	protected:
