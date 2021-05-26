@@ -87,112 +87,129 @@ namespace Engine
 		}
 		else
 		{
-			root = root->FirstChildElement();
+			TiXmlElement* Entities = root->FirstChildElement();
 			//Loop through all GameObjects
-			for (TiXmlElement* CurrentObject = root->FirstChildElement(); CurrentObject != NULL; CurrentObject = CurrentObject->NextSiblingElement())
+			for (TiXmlElement* CurrentObject = Entities->FirstChildElement(); CurrentObject != NULL; CurrentObject = CurrentObject->NextSiblingElement())
 			{
-				GameObject* NewObject = CreateObject();
-				
-				NewObject->SetName(CurrentObject->Attribute("name"));
-				TiXmlElement* comps = CurrentObject->FirstChildElement();
-				for (TiXmlElement* CurrentComp = comps->FirstChildElement(); CurrentComp != NULL; CurrentComp = CurrentComp->NextSiblingElement())
-				{
-					//transform / sprite / physics / script /  tilemap
-					std::string CompType = CurrentComp->Value();
-					if (CompType == "transform")
-					{
-						//Position / Rotation / scale
+				LoadObject(CurrentObject, nullptr);
 
-						//get pos
-						vec2f Pos;
-						Pos.x = atof(CurrentComp->Attribute("PosX"));
-						Pos.y = atof(CurrentComp->Attribute("PosY"));
-						//set Pos to newobject
-						TransformComp* Transform = NewObject->GetComponent<TransformComp>();
-						Transform->SetPosition(Pos);
-
-						//TODO add
-						//rotation
-						//scale						
-					}
-					else if (CompType == "sprite")
-					{
-						//Texture / colour / flip X / flip Y
-						SpriteComp* NewSprite = new SpriteComp();
-						//Texture
-						std::string path = CurrentComp->Attribute("path");
-						if (path != "")
-						{
-							NewSprite->SetTexture(AssetManager::GetInstance()->LoadTexture(NewObject->GetName(), path));
-							NewSprite->Setpath(path);
-						}
-						//Colour
-
-						//flipX
-						std::string FX = CurrentComp->Attribute("FlipX");
-						if (FX == "1")
-						{
-							NewSprite->ToggleFlipX(true);
-						}
-						//flipY
-						std::string FY = CurrentComp->Attribute("FlipY");
-						if (FY == "1")
-						{
-							NewSprite->ToggleFlipY(true);
-						}
-
-						NewObject->AddComponent<SpriteComp>(NewSprite);
-					}
-					else if (CompType == "physics")
-					{
-						//mass / gravity / friction
-						PhysicsComp* NewPhysics = new PhysicsComp;
-						NewObject->AddComponent<PhysicsComp>(NewPhysics);
-					}
-					else if (CompType == "script")
-					{
-						//Path
-						ScriptComp* NewScript = new ScriptComp;
-						NewObject->AddComponent<ScriptComp>(NewScript);
-						std::string path = CurrentComp->Attribute("path");
-						if (path != "")
-						{
-							NewScript->AddScript(path);
-							NewScript->Setpath(path);
-
-						}
-					}					
-					else if (CompType == "tilemap")
-					{
-						//path
-						TileMapComp* NewtileMap = new TileMapComp;
-						NewObject->AddComponent<TileMapComp>(NewtileMap);
-						std::string path = CurrentComp->Attribute("path");
-						if (path != "")
-						{
-							NewtileMap->LoadTileMap(path);
-							NewtileMap->Setpath(path);
-						}
-					}
-					else if (CompType == "camera")
-					{
-						int i = 0;
-						CameraComp* NewCamera = new CameraComp(NewObject);
-						NewObject->AddComponent<CameraComp>(NewCamera);
-						NewCamera->SetFOV (atof(CurrentComp->Attribute("FOV")));
-						NewCamera->SetNear(atof(CurrentComp->Attribute("Near")));
-						NewCamera->SetFar(atof(CurrentComp->Attribute("Far")));
-						NewCamera->SetDepth (atof(CurrentComp->Attribute("Depth")));
-					}
-				}
 			}
 			// TODO:
 			// Lots of pointers left here should clean them up when done with them
 		}
 	}
 
-	void SceneManager::LoadObject()
+	void SceneManager::LoadObject(TiXmlElement* CurrentObject, GameObject* ParentObj)
 	{
+		GameObject* NewObject = CreateObject();
+		if (ParentObj != nullptr)
+		{
+			NewObject->SetParent(ParentObj);
+			ParentObj->AddChild(NewObject);
+		}
+
+		NewObject->SetName(CurrentObject->Attribute("name"));
+		TiXmlElement* comps = CurrentObject->FirstChildElement("components");
+		for (TiXmlElement* CurrentComp = comps->FirstChildElement(); CurrentComp != NULL; CurrentComp = CurrentComp->NextSiblingElement())
+		{
+			//transform / sprite / physics / script /  tilemap
+			std::string CompType = CurrentComp->Value();
+			if (CompType == "transform")
+			{
+				//Position / Rotation / scale
+
+				//get pos
+				vec2f Pos;
+				Pos.x = atof(CurrentComp->Attribute("PosX"));
+				Pos.y = atof(CurrentComp->Attribute("PosY"));
+				//set Pos to newobject
+				TransformComp* Transform = NewObject->GetComponent<TransformComp>();
+				Transform->SetPosition(Pos);
+
+				//TODO add
+				//rotation
+				//scale						
+			}
+			else if (CompType == "sprite")
+			{
+				//Texture / colour / flip X / flip Y
+				SpriteComp* NewSprite = new SpriteComp();
+				//Texture
+				std::string path = CurrentComp->Attribute("path");
+				if (path != "")
+				{
+					NewSprite->SetTexture(AssetManager::GetInstance()->LoadTexture(NewObject->GetName(), path));
+					NewSprite->Setpath(path);
+				}
+				//Colour
+
+				//flipX
+				std::string FX = CurrentComp->Attribute("FlipX");
+				if (FX == "1")
+				{
+					NewSprite->ToggleFlipX(true);
+				}
+				//flipY
+				std::string FY = CurrentComp->Attribute("FlipY");
+				if (FY == "1")
+				{
+					NewSprite->ToggleFlipY(true);
+				}
+
+				NewObject->AddComponent<SpriteComp>(NewSprite);
+			}
+			else if (CompType == "physics")
+			{
+				//mass / gravity / friction
+				PhysicsComp* NewPhysics = new PhysicsComp;
+				NewObject->AddComponent<PhysicsComp>(NewPhysics);
+			}
+			else if (CompType == "script")
+			{
+				//Path
+				ScriptComp* NewScript = new ScriptComp;
+				NewObject->AddComponent<ScriptComp>(NewScript);
+				std::string path = CurrentComp->Attribute("path");
+				if (path != "")
+				{
+					NewScript->AddScript(path);
+					NewScript->Setpath(path);
+
+				}
+			}
+			else if (CompType == "tilemap")
+			{
+				//path
+				TileMapComp* NewtileMap = new TileMapComp;
+				NewObject->AddComponent<TileMapComp>(NewtileMap);
+				std::string path = CurrentComp->Attribute("path");
+				if (path != "")
+				{
+					NewtileMap->LoadTileMap(path);
+					NewtileMap->Setpath(path);
+				}
+			}
+			else if (CompType == "camera")
+			{
+				int i = 0;
+				CameraComp* NewCamera = new CameraComp(NewObject);
+				NewObject->AddComponent<CameraComp>(NewCamera);
+				NewCamera->SetFOV(atof(CurrentComp->Attribute("FOV")));
+				NewCamera->SetNear(atof(CurrentComp->Attribute("Near")));
+				NewCamera->SetFar(atof(CurrentComp->Attribute("Far")));
+				NewCamera->SetDepth(atof(CurrentComp->Attribute("Depth")));
+			}
+		}
+		TiXmlElement* Children = CurrentObject->FirstChildElement("children");
+		if (Children != NULL)
+		{
+			for (TiXmlElement* CurrentChildren = Children->FirstChildElement(); CurrentChildren != NULL; CurrentChildren = CurrentChildren->NextSiblingElement())
+			{
+				TiXmlElement* Child = Children->FirstChildElement();
+				LoadObject(Child, NewObject);
+			}
+		}
+
 	}
 
 	void SceneManager::SaveScene(std::string path)
@@ -320,9 +337,7 @@ namespace Engine
 
 			TiXmlElement* ChildGameObj = new TiXmlElement("gameobject");
 			ChildGameObj->SetAttribute("name", go2->GetName().c_str());
-			TiXmlElement* ChildComponents = new TiXmlElement("components");
-			ChildGameObj->LinkEndChild(ChildComponents);
-			SaveObject(ChildComponents, go2);
+			SaveObject(ChildGameObj, go2);
 			Children->LinkEndChild(ChildGameObj);
 		}
 	}

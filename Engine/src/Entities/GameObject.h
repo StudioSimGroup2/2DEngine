@@ -36,6 +36,7 @@ namespace Engine
 		void SetName(const std::string& name) { if (!name.empty()) mName = name; }
 
 		GameObject* GetParent() const { return mParent; }
+		void SetParent(GameObject* go) { mParent = go; };
 		void RemoveChild(GameObject* go);
 		std::vector<GameObject*> GetChildren() { return mChildren; }
 
@@ -71,13 +72,14 @@ namespace Engine
 
 			return comp;
 		}
+		void AddChild(GameObject* go) { mChildren.push_back(go); }
 
 	protected:
 		bool mStatus = true; // Enable objects by default
 		GameObject* mParent = nullptr;
 
 	private:
-		void AddChild(GameObject* go) { mChildren.push_back(go); }
+
 		void InitTransformComponent();
 		
 		std::string mName;

@@ -22,7 +22,7 @@ namespace Engine
 		void RenderScene();
 
 		void LoadScene(std::string path);
-		void LoadObject();
+		void LoadObject(TiXmlElement* CurrentObject, GameObject* ParentObj);
 		void SaveScene(std::string path);
 		void SaveObject(TiXmlElement* components, GameObject* CurrentObj);
 		void ClearScene();

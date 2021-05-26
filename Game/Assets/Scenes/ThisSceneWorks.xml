@@ -21,6 +21,14 @@
                 <transform PosX="78" PosY="9" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
                 <script path="" />
             </components>
+            <children>
+                <gameobject name="This is a child with a camera">
+                    <components>
+                        <transform PosX="0" PosY="0" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                        <camera FOV="0" Near="0" Far="100" Depth="1" />
+                    </components>
+                </gameobject>
+            </children>
         </gameobject>
     </entities>
 </PROJECT>
