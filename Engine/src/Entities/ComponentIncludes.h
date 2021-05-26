@@ -20,7 +20,3 @@ namespace Engine
 		COMPONENT_PHYSICS
 	};
 }
-
-#include "Components/TilemapCollisionComp.h"
-#include "Components/ObjectCollisionComp.h"
-#include "Components/LineCollisionComp.h"

@@ -10,7 +10,6 @@ namespace Engine
 	{
 	public:
 		PhysicsComp();
-		PhysicsComp(GameObject* parent);
 		~PhysicsComp();
 		void Init();
 		void Update(float dT);
@@ -23,14 +22,10 @@ namespace Engine
 		float GetMass() { return mMass; }
 		float GetGravity() { return mGravity; }
 		float GetFriction() { return mFriction; }
-		float GetMaxSpeed() { return mMaxSpeed; }
-		bool GetGrounded() { return mGrounded; }
 
 		void SetMass(float newMass) { mMass = newMass; }
 		void SetGravity(float newGravity) { mGravity = newGravity; }
 		void SetFriction(float newFriction) { mFriction = newFriction; }
-		void SetMaxSpeed(float newMSpeed) { mMaxSpeed = newMSpeed; }
-		void SetGrounded(bool groundedState) { mGrounded = groundedState; }
 
 		std::vector<vec2f> actingForces;
 
@@ -44,8 +39,6 @@ namespace Engine
 		vec2f* mPosition;
 		float mMass;
 		float mWeight;
-		float mMaxSpeed = 200.0f;
-
 		float mGravity = 0.98f;
 		float mFriction = 0.5f;
 
