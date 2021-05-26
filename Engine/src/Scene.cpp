@@ -56,8 +56,10 @@ namespace Engine
 
 		GameObject* testLine = new GameObject();
 		LineCollisionComp* LTest = testLine->AddComponent(new LineCollisionComp);
-		LTest->SetPoint1(vec2f(0.0f, 500.0f));
-		LTest->SetPoint2(vec2f(300.0f, 500.0f));
+		LTest->SetPoint1(vec2f(0.0f, 240.0f));
+		LTest->SetPoint2(vec2f(300.0f, 240.0f));
+
+		testLine->SetName("LineTest");
 
 		mSceneObjects.push_back(testLine);
 
@@ -94,22 +96,23 @@ namespace Engine
 		{
 			go->Update();
 
-			if (go->GetComponent<Engine::TilemapCollisionComp>() != NULL)
+			if (go->GetComponent<Engine::PhysicsComp>() != NULL)
 			{
 				for (GameObject* compObj : mSceneObjects)
 				{
-					if (compObj == go)
+					if (go == compObj)
 					{
-						break;
+						continue;
 					}
 
 					if (Collision::CheckCollision(go, compObj))
 					{
-						compObj->GetComponent<Engine::PhysicsComp>()->SetGrounded(true);
+						go->GetComponent<Engine::PhysicsComp>()->SetGrounded(true);
+						break;
 					}
 					else
 					{
-						compObj->GetComponent<Engine::PhysicsComp>()->SetGrounded(false);
+						go->GetComponent<Engine::PhysicsComp>()->SetGrounded(false);
 					}
 				}
 			}
