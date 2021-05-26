@@ -22,10 +22,12 @@ namespace Engine
 		float GetMass() { return mMass; }
 		float GetGravity() { return mGravity; }
 		float GetFriction() { return mFriction; }
+		bool GetGrounded() { return mGrounded; }
 
 		void SetMass(float newMass) { mMass = newMass; }
 		void SetGravity(float newGravity) { mGravity = newGravity; }
 		void SetFriction(float newFriction) { mFriction = newFriction; }
+		void SetGrounded(bool newGrounded) { mGrounded = newGrounded; }
 
 		std::vector<vec2f> actingForces;
 

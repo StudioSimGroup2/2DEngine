@@ -6,6 +6,9 @@
 #include "Components/PhysicsComp.h"
 #include "Components/ScriptComponent.h"
 #include "Components/CameraComp.h"
+#include "Components/ObjectCollisionComp.h"
+#include "Components/TilemapCollisionComp.h"
+#include "Components/LineCollisionComp.h"
 
 namespace Engine
 {
@@ -17,6 +20,9 @@ namespace Engine
 		COMPONENT_AUDIO,
 		COMPONENT_CAMERA,
 		COMPONENT_TILEMAP,
-		COMPONENT_PHYSICS
+		COMPONENT_PHYSICS,
+		COMPONENT_COLBOX,
+		COMPONENT_COLTILE,
+		COMPONENT_COLLINE
 	};
 }
