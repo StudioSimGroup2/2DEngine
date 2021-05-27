@@ -88,6 +88,14 @@ namespace Engine
 		vec2f SetMousePosition(const vec2f& mousePos) { return mMousePos = mousePos; }
 		vec2f GetMousePosition() const { return mMousePos; }
 
+		void SetMouseScreenPosition(const vec2f& mousePos) {  mMouseScreenPos = mousePos; }
+		vec2f GetMouseScreenPosition() const { return mMouseScreenPos; }
+
+		void SetScreenSize(vec2f Window, vec2f RenderTarget) { mScreenSize.x = RenderTarget.x / Window.x;
+																 mScreenSize.y = RenderTarget.y / Window.y;}
+		vec2f GetScreenSize()const { return mScreenSize; }
+
+
 		bool GetKeyDown(uint32_t key);
 		bool GetKeyRepeat(uint32_t key);
 		bool GetKeyUp(uint32_t key);
@@ -112,6 +120,9 @@ namespace Engine
 		bool* mMBPressedPrev;
 
 		vec2f mMousePos;
+		vec2f mMouseScreenPos;
+
+		vec2f mScreenSize = vec2f(1, 1);
 		int mScrollWheel;
 	};
 }
