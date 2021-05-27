@@ -87,6 +87,27 @@ namespace Engine
 						TileMapComponent(dynamic_cast<TileMapComp*>(c));
 					}
 					break;
+
+				case COMPONENT_COLBOX:
+					if (ImGui::CollapsingHeader("Box Collision", &close))
+					{
+						RenderBoxColComponent(dynamic_cast<ObjectCollisionComp*>(c));
+					}
+					break;
+
+				case COMPONENT_COLTILE:
+					if (ImGui::CollapsingHeader("Tilemap Collision", &close))
+					{
+						RenderTilemapColComponent(dynamic_cast<TilemapCollisionComp*>(c));
+					}
+					break;
+
+				case COMPONENT_COLLINE:
+					if (ImGui::CollapsingHeader("Line Collision", &close))
+					{
+						RenderLineColComponent(dynamic_cast<LineCollisionComp*>(c));
+					}
+					break;
 				default:
 					break;
 				}
@@ -102,7 +123,7 @@ namespace Engine
 
 			ImGui::Separator();
 
-			const char* comps[] = { "Sprite", "Script", "Audio", "Camera", "TileMap", "Physics" };
+			const char* comps[] = { "Sprite", "Script", "Audio", "Camera", "TileMap", "Physics", "Box Collision", "Tilemap Collision", "Line Collision" };
 
 			if (ImGui::Button("Add Component..", ImVec2(ImGui::GetContentRegionAvail().x, 0.0f)))
 			{
@@ -142,6 +163,24 @@ namespace Engine
 						case COMPONENT_TILEMAP:
 							SceneHierarchyWidget::GetNode()->AddComponent<TileMapComp>(new TileMapComp);
 							break;
+
+						case COMPONENT_COLBOX:
+							SceneHierarchyWidget::GetNode()->AddComponent<ObjectCollisionComp>(new ObjectCollisionComp);
+							break;
+
+						case COMPONENT_COLTILE:
+							if (SceneHierarchyWidget::GetNode()->GetComponent<TileMapComp>() != NULL)
+							{
+								SceneHierarchyWidget::GetNode()->AddComponent<TilemapCollisionComp>(new TilemapCollisionComp);
+								break;
+							}
+							else
+								break;
+
+						case COMPONENT_COLLINE:
+							SceneHierarchyWidget::GetNode()->AddComponent<LineCollisionComp>(new LineCollisionComp);
+							break;
+
 						default:
 							break;
 						}
@@ -483,6 +522,58 @@ namespace Engine
 			c->SetNear(cNear);
 
 		c->SetDepth(depth);
+	}
+
+	void InspectorWidget::RenderBoxColComponent(ObjectCollisionComp* c)
+	{
+		Box2D colBox = c->GetColBox();
+		float colBoxSize[2] = { colBox.GetSize().x, colBox.GetSize().y };
+
+		ImGui::PushID("Size");
+
+		ImGui::Columns(2);
+		ImGui::Text("Size");
+		ImGui::NextColumn();
+		ImGui::DragFloat2("##size", &colBoxSize[0], 1.0f);
+		ImGui::Columns(1);
+
+		ImGui::PopID();
+
+		c->GetColBox().SetSize(vec2f(colBoxSize[0], colBoxSize[1]));
+	}
+
+	void InspectorWidget::RenderLineColComponent(LineCollisionComp* c)
+	{
+		float point1[2] = { c->GetPoint1().x, c->GetPoint1().y };
+		float point2[2] = { c->GetPoint2().x, c->GetPoint2().y };
+
+		ImGui::PushID("Point 1");
+
+		ImGui::Columns(2);
+		ImGui::Text("Point 1");
+		ImGui::NextColumn();
+		ImGui::DragFloat2("##point 1", &point1[0], 1.0f);
+		ImGui::Columns(1);
+
+		ImGui::PopID();
+
+		ImGui::PushID("Point 2");
+
+		ImGui::Columns(2);
+		ImGui::Text("Point 2");
+		ImGui::NextColumn();
+		ImGui::DragFloat2("##point 2", &point2[0], 1.0f);
+		ImGui::Columns(1);
+
+		ImGui::PopID();
+
+		c->SetPoint1(vec2f(point1[0], point1[1]));
+		c->SetPoint2(vec2f(point2[0], point2[1]));
+	}
+
+	void InspectorWidget::RenderTilemapColComponent(TilemapCollisionComp* c)
+	{
+
 	}
 
 	InspectorWidget::InspectorWidget()

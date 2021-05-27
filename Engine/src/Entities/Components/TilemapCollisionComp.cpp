@@ -50,6 +50,7 @@ void Engine::TilemapCollisionComp::CreateColBoxes()
 
 void Engine::TilemapCollisionComp::Init()
 {
+	mType = COMPONENT_COLTILE;
 	//Get Parent Tilemap
 	mTilemap = mParent->GetComponent<TileMapComp>()->GetTileMap();
 	//Create Collision Boxes
@@ -64,4 +65,17 @@ void Engine::TilemapCollisionComp::Update()
 void Engine::TilemapCollisionComp::Render()
 {
 
+}
+
+void Engine::TilemapCollisionComp::Start()
+{
+}
+
+void Engine::TilemapCollisionComp::InternalUpdate()
+{
+
+}
+
+void Engine::TilemapCollisionComp::InternalRender()
+{
 }

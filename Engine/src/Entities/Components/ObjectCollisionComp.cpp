@@ -11,6 +11,7 @@ Engine::ObjectCollisionComp::~ObjectCollisionComp()
 
 void Engine::ObjectCollisionComp::Init()
 {
+	mType = COMPONENT_COLBOX;
 	vec2f position = mParent->GetComponent<TransformComp>()->GetPosition();
 	colBox.SetPosition(position);
 
@@ -24,5 +25,17 @@ void Engine::ObjectCollisionComp::Update()
 }
 
 void Engine::ObjectCollisionComp::Render()
+{
+}
+
+void Engine::ObjectCollisionComp::Start()
+{
+}
+
+void Engine::ObjectCollisionComp::InternalUpdate()
+{
+}
+
+void Engine::ObjectCollisionComp::InternalRender()
 {
 }

@@ -35,6 +35,7 @@ void Engine::PhysicsComp::UpdateForces(float dT, vec2f accel)
 	{
 		// When grounded, apply frictional force equal to the current velocity
 		// multiplied by a frictional coefficient
+		mCurrentVelocity.y = 0;
 		mNetForce.x += (mCurrentVelocity.x * -mFriction);
 	}
 	else
@@ -61,6 +62,7 @@ void Engine::PhysicsComp::Start()
 
 void Engine::PhysicsComp::InternalUpdate()
 {
+	ResetForces();
 }
 
 void Engine::PhysicsComp::InternalRender()

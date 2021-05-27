@@ -21,13 +21,16 @@ namespace Engine
 		void SetPoint1(vec2f newPoint1) { point1 = newPoint1; }
 		void SetPoint2(vec2f newPoint2) { point2 = newPoint2; }
 
-
-	private:
-		vec2f point1, point2;
-
 		//Inherited from Component
 		virtual void Update() override;
 		virtual void Render() override;
+
+		virtual void Start() override;
+		virtual void InternalUpdate() override;
+		virtual void InternalRender() override;
+
+	private:
+		vec2f point1, point2;
 	};
 }
 
