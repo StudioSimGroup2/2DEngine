@@ -21,6 +21,9 @@ namespace Engine
 		void SetPoint1(vec2f newPoint1) { point1 = newPoint1; }
 		void SetPoint2(vec2f newPoint2) { point2 = newPoint2; }
 
+		float GetBRange() { return boundingRange; }
+		void SetBRange(float newRange) { boundingRange = newRange; }
+
 		//Inherited from Component
 		virtual void Update() override;
 		virtual void Render() override;
@@ -30,6 +33,7 @@ namespace Engine
 		virtual void InternalRender() override;
 
 	private:
+		float boundingRange = 300;
 		vec2f point1, point2;
 	};
 }

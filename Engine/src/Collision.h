@@ -9,8 +9,6 @@
 class Collision
 {
 private:
-	float boundingRange = 300;
-
 	//Check box against box
 	static bool BoxBoxCheck(Engine::GameObject* object1, Engine::GameObject* object2);
 
@@ -23,13 +21,10 @@ private:
 
 	//Check Box against Line
 	static bool LineBoxCheck(Engine::GameObject* lineObj, Engine::GameObject* boxObj);
+
+	static float FindDistance(Engine::GameObject* object1, Engine::GameObject* object2);
+	static float FindDistance(Box2D box1, Box2D box2);
 public:
-
-	float GetBRange() { return boundingRange; }
-	void SetBRange(float newRange) { boundingRange = newRange; }
-
 	static bool CheckCollision(Engine::GameObject* object1, Engine::GameObject* object2);
-
-
 };
 

@@ -16,6 +16,9 @@ namespace Engine
 
 		Box2D GetColBox() { return colBox; }
 
+		float GetBRange() { return boundingRange; }
+		void SetBRange(float newRange) { boundingRange = newRange; }
+
 		// Inherited via Component
 		virtual void Update() override;
 		virtual void Render() override;
@@ -26,6 +29,7 @@ namespace Engine
 		virtual void InternalRender() override;
 
 	private:
+		float boundingRange = 300;
 		Box2D colBox;
 	};
 }

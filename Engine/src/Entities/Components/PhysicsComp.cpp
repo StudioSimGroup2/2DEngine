@@ -63,6 +63,8 @@ void Engine::PhysicsComp::Start()
 void Engine::PhysicsComp::InternalUpdate()
 {
 	ResetForces();
+	mCurrentVelocity.x = 0.0f;
+	mCurrentVelocity.y = 0.0f;
 }
 
 void Engine::PhysicsComp::InternalRender()

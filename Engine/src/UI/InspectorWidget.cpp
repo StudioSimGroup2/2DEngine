@@ -528,6 +528,7 @@ namespace Engine
 	{
 		Box2D colBox = c->GetColBox();
 		float colBoxSize[2] = { colBox.GetSize().x, colBox.GetSize().y };
+		float boundSize = c->GetBRange();
 
 		ImGui::PushID("Size");
 
@@ -539,7 +540,18 @@ namespace Engine
 
 		ImGui::PopID();
 
+		ImGui::PushID("Bounding");
+
+		ImGui::Columns(2);
+		ImGui::Text("Bounding");
+		ImGui::NextColumn();
+		ImGui::DragFloat("##bounding", &boundSize, 1.0f);
+		ImGui::Columns(1);
+
+		ImGui::PopID();
+
 		c->GetColBox().SetSize(vec2f(colBoxSize[0], colBoxSize[1]));
+		c->SetBRange(boundSize);
 	}
 
 	void InspectorWidget::RenderLineColComponent(LineCollisionComp* c)
@@ -573,7 +585,19 @@ namespace Engine
 
 	void InspectorWidget::RenderTilemapColComponent(TilemapCollisionComp* c)
 	{
+		float boundSize = c->GetBRange();
 
+		ImGui::PushID("Bounding");
+
+		ImGui::Columns(2);
+		ImGui::Text("Bounding");
+		ImGui::NextColumn();
+		ImGui::DragFloat("##bounding", &boundSize, 1.0f);
+		ImGui::Columns(1);
+
+		ImGui::PopID();
+
+		c->SetBRange(boundSize);
 	}
 
 	InspectorWidget::InspectorWidget()

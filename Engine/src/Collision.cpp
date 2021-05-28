@@ -2,11 +2,16 @@
 
 bool Collision::BoxBoxCheck(Engine::GameObject* object1, Engine::GameObject* object2)
 {
+	if (FindDistance(object1, object2) > object1->GetComponent<Engine::ObjectCollisionComp>()->GetBRange())
+	{
+		return false;
+	}
+
 	Box2D box1 = object1->GetComponent<Engine::ObjectCollisionComp>()->GetColBox();
 	Box2D box2 = object2->GetComponent<Engine::ObjectCollisionComp>()->GetColBox();
 
 	if (box1.GetPosition().x < box2.GetPosition().x + box2.GetSize().x &&
-		box1.GetPosition().x + box1.GetSize().x > box2.GetPosition().x&&
+		box1.GetPosition().x + box1.GetSize().x > box2.GetPosition().x &&
 		box1.GetPosition().y < box2.GetPosition().y + box2.GetSize().y &&
 		box1.GetPosition().y + box1.GetSize().y > box2.GetPosition().y)
 	{
@@ -18,14 +23,21 @@ bool Collision::BoxBoxCheck(Engine::GameObject* object1, Engine::GameObject* obj
 
 bool Collision::BoxTilemapCheck(Engine::GameObject* tilemapBoxes, Engine::GameObject* object)
 {
+
 	bool colTrue;
 	Box2D box1 = object->GetComponent<Engine::ObjectCollisionComp>()->GetColBox();
 	std::vector<Box2D> boxes = tilemapBoxes->GetComponent<Engine::TilemapCollisionComp>()->GetColBoxes();
 
 		for (Box2D box2 : boxes)
 		{
+			if (FindDistance(box1, box2) > object->GetComponent<Engine::ObjectCollisionComp>()->GetBRange())
+			{
+				colTrue = false;
+				continue;
+			}
+
 			if (box1.GetPosition().x < box2.GetPosition().x + box2.GetSize().x &&
-				box1.GetPosition().x + box1.GetSize().x > box2.GetPosition().x&&
+				box1.GetPosition().x + box1.GetSize().x > box2.GetPosition().x &&
 				box1.GetPosition().y < box2.GetPosition().y + box2.GetSize().y &&
 				box1.GetPosition().y + box1.GetSize().y > box2.GetPosition().y)
 			{
@@ -110,44 +122,72 @@ bool Collision::LineBoxCheck(Engine::GameObject* lineObj, Engine::GameObject* bo
 		return false;
 }
 
+float Collision::FindDistance(Engine::GameObject* object1, Engine::GameObject* object2)
+{
+	float dy = object1->GetComponent<Engine::TransformComp>()->GetPosition().y - object2->GetComponent<Engine::TransformComp>()->GetPosition().y;
+	float dx = object1->GetComponent<Engine::TransformComp>()->GetPosition().x - object2->GetComponent<Engine::TransformComp>()->GetPosition().x;
+
+	return sqrt((dx * dx) + (dy * dy));
+}
+
+float Collision::FindDistance(Box2D box1, Box2D box2)
+{
+	float dy = box1.GetPosition().y - box2.GetPosition().y;
+	float dx = box1.GetPosition().x - box2.GetPosition().x;
+
+	return sqrt((dx * dx) + (dy * dy));
+}
+
 bool Collision::CheckCollision(Engine::GameObject* object1, Engine::GameObject* object2)
 {
 	if (object1 == object2)
 		return false;
 
 	if (object1->GetComponent<Engine::ObjectCollisionComp>() != NULL && object2->GetComponent<Engine::ObjectCollisionComp>() != NULL)
+	{
 		if (BoxBoxCheck(object1, object2))
 		{
 			return true;
 		}
+	}
+
 	if (object1->GetComponent<Engine::TilemapCollisionComp>() != NULL && object2->GetComponent<Engine::ObjectCollisionComp>() != NULL)
-		if(BoxTilemapCheck(object1, object2))
+	{
+		if (BoxTilemapCheck(object1, object2))
 		{
 			return true;
 		}
+	}
 
 	if (object1->GetComponent<Engine::ObjectCollisionComp>() != NULL && object2->GetComponent<Engine::TilemapCollisionComp>() != NULL)
-		if(BoxTilemapCheck(object2, object1))
+	{
+		if (BoxTilemapCheck(object2, object1))
 		{
 			return true;
 		}
+	}
 
 	if (object1->GetComponent<Engine::LineCollisionComp>() != NULL && object2->GetComponent<Engine::LineCollisionComp>() != NULL)
-		if(LineLineCheck(object2, object1))
+	{
+		if (LineLineCheck(object2, object1))
 		{
 			return true;
 		}
+	}
 
 	if (object1->GetComponent<Engine::ObjectCollisionComp>() != NULL && object2->GetComponent<Engine::LineCollisionComp>() != NULL)
-		if(LineBoxCheck(object2, object1))
+	{
+		if (LineBoxCheck(object2, object1))
 		{
 			return true;
 		}
+	}
 
 	if (object1->GetComponent<Engine::LineCollisionComp>() != NULL && object2->GetComponent<Engine::ObjectCollisionComp>() != NULL)
-		if(LineBoxCheck(object1, object2))
+	{
+		if (LineBoxCheck(object1, object2))
 		{
 			return true;
 		}
-
+	}
 }
