@@ -5,9 +5,6 @@
 #include "Box2D.h"
 #include <vector>
 
-#define BLOCKHEIGHT 32
-#define BLOCKLENGTH 32
-
 namespace Engine
 {
 	class ENGINE_API TilemapCollisionComp : public Component

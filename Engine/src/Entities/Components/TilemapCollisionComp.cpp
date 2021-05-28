@@ -26,14 +26,14 @@ void Engine::TilemapCollisionComp::CreateColBoxes()
 				Box2D tempColBox;
 
 				vec2f tempPos;
-				tempPos.x = (xPosVal * BLOCKHEIGHT);
-				tempPos.y = (yPosVal * BLOCKLENGTH);
+				tempPos.x = (xPosVal * TILEWIDTH);
+				tempPos.y = (yPosVal * TILEHEIGHT);
 
 				tempColBox.SetPosition(tempPos);
 
 				vec2f tempSize;
-				tempSize.x = BLOCKLENGTH;
-				tempSize.y = BLOCKHEIGHT;
+				tempSize.x = TILEWIDTH;
+				tempSize.y = TILEHEIGHT;
 
 				tempColBox.SetSize(tempSize);
 
@@ -45,14 +45,14 @@ void Engine::TilemapCollisionComp::CreateColBoxes()
 				Box2D tempColBox;
 
 				vec2f tempPos;
-				tempPos.x = (xPosVal * BLOCKLENGTH);
-				tempPos.y = (yPosVal * BLOCKHEIGHT + (BLOCKHEIGHT / 2));
+				tempPos.x = (xPosVal * TILEWIDTH);
+				tempPos.y = (yPosVal * TILEHEIGHT + (TILEHEIGHT / 2));
 
 				tempColBox.SetPosition(tempPos);
 
 				vec2f tempSize;
-				tempSize.x = BLOCKLENGTH;
-				tempSize.y = BLOCKHEIGHT / 2;
+				tempSize.x = TILEWIDTH;
+				tempSize.y = TILEHEIGHT / 2;
 
 				tempColBox.SetSize(tempSize);
 
@@ -64,14 +64,52 @@ void Engine::TilemapCollisionComp::CreateColBoxes()
 				Box2D tempColBox;
 
 				vec2f tempPos;
-				tempPos.x = (xPosVal * BLOCKLENGTH);
-				tempPos.y = (yPosVal * BLOCKHEIGHT + (3 * (BLOCKHEIGHT / 4)));
+				tempPos.x = (xPosVal * TILEWIDTH);
+				tempPos.y = (yPosVal * TILEHEIGHT + (3 * (TILEHEIGHT / 4)));
 
 				tempColBox.SetPosition(tempPos);
 
 				vec2f tempSize;
-				tempSize.x = BLOCKLENGTH;
-				tempSize.y = BLOCKHEIGHT / 4;
+				tempSize.x = TILEWIDTH;
+				tempSize.y = TILEHEIGHT / 4;
+
+				tempColBox.SetSize(tempSize);
+
+				collisionBoxes.push_back(tempColBox);
+			}
+
+			if (item == 4)
+			{
+				Box2D tempColBox;
+
+				vec2f tempPos;
+				tempPos.x = (xPosVal * TILEWIDTH);
+				tempPos.y = (yPosVal * TILEHEIGHT);
+
+				tempColBox.SetPosition(tempPos);
+
+				vec2f tempSize;
+				tempSize.x = TILEWIDTH / 2;
+				tempSize.y = TILEHEIGHT;
+
+				tempColBox.SetSize(tempSize);
+
+				collisionBoxes.push_back(tempColBox);
+			}
+
+			if (item == 5)
+			{
+				Box2D tempColBox;
+
+				vec2f tempPos;
+				tempPos.x = (xPosVal * TILEWIDTH + (TILEWIDTH / 2));
+				tempPos.y = (yPosVal * TILEHEIGHT);
+
+				tempColBox.SetPosition(tempPos);
+
+				vec2f tempSize;
+				tempSize.x = TILEWIDTH / 2;
+				tempSize.y = TILEHEIGHT;
 
 				tempColBox.SetSize(tempSize);
 
