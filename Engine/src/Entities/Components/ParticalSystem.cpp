@@ -254,6 +254,10 @@ namespace Engine
 		{
 		case ParticleTexture::Custom: {
 			tex = AssetManager::GetInstance()->LoadTexture("Custom", mParticleProperties.TexturePath);
+			if (tex == nullptr) {
+				tex = AssetManager::GetInstance()->LoadTexture("Circle", "Assets\\Textures\\Particle System Inbuilt\\Circle.png");
+				mParticleProperties.Style = ParticleTexture::Circle;
+			}
 			break;
 		}
 		case ParticleTexture::Circle: {

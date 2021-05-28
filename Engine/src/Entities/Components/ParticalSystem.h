@@ -70,6 +70,7 @@ namespace Engine
 		void SetColour(glm::vec4 colour) { mColour = colour; mRenderer->SetColour(mColour.r, mColour.g, mColour.b, mColour.a); }
 		void SetEmmitter(Emmitter style) { mEmmiter = style; }
 		void SetParticleTex(ParticleTexture style) { mParticleProperties.Style = style; }
+		void SetParticleTexPath(const char* path) { mParticleProperties.TexturePath = path; }
 		void SetParticleCount(int newSize);
 
 

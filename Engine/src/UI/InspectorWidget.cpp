@@ -477,7 +477,7 @@ namespace Engine
 
 		ImGui::PushID("texture style");
 		const char* textureStyles[] = { "Custom", "Circle", "Square", "Triangle" };
-		static const char* currItem = textureStyles[0];
+		static std::string currItem = textureStyles[0];
 
 		switch (c->GetParticleTexture()) {
 			case ParticleTexture::Custom: currItem = textureStyles[0]; break;
@@ -485,13 +485,13 @@ namespace Engine
 			case ParticleTexture::Square: currItem = textureStyles[2]; break;
 			case ParticleTexture::Triangle: currItem = textureStyles[3]; break;
 		}
-		static const char* prevItem = currItem;
+
 
 		ImGui::Columns(2);
 		ImGui::Text("Texture style");
 		ImGui::NextColumn();
 
-		if (ImGui::BeginCombo("##textureStyle", currItem)) // The second parameter is the label previewed before opening the combo.
+		if (ImGui::BeginCombo("##textureStyle", currItem.c_str())) // The second parameter is the label previewed before opening the combo.
 		{
 			for (int n = 0; n < IM_ARRAYSIZE(textureStyles); n++)
 			{
@@ -504,13 +504,20 @@ namespace Engine
 			ImGui::EndCombo();
 		}
 		ImGui::Columns(1);
-		if (prevItem != currItem) {
-			if (currItem == textureStyles[0]) c->SetParticleTex(ParticleTexture::Custom);
-			else if (currItem == textureStyles[1]) c->SetParticleTex(ParticleTexture::Circle);
-			else if (currItem == textureStyles[2]) c->SetParticleTex(ParticleTexture::Square);
-			else if (currItem == textureStyles[3]) c->SetParticleTex(ParticleTexture::Triangle);
-		}
+
+		if (currItem == textureStyles[0]) c->SetParticleTex(ParticleTexture::Custom);
+		else if (currItem == textureStyles[1]) c->SetParticleTex(ParticleTexture::Circle);
+		else if (currItem == textureStyles[2]) c->SetParticleTex(ParticleTexture::Square);
+		else if (currItem == textureStyles[3]) c->SetParticleTex(ParticleTexture::Triangle);
+
+		static std::string path;
+		ImGui::Text("Custom texture path:");
+		ImGui::InputText("##input", &path);
+		c->SetParticleTexPath(path.c_str());
+	
 		ImGui::PopID();
+
+	
 		
 
 		ImGui::Text("Color");
