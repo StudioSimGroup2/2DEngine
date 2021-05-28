@@ -50,11 +50,11 @@ namespace Engine
 		MSG msg = {};
 
 		mCurrentTime = std::chrono::high_resolution_clock::now();
-
-		mNewTime = std::chrono::high_resolution_clock::now();
-		mFrameTime = mNewTime - mCurrentTime;
+		mFrameTime = mCurrentTime - mNewTime;
 		mCurrentTime = mNewTime;
-
+		float  deltaTime = mFrameTime.count();
+		DeltaTime::GetInstance()->SetDeltaTime(deltaTime);
+		mNewTime = std::chrono::high_resolution_clock::now();
 		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
 		{
 			TranslateMessage(&msg);
@@ -66,6 +66,7 @@ namespace Engine
 			mRenderer->OnUpdate(static_cast<float>(mFrameTime.count()));  //everything is updating too fast, we need to cap the update speed
 			mRenderer->SwapBuffers();
 		}
+		
 	}
 
 	void WindowsSystem::EnableVSync(bool option)

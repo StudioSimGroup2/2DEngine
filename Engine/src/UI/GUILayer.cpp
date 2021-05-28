@@ -189,6 +189,8 @@ void GUILayer::Render()
 	ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 
 	mMenuBar.Render();
+	mProfiler.Render();
+
 
 #pragma region GUI Buttons //Fix dockspace issues
 

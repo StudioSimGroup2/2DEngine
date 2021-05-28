@@ -6,6 +6,7 @@
 
 #include "Engine/Core.h"
 #include "Common.h"
+#include "EngineTime.h"
 #include <iostream>
 
 namespace Engine

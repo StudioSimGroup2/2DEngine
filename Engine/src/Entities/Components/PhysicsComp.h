@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Component.h"
+
 #include <Utils/Math.h>
 #include <vector>
 
@@ -24,11 +25,14 @@ namespace Engine
 		float GetMass() { return mMass; }
 		float GetGravity() { return mGravity; }
 		float GetFriction() { return mFriction; }
+		float GetMaxSpeed() { return mMaxSpeed; }
+		vec2f GetVelocity() { return mCurrentVelocity; }
 		bool GetGrounded() { return mGrounded; }
 
 		void SetMass(float newMass) { mMass = newMass; }
 		void SetGravity(float newGravity) { mGravity = newGravity; }
 		void SetFriction(float newFriction) { mFriction = newFriction; }
+		void SetMaxSpeed(float newMaxSpeed) { mMaxSpeed = newMaxSpeed; }
 		void SetGrounded(bool newGrounded) { mGrounded = newGrounded; }
 
 		std::vector<vec2f> actingForces;
@@ -52,8 +56,12 @@ namespace Engine
 		vec2f* mPosition;
 		float mMass;
 		float mWeight;
-		float mGravity = 0.98f;
+		float mGravity = 9.8f;
 		float mFriction = 0.5f;
+
+		float accumulator = 0;
+
+		float mMaxSpeed = 200.0f;
 	};
 
 }

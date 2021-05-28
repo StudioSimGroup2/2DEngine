@@ -19,7 +19,7 @@ namespace Engine
 		void RenderSpriteComponent(SpriteComp* c);
 		void RenderPhysicsComponent(PhysicsComp* c);
 		void RenderScriptComponent(ScriptComp* c);
-		void TileMapComponent(TileMapComp* c);
+		void RenderTileMapComponent(TileMapComp* c);
 		void RenderCameraComponent(CameraComp* c);
 		void RenderBoxColComponent(ObjectCollisionComp* c);
 		void RenderLineColComponent(LineCollisionComp* c);

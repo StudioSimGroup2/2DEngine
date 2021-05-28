@@ -12,6 +12,8 @@ Engine::TilemapCollisionComp::~TilemapCollisionComp()
 
 void Engine::TilemapCollisionComp::CreateColBoxes()
 {
+	mTilemap = mParent->GetComponent<TileMapComp>()->GetTileMap();
+
 	int xPosVal = 0;
 	int yPosVal = 0;
 
@@ -24,14 +26,52 @@ void Engine::TilemapCollisionComp::CreateColBoxes()
 				Box2D tempColBox;
 
 				vec2f tempPos;
-				tempPos.x = (xPosVal * 32);
-				tempPos.y = (yPosVal * 32);
+				tempPos.x = (xPosVal * BLOCKHEIGHT);
+				tempPos.y = (yPosVal * BLOCKLENGTH);
 
 				tempColBox.SetPosition(tempPos);
 
 				vec2f tempSize;
-				tempSize.x = 32;
-				tempSize.y = 32;
+				tempSize.x = BLOCKLENGTH;
+				tempSize.y = BLOCKHEIGHT;
+
+				tempColBox.SetSize(tempSize);
+
+				collisionBoxes.push_back(tempColBox);
+			}
+
+			if (item == 2)
+			{
+				Box2D tempColBox;
+
+				vec2f tempPos;
+				tempPos.x = (xPosVal * BLOCKLENGTH);
+				tempPos.y = (yPosVal * BLOCKHEIGHT + (BLOCKHEIGHT / 2));
+
+				tempColBox.SetPosition(tempPos);
+
+				vec2f tempSize;
+				tempSize.x = BLOCKLENGTH;
+				tempSize.y = BLOCKHEIGHT / 2;
+
+				tempColBox.SetSize(tempSize);
+
+				collisionBoxes.push_back(tempColBox);
+			}
+
+			if (item == 3)
+			{
+				Box2D tempColBox;
+
+				vec2f tempPos;
+				tempPos.x = (xPosVal * BLOCKLENGTH);
+				tempPos.y = (yPosVal * BLOCKHEIGHT + (3 * (BLOCKHEIGHT / 4)));
+
+				tempColBox.SetPosition(tempPos);
+
+				vec2f tempSize;
+				tempSize.x = BLOCKLENGTH;
+				tempSize.y = BLOCKHEIGHT / 4;
 
 				tempColBox.SetSize(tempSize);
 
@@ -51,9 +91,13 @@ void Engine::TilemapCollisionComp::CreateColBoxes()
 void Engine::TilemapCollisionComp::Init()
 {
 	mType = COMPONENT_COLTILE;
-	//Get Parent Tilemap
-	mTilemap = mParent->GetComponent<TileMapComp>()->GetTileMap();
 	//Create Collision Boxes
+	CreateColBoxes();
+}
+
+void Engine::TilemapCollisionComp::RefreshTileBoxes()
+{
+	collisionBoxes.clear();
 	CreateColBoxes();
 }
 

@@ -84,7 +84,7 @@ namespace Engine
 				case COMPONENT_TILEMAP:
 					if (ImGui::CollapsingHeader("TileMap", &close))
 					{
-						TileMapComponent(dynamic_cast<TileMapComp*>(c));
+						RenderTileMapComponent(dynamic_cast<TileMapComp*>(c));
 					}
 					break;
 
@@ -317,6 +317,10 @@ namespace Engine
 		float physMass = c->GetMass();
 		float physGrav = c->GetGravity();
 		float physFric = c->GetFriction();
+		float physMaxSpeed = c->GetMaxSpeed();
+
+		vec2f physVelocity = c->GetVelocity();
+
 
 		ImGui::PushID("mass");
 
@@ -348,9 +352,34 @@ namespace Engine
 
 		ImGui::PopID();
 
+
+		ImGui::PushID("max speed");
+
+		ImGui::Columns(2);
+		ImGui::Text("Max Speed");
+		ImGui::NextColumn();
+		ImGui::DragFloat("##max speed", &physMaxSpeed, 0.1f);
+		ImGui::Columns(1);
+
+		ImGui::PopID();
+
+
+		ImGui::PushID("velocity");
+
+		ImGui::Columns(2);
+		ImGui::Text("Velocity");
+		ImGui::NextColumn();
+		ImGui::Text("X: %f", physVelocity.x);
+		ImGui::SameLine();
+		ImGui::Text("Y: %f", physVelocity.y);
+		ImGui::Columns(1);
+
+		ImGui::PopID();
+
 		c->SetMass(physMass);
 		c->SetGravity(physGrav);
 		c->SetFriction(physFric);
+		c->SetMaxSpeed(physMaxSpeed);
 	}
 
 	void InspectorWidget::RenderScriptComponent(ScriptComp* c)
@@ -388,7 +417,7 @@ namespace Engine
 		ImGui::PopID();
 	}
 
-	void InspectorWidget::TileMapComponent(TileMapComp* c)
+	void InspectorWidget::RenderTileMapComponent(TileMapComp* c)
 	{
 		ImGui::PushID("TileMap");
 
@@ -501,27 +530,27 @@ namespace Engine
 		ImGui::DragFloat("##far", &cFar, 0.1f);
 		ImGui::Columns(1);
 
-		ImGui::PopID();
+ImGui::PopID();
 
-		ImGui::PushID("depth");
+ImGui::PushID("depth");
 
-		ImGui::Columns(2);
-		ImGui::Text("Depth");
-		ImGui::NextColumn();
-		ImGui::DragFloat("##depth", &depth, 0.1f);
-		ImGui::Columns(1);
+ImGui::Columns(2);
+ImGui::Text("Depth");
+ImGui::NextColumn();
+ImGui::DragFloat("##depth", &depth, 0.1f);
+ImGui::Columns(1);
 
-		ImGui::PopID();
+ImGui::PopID();
 
-		if (cFar > cNear)
-			c->SetFar(cFar);
+if (cFar > cNear)
+c->SetFar(cFar);
 
-		c->SetFOV(fov);
+c->SetFOV(fov);
 
-		if (cNear > 0.1f && cFar > cNear)
-			c->SetNear(cNear);
+if (cNear > 0.1f && cFar > cNear)
+c->SetNear(cNear);
 
-		c->SetDepth(depth);
+c->SetDepth(depth);
 	}
 
 	void InspectorWidget::RenderBoxColComponent(ObjectCollisionComp* c)
@@ -598,6 +627,11 @@ namespace Engine
 		ImGui::PopID();
 
 		c->SetBRange(boundSize);
+
+		if (ImGui::Button("Refresh Collision Boxes"))
+		{
+			c->RefreshTileBoxes();
+		}
 	}
 
 	InspectorWidget::InspectorWidget()

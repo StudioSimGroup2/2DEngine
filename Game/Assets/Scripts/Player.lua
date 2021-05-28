@@ -2,7 +2,7 @@ local health = 100
 local speed = 2.0
 local jumpHeight = -1.0
 local gravity = -8.0
-local grounded = false
+local grounded = true
 
 function OnStart()
 end

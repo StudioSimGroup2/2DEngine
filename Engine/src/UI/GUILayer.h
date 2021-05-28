@@ -6,6 +6,7 @@
 #include "SceneHierarchyWidget.h"
 #include "InspectorWidget.h"
 #include "LoggerWidget.h"
+#include "ProfilerWidget.h"
 
 struct ImGuiViewport;
 
@@ -34,6 +35,7 @@ private:
 	SceneHierarchyWidget mSceneHierarchy;
 	InspectorWidget mInspector;
 	LoggerWidget mLogger;
+	ProfilerWidget mProfiler;
 };
 
 
