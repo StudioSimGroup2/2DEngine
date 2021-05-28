@@ -452,7 +452,7 @@ namespace Engine
 
 	void InspectorWidget::RenderParticleComponent(ParticleComp* c)
 	{
-		float count = c->GetParticleCount();
+		int count = c->GetParticleCount();
 		float rate = c->GetRate();
 		float gravity = c->GetGravity();
 		float lifetime = c->GetLifetime();
@@ -467,7 +467,7 @@ namespace Engine
 		ImGui::Columns(2);
 		ImGui::Text("Particle count");
 		ImGui::NextColumn();
-		ImGui::DragFloat("##Count", &count, 0.1f);
+		ImGui::DragInt("##Count", &count, 1, 0);
 		ImGui::Columns(1);
 		ImGui::PopID();
 
@@ -541,6 +541,9 @@ namespace Engine
 #endif
 			ImGui::Image((void*)(intptr_t)t->GetTexID(), ImVec2(32.0f, 32.0f));
 		}*/
+
+		if (count != c->GetParticleCount() && count >= 0)
+			c->SetParticleCount(count);
 
 		c->SetRate(rate);
 		c->SetGravity(gravity);

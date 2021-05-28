@@ -27,7 +27,9 @@ namespace Engine
 	struct Particle
 	{
 		//Particle();
-		//~Particle();
+		~Particle() {
+			Texture = nullptr; // because we use an asset manager, we dont wish to delete it.
+		}
 
 
 		vec2f Position;		/* Local position of a single partical */
@@ -68,8 +70,10 @@ namespace Engine
 		void SetColour(glm::vec4 colour) { mColour = colour; mRenderer->SetColour(mColour.r, mColour.g, mColour.b, mColour.a); }
 		void SetEmmitter(Emmitter style) { mEmmiter = style; }
 		void SetParticleTex(ParticleTexture style) { mParticleProperties.Style = style; }
+		void SetParticleCount(int newSize);
 
-		float GetParticleCount() { return mParticleCount; }
+
+		int GetParticleCount() { return mParticleCount; }
 		vec2f& GetPosition() { return mPosition; }
 		vec2f& GetScale() { return mParticleProperties.Scale; }
 		vec2f& GetSize() { return mSize; }

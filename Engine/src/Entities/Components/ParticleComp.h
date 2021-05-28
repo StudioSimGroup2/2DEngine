@@ -20,7 +20,7 @@ namespace Engine
 		void Update() override;
 		void Render() override;
 
-		float GetParticleCount() { return mParticleSystem->GetParticleCount(); }
+		int GetParticleCount() { return mParticleSystem->GetParticleCount(); }
 		float& GetRate() { return mParticleSystem->GetRate(); }
 		float& GetGravity() { return mParticleSystem->GetGravity(); }
 		float GetLifetime() const { return mParticleSystem->GetLifetime(); }
@@ -39,7 +39,7 @@ namespace Engine
 		void SetColour(glm::vec4 colour) { mParticleSystem->SetColour(colour); }
 		void SetEmmitter(Emmitter style) { mParticleSystem->SetEmmitter(style); }
 		void SetParticleTex(ParticleTexture style) { mParticleSystem->SetParticleTex(style); }
-
+		void SetParticleCount(int newSize) { mParticleSystem->SetParticleCount(newSize); }
 		//void ShowEmmiterIcon(bool flag) { mShowEmmiterIcon = flag; }
 
 

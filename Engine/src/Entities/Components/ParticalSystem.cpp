@@ -84,7 +84,6 @@ namespace Engine
 				continue;
 			}
 
-			//p->Lifetime -= dt;
 			p->Lifetime -= DT;
 
 			// If a partical is "dead"
@@ -144,24 +143,59 @@ namespace Engine
 		//);
 	}
 
+	void ParticleSystem::SetParticleCount(int newSize)
+	{
+		int diff = newSize - mParticleCount;
+		if (newSize > mParticleCount)
+		{
+			for (int i = 0; i < diff; i++) {
+				switch (mEmmiter)
+				{
+					case Emmitter::Square: {
+						Particle* p = new Particle(mParticleProperties);
+						p->Position = vec2f(rand() % (int)mSize.x + mPosition.x, rand() % (int)mSize.y + mPosition.y);
+
+						SetupTexture(p);
+
+						mParticles.push_back(p);
+
+						// Setup the Emmiter icon
+						//Texture* icon = AssetManager::GetInstance()->LoadTexture("SquareIcon", "Assets\\Textures\\Particle System Inbuilt\\SquareEmmiterIcon.dds");
+						//D3D11Renderer2D* re = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDevice);
+						//mEmmiterIcon = new Sprite("Partical system:", &mPosition, icon);
+						//mEmmiterIcon->AddRendererComponent();
+						break;
+					}
+				}
+			}
+		}
+		else {
+			diff *= -1; // Convert to positive so we can for-loop
+			mParticles.erase(mParticles.begin(), mParticles.begin() + diff);
+		}
+
+		mParticleCount = newSize;
+		Logger::LogMsg("Particle size", mParticles.size());
+		Logger::LogMsg("Particle cap", mParticles.capacity());
+	}
+
+
 	void ParticleSystem::InitParticles(size_t count)
 	{
-		mRenderer = Device::CreateRenderer(AssetManager::GetInstance()->GetShaderByName("Default"));
+		if (mRenderer == nullptr)
+			mRenderer = Device::CreateRenderer(AssetManager::GetInstance()->GetShaderByName("Default"));
+
 
 		switch (mEmmiter)
 		{
 		case Emmitter::Square: {
 
 			for (int i = 0; i < count; i++) {
-
-
 				Particle* p = new Particle(mParticleProperties);
 				p->Position = vec2f(rand() % (int)mSize.x + mPosition.x, rand() % (int)mSize.y + mPosition.y);
 		
 				SetupTexture(p);
 
-				//D3D11Renderer2D* re = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDevice);
-				//p->Texture->AddRendererComponent();
 				mParticles.push_back(p);
 			}
 
