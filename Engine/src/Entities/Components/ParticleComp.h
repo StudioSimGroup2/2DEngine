@@ -27,13 +27,18 @@ namespace Engine
 		vec2f& GetVelocity() { return mParticleSystem->GetVelocity(); }
 		Texture* GetTexture() { return mParticleSystem->GetTexture(); }
 		Emmitter& GetEmmiter() { return mParticleSystem->GetEmmiter(); }
-
+		const glm::vec4& GetColour() const { return mParticleSystem->GetColour(); }
+		const Emmitter GetEmmitter() const { return mParticleSystem->GetEmmiter(); }
+		const ParticleTexture GetParticleTexture() const { return mParticleSystem->GetParticleTex(); }
 
 
 		void SetRate(float rate) { mParticleSystem->SetRate(rate); }
 		void SetGravity(float ammount) { mParticleSystem->SetGravity(ammount); }
 		void SetLifetime(float lifetime) { mParticleSystem->SetLifetime(lifetime); }
 		void SetVelocity(vec2f velocity) { mParticleSystem->SetVelocity(velocity); }
+		void SetColour(glm::vec4 colour) { mParticleSystem->SetColour(colour); }
+		void SetEmmitter(Emmitter style) { mParticleSystem->SetEmmitter(style); }
+		void SetParticleTex(ParticleTexture style) { mParticleSystem->SetParticleTex(style); }
 
 		//void ShowEmmiterIcon(bool flag) { mShowEmmiterIcon = flag; }
 

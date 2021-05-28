@@ -47,10 +47,10 @@ namespace Engine
 	
 	ParticleSystem::~ParticleSystem()
 	{
-		for (Particle* p : mParticles) {
-			if (p)
-				delete p->Texture;
-		}
+		//for (Particle* p : mParticles) {
+		//	//if (p)		// We dont delete textures...
+		//	//	delete p->Texture;
+		//}
 		mParticles.clear();
 	
 		//delete mEmmiterIcon; // Cannot delete atm because its sprite takes a pointer to a position 

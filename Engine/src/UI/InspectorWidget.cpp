@@ -457,6 +457,11 @@ namespace Engine
 		float gravity = c->GetGravity();
 		float lifetime = c->GetLifetime();
 		vec2f velocity = c->GetVelocity();
+		glm::vec4 colour = c->GetColour();
+
+		ImGui::Text("Color");
+		ImGui::SameLine();
+		ImGui::ColorEdit4("##colpicker", (float*)&colour, ImGuiColorEditFlags_NoDragDrop);
 
 		ImGui::PushID("count");
 		ImGui::Columns(2);
@@ -499,6 +504,33 @@ namespace Engine
 		ImGui::PopID();
 
 
+		ImGui::PushID("Emmitter style");
+		const char* items[] = { "Square", "Circle"};
+		static const char* current_item = items[0];
+		if (c->GetEmmiter() == Emmitter::Square) current_item = "Square";
+		if (c->GetEmmiter() == Emmitter::Circle) current_item = "Circle";
+		ImGui::Columns(2);
+		ImGui::Text("Emmitter");
+		ImGui::NextColumn();
+
+		if (ImGui::BeginCombo("##combo", current_item)) // The second parameter is the label previewed before opening the combo.
+		{
+			for (int n = 0; n < IM_ARRAYSIZE(items); n++)
+			{
+				bool is_selected = (current_item == items[n]); // You can store your selection however you want, outside or inside your objects
+				if (ImGui::Selectable(items[n], is_selected))
+					current_item = items[n];
+					if (is_selected)
+						ImGui::SetItemDefaultFocus(); 
+			}
+			ImGui::EndCombo();
+		}
+		ImGui::Columns(1);
+		if (current_item == "Square") c->SetEmmitter(Emmitter::Square);
+		if (current_item == "Circle") c->SetEmmitter(Emmitter::Circle);
+		ImGui::PopID();
+
+
 
 	/*	ImGui::SameLine();
 		if (c->GetTexture()) {
@@ -514,6 +546,7 @@ namespace Engine
 		c->SetGravity(gravity);
 		c->SetLifetime(lifetime);
 		c->SetVelocity(velocity);
+		c->SetColour(colour);
 	}
 
 	InspectorWidget::InspectorWidget()

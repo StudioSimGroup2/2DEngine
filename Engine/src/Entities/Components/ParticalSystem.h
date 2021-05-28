@@ -65,6 +65,9 @@ namespace Engine
 		void SetSize(const vec2f& size) { mSize = size; }
 		void SetLifetime(float lifetime) { mParticleProperties.Lifetime = lifetime; }
 		void SetVelocity(vec2f velocity) { mParticleProperties.Velocity = velocity; }
+		void SetColour(glm::vec4 colour) { mColour = colour; mRenderer->SetColour(mColour.r, mColour.g, mColour.b, mColour.a); }
+		void SetEmmitter(Emmitter style) { mEmmiter = style; }
+		void SetParticleTex(ParticleTexture style) { mParticleProperties.Style = style; }
 
 		float GetParticleCount() { return mParticleCount; }
 		vec2f& GetPosition() { return mPosition; }
@@ -76,6 +79,8 @@ namespace Engine
 		vec2f& GetVelocity() { return mParticleProperties.Velocity; }
 		Texture* GetTexture() { return mParticleProperties.Texture; }
 		Emmitter& GetEmmiter() { return mEmmiter; }
+		ParticleTexture GetParticleTex() { return mParticleProperties.Style; }
+		const glm::vec4& GetColour() const { return mColour; }
 		void ShowEmmiterIcon(bool flag) { mShowEmmiterIcon = flag; }
 
 	private:
@@ -87,7 +92,8 @@ namespace Engine
 		vec2f mSize;
 		size_t mParticleCount;
 		Emmitter mEmmiter;
-		Texture* mEmmiterIcon; //?? not sure how to hanle this 
+		Texture* mEmmiterIcon; 
+		glm::vec4 mColour = { 1,1,1,1 };		/* Sprite colour tint */
 
 		float mGravity;
 		float mRate;							/* Constant rate of partical emmission */

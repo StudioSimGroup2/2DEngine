@@ -16,12 +16,14 @@ namespace Engine {
 	ParticleComp::~ParticleComp()
 	{
 		mParent = nullptr;
+		delete mParticleSystem;
 	}
 
 
 	void ParticleComp::Init()
 	{
 		mType = TYPE::COMPONENT_PARTICLE;
+		
 
 		vec2f emmitterPos = mParent->GetComponent<TransformComp>()->GetPosition();
 		vec2f particleScale = mParent->GetComponent<TransformComp>()->GetScale();
