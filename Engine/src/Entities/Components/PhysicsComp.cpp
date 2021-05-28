@@ -60,7 +60,6 @@ void Engine::PhysicsComp::UpdateForces(float dT, vec2f accel)
 void Engine::PhysicsComp::Update()
 {
 	float deltaTime = DeltaTime::GetInstance()->GetDeltaTime();
-	//float dkfjdsf = float(0.016);
 	Update(deltaTime);
 }
 
@@ -114,11 +113,4 @@ void Engine::PhysicsComp::Update(float dT)
 	position += (mCurrentVelocity * dT) /*+ (acceleration * 0.5f * (dT * dT))*/;
 	
 	mParent->GetComponent<TransformComp>()->SetPosition(position);
-
-	accumulator++;
-
-	if (accumulator > 600)
-	{
-		int a = 0;
-	}
 }

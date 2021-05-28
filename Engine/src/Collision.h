@@ -9,6 +9,8 @@
 class Collision
 {
 private:
+	static bool DoCollisionChecks(Engine::GameObject* object1, Engine::GameObject* object2);
+
 	//Check box against box
 	static bool BoxBoxCheck(Engine::GameObject* object1, Engine::GameObject* object2);
 
