@@ -437,12 +437,25 @@ namespace Engine
 			}
 			ImGui::SameLine();
 			ImGui::PopID();
-			if (ImGui::GetIO().MouseDown[0])
+
+			
+
+			if (ImGui::GetIO().MouseDown[1])
 			{
 				//TODO change mousepos to use world pos of camera 
-				vec2f mousePos = vec2f(InputManager::GetInstance()->GetMousePosition().x, InputManager::GetInstance()->GetMousePosition().y);
-				/*Logger::LogMsg("Mouse pos X:", int(mousePos.x / TILEHEIGHT));
-				Logger::LogMsg("Mouse pos Y:", int(mousePos.y / TILEHEIGHT));*/
+				vec2f mousePos = vec2f(InputManager::GetInstance()->GetMouseScreenPosition().x, InputManager::GetInstance()->GetMouseScreenPosition().y);
+				mousePos.x /= InputManager::GetInstance()->GetScreenSize().x;
+				mousePos.y /= InputManager::GetInstance()->GetScreenSize().y;
+
+				vec2f screenSize = InputManager::GetInstance()->GetScreenSize();
+
+				mousePos.x -= c->GetGameObject()->GetComponent<TransformComp>()->GetPosition().x;
+				mousePos.y -= c->GetGameObject()->GetComponent<TransformComp>()->GetPosition().y;
+
+				glm::vec4 CameraPos = CameraManager::Get()->GetPrimaryCamera()->GetAt();
+				mousePos.x += CameraPos.x;
+				mousePos.y -= CameraPos.y;
+
 				c->ChangeTile(TileID, vec2i((mousePos.y / TILEHEIGHT), (mousePos.x / TILEWIDTH)));
 			}
 

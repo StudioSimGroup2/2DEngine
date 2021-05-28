@@ -259,6 +259,11 @@ void GUILayer::Render()
 	if (mouseOffset.y > (gameScreenB.y - gameScreenA.y))
 		mouseOffset.y = gameScreenB.y - gameScreenA.y;
 
+	InputManager::GetInstance()->SetMouseScreenPosition(vec2f(mouseOffset.x, mouseOffset.y));
+	vec2f WindowSize = vec2f(ImGui::GetMainViewport()->Size.x, ImGui::GetMainViewport()->Size.y);
+	vec2f renderSize = vec2f(gameScreenB.x - gameScreenA.x , gameScreenB.y - gameScreenA.y);
+	InputManager::GetInstance()->SetScreenSize(WindowSize, renderSize);
+
 #if GRAPHICS_LIBRARY ==  1
 	ImGui::Image((void*)(intptr_t)SceneManager::GetInstance()->GetRenderToTexID(), ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
 #elif GRAPHICS_LIBRARY == 0
