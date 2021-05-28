@@ -30,6 +30,8 @@ namespace Engine
 		void EnableEditorMode() { mEditorMode = true; }
 		void DisableEditorMode() { mEditorMode = false; }
 
+		bool GetRunTime() { return mEditorMode; }
+
 		GameObject* CreateObject();
 
 		void DestroyObject(GameObject* go);

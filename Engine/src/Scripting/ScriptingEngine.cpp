@@ -71,6 +71,7 @@ namespace Engine
 		mState.new_usertype<SpriteComp>("SpriteComp", sol::base_classes, sol::bases<Component>(),
 
 			"SetPath", &SpriteComp::SetTexturePath,
+			"LoadSpriteSheet", &SpriteComp::SetSpriteSheetPath,
 
 			"SetTexture", &SpriteComp::SetTexture,
 			"GetTexture", &SpriteComp::GetTexture,
@@ -82,7 +83,10 @@ namespace Engine
 			"GetFlipY", &SpriteComp::GetFlipY,
 
 			"SetColour", &SpriteComp::SetColour,
-			"GetColour", &SpriteComp::GetColour
+			"GetColour", &SpriteComp::GetColour,
+
+			"ChangeSprite", &SpriteComp::SetSprite,
+			"GetCurrentSprite", &SpriteComp::GetSprite
 			);
 
 		mState.new_usertype<GameObject>("GameObject",

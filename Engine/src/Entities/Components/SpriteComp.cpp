@@ -31,6 +31,9 @@ namespace Engine
 
 	void SpriteComp::Render()
 	{
+		if (!mRenderer)
+			return;
+
 #if GRAPHICS_LIBRARY == 0
 		dynamic_cast<D3D11Renderer2D*>(mRenderer)->Draw(mParent->GetComponent<TransformComp>()->GetPosition(),
 			mParent->GetComponent<TransformComp>()->GetRotation(),
@@ -49,7 +52,31 @@ namespace Engine
 	void SpriteComp::SetTexturePath(const std::string path)
 	{
 		SetTexture(AssetManager::GetInstance()->LoadTexture(mParent->GetName() + " Tex", path));
-		mFilePath = path;
+
+		if (mRenderer)
+			delete mRenderer;
+
+		mRenderer = Device::CreateRenderer(AssetManager::GetInstance()->GetShaderByName("Default"));
+	}
+
+	void SpriteComp::SetSpriteSheetPath(const std::string path, int numOfSprites)
+	{
+		SetTexture(AssetManager::GetInstance()->LoadSpriteSheet(mParent->GetName() + " Tex", path, numOfSprites));
+
+		if (mRenderer)
+			delete mRenderer;
+
+		mRenderer = Device::CreateSpriteSheetRenderer(AssetManager::GetInstance()->GetShaderByName("Default"), mTexture->GetWidth(), mTexture->GetHeight(), mSpritePos);
+	}
+
+	void SpriteComp::SetSprite(int posX, int posY)
+	{
+		if (!mTexture->IsSpriteSheet())
+			return;
+		
+		mSpritePos = vec2i(posX, posY);
+
+		mRenderer->UpdateBuffers(mTexture->GetWidth(), mTexture->GetHeight(), mSpritePos.x, mSpritePos.y);
 	}
 
 	void* SpriteComp::GetTexID()
@@ -68,6 +95,7 @@ namespace Engine
 	void SpriteComp::Init()
 	{
 		mRenderer = Device::CreateRenderer(AssetManager::GetInstance()->GetShaderByName("Default"));
+
 		mType = COMPONENT_SPRITE;
 	}
 

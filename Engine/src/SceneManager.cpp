@@ -168,7 +168,6 @@ namespace Engine
 				if (path != "")
 				{
 					NewSprite->SetTexture(AssetManager::GetInstance()->LoadTexture(NewObject->GetName(), path));
-					NewSprite->Setpath(path);
 				}
 				//Colour
 				float colour[4];

@@ -15,12 +15,15 @@ namespace Engine
 	{
 	public:
 		D3D11Renderer2D(Shader* shader, D3D11Device* dev);
+		D3D11Renderer2D(Shader* shader, D3D11Device* dev, int cellWidth, int cellHeight, vec2i position);
 		~D3D11Renderer2D();
 
 		void Draw(vec2f& position, vec2f& rotation, vec2f& scale, Texture* textureToRender) override;
+
+		virtual void UpdateBuffers(int cellWidth, int cellHeight, int posX, int posY) override;
 		 
 	private:
-		void InitBuffers(ID3D11Device* dev);
+		void InitBuffers(ID3D11Device* dev, int cellWidth = -1, int cellHeight = -1, int posX = -1, int posY = -1);
 
 		ID3D11Buffer* mVertexBuffer = nullptr, * mIndexBuffer = nullptr;
 		ID3D11Buffer* mConstantBuffer;

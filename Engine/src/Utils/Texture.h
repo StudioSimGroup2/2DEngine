@@ -22,7 +22,25 @@ namespace Engine
 
 		virtual void* GetTexID() = 0;
 
+		bool IsSpriteSheet() { return mMultiple; }
+
+		void SetMultiple(bool option) { mMultiple = option; }
+
+		int GetNumOfSprites() { return mNumOfSprites; }
+
+		void SetNumOfSprites(int value) { mNumOfSprites = value; }
+
+		void SetSpriteWidth(int value) { mSpriteWidth = value; }
+		void SetSpriteHeight(int value) { mSpriteHeight = value; }
+
+		int GetSpriteHeight() { return mSpriteHeight; }
+		int GetSpriteWidth() { return mSpriteWidth; }
+
 	protected:
+		bool mMultiple;
+		int mNumOfSprites;
+		int mSpriteWidth, mSpriteHeight;
+
 		std::string mPath;
 		std::string mName;
 

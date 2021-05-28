@@ -23,8 +23,12 @@ namespace Engine
 		virtual void InternalRender() override;
 
 		void SetTexturePath(const std::string path);
+		void SetSpriteSheetPath(const std::string path, int numOfSprites);
 		void SetTexture(Texture* texture) { mTexture = texture; }
 		Texture* GetTexture() const { return mTexture; }
+
+		void SetSprite(int posX, int posY);
+		vec2i GetSprite() { return mSpritePos; }
 		
 		bool GetFlipX() { return mRenderer->GetFlipX(); }
 		bool GetFlipY() { return mRenderer->GetFlipY(); }
@@ -36,14 +40,10 @@ namespace Engine
 		float (&GetColour())[4] { return mRenderer->GetColour(); }
 
 		void* GetTexID();
-		std::string getpath() { return mFilePath; };
-		void Setpath(std::string path) { mFilePath = path; };
-	private:
 
+	private:
+		vec2i mSpritePos;
 		Texture* mTexture = nullptr;
 		Renderer2D* mRenderer = nullptr;
-		std::string mFilePath;
-
-
 	};
 }

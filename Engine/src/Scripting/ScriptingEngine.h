@@ -31,6 +31,6 @@ namespace Engine
 
 		sol::environment mGlobalEnvironment;
 
-		sol::state mState;;
+		sol::state mState;
 	};
 }
