@@ -339,7 +339,7 @@ namespace Engine
 			case COMPONENT_SPRITE:
 			{
 				TiXmlElement* Sprite = new TiXmlElement("sprite");
-				Sprite->SetAttribute("path", CurrentGameObj->GetComponent<SpriteComp>()->getpath().c_str());
+				Sprite->SetAttribute("path", CurrentGameObj->GetComponent<SpriteComp>()->GetTexture()->GetPath().c_str());
 				char* Colour = new char();
 				std::sprintf(Colour, "%f %f %f %f", CurrentGameObj->GetComponent<SpriteComp>()->GetColour()[0], CurrentGameObj->GetComponent<SpriteComp>()->GetColour()[1], CurrentGameObj->GetComponent<SpriteComp>()->GetColour()[2], CurrentGameObj->GetComponent<SpriteComp>()->GetColour()[3]);
 				Sprite->SetAttribute("Colour", Colour);
