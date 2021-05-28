@@ -86,12 +86,13 @@ namespace Engine
 
 			p->Lifetime -= DT;
 
-			// If a partical is "dead"
+			// If a particle is "dead"
 			if (p->Lifetime <= 0.0f) {
 				p->Alive = false;
 				p->Velocity = mParticleProperties.Velocity;
 				p->Lifetime = mParticleProperties.Lifetime;
 				p->Scale = mParticleProperties.Scale;
+				SetupTexture(p);
 
 				switch (mEmmiter) {
 				case Emmitter::Square:
@@ -248,18 +249,29 @@ namespace Engine
 
 	void ParticleSystem::SetupTexture(Particle* particle)
 	{
-
-		switch (particle->Style)
+		Texture* tex = nullptr;
+		switch (mParticleProperties.Style)
 		{
 		case ParticleTexture::Custom: {
-			Texture* tex = AssetManager::GetInstance()->LoadTexture("Square", "Assets\\Textures\\Particle System Inbuilt\\Square.png");
-			particle->Texture = tex;
+			tex = AssetManager::GetInstance()->LoadTexture("Custom", mParticleProperties.TexturePath);
 			break;
 		}
-		//case ParticleTexture::Circle: particle->Texture = new Texture("Partical system:", &particle->Position, "Inbuilt Circle Tex", "Resources\\Textures\\Particle System Inbuilt\\Circle.dds"); break;
-		//case ParticleTexture::Square: particle->Texture = new Texture("Partical system:", &particle->Position, "Inbuilt Square Tex", "Resources\\Textures\\Particle System Inbuilt\\Square.dds"); break;
-		//case ParticleTexture::Triangle: particle->Texture = new Texture("Partical system:", &particle->Position, "Inbuilt Triangle Tex", "Resources\\Textures\\Particle System Inbuilt\\Triangle.dds"); break;
+		case ParticleTexture::Circle: {
+			tex = AssetManager::GetInstance()->LoadTexture("Circle", "Assets\\Textures\\Particle System Inbuilt\\Circle.png");
+			break;
 		}
+		case ParticleTexture::Square: {
+			tex = AssetManager::GetInstance()->LoadTexture("Square", "Assets\\Textures\\Particle System Inbuilt\\Square.png");
+			break;
+		}
+		case ParticleTexture::Triangle: {
+			tex = AssetManager::GetInstance()->LoadTexture("Triangle", "Assets\\Textures\\Particle System Inbuilt\\Triangle.png");
+			break;
+		}
+		}
+
+		particle->Texture = tex;
+		mParticleProperties.Texture = tex;
 	}
 }
 #endif

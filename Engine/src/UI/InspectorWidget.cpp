@@ -459,6 +459,60 @@ namespace Engine
 		vec2f velocity = c->GetVelocity();
 		glm::vec4 colour = c->GetColour();
 
+
+		ImGui::PushID("texture");
+		ImGui::Columns(2);
+		ImGui::Text("Particle texture");
+		ImGui::NextColumn();
+		if (c->GetTexture()) {
+#if GRAPHICS_LIBRARY == 0
+			D3D11Texture* t = dynamic_cast<D3D11Texture*>(c->GetTexture());
+#elif GRAPHICS_LIBRARY == 1
+			OGLTexture* t = dynamic_cast<OGLTexture*>(c->GetTexture());
+#endif
+			ImGui::Image((void*)(intptr_t)t->GetTexID(), ImVec2(32.0f, 32.0f));
+		}
+		ImGui::Columns(1);
+		ImGui::PopID();
+
+		ImGui::PushID("texture style");
+		const char* textureStyles[] = { "Custom", "Circle", "Square", "Triangle" };
+		static const char* currItem = textureStyles[0];
+
+		switch (c->GetParticleTexture()) {
+			case ParticleTexture::Custom: currItem = textureStyles[0]; break;
+			case ParticleTexture::Circle: currItem = textureStyles[1]; break;
+			case ParticleTexture::Square: currItem = textureStyles[2]; break;
+			case ParticleTexture::Triangle: currItem = textureStyles[3]; break;
+		}
+		static const char* prevItem = currItem;
+
+		ImGui::Columns(2);
+		ImGui::Text("Texture style");
+		ImGui::NextColumn();
+
+		if (ImGui::BeginCombo("##textureStyle", currItem)) // The second parameter is the label previewed before opening the combo.
+		{
+			for (int n = 0; n < IM_ARRAYSIZE(textureStyles); n++)
+			{
+				bool is_selected = (currItem == textureStyles[n]); // You can store your selection however you want, outside or inside your objects
+				if (ImGui::Selectable(textureStyles[n], is_selected))
+					currItem = textureStyles[n];
+				if (is_selected)
+					ImGui::SetItemDefaultFocus();
+			}
+			ImGui::EndCombo();
+		}
+		ImGui::Columns(1);
+		if (prevItem != currItem) {
+			if (currItem == textureStyles[0]) c->SetParticleTex(ParticleTexture::Custom);
+			else if (currItem == textureStyles[1]) c->SetParticleTex(ParticleTexture::Circle);
+			else if (currItem == textureStyles[2]) c->SetParticleTex(ParticleTexture::Square);
+			else if (currItem == textureStyles[3]) c->SetParticleTex(ParticleTexture::Triangle);
+		}
+		ImGui::PopID();
+		
+
 		ImGui::Text("Color");
 		ImGui::SameLine();
 		ImGui::ColorEdit4("##colpicker", (float*)&colour, ImGuiColorEditFlags_NoDragDrop);
@@ -507,8 +561,11 @@ namespace Engine
 		ImGui::PushID("Emmitter style");
 		const char* items[] = { "Square", "Circle"};
 		static const char* current_item = items[0];
-		if (c->GetEmmiter() == Emmitter::Square) current_item = "Square";
-		if (c->GetEmmiter() == Emmitter::Circle) current_item = "Circle";
+
+		switch (c->GetEmmiter()) {
+			case Emmitter::Square: current_item = items[0]; break;
+			case Emmitter::Circle: current_item = items[1]; break;
+		}
 		ImGui::Columns(2);
 		ImGui::Text("Emmitter");
 		ImGui::NextColumn();
@@ -532,15 +589,7 @@ namespace Engine
 
 
 
-	/*	ImGui::SameLine();
-		if (c->GetTexture()) {
-#if GRAPHICS_LIBRARY == 0
-			D3D11Texture* t = dynamic_cast<D3D11Texture*>(c->GetTexture());
-#elif GRAPHICS_LIBRARY == 1
-			OGLTexture* t = dynamic_cast<OGLTexture*>(c->GetTexture());
-#endif
-			ImGui::Image((void*)(intptr_t)t->GetTexID(), ImVec2(32.0f, 32.0f));
-		}*/
+		
 
 		if (count != c->GetParticleCount() && count >= 0)
 			c->SetParticleCount(count);

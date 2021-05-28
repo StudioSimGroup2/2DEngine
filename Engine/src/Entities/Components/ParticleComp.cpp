@@ -28,12 +28,14 @@ namespace Engine {
 		vec2f emmitterPos = mParent->GetComponent<TransformComp>()->GetPosition();
 		vec2f particleScale = mParent->GetComponent<TransformComp>()->GetScale();
 
+		// Default values
 		Particle layout;
 		layout.Lifetime = 30; 
 		layout.Alive = false;
 		layout.Velocity = vec2f(10, 10);
-		layout.Style = ParticleTexture::Custom;
+		layout.Style = ParticleTexture::Circle;
 		layout.Scale = particleScale;
+		//layout.TexturePath = "Assets\\Textures\\Mario.png";
 
 		mParticleSystem = new ParticleSystem(emmitterPos, layout, 150);
 		mParticleSystem->SetRate(3);
