@@ -369,9 +369,9 @@ namespace Engine
 		ImGui::Columns(2);
 		ImGui::Text("Velocity");
 		ImGui::NextColumn();
-		ImGui::Text("X: %f", physVelocity.x);
+		ImGui::Text("X: %.2f", physVelocity.x);
 		ImGui::SameLine();
-		ImGui::Text("Y: %f", physVelocity.y);
+		ImGui::Text("Y: %.2f", physVelocity.y);
 		ImGui::Columns(1);
 
 		ImGui::PopID();
@@ -571,6 +571,8 @@ c->SetDepth(depth);
 		Box2D colBox = c->GetColBox();
 		float colBoxSize[2] = { colBox.GetSize().x, colBox.GetSize().y };
 		float boundSize = c->GetBRange();
+		bool isSolid = c->GetColToggle();
+		bool isTrigger = c->GetTrigger();
 
 		ImGui::PushID("Size");
 
@@ -592,14 +594,38 @@ c->SetDepth(depth);
 
 		ImGui::PopID();
 
+		ImGui::PushID("Solid");
+
+		ImGui::Columns(2);
+		ImGui::Text("Solid");
+		ImGui::NextColumn();
+		ImGui::Checkbox("Is Solid?", &isSolid);
+		ImGui::Columns(1);
+
+		ImGui::PopID();
+
+		ImGui::PushID("Trigger");
+
+		ImGui::Columns(2);
+		ImGui::Text("Trigger");
+		ImGui::NextColumn();
+		ImGui::Checkbox("Is Trigger?", &isTrigger);
+		ImGui::Columns(1);
+
+		ImGui::PopID();
+
 		c->GetColBox().SetSize(vec2f(colBoxSize[0], colBoxSize[1]));
 		c->SetBRange(boundSize);
+		c->SetColToggle(isSolid);
+		c->SetTrigger(isTrigger);
 	}
 
 	void InspectorWidget::RenderLineColComponent(LineCollisionComp* c)
 	{
 		float point1[2] = { c->GetPoint1().x, c->GetPoint1().y };
 		float point2[2] = { c->GetPoint2().x, c->GetPoint2().y };
+		bool isSolid = c->GetColToggle();
+		bool isTrigger = c->GetTrigger();
 
 		ImGui::PushID("Point 1");
 
@@ -621,13 +647,37 @@ c->SetDepth(depth);
 
 		ImGui::PopID();
 
+		ImGui::PushID("Solid");
+
+		ImGui::Columns(2);
+		ImGui::Text("Solid");
+		ImGui::NextColumn();
+		ImGui::Checkbox("Is Solid?", &isSolid);
+		ImGui::Columns(1);
+
+		ImGui::PopID();
+
+		ImGui::PushID("Trigger");
+
+		ImGui::Columns(2);
+		ImGui::Text("Trigger");
+		ImGui::NextColumn();
+		ImGui::Checkbox("Is Trigger?", &isTrigger);
+		ImGui::Columns(1);
+
+		ImGui::PopID();
+
 		c->SetPoint1(vec2f(point1[0], point1[1]));
 		c->SetPoint2(vec2f(point2[0], point2[1]));
+		c->SetColToggle(isSolid);
+		c->SetTrigger(isTrigger);
 	}
 
 	void InspectorWidget::RenderTilemapColComponent(TilemapCollisionComp* c)
 	{
 		float boundSize = c->GetBRange();
+		bool isSolid = c->GetColToggle();
+		bool isTrigger = c->GetTrigger();
 
 		ImGui::PushID("Bounding");
 
@@ -639,7 +689,29 @@ c->SetDepth(depth);
 
 		ImGui::PopID();
 
+		ImGui::PushID("Solid");
+
+		ImGui::Columns(2);
+		ImGui::Text("Solid");
+		ImGui::NextColumn();
+		ImGui::Checkbox("Is Solid?", &isSolid);
+		ImGui::Columns(1);
+
+		ImGui::PopID();
+
+		ImGui::PushID("Trigger");
+
+		ImGui::Columns(2);
+		ImGui::Text("Trigger");
+		ImGui::NextColumn();
+		ImGui::Checkbox("Is Trigger?", &isTrigger);
+		ImGui::Columns(1);
+
+		ImGui::PopID();
+
 		c->SetBRange(boundSize);
+		c->SetColToggle(isSolid);
+		c->SetTrigger(isTrigger);
 
 		if (ImGui::Button("Refresh Collision Boxes"))
 		{

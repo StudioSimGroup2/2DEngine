@@ -22,8 +22,10 @@ namespace Engine
 		void SetBRange(float newRange) { boundingRange = newRange; }
 
 		bool GetTrigger() { return isTrigger; }
-		void SetTrigger(bool newIsTrigger) { isTrigger = newIsTrigger; }
-						
+		void SetTrigger(bool newTrigger) { isTrigger = newTrigger; }
+
+		bool GetColToggle() { return isCollidable; }
+		void SetColToggle(bool newColToggle) { isCollidable = newColToggle; }
 
 		void RefreshTileBoxes();
 
@@ -37,6 +39,7 @@ namespace Engine
 		virtual void InternalRender() override;
 
 	private:
+		bool isCollidable = true;
 		bool isTrigger = false;
 		float boundingRange = 300;
 		TileMap mTilemap;

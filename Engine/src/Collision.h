@@ -26,5 +26,6 @@ private:
 	static float FindDistance(Box2D box1, Box2D box2);
 public:
 	static bool CheckCollision(Engine::GameObject* object1, Engine::GameObject* object2);
+	static bool CheckTrigger(Engine::GameObject* object1, Engine::GameObject* object2);
 };
 

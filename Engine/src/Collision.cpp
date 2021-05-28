@@ -143,6 +143,20 @@ bool Collision::CheckCollision(Engine::GameObject* object1, Engine::GameObject* 
 	if (object1 == object2)
 		return false;
 
+	if ((object1->GetComponent<Engine::ObjectCollisionComp>() != NULL && object1->GetComponent<Engine::ObjectCollisionComp>()->GetColToggle() == false) ||
+		(object1->GetComponent<Engine::TilemapCollisionComp>() != NULL && object1->GetComponent<Engine::TilemapCollisionComp>()->GetColToggle() == false) ||
+		(object1->GetComponent<Engine::LineCollisionComp>() != NULL && object1->GetComponent<Engine::LineCollisionComp>()->GetColToggle() == false))
+	{
+		return false;
+	}
+
+	if ((object2->GetComponent<Engine::ObjectCollisionComp>() != NULL && object2->GetComponent<Engine::ObjectCollisionComp>()->GetColToggle() == false) ||
+		(object2->GetComponent<Engine::TilemapCollisionComp>() != NULL && object2->GetComponent<Engine::TilemapCollisionComp>()->GetColToggle() == false) ||
+		(object2->GetComponent<Engine::LineCollisionComp>() != NULL && object2->GetComponent<Engine::LineCollisionComp>()->GetColToggle() == false))
+	{
+		return false;
+	}
+
 	if (object1->GetComponent<Engine::ObjectCollisionComp>() != NULL && object2->GetComponent<Engine::ObjectCollisionComp>() != NULL)
 	{
 		if (BoxBoxCheck(object1, object2))
@@ -190,4 +204,30 @@ bool Collision::CheckCollision(Engine::GameObject* object1, Engine::GameObject* 
 			return true;
 		}
 	}
+
+	return false;
+}
+
+bool Collision::CheckTrigger(Engine::GameObject* object1, Engine::GameObject* object2)
+{
+	if (object1 == object2)
+		return false;
+
+	if (CheckCollision(object1, object2))
+	{
+		if ((object1->GetComponent<Engine::ObjectCollisionComp>() != NULL && object1->GetComponent<Engine::ObjectCollisionComp>()->GetTrigger() == true) ||
+			(object1->GetComponent<Engine::TilemapCollisionComp>() != NULL && object1->GetComponent<Engine::TilemapCollisionComp>()->GetTrigger() == true) ||
+			(object1->GetComponent<Engine::LineCollisionComp>() != NULL && object1->GetComponent<Engine::LineCollisionComp>()->GetTrigger() == true))
+		{
+			return true;
+		}
+
+		if ((object2->GetComponent<Engine::ObjectCollisionComp>() != NULL && object2->GetComponent<Engine::ObjectCollisionComp>()->GetTrigger() == true) ||
+			(object2->GetComponent<Engine::TilemapCollisionComp>() != NULL && object2->GetComponent<Engine::TilemapCollisionComp>()->GetTrigger() == true) ||
+			(object2->GetComponent<Engine::LineCollisionComp>() != NULL && object2->GetComponent<Engine::LineCollisionComp>()->GetTrigger() == true))
+		{
+			return true;
+		}
+	}
+	return false;
 }
