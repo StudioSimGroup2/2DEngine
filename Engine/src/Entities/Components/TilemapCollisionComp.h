@@ -21,6 +21,10 @@ namespace Engine
 		float GetBRange() { return boundingRange; }
 		void SetBRange(float newRange) { boundingRange = newRange; }
 
+		bool GetTrigger() { return isTrigger; }
+		void SetTrigger(bool newIsTrigger) { isTrigger = newIsTrigger; }
+						
+
 		void RefreshTileBoxes();
 
 		// Inherited via Component
@@ -33,6 +37,7 @@ namespace Engine
 		virtual void InternalRender() override;
 
 	private:
+		bool isTrigger = false;
 		float boundingRange = 300;
 		TileMap mTilemap;
 		std::vector<Box2D> collisionBoxes;

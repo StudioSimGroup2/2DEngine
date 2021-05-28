@@ -24,6 +24,9 @@ namespace Engine
 		float GetBRange() { return boundingRange; }
 		void SetBRange(float newRange) { boundingRange = newRange; }
 
+		bool GetTrigger() { return isTrigger; }
+		void SetTrigger(bool newIsTrigger) { isTrigger = newIsTrigger; }
+
 		//Inherited from Component
 		virtual void Update() override;
 		virtual void Render() override;
@@ -33,6 +36,7 @@ namespace Engine
 		virtual void InternalRender() override;
 
 	private:
+		bool isTrigger = false;
 		float boundingRange = 300;
 		vec2f point1, point2;
 	};

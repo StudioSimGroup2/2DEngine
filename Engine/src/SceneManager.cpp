@@ -52,23 +52,28 @@ namespace Engine
 			{
 				go->Update();
 
-				if (go->GetComponent<Engine::PhysicsComp>() != NULL)
+				if ((go->GetComponent<Engine::ObjectCollisionComp>() != NULL && go->GetComponent<Engine::ObjectCollisionComp>()->GetTrigger() == false) ||
+					(go->GetComponent<Engine::TilemapCollisionComp>() != NULL && go->GetComponent<Engine::TilemapCollisionComp>()->GetTrigger() == false) ||
+					(go->GetComponent<Engine::LineCollisionComp>() != NULL && go->GetComponent<Engine::LineCollisionComp>()->GetTrigger() == false))
 				{
-					for (GameObject* compObj : mSceneObjects)
+					if (go->GetComponent<Engine::PhysicsComp>() != NULL)
 					{
-						if (go == compObj)
+						for (GameObject* compObj : mSceneObjects)
 						{
-							continue;
-						}
+							if (go == compObj)
+							{
+								continue;
+							}
 
-						if (Collision::CheckCollision(go, compObj))
-						{
-							go->GetComponent<Engine::PhysicsComp>()->SetGrounded(true);
-							break;
-						}
-						else
-						{
-							go->GetComponent<Engine::PhysicsComp>()->SetGrounded(false);
+							if (Collision::CheckCollision(go, compObj))
+							{
+								go->GetComponent<Engine::PhysicsComp>()->SetGrounded(true);
+								break;
+							}
+							else
+							{
+								go->GetComponent<Engine::PhysicsComp>()->SetGrounded(false);
+							}
 						}
 					}
 				}
