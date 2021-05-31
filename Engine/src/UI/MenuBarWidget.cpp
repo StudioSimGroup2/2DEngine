@@ -61,7 +61,7 @@ namespace Engine
 				//----------------------------------------------------------------------------------------------
 				if (ImGui::Button("Load scene"))
 				{
-					ifd::FileDialog::Instance().Open("SceneLoader", "Load", "Load (*.xml){.xml},.*");
+					ifd::FileDialog::Instance().Open("SceneLoader", "Load", "Load (*.lvl){.lvl},.*");
 				}
 				if (ifd::FileDialog::Instance().IsDone("SceneLoader"))
 				{
@@ -78,7 +78,7 @@ namespace Engine
 				//----------------------------------------------------------------------------------------------
 				if (ImGui::Button("Save scene"))
 				{
-					ifd::FileDialog::Instance().Save("SceneSaver", "Save", "Save (*.xml){.xml},.*");
+					ifd::FileDialog::Instance().Save("SceneSaver", "Save", "Save (*.lvl){.lvl},.*");
 				}
 				if (ifd::FileDialog::Instance().IsDone("SceneSaver"))
 				{

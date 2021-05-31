@@ -1,25 +1,39 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <PROJECT>
     <entities>
+<<<<<<< Updated upstream:Game/Assets/Scenes/TestScene.xml
         <gameobject name="First GameObject">
             <components>
                 <transform PosX="102" PosY="65" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
                 <sprite path="Assets\Textures\Mario.png" Colour="1.000000 1.000000 1.000000 1.000000" FlipX="1" FlipY="0" />
                 <physics />
                 <script path="Assets\Scripts\Player.lua" />
-                <tilemap path="Assets/TileMaps/Tanvit.xml" />
+=======
+        <gameobject name="TileMap">
+            <components>
+                <transform PosX="0" PosY="0" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <tilemap path="Assets\TileMaps\Save1.xml" />
+                <tilecol Bounding="300" />
+>>>>>>> Stashed changes:Game/Assets/Scenes/1234.lvl
             </components>
         </gameobject>
         <gameobject name="Second GameObject">
             <components>
-                <transform PosX="56" PosY="2" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <transform PosX="0" PosY="0" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
                 <script path="Assets/Scripts/Player.lua" />
+                <sprite path="Assets\Textures\Mario.png" Colour="1.000000 1.000000 1.000000 1.000000" FlipX="0" FlipY="0" />
+                <physics Mass="1" Gravity="9.8" Friction="0.5" MaxSpeed="200" />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" />
             </components>
         </gameobject>
         <gameobject name="Third GameObject">
             <components>
                 <transform PosX="78" PosY="9" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+<<<<<<< Updated upstream:Game/Assets/Scenes/TestScene.xml
                 <script path="" />
+=======
+                <linecol Point1X="0" Point1Y="300" Point2X="300" Point2Y="300" Bounding="300" />
+>>>>>>> Stashed changes:Game/Assets/Scenes/1234.lvl
             </components>
             <children>
                 <gameobject name="This is a child with a camera">

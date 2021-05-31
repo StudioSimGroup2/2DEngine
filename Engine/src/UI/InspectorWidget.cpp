@@ -487,7 +487,7 @@ namespace Engine
 		//----------------------------------------------------------------------------------------------
 		if (ImGui::Button("Save TileMap"))
 		{
-			ifd::FileDialog::Instance().Save("TileMapSaver", "LoadTileMap", "Texture File, (*.xml) {.xml}, .*");
+			ifd::FileDialog::Instance().Save("TileMapSaver", "SaveTileMap", "TileMap (*.xml) {.xml}, .*");
 		}
 
 		if (ifd::FileDialog::Instance().IsDone("TileMapSaver"))
