@@ -57,6 +57,8 @@ namespace Engine
 			//ImGui::ShowDemoWindow();
 			if (ImGui::BeginMenu("Scene"))
 			{			
+				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.0f, 0.0f));
+				
 				//Load Scene
 				//----------------------------------------------------------------------------------------------
 				if (ImGui::Button("Load scene"))
@@ -93,12 +95,33 @@ namespace Engine
 
 				//Clear Scene
 				//----------------------------------------------------------------------------------------------
-				if (ImGui::MenuItem("Clear scene"))
+				if (ImGui::Button("Clear scene"))
 				{
-					SceneManager::GetInstance()->ClearScene();
+					if (SceneManager::GetInstance()->HasUserNotSaved())
+						ImGui::OpenPopup("Clear Scene?");
+
+					if (ImGui::BeginPopupModal("Clear Scene?", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+					{
+						ImGui::Text("The current scene has not been saved.\n\n");
+						ImGui::Separator();
+
+						if (ImGui::Button("OK", ImVec2(120, 0))) 
+						{ 
+							ImGui::CloseCurrentPopup(); 
+							SceneManager::GetInstance()->ClearScene();
+						}
+						ImGui::SetItemDefaultFocus();
+						ImGui::SameLine();
+						if (ImGui::Button("Cancel", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
+						ImGui::EndPopup();
+					}
+					else
+						SceneManager::GetInstance()->ClearScene();
+					
+					
 				}
 				//----------------------------------------------------------------------------------------------
-
+				ImGui::PopStyleColor(1);
 				ImGui::EndMenu();
 			}
 

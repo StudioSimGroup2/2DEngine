@@ -222,7 +222,8 @@ void GUILayer::Render()
 #pragma endregion
 
 #pragma region
-	ImGui::Begin("Game", NULL, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_MenuBar);
+	SceneManager::GetInstance()->HasUserNotSaved() ? ImGui::Begin("Game*", NULL, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_MenuBar)
+		: ImGui::Begin("Game", NULL, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_MenuBar);
 
 	if (ImGui::BeginMenuBar())
 	{

@@ -118,6 +118,8 @@ namespace Engine
 			// TODO:
 			// Lots of pointers left here should clean them up when done with them
 		}
+
+		mUnsavedChanges = false;
 	}
 
 	void SceneManager::LoadObject(TiXmlElement* CurrentObject, GameObject* ParentObj)
@@ -310,6 +312,8 @@ namespace Engine
 
 		// TODO:
 		// Lots of pointers left here should clean them up when done with them
+
+		mUnsavedChanges = false;
 	}
 
 	void SceneManager::SaveObject(TiXmlElement* GameObj, GameObject* CurrentGameObj)
@@ -454,6 +458,8 @@ namespace Engine
 	void SceneManager::ClearScene()
 	{
 		mSceneObjects.clear();
+
+		mUnsavedChanges = true;
 	}
 
 	GameObject* SceneManager::CreateObject()
@@ -462,6 +468,8 @@ namespace Engine
 		mSceneObjects.push_back(go);
 		mCounter++;
 		go->SetName("Unnamed Object " + std::to_string(mCounter));
+
+		mUnsavedChanges = true;
 
 		return go;
 	}
@@ -488,6 +496,8 @@ namespace Engine
 
 			delete objectToDelete;
 			objectToDelete = nullptr;
+
+			mUnsavedChanges = true;
 		}
 	}
 
