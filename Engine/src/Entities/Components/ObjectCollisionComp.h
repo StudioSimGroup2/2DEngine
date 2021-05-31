@@ -3,6 +3,7 @@
 #include "../Component.h"
 #include "Common.h"
 #include "Box2D.h"
+#include "Engine/Renderer/Renderer2D.h"
 
 namespace Engine
 {
@@ -39,5 +40,7 @@ namespace Engine
 		bool isTrigger = false;
 		float boundingRange = 300;
 		Box2D colBox;
+		Renderer2D* mRenderer;
+		Texture* mTexture;
 	};
 }

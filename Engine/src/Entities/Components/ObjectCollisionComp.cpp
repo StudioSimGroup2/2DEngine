@@ -17,6 +17,9 @@ void Engine::ObjectCollisionComp::Init()
 
 	vec2f size = (32.0f, 32.0f);
 	colBox.SetSize(size);
+
+	mRenderer = Device::CreateRenderer(AssetManager::GetInstance()->GetShaderByName("Default"));
+	mTexture = AssetManager::GetInstance()->LoadTexture("BoxColIcon", "Assets/Textures/BoxColIcon.png");
 }
 
 void Engine::ObjectCollisionComp::Update()
@@ -38,4 +41,17 @@ void Engine::ObjectCollisionComp::InternalUpdate()
 
 void Engine::ObjectCollisionComp::InternalRender()
 {
+	vec2f scale;
+	scale.x = colBox.GetSize().x / 32.0f;
+	scale.y = colBox.GetSize().y / 32.0f;
+
+#if GRAPHICS_LIBRARY == 0
+	dynamic_cast<D3D11Renderer2D*>(mRenderer)->Draw(colBox.GetPosition(),
+		mParent->GetComponent<TransformComp>()->GetRotation(),
+		scale, mTexture);
+#elif GRAPHICS_LIBRARY == 1
+	dynamic_cast<OGLRenderer2D*>(mRenderer)->Draw(colBox.GetPosition(),
+		mParent->GetComponent<TransformComp>()->GetRotation(),
+		scale, mTexture);
+#endif
 }
