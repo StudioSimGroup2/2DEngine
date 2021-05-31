@@ -1,6 +1,7 @@
 #include "SceneManager.h"
 #include "Scripting\ScriptingEngine.h"
 #include "CameraManager.h"
+#include "Collision.h"
 
 namespace Engine
 {
@@ -216,6 +217,39 @@ namespace Engine
 				NewCamera->SetFar(atof(CurrentComp->Attribute("Far")));
 				NewCamera->SetDepth(atof(CurrentComp->Attribute("Depth")));
 			}
+			else if (CompType == "boxcol")
+			{
+				ObjectCollisionComp* NewBoxCol = NewObject->AddComponent<ObjectCollisionComp>(new ObjectCollisionComp);
+				float sizex, sizey;
+				sizex = atof(CurrentComp->Attribute("SizeX"));
+				sizey = atof(CurrentComp->Attribute("SizeY"));
+				NewBoxCol->GetColBox().SetSize(vec2f(sizex, sizey));
+				NewBoxCol->SetBRange(atof(CurrentComp->Attribute("Bounding")));
+				NewBoxCol->SetColToggle(atof(CurrentComp->Attribute("Solid")));
+				NewBoxCol->SetTrigger(atof(CurrentComp->Attribute("Trigger")));
+			}
+			else if (CompType == "tilecol")
+			{
+				TilemapCollisionComp* NewTileCol = NewObject->AddComponent<TilemapCollisionComp>(new TilemapCollisionComp);
+				NewTileCol->SetBRange(atof(CurrentComp->Attribute("Bounding")));
+				NewTileCol->SetColToggle(atof(CurrentComp->Attribute("Solid")));
+				NewTileCol->SetTrigger(atof(CurrentComp->Attribute("Trigger")));
+			}
+			else if (CompType == "linecol")
+			{
+				LineCollisionComp* NewLineCol = NewObject->AddComponent<LineCollisionComp>(new LineCollisionComp);
+				float p1x, p1y, p2x, p2y;
+				p1x = atof(CurrentComp->Attribute("Point1X"));
+				p1y = atof(CurrentComp->Attribute("Point1Y"));
+				p2x = atof(CurrentComp->Attribute("Point2X"));
+				p2y = atof(CurrentComp->Attribute("Point2Y"));
+
+				NewLineCol->SetPoint1(vec2f(p1x, p1y));
+				NewLineCol->SetPoint2(vec2f(p2x, p2y));
+				NewLineCol->SetBRange(atof(CurrentComp->Attribute("Bounding")));
+				NewLineCol->SetColToggle(atof(CurrentComp->Attribute("Solid")));
+				NewLineCol->SetTrigger(atof(CurrentComp->Attribute("Trigger")));
+			}
 		}
 		TiXmlElement* Children = CurrentObject->FirstChildElement("children");
 		if (Children != NULL)
@@ -337,6 +371,43 @@ namespace Engine
 				Camera->SetAttribute("Far", CurrentGameObj->GetComponent<CameraComp>()->GetFar());
 				Camera->SetAttribute("Depth", CurrentGameObj->GetComponent<CameraComp>()->GetDepth());
 				components->LinkEndChild(Camera);
+				break;
+			}
+			case COMPONENT_COLBOX:
+			{
+				TiXmlElement* BoxCol = new TiXmlElement("boxcol");
+				BoxCol->SetDoubleAttribute("SizeX", CurrentGameObj->GetComponent<ObjectCollisionComp>()->GetColBox().GetSize().x);
+				BoxCol->SetDoubleAttribute("SizeY", CurrentGameObj->GetComponent<ObjectCollisionComp>()->GetColBox().GetSize().y);
+				BoxCol->SetDoubleAttribute("Bounding", CurrentGameObj->GetComponent<ObjectCollisionComp>()->GetBRange());
+				BoxCol->SetAttribute("Solid", CurrentGameObj->GetComponent<ObjectCollisionComp>()->GetColToggle());
+				BoxCol->SetAttribute("Trigger", CurrentGameObj->GetComponent<ObjectCollisionComp>()->GetTrigger());
+
+
+				components->LinkEndChild(BoxCol);
+				break;
+			}
+			case COMPONENT_COLTILE:
+			{
+				TiXmlElement* TileCol = new TiXmlElement("tilecol");
+				TileCol->SetDoubleAttribute("Bounding", CurrentGameObj->GetComponent<TilemapCollisionComp>()->GetBRange());
+				TileCol->SetAttribute("Solid", CurrentGameObj->GetComponent<TilemapCollisionComp>()->GetColToggle());
+				TileCol->SetAttribute("Trigger", CurrentGameObj->GetComponent<TilemapCollisionComp>()->GetTrigger());
+
+				components->LinkEndChild(TileCol);
+				break;
+			}
+			case COMPONENT_COLLINE:
+			{
+				TiXmlElement* LineCol = new TiXmlElement("linecol");
+				LineCol->SetDoubleAttribute("Point1X", CurrentGameObj->GetComponent<LineCollisionComp>()->GetPoint1().x);
+				LineCol->SetDoubleAttribute("Point1Y", CurrentGameObj->GetComponent<LineCollisionComp>()->GetPoint1().y);
+				LineCol->SetDoubleAttribute("Point2X", CurrentGameObj->GetComponent<LineCollisionComp>()->GetPoint2().x);
+				LineCol->SetDoubleAttribute("Point2Y", CurrentGameObj->GetComponent<LineCollisionComp>()->GetPoint2().y);
+				LineCol->SetDoubleAttribute("Bounding", CurrentGameObj->GetComponent<LineCollisionComp>()->GetBRange());
+				LineCol->SetAttribute("Solid", CurrentGameObj->GetComponent<LineCollisionComp>()->GetColToggle());
+				LineCol->SetAttribute("Trigger", CurrentGameObj->GetComponent<LineCollisionComp>()->GetTrigger());
+
+				components->LinkEndChild(LineCol);
 				break;
 			}
 			default:
