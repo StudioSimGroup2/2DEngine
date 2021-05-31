@@ -271,20 +271,13 @@ namespace Engine
 
 		if (ifd::FileDialog::Instance().IsDone("Texture File Browser"))
 		{	
-			std::string result;
-			if (ifd::FileDialog::Instance().GetResult().u8string().find_last_of('\\') != std::string::npos)
-			{
-				result = ifd::FileDialog::Instance().GetResult().u8string().find_last_of('\\');
-				
-				if (ifd::FileDialog::Instance().HasResult() && result != path)
+			if (ifd::FileDialog::Instance().HasResult())
 				{
 					std::string Texpath = ifd::FileDialog::Instance().GetResult().u8string();
-					c->SetTexture(AssetManager::GetInstance()->LoadTexture(result, Texpath));
+					c->SetTexture(AssetManager::GetInstance()->LoadTexture(c->GetTexture()->GetName(), Texpath));
 					int startPos = Texpath.find("Assets");
 					Texpath.erase(0, startPos);
-					c->Setpath(Texpath);
 				}
-			}
 
 			ifd::FileDialog::Instance().Close();
 		}
@@ -488,7 +481,7 @@ namespace Engine
 		//----------------------------------------------------------------------------------------------
 		if (ImGui::Button("Save TileMap"))
 		{
-			ifd::FileDialog::Instance().Save("TileMapSaver", "LoadTileMap", "Texture File, (*.xml) {.xml}, .*");
+			ifd::FileDialog::Instance().Save("TileMapSaver", "SaveTileMap", "TileMap (*.xml) {.xml}, .*");
 		}
 
 		if (ifd::FileDialog::Instance().IsDone("TileMapSaver"))

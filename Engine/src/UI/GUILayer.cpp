@@ -222,19 +222,24 @@ void GUILayer::Render()
 #pragma endregion
 
 #pragma region
-	ImGui::Begin("Game", NULL, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_MenuBar);
+	SceneManager::GetInstance()->HasUserNotSaved() ? ImGui::Begin("Game*", NULL, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_MenuBar)
+		: ImGui::Begin("Game", NULL, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_MenuBar);
 
 	if (ImGui::BeginMenuBar())
 	{
 		if (ImGui::MenuItem("Play")) 
 		{
 			SceneManager::GetInstance()->DisableEditorMode();
+			SceneManager::GetInstance()->PlayScene();
 		}
 
 		if (ImGui::MenuItem("Stop")) 
 		{
 			SceneManager::GetInstance()->EnableEditorMode();
 		}
+
+		ImGui::SameLine(ImGui::GetContentRegionAvailWidth());
+		SceneManager::GetInstance()->GetRunTime() ? ImGui::Text("Stopped") : ImGui::TextColored(ImVec4(255.0f, 0.0f, 0.0f, 1.0f), "Playing");
 	}
 	ImGui::EndMenuBar();
 

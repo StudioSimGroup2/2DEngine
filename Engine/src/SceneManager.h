@@ -30,13 +30,16 @@ namespace Engine
 		void EnableEditorMode() { mEditorMode = true; }
 		void DisableEditorMode() { mEditorMode = false; }
 
+		bool GetRunTime() { return mEditorMode; }
+
 		GameObject* CreateObject();
 
 		void DestroyObject(GameObject* go);
 
 		std::vector<GameObject*>& GetSceneObjects() { return mSceneObjects; }
 
-		bool IsSceneLoaded() { return (mSceneLoaded); }
+		bool IsSceneLoaded() { return mSceneLoaded; }
+		bool HasUserNotSaved() { return mUnsavedChanges; }
 
 		static void Shutdown();
 
@@ -49,6 +52,8 @@ namespace Engine
 		std::vector<GameObject*> mSceneObjects;
 
 		bool mSceneLoaded = false;
+
+		bool mUnsavedChanges = false;
 
 		bool mEditorMode = true;
 		FrameBuffer mRenderToTex;

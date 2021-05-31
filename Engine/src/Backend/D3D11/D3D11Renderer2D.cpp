@@ -13,6 +13,15 @@ namespace Engine
 		InitBuffers(dev->GetDevice());
 	}
 
+	D3D11Renderer2D::D3D11Renderer2D(Shader* shader, D3D11Device* dev, int totalWidth, int totalHeight, vec2i position)
+	{
+		mShader = shader;
+
+		mDeviceContext = dev->GetDeviceContext();
+
+		InitBuffers(dev->GetDevice(), totalWidth, totalHeight, position.x, position.y);
+	}
+
 	D3D11Renderer2D::~D3D11Renderer2D()
 	{
 		if (mVertexBuffer)
@@ -46,7 +55,7 @@ namespace Engine
 		auto camera = CameraManager::Get()->GetPrimaryCamera();
 
 		XMMATRIX mScale = XMMatrixScaling(scale.x, scale.y, 1.0f);
-		XMMATRIX mRotate = XMMatrixRotationZ(XMConvertToRadians(-rotation.x));
+		XMMATRIX mRotate =	XMMatrixRotationZ(XMConvertToRadians( rotation.x));
 		XMMATRIX mTranslate = XMMatrixTranslation(position.x, -position.y, 0.0f);
 		world = mTranslate * mRotate * mScale  ;
 
@@ -84,7 +93,12 @@ namespace Engine
 		mDeviceContext->Draw(6, 0);
 	}
 
-	void D3D11Renderer2D::InitBuffers(ID3D11Device* dev)
+	void D3D11Renderer2D::UpdateBuffers(int totalWidth, int totalHeight, int posX, int posY)
+	{
+		InitBuffers(D3D11Device::GetInstance()->GetDevice(), totalWidth, totalHeight, posX, posY);
+	}
+
+	void D3D11Renderer2D::InitBuffers(ID3D11Device* dev, int totalWidth, int totalHeight, int posX, int posY)
 	{
 		auto hr = S_OK;
 		VertexType vertices[6];
@@ -102,25 +116,50 @@ namespace Engine
 		// Calculate the screen coordinates of the bottom of the bitmap.
 		bottom = top - (float)32;
 
-		// Bad triangle
-		vertices[0].position = XMFLOAT3(left, top, 0.0f);  // Top left.
-		vertices[0].texture = XMFLOAT2(0.0f, 0.0f);
+		if (totalWidth == -1)
+		{
+			// Bad triangle
+			vertices[0].position = XMFLOAT3(left, top, 0.0f);  // Top left.
+			vertices[0].texture = XMFLOAT2(0.0f, 0.0f);
 
-		vertices[1].position = XMFLOAT3(left, bottom, 0.0f);  // Bottom left.
-		vertices[1].texture = XMFLOAT2(0.0f, 1.0f);
+			vertices[1].position = XMFLOAT3(left, bottom, 0.0f);  // Bottom left.
+			vertices[1].texture = XMFLOAT2(0.0f, 1.0f);
 
-		vertices[2].position = XMFLOAT3(right, bottom, 0.0f);  // Bottom left.
-		vertices[2].texture = XMFLOAT2(1.0f, 1.0f);
+			vertices[2].position = XMFLOAT3(right, bottom, 0.0f);  // Bottom left.
+			vertices[2].texture = XMFLOAT2(1.0f, 1.0f);
 
-		// Second triangle. Good triangle
-		vertices[3].position = XMFLOAT3(left, top, 0.0f);  // Top left.
-		vertices[3].texture = XMFLOAT2(0.0f, 0.0f);
+			// Second triangle. Good triangle
+			vertices[3].position = XMFLOAT3(left, top, 0.0f);  // Top left.
+			vertices[3].texture = XMFLOAT2(0.0f, 0.0f);
 
-		vertices[4].position = XMFLOAT3(right, top, 0.0f);  // Top right.
-		vertices[4].texture = XMFLOAT2(1.0f, 0.0f);
+			vertices[4].position = XMFLOAT3(right, top, 0.0f);  // Top right.
+			vertices[4].texture = XMFLOAT2(1.0f, 0.0f);
 
-		vertices[5].position = XMFLOAT3(right, bottom, 0.0f);  // Bottom right.
-		vertices[5].texture = XMFLOAT2(1.0f, 1.0f);
+			vertices[5].position = XMFLOAT3(right, bottom, 0.0f);  // Bottom right.
+			vertices[5].texture = XMFLOAT2(1.0f, 1.0f);
+		}
+		else
+		{
+			// Bad triangle
+			vertices[0].position = XMFLOAT3(left, top, 0.0f);  // Top left.
+			vertices[0].texture = XMFLOAT2(((1.0f / (totalWidth / 32.0f)) * posX/*x*/), ((1.0f / (totalHeight / 32.0f)) * posY/*y*/));
+
+			vertices[1].position = XMFLOAT3(left, bottom, 0.0f);  // Bottom left.
+			vertices[1].texture = XMFLOAT2(((1.0f / (totalWidth / 32.0f)) * posX/*x*/), ((1.0f / (totalHeight / 32.0f)) * posY/*y*/) + 1.0f / (totalHeight / 32.0f));
+
+			vertices[2].position = XMFLOAT3(right, bottom, 0.0f);  // Bottom right.
+			vertices[2].texture = XMFLOAT2(((1.0f / (totalWidth / 32.0f)) * posX/*x*/) + (1.0f/ (totalWidth / 32.0f)), ((1.0f / (totalHeight / 32.0f)) * posY/*y*/) + 1.0f / (totalHeight / 32.0f));
+
+			// Second triangle. Good triangle
+			vertices[3].position = XMFLOAT3(left, top, 0.0f);  // Top left.
+			vertices[3].texture = XMFLOAT2(((1.0f / (totalWidth / 32.0f)) * posX/*x*/), ((1.0f / (totalHeight / 32.0f)) * posY/*y*/));
+
+			vertices[4].position = XMFLOAT3(right, top, 0.0f);  // Top right.
+			vertices[4].texture = XMFLOAT2(((1.0f / (totalWidth / 32.0f)) * posX/*x*/) + (1.0f / (totalWidth / 32.0f)), ((1.0f / (totalHeight / 32.0f)) * posY/*y*/));
+
+			vertices[5].position = XMFLOAT3(right, bottom, 0.0f);  // Bottom right.
+			vertices[5].texture = XMFLOAT2(((1.0f / (totalWidth / 32.0f)) * posX/*x*/) + (1.0f / (totalWidth / 32.0f)), ((1.0f / (totalHeight / 32.0f)) * posY/*y*/) + 1.0f / (totalHeight / 32.0f));
+		}
 
 		D3D11_BUFFER_DESC bd = {};
 		bd.Usage = D3D11_USAGE_DEFAULT;

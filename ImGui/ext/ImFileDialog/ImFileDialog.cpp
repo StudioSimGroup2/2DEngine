@@ -381,8 +381,8 @@ namespace ifd {
 		quickAccess->Children.push_back(new FileTreeNode(userPath + "Pictures"));
 
 		// OneDrive
-		FileTreeNode* oneDrive = new FileTreeNode(userPath + "OneDrive");
-		m_treeCache.push_back(oneDrive);
+		//FileTreeNode* oneDrive = new FileTreeNode(userPath + "OneDrive");
+		//m_treeCache.push_back(oneDrive);
 
 		// This PC
 		FileTreeNode* thisPC = new FileTreeNode("This PC");
