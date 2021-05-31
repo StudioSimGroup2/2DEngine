@@ -57,7 +57,7 @@ namespace Engine
 		XMMATRIX mScale = XMMatrixScaling(scale.x, scale.y, 1.0f);
 		XMMATRIX mRotate =	XMMatrixRotationZ(XMConvertToRadians( rotation.x));
 		XMMATRIX mTranslate = XMMatrixTranslation(position.x, -position.y, 0.0f);
-		world = mTranslate * mRotate * mScale  ;
+		world = mScale * mRotate * mTranslate;
 
 		ConstantBuffer cb;
 		cb.mProjection = XMMatrixTranspose(camera->GetProjectionMatrix());

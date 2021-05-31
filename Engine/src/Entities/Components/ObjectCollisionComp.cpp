@@ -37,13 +37,14 @@ void Engine::ObjectCollisionComp::Start()
 
 void Engine::ObjectCollisionComp::InternalUpdate()
 {
+	colBox.SetPosition(mParent->GetComponent<TransformComp>()->GetPosition());
 }
 
 void Engine::ObjectCollisionComp::InternalRender()
 {
 	vec2f scale;
-	scale.x = colBox.GetSize().x / 32.0f;
-	scale.y = colBox.GetSize().y / 32.0f;
+	scale.x = colBox.GetSize().x / mParent->GetComponent<SpriteComp>()->GetTexture()->GetWidth();
+	scale.y = colBox.GetSize().y / mParent->GetComponent<SpriteComp>()->GetTexture()->GetHeight();
 
 #if GRAPHICS_LIBRARY == 0
 	dynamic_cast<D3D11Renderer2D*>(mRenderer)->Draw(colBox.GetPosition(),

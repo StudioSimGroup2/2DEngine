@@ -113,7 +113,7 @@ namespace Engine
 					dynamic_cast<OGLRenderer2D*>(mRenderer[0])->Draw(vec2f(ForY * TILEHEIGHT, ForX * TILEWIDTH) + mParent->GetComponent<TransformComp>()->GetPosition(), vec2f(0.0f), vec2f(1.0f), mTexArray[0]);
 #endif
 				}
-				
+
 				ForY++;
 			}
 			ForY = 0;
@@ -181,5 +181,56 @@ namespace Engine
 
 	void TileMapComp::InternalRender()
 	{
+		if (mRenderer.empty())
+			return;
+
+		//int pos = 0;
+		int ForX = 0;
+		int ForY = 0;
+		for (std::vector<int> firstPass : mTileMap)
+		{
+			for (int secondPass : firstPass)
+			{
+				if (secondPass < mTexArray.size())
+				{
+#if GRAPHICS_LIBRARY == 0
+					dynamic_cast<D3D11Renderer2D*>(mRenderer[0])->Draw(vec2f(ForY * TILEHEIGHT, ForX * TILEWIDTH) + mParent->GetComponent<TransformComp>()->GetPosition(), vec2f(0.0f), vec2f(1.0f), mTexArray[secondPass]);
+#elif GRAPHICS_LIBRARY == 1
+					dynamic_cast<OGLRenderer2D*>(mRenderer[0])->Draw(vec2f(ForY * TILEHEIGHT, ForX * TILEWIDTH) + mParent->GetComponent<TransformComp>()->GetPosition(), vec2f(0.0f), vec2f(1.0f), mTexArray[0]);
+#endif
+				}
+				else
+				{
+#if GRAPHICS_LIBRARY == 0
+					dynamic_cast<D3D11Renderer2D*>(mRenderer[0])->Draw(vec2f(ForY * TILEHEIGHT, ForX * TILEWIDTH) + mParent->GetComponent<TransformComp>()->GetPosition(), vec2f(0.0f), vec2f(1.0f), DefaultTexture);
+#elif GRAPHICS_LIBRARY == 1
+					dynamic_cast<OGLRenderer2D*>(mRenderer[0])->Draw(vec2f(ForY * TILEHEIGHT, ForX * TILEWIDTH) + mParent->GetComponent<TransformComp>()->GetPosition(), vec2f(0.0f), vec2f(1.0f), mTexArray[0]);
+#endif
+				}
+
+				ForY++;
+			}
+			ForY = 0;
+			ForX++;
+		}
+
+		for (Renderer2D* child : mRenderer)
+		{
+#if GRAPHICS_LIBRARY == 0
+			dynamic_cast<D3D11Renderer2D*>(child)->Draw(mParent->GetComponent<TransformComp>()->GetPosition(),
+				mParent->GetComponent<TransformComp>()->GetRotation(),
+				mParent->GetComponent<TransformComp>()->GetScale(),
+				mTexArray[0]
+			);
+#elif GRAPHICS_LIBRARY == 1
+			dynamic_cast<OGLRenderer2D*>(child)->Draw(mParent->GetComponent<TransformComp>()->GetPosition(),
+				mParent->GetComponent<TransformComp>()->GetRotation(),
+				mParent->GetComponent<TransformComp>()->GetScale(),
+				mTexArray[0]
+			);
+#endif
+		}
+
+
 	}
 }

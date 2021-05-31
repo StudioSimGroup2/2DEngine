@@ -274,7 +274,7 @@ namespace Engine
 			if (ifd::FileDialog::Instance().HasResult())
 				{
 					std::string Texpath = ifd::FileDialog::Instance().GetResult().u8string();
-					c->SetTexture(AssetManager::GetInstance()->LoadTexture(c->GetTexture()->GetName(), Texpath));
+					c->SetTexture(AssetManager::GetInstance()->LoadTexture(path, Texpath));
 					int startPos = Texpath.find("Assets");
 					Texpath.erase(0, startPos);
 				}
@@ -536,27 +536,27 @@ namespace Engine
 		ImGui::DragFloat("##far", &cFar, 0.1f);
 		ImGui::Columns(1);
 
-ImGui::PopID();
+		ImGui::PopID();
 
-ImGui::PushID("depth");
+		ImGui::PushID("depth");
 
-ImGui::Columns(2);
-ImGui::Text("Depth");
-ImGui::NextColumn();
-ImGui::DragFloat("##depth", &depth, 0.1f);
-ImGui::Columns(1);
+		ImGui::Columns(2);
+		ImGui::Text("Depth");
+		ImGui::NextColumn();
+		ImGui::DragFloat("##depth", &depth, 0.1f);
+		ImGui::Columns(1);
 
-ImGui::PopID();
+		ImGui::PopID();
 
-if (cFar > cNear)
-c->SetFar(cFar);
+		if (cFar > cNear)
+		c->SetFar(cFar);
 
-c->SetFOV(fov);
+		c->SetFOV(fov);
 
-if (cNear > 0.1f && cFar > cNear)
-c->SetNear(cNear);
+		if (cNear > 0.1f && cFar > cNear)
+		c->SetNear(cNear);
 
-c->SetDepth(depth);
+		c->SetDepth(depth);
 	}
 
 	void InspectorWidget::RenderBoxColComponent(ObjectCollisionComp* c)

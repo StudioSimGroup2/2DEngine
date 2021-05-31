@@ -86,10 +86,22 @@ namespace Engine
 	{
 		mRenderToTex.Load();
 
-        for (GameObject* go : mSceneObjects)
+		if (mEditorMode)
 		{
-			go->Render();
+			for (GameObject* go : mSceneObjects)
+			{
+				go->InternalRender();
+			}
 		}
+		else
+		{
+			for (GameObject* go : mSceneObjects)
+			{
+				go->Render();
+			}
+		}
+
+        
 
         mRenderToTex.Unload();
 	}

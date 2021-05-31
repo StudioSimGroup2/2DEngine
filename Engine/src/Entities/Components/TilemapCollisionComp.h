@@ -4,6 +4,7 @@
 #include "Common.h"
 #include "Box2D.h"
 #include <vector>
+#include "Engine/Renderer/Renderer2D.h"
 
 namespace Engine
 {
@@ -16,7 +17,7 @@ namespace Engine
 		void CreateColBoxes();
 		virtual void Init() override;
 
-		std::vector<Box2D> GetColBoxes() { return collisionBoxes; }
+		std::vector<Box2D>& GetColBoxes() { return collisionBoxes; }
 
 		float GetBRange() { return boundingRange; }
 		void SetBRange(float newRange) { boundingRange = newRange; }
@@ -44,5 +45,7 @@ namespace Engine
 		float boundingRange = 300;
 		TileMap mTilemap;
 		std::vector<Box2D> collisionBoxes;
+		Renderer2D* mRenderer;
+		Texture* mTexture;
 	};
 }

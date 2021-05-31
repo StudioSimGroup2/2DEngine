@@ -15,7 +15,7 @@ namespace Engine
 
 		virtual void Init() override;
 
-		Box2D GetColBox() { return colBox; }
+		Box2D& GetColBox() { return colBox; }
 
 		float GetBRange() { return boundingRange; }
 		void SetBRange(float newRange) { boundingRange = newRange; }
