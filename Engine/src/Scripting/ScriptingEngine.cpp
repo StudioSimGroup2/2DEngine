@@ -50,6 +50,24 @@ namespace Engine
 			"x", &vec2f::x,
 			"y", &vec2f::y);
 
+		mState.new_usertype<GameObject>("GameObject",
+			"SetName", &GameObject::SetName,
+			"GetName", &GameObject::GetName,
+
+			"SetParent", &GameObject::Attach, // this might not work
+			"GetParent", &GameObject::GetParent,
+
+			"IsActive", &GameObject::IsEnabled,
+			"Enable", &GameObject::EnableObject,
+			"Disable", &GameObject::DisableObject,
+
+			"MakeSprite", [](GameObject& go) { return go.AddComponent<SpriteComp>(new SpriteComp); },
+
+			"GetTransform", &GameObject::GetComponent<TransformComp>,
+			"GetSprite", &GameObject::GetComponent<SpriteComp>,
+			"GetPhysics", &GameObject::GetComponent<PhysicsComp>
+			);
+
 		mState.new_usertype<Component>("Component",
 			"GetOwner", &Component::GetGameObject,
 			"GetType", &Component::GetType
@@ -68,10 +86,10 @@ namespace Engine
 			"GetScale", &TransformComp::GetScale
 			);
 
-		mState.new_usertype<SpriteComp>("SpriteComp", sol::base_classes, sol::bases<Component>(),
+		mState.new_usertype<SpriteComp>("SpriteComp", 
+			sol::base_classes, sol::bases<Component>(),
 
 			"SetPath", &SpriteComp::SetTexturePath,
-			"LoadSpriteSheet", &SpriteComp::SetSpriteSheetPath,
 
 			"SetTexture", &SpriteComp::SetTexture,
 			"GetTexture", &SpriteComp::GetTexture,
@@ -83,27 +101,28 @@ namespace Engine
 			"GetFlipY", &SpriteComp::GetFlipY,
 
 			"SetColour", &SpriteComp::SetColour,
-			"GetColour", &SpriteComp::GetColour,
-
-			"ChangeSprite", &SpriteComp::SetSprite,
-			"GetCurrentSprite", &SpriteComp::GetSprite
+			"GetColour", &SpriteComp::GetColour
 			);
 
-		mState.new_usertype<GameObject>("GameObject",
-			"SetName", &GameObject::SetName,
-			"GetName", &GameObject::GetName,
+		/*mState.new_usertype<CameraComp>("CameraComp",
+		sol::base_classes, sol::bases<Component>(),
 
-			"SetParent", &GameObject::Attach, // this might not work
-			"GetParent", &GameObject::GetParent,
+	);*/
+	/*mState.new_usertype<TileMapComp>("TileMapComp",
+		sol::base_classes, sol::bases<Component>(),
 
-			"IsActive", &GameObject::IsEnabled,
-			"Enable", &GameObject::EnableObject,
-			"Disable", &GameObject::DisableObject,
-			
-			"MakeSprite", [](GameObject& go) { return go.AddComponent<SpriteComp>(new SpriteComp); },
 
-			"GetTransform", &GameObject::GetComponent<TransformComp>,
-			"GetSprite", &GameObject::GetComponent<SpriteComp>
-			);
+	);*/
+
+		mState.new_usertype<PhysicsComp>("PhysicsComp",
+			sol::base_classes, sol::bases<Component>(),
+
+			"AddThrust", &PhysicsComp::AddThrust,
+
+			"GetGrounded", &PhysicsComp::GetGrounded
+
+		);
+
+		
 	}
 }

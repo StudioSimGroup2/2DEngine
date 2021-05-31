@@ -14,6 +14,7 @@
                 <sprite path="Assets\Textures\Mario.png" Colour="1.000000 1.000000 1.000000 1.000000" FlipX="0" FlipY="0" />
                 <physics Mass="1" Gravity="9.8" Friction="0.5" MaxSpeed="200" />
                 <boxcol SizeX="32" SizeY="32" Bounding="300" />
+                <script path="Assets\Scripts\Player.lua" />
             </components>
         </gameobject>
         <gameobject name="Third GameObject">
