@@ -4,7 +4,6 @@
         <gameobject name="Player">
             <components>
                 <transform PosX="96" PosY="96" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
-                <sprite path="Assets\Textures\Mario.png" Colour="0.000000 0.000000 0.000000 0.000000" FlipX="0" FlipY="0" />
                 <physics Mass="1" Gravity="9.8" Friction="0.5" MaxSpeed="200" />
             </components>
         </gameobject>
@@ -19,7 +18,6 @@
         <gameobject name="ExampleSprite">
             <components>
                 <transform PosX="78" PosY="9" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
-                <sprite path="Assets\Textures\Stone.png" Colour="0.000000 0.000000 0.000000 0.000000" FlipX="0" FlipY="0" />
                 <linecol Point1X="0" Point1Y="300" Point2X="300" Point2Y="300" Bounding="300" />
             </components>
             <children>

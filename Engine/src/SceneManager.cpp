@@ -17,7 +17,8 @@ namespace Engine
 
 	void SceneManager::CreateScene()
 	{
-		auto camera = CameraManager::Get()->Add(vec2f(0.0f, 0.0f), true);		// Camera manager deletes its cameras, no mem leak :)         
+
+		auto camera = CameraManager::Get()->Add(vec2f((1260/2), -(677/2)), true);		// Camera manager deletes its cameras, no mem leak :)         
 		camera->SetName("Main Camera");
 		camera->SetPrimary(true);
 		camera->SetEditorCamera(true);

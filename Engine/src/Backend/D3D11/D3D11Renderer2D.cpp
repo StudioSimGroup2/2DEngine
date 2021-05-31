@@ -52,8 +52,8 @@ namespace Engine
 		
 		auto camera = CameraManager::Get()->GetPrimaryCamera();
 
-		XMMATRIX mScale = XMMatrixScaling(scale.x * 1.0f, scale.y * 1.0f, 1.0f);
-		XMMATRIX mRotate =	XMMatrixRotationZ(rotation.x);
+		XMMATRIX mScale = XMMatrixScaling(scale.x, scale.y, 1.0f);
+		XMMATRIX mRotate =	XMMatrixRotationZ(XMConvertToRadians( rotation.x));
 		XMMATRIX mTranslate = XMMatrixTranslation(position.x, -position.y, 0.0f);
 		XMMATRIX world = mTranslate* mRotate * mScale;
 
@@ -103,13 +103,13 @@ namespace Engine
 		float left, right, top, bottom;
 
 		// Calculate the screen coordinates of the left side of the bitmap.
-		left = (float)((1280 / 2) * -1); // 0 = X position
+		left = 0; // 0 = X position
 
 		// Calculate the screen coordinates of the right side of the bitmap.
 		right = left + (float)32;
 
 		// Calculate the screen coordinates of the top of the bitmap.
-		top = (float)(720 / 2); // 0 = Y position
+		top = 0; // 0 = Y position
 
 		// Calculate the screen coordinates of the bottom of the bitmap.
 		bottom = top - (float)32;
