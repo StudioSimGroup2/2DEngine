@@ -286,6 +286,12 @@ namespace Engine
 		mTexArray.push_back(mTexture);
 		mTexture = AssetManager::GetInstance()->LoadTexture("Tile", "Assets/Textures/Numbers/69.png");
 		mTexArray.push_back(mTexture);
+		mTexture = AssetManager::GetInstance()->LoadTexture("Tile", "Assets/Textures/Numbers/70.png");
+		mTexArray.push_back(mTexture);
+		mTexture = AssetManager::GetInstance()->LoadTexture("Tile", "Assets/Textures/Numbers/71.png");
+		mTexArray.push_back(mTexture);
+		mTexture = AssetManager::GetInstance()->LoadTexture("Tile", "Assets/Textures/Numbers/72.png");
+		mTexArray.push_back(mTexture);
 
 
 		mType = COMPONENT_TILEMAP;
