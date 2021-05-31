@@ -344,7 +344,7 @@ namespace Engine
 			{
 				TiXmlElement* Sprite = new TiXmlElement("sprite");
 				Sprite->SetAttribute("path", CurrentGameObj->GetComponent<SpriteComp>()->GetTexture()->GetPath().c_str());
-				char* Colour = new char();
+				char Colour[50];
 				std::sprintf(Colour, "%f %f %f %f", CurrentGameObj->GetComponent<SpriteComp>()->GetColour()[0], CurrentGameObj->GetComponent<SpriteComp>()->GetColour()[1], CurrentGameObj->GetComponent<SpriteComp>()->GetColour()[2], CurrentGameObj->GetComponent<SpriteComp>()->GetColour()[3]);
 				Sprite->SetAttribute("Colour", Colour);
 
