@@ -43,8 +43,17 @@ void Engine::ObjectCollisionComp::InternalUpdate()
 void Engine::ObjectCollisionComp::InternalRender()
 {
 	vec2f scale;
-	scale.x = colBox.GetSize().x / mParent->GetComponent<SpriteComp>()->GetTexture()->GetWidth();
-	scale.y = colBox.GetSize().y / mParent->GetComponent<SpriteComp>()->GetTexture()->GetHeight();
+	if (mParent->GetComponent<SpriteComp>()->GetTexture() == nullptr)
+	{
+		scale.x = colBox.GetSize().x / 32.0f;
+		scale.y = colBox.GetSize().y / 32.0f;
+	}
+	else
+	{
+		scale.x = colBox.GetSize().x / mParent->GetComponent<SpriteComp>()->GetTexture()->GetWidth();
+		scale.y = colBox.GetSize().y / mParent->GetComponent<SpriteComp>()->GetTexture()->GetHeight();
+	}
+
 
 #if GRAPHICS_LIBRARY == 0
 	dynamic_cast<D3D11Renderer2D*>(mRenderer)->Draw(colBox.GetPosition(),

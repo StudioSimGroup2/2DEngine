@@ -170,7 +170,7 @@ void Engine::TilemapCollisionComp::InternalRender()
 		scale.y = box.GetSize().y / 32.0f;
 
 #if GRAPHICS_LIBRARY == 0
-		dynamic_cast<D3D11Renderer2D*>(mRenderer)->Draw(mParent->GetComponent<TransformComp>()->GetPosition(),
+		dynamic_cast<D3D11Renderer2D*>(mRenderer)->Draw(box.GetPosition(),
 			mParent->GetComponent<TransformComp>()->GetRotation(),
 			scale, mTexture);
 #elif GRAPHICS_LIBRARY == 1
