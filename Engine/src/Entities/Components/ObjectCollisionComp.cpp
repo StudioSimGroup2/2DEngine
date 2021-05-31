@@ -19,7 +19,10 @@ void Engine::ObjectCollisionComp::Init()
 	colBox.SetSize(size);
 
 	mRenderer = Device::CreateRenderer(AssetManager::GetInstance()->GetShaderByName("Default"));
-	mTexture = AssetManager::GetInstance()->LoadTexture("BoxColIcon", "Assets/Textures/BoxColIcon.png");
+	mBothTex = AssetManager::GetInstance()->LoadTexture("BoxColBoth", "Assets/Textures/BoxColBoth.png");
+	mTriggerTex = AssetManager::GetInstance()->LoadTexture("BoxColTrigger", "Assets/Textures/BoxColTrigger.png");
+	mSolidTex = AssetManager::GetInstance()->LoadTexture("BoxColSolid", "Assets/Textures/BoxColSolid.png");
+	mNoTex = AssetManager::GetInstance()->LoadTexture("BoxNoCol", "Assets/Textures/BoxNoCol.png");
 }
 
 void Engine::ObjectCollisionComp::Update()
@@ -54,6 +57,18 @@ void Engine::ObjectCollisionComp::InternalRender()
 		scale.y = colBox.GetSize().y / mParent->GetComponent<SpriteComp>()->GetTexture()->GetHeight();
 	}
 
+	Texture* mTexture;
+	if (isCollidable)
+		mTexture = mSolidTex;
+
+	if (isTrigger)
+		mTexture = mTriggerTex;
+
+	if (isCollidable && isTrigger)
+		mTexture = mBothTex;
+
+	if (!isCollidable && !isTrigger)
+		mTexture = mNoTex;
 
 #if GRAPHICS_LIBRARY == 0
 	dynamic_cast<D3D11Renderer2D*>(mRenderer)->Draw(colBox.GetPosition(),

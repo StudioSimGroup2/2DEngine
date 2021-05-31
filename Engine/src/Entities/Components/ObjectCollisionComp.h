@@ -41,6 +41,9 @@ namespace Engine
 		float boundingRange = 300;
 		Box2D colBox;
 		Renderer2D* mRenderer;
-		Texture* mTexture;
+		Texture* mBothTex;
+		Texture* mTriggerTex;
+		Texture* mSolidTex;
+		Texture* mNoTex;
 	};
 }
