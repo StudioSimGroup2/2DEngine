@@ -63,8 +63,8 @@ namespace Engine
 
 	void ParticleSystem::Update()
 	{
-#define DT 0.016f
-		mCurrentRate += DT; // TODO: Requires DT
+		float deltaTime = DeltaTime::GetInstance()->GetDeltaTime();
+		mCurrentRate += deltaTime; // TODO: Requires DT
 
 		// Update the emmiter icons location
 		//switch (mEmmiter)
@@ -84,7 +84,7 @@ namespace Engine
 				continue;
 			}
 
-			p->Lifetime -= DT;
+			p->Lifetime -= deltaTime;
 
 			// If a particle is "dead"
 			if (p->Lifetime <= 0.0f) {
@@ -108,8 +108,8 @@ namespace Engine
 				}
 			}
 
-			p->Velocity.y += mGravity * DT;
-			p->Position += p->Velocity * DT;
+			p->Velocity.y += mGravity * deltaTime;
+			p->Position += p->Velocity * deltaTime;
 			
 		}
 

@@ -188,8 +188,11 @@ namespace Engine
 				{
 					if (SceneHierarchyWidget::GetNode() != nullptr)
 					{
-						SceneHierarchyWidget::GetNode()->AddComponent<ParticleComp>(new ParticleComp(SceneHierarchyWidget::GetNode()));
+						auto go = SceneHierarchyWidget::GetNode();
+						go->AddComponent<ParticleComp>(new ParticleComp(go));
+
 					}
+
 				}
 
 				ImGui::EndMenu();

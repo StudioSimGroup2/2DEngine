@@ -110,11 +110,12 @@ namespace Engine
 					break;
 
 				case COMPONENT_PARTICLE:
-					if (ImGui::CollapsingHeader("Particle system"))
+					if (ImGui::CollapsingHeader("Particle system", &close))
 					{
 						RenderParticleComponent(dynamic_cast<ParticleComp*>(c));
 					}
 					break;
+
 				default:
 					break;
 				}
@@ -130,7 +131,7 @@ namespace Engine
 
 			ImGui::Separator();
 
-			const char* comps[] = { "Sprite", "Script", "Audio", "Camera", "TileMap", "Physics", "Box Collision", "Tilemap Collision", "Line Collision" };
+			const char* comps[] = { "Sprite", "Script", "Audio", "Camera", "TileMap", "Physics", "Box Collision", "Tilemap Collision", "Line Collision", "Particle system" };
 
 			if (ImGui::Button("Add Component..", ImVec2(ImGui::GetContentRegionAvail().x, 0.0f)))
 			{
@@ -186,6 +187,10 @@ namespace Engine
 
 						case COMPONENT_COLLINE:
 							SceneHierarchyWidget::GetNode()->AddComponent<LineCollisionComp>(new LineCollisionComp);
+							break;
+
+						case COMPONENT_PARTICLE:
+							SceneHierarchyWidget::GetNode()->AddComponent<ParticleComp>(new ParticleComp);
 							break;
 
 						default:
@@ -791,9 +796,6 @@ c->SetDepth(depth);
 		if (current_item == "Circle") c->SetEmmitter(Emmitter::Circle);
 		ImGui::PopID();
 
-
-
-		
 
 		if (count != c->GetParticleCount() && count >= 0)
 			c->SetParticleCount(count);

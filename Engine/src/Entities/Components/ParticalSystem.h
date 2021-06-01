@@ -13,6 +13,7 @@
 #include <Engine/Renderer/Renderer2D.h>
 
 #include <Utils/Texture.h>
+#include "EngineTime.h"
 
 namespace Engine
 {

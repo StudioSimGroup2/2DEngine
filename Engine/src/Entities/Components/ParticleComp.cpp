@@ -8,8 +8,10 @@ namespace Engine {
 		Init();
 	}
 
-	ParticleComp::ParticleComp(GameObject* parent) : Component(parent)
+	ParticleComp::ParticleComp(GameObject* parent)
 	{
+		//mParent->Attach(parent);
+		mParent = parent;
 		Init();
 	}
 
