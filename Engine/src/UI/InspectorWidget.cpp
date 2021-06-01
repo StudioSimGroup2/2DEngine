@@ -282,10 +282,10 @@ namespace Engine
 		{	
 			if (ifd::FileDialog::Instance().HasResult())
 				{
-					std::string Texpath = ifd::FileDialog::Instance().GetResult().u8string();
-					c->SetTexture(AssetManager::GetInstance()->LoadTexture(path, Texpath));
+					std::string Texpath = ifd::FileDialog::Instance().GetResult().u8string();					
 					int startPos = Texpath.find("Assets");
 					Texpath.erase(0, startPos);
+					c->SetTexture(AssetManager::GetInstance()->LoadTexture(path, Texpath));
 				}
 
 			ifd::FileDialog::Instance().Close();
