@@ -46,7 +46,7 @@ void Engine::ObjectCollisionComp::InternalUpdate()
 void Engine::ObjectCollisionComp::InternalRender()
 {
 	vec2f scale;
-	if (mParent->GetComponent<SpriteComp>()->GetTexture() == nullptr)
+	if (mParent->GetComponent<SpriteComp>() == nullptr)
 	{
 		scale.x = colBox.GetSize().x / 32.0f;
 		scale.y = colBox.GetSize().y / 32.0f;
