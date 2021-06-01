@@ -437,8 +437,8 @@ namespace Engine
 			{
 				//TODO change mousepos to use world pos of camera 
 				vec2f mousePos = vec2f(InputManager::GetInstance()->GetMouseScreenPosition().x, InputManager::GetInstance()->GetMouseScreenPosition().y);
-				mousePos.x /= InputManager::GetInstance()->GetScreenSize().x;
-				mousePos.y /= InputManager::GetInstance()->GetScreenSize().y;
+				mousePos.x /= InputManager::GetInstance()->GetScreenSizePercent().x;
+				mousePos.y /= InputManager::GetInstance()->GetScreenSizePercent().y;
 
 				vec2f screenSize = InputManager::GetInstance()->GetScreenSize();
 
@@ -446,8 +446,8 @@ namespace Engine
 				mousePos.y -= c->GetGameObject()->GetComponent<TransformComp>()->GetPosition().y;
 
 				glm::vec4 CameraPos = CameraManager::Get()->GetPrimaryCamera()->GetAt();
-				mousePos.x += CameraPos.x;
-				mousePos.y -= CameraPos.y;
+				mousePos.x += (CameraPos.x - 630);
+				mousePos.y -= (CameraPos.y + 338);
 
 				c->ChangeTile(TileID, vec2i((mousePos.y / TILEHEIGHT), (mousePos.x / TILEWIDTH)));
 			}
@@ -489,7 +489,7 @@ namespace Engine
 			if (ifd::FileDialog::Instance().HasResult())
 			{
 				std::string TempString = ifd::FileDialog::Instance().GetResult().u8string();
-				int startPos = TempString.find("Game");
+				int startPos = TempString.find("Assets");
 				TempString.erase(0, startPos);
 				c->SaveTileMap(TempString, vec2i(c->GetTileMap().size(), c->GetTileMap()[0].size()));
 				c->Setpath(TempString);

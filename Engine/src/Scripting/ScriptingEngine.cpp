@@ -21,6 +21,7 @@ namespace Engine
 		mState.set_function("OnKeyDown", [](uint32_t key) { return InputManager::GetInstance()->GetKeyDown(key); });
 		mState.set_function("OnKeyUp", [](uint32_t key) { return InputManager::GetInstance()->GetKeyUp(key); });
 		mState.set_function("ChangeScene", [](std::string Path) { return SceneManager::GetInstance()->LoadScene(Path); });
+		mState.set_function("CheckTrigger", [](std::string Obj1, std::string Obj2) { return Collision::CheckTrigger(SceneManager::GetInstance()->GetSceneObjectByName(Obj1), SceneManager::GetInstance()->GetSceneObjectByName(Obj2));});
 	}
 
 	void ScriptingEngine::Shutdown()

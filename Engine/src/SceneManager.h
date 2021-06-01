@@ -37,6 +37,8 @@ namespace Engine
 		void DestroyObject(GameObject* go);
 
 		std::vector<GameObject*>& GetSceneObjects() { return mSceneObjects; }
+		GameObject* GetSceneObjectByName(std::string Name);
+
 
 		bool IsSceneLoaded() { return mSceneLoaded; }
 		bool HasUserNotSaved() { return mUnsavedChanges; }

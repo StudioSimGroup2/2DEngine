@@ -52,10 +52,10 @@ namespace Engine
 		{
 			for (GameObject* go : mSceneObjects)
 			{
-				go->Update();
-
+				go->Update();				
 				if (go->GetComponent<Engine::PhysicsComp>() != NULL)
 				{
+					go->GetComponent<Engine::PhysicsComp>()->SetGrounded(false);
 					for (GameObject* compObj : mSceneObjects)
 					{
 						if (go == compObj)
@@ -66,16 +66,13 @@ namespace Engine
 						if (Collision::CheckCollision(go, compObj))
 						{
 							go->GetComponent<Engine::PhysicsComp>()->SetGrounded(true);
-						}
-						else
-						{
-							go->GetComponent<Engine::PhysicsComp>()->SetGrounded(false);
+
 						}
 
-						if (Collision::CheckTrigger(go, compObj))
+						/*if (Collision::CheckTrigger(go, compObj))
 						{
 							Logger::LogMsg("Trigger");
-						}
+						}*/
 					}
 				}
 			}
@@ -366,7 +363,14 @@ namespace Engine
 			case COMPONENT_SPRITE:
 			{
 				TiXmlElement* Sprite = new TiXmlElement("sprite");
-				Sprite->SetAttribute("path", CurrentGameObj->GetComponent<SpriteComp>()->GetTexture()->GetPath().c_str());
+				if (CurrentGameObj->GetComponent<SpriteComp>()->GetTexture() != nullptr)
+				{
+					Sprite->SetAttribute("path", CurrentGameObj->GetComponent<SpriteComp>()->GetTexture()->GetPath().c_str());
+				}
+				else
+				{
+					Sprite->SetAttribute("path", "");
+				}
 				char Colour[50];
 				std::sprintf(Colour, "%f %f %f %f", CurrentGameObj->GetComponent<SpriteComp>()->GetColour()[0], CurrentGameObj->GetComponent<SpriteComp>()->GetColour()[1], CurrentGameObj->GetComponent<SpriteComp>()->GetColour()[2], CurrentGameObj->GetComponent<SpriteComp>()->GetColour()[3]);
 				Sprite->SetAttribute("Colour", Colour);
@@ -527,6 +531,19 @@ namespace Engine
 
 			mUnsavedChanges = true;
 		}
+	}
+
+	GameObject* SceneManager::GetSceneObjectByName(std::string Name)
+	{
+		for (GameObject* GO : GetSceneObjects())
+		{
+			if (GO->GetName() == Name)
+			{
+				return GO;
+			}
+		}
+
+		return nullptr;
 	}
 
 	void SceneManager::Shutdown()

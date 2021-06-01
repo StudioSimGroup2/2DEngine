@@ -49,8 +49,6 @@ namespace Engine
 	{
 		if (textureToRender == nullptr)
 			return;
-
-		XMMATRIX world = XMMatrixIdentity();
 		
 		auto camera = CameraManager::Get()->GetPrimaryCamera();
 
