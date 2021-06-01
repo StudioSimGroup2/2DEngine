@@ -189,7 +189,7 @@ namespace Engine
 					if (SceneHierarchyWidget::GetNode() != nullptr)
 					{
 						auto go = SceneHierarchyWidget::GetNode();
-						go->AddComponent<ParticleComp>(new ParticleComp(go));
+						go->AddComponent<ParticleComp>(new ParticleComp);
 
 					}
 

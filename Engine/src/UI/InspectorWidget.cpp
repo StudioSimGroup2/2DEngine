@@ -712,7 +712,7 @@ c->SetDepth(depth);
 		else if (currItem == textureStyles[2]) c->SetParticleTex(ParticleTexture::Square);
 		else if (currItem == textureStyles[3]) c->SetParticleTex(ParticleTexture::Triangle);
 
-		static std::string path;
+		static std::string path = c->GetTexturePath();
 		ImGui::Text("Custom texture path:");
 		ImGui::InputText("##input", &path);
 		c->SetParticleTexPath(path.c_str());

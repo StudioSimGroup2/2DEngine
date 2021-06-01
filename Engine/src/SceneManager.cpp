@@ -270,6 +270,50 @@ namespace Engine
 				NewLineCol->SetPoint2(vec2f(p2x, p2y));
 				NewLineCol->SetBRange(atof(CurrentComp->Attribute("Bounding")));
 			}
+			else if (CompType == "particleSystem")
+			{
+				ParticleComp* comp = NewObject->AddComponent<ParticleComp>(new ParticleComp());
+	
+				switch (atoi(CurrentComp->Attribute("Emitter"))) {
+				case 0:
+					comp->SetEmmitter(Emmitter::Square);
+					break;
+				case 1:
+					comp->SetEmmitter(Emmitter::Circle);
+					break;
+				case 2:
+					comp->SetEmmitter(Emmitter::Cone);
+					break;
+				}
+
+				switch (atoi(CurrentComp->Attribute("Style"))) {
+				case 0:
+					comp->SetParticleTex(ParticleTexture::Custom);
+					break;
+				case 1:
+					comp->SetParticleTex(ParticleTexture::Circle);
+					break;
+				case 2:
+					comp->SetParticleTex(ParticleTexture::Square);
+					break;
+				case 3:
+					comp->SetParticleTex(ParticleTexture::Triangle);
+					break;
+				}
+
+
+				comp->SetParticleCount(atof(CurrentComp->Attribute("Count")));
+				comp->SetRate(atof(CurrentComp->Attribute("Rate")));
+				comp->SetLifetime(atof(CurrentComp->Attribute("Lifetime")));
+				comp->SetGravity(atof(CurrentComp->Attribute("Gravity")));
+				vec2f vel;
+				vel.x = atof(CurrentComp->Attribute("VelocityX"));
+				vel.y = atof(CurrentComp->Attribute("VelocityY"));
+				comp->SetVelocity(vel);
+				comp->SetColour( glm::vec4{ atof(CurrentComp->Attribute("ColorR")), atof(CurrentComp->Attribute("ColorG")),  atof(CurrentComp->Attribute("ColorB")), atof(CurrentComp->Attribute("ColorA")) });
+				comp->SetParticleTexPath(CurrentComp->Attribute("TexPath"));
+
+			}
 		}
 		TiXmlElement* Children = CurrentObject->FirstChildElement("children");
 		if (Children != NULL)
@@ -435,7 +479,33 @@ namespace Engine
 				components->LinkEndChild(LineCol);
 				break;
 			}
-			
+			case COMPONENT_PARTICLE:
+			{
+				TiXmlElement* xml = new TiXmlElement("particleSystem");
+				ParticleComp* sys = CurrentGameObj->GetComponent<ParticleComp>();
+				xml->SetAttribute("Emitter", (int)sys->GetEmmitter());
+				xml->SetAttribute("Style", (int)sys->GetParticleTexture());
+				xml->SetAttribute("Count", sys->GetParticleCount());
+				xml->SetDoubleAttribute("Rate", sys->GetRate());
+				xml->SetDoubleAttribute("Lifetime", sys->GetLifetime());
+				xml->SetDoubleAttribute("Gravity", sys->GetGravity());
+				xml->SetDoubleAttribute("VelocityX", sys->GetVelocity().x);
+				xml->SetDoubleAttribute("VelocityY", sys->GetVelocity().y);
+				xml->SetDoubleAttribute("ColorR", sys->GetColour().r);
+				xml->SetDoubleAttribute("ColorG", sys->GetColour().g);
+				xml->SetDoubleAttribute("ColorB", sys->GetColour().b);
+				xml->SetDoubleAttribute("ColorA", sys->GetColour().a);
+
+				if (sys->GetTexture() != nullptr)
+					xml->SetAttribute("TexPath", sys->GetTexturePath());
+				else
+					xml->SetAttribute("TexPath", "");
+
+
+
+				components->LinkEndChild(xml);
+				break;
+			}
 			
 			default:
 			{
