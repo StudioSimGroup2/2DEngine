@@ -9,7 +9,6 @@ namespace Engine
 	{
 	public:
 		TransformComp();
-		TransformComp(GameObject* parent);
 		~TransformComp() override;
 
 		void SetPosition(vec2f& pos) { mPosition = pos; }

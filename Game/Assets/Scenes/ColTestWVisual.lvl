@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<PROJECT>
+    <entities>
+        <gameobject name="BoxTest">
+            <components>
+                <transform PosX="0" PosY="0" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <sprite path="C:\Users\b010635i\Documents\2DEngine\Game\Assets\Textures\Mario.png" Colour="1.000000 1.000000 1.000000 1.000000" FlipX="0" FlipY="0" />
+                <physics Mass="1" Gravity="9.8" Friction="0.5" MaxSpeed="200" />
+                <boxcol SizeX="32" SizeY="64" Bounding="300" Solid="1" Trigger="0" />
+            </components>
+        </gameobject>
+        <gameobject name="LineTest">
+            <components>
+                <transform PosX="0" PosY="0" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <linecol Point1X="0" Point1Y="300" Point2X="300" Point2Y="300" Bounding="300" Solid="1" Trigger="0" />
+            </components>
+        </gameobject>
+    </entities>
+</PROJECT>

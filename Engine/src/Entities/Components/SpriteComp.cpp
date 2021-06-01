@@ -109,5 +109,21 @@ namespace Engine
 
 	void SpriteComp::InternalRender()
 	{
+		if (!mRenderer)
+			return;
+
+#if GRAPHICS_LIBRARY == 0
+		dynamic_cast<D3D11Renderer2D*>(mRenderer)->Draw(mParent->GetComponent<TransformComp>()->GetPosition(),
+			mParent->GetComponent<TransformComp>()->GetRotation(),
+			mParent->GetComponent<TransformComp>()->GetScale(),
+			mTexture
+		);
+#elif GRAPHICS_LIBRARY == 1
+		dynamic_cast<OGLRenderer2D*>(mRenderer)->Draw(mParent->GetComponent<TransformComp>()->GetPosition(),
+			mParent->GetComponent<TransformComp>()->GetRotation(),
+			mParent->GetComponent<TransformComp>()->GetScale(),
+			mTexture
+		);
+#endif
 	}
 }

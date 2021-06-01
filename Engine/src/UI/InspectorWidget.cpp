@@ -274,7 +274,7 @@ namespace Engine
 			if (ifd::FileDialog::Instance().HasResult())
 				{
 					std::string Texpath = ifd::FileDialog::Instance().GetResult().u8string();
-					c->SetTexture(AssetManager::GetInstance()->LoadTexture(c->GetTexture()->GetName(), Texpath));
+					c->SetTexture(AssetManager::GetInstance()->LoadTexture(path, Texpath));
 					int startPos = Texpath.find("Assets");
 					Texpath.erase(0, startPos);
 				}
@@ -362,9 +362,9 @@ namespace Engine
 		ImGui::Columns(2);
 		ImGui::Text("Velocity");
 		ImGui::NextColumn();
-		ImGui::Text("X: %f", physVelocity.x);
+		ImGui::Text("X: %.2f", physVelocity.x);
 		ImGui::SameLine();
-		ImGui::Text("Y: %f", physVelocity.y);
+		ImGui::Text("Y: %.2f", physVelocity.y);
 		ImGui::Columns(1);
 
 		ImGui::PopID();
@@ -536,27 +536,27 @@ namespace Engine
 		ImGui::DragFloat("##far", &cFar, 0.1f);
 		ImGui::Columns(1);
 
-ImGui::PopID();
+		ImGui::PopID();
 
-ImGui::PushID("depth");
+		ImGui::PushID("depth");
 
-ImGui::Columns(2);
-ImGui::Text("Depth");
-ImGui::NextColumn();
-ImGui::DragFloat("##depth", &depth, 0.1f);
-ImGui::Columns(1);
+		ImGui::Columns(2);
+		ImGui::Text("Depth");
+		ImGui::NextColumn();
+		ImGui::DragFloat("##depth", &depth, 0.1f);
+		ImGui::Columns(1);
 
-ImGui::PopID();
+		ImGui::PopID();
 
-if (cFar > cNear)
-c->SetFar(cFar);
+		if (cFar > cNear)
+		c->SetFar(cFar);
 
-c->SetFOV(fov);
+		c->SetFOV(fov);
 
-if (cNear > 0.1f && cFar > cNear)
-c->SetNear(cNear);
+		if (cNear > 0.1f && cFar > cNear)
+		c->SetNear(cNear);
 
-c->SetDepth(depth);
+		c->SetDepth(depth);
 	}
 
 	void InspectorWidget::RenderBoxColComponent(ObjectCollisionComp* c)
@@ -564,6 +564,8 @@ c->SetDepth(depth);
 		Box2D colBox = c->GetColBox();
 		float colBoxSize[2] = { colBox.GetSize().x, colBox.GetSize().y };
 		float boundSize = c->GetBRange();
+		bool isSolid = c->GetColToggle();
+		bool isTrigger = c->GetTrigger();
 
 		ImGui::PushID("Size");
 
@@ -585,14 +587,38 @@ c->SetDepth(depth);
 
 		ImGui::PopID();
 
+		ImGui::PushID("Solid");
+
+		ImGui::Columns(2);
+		ImGui::Text("Solid");
+		ImGui::NextColumn();
+		ImGui::Checkbox("Is Solid?", &isSolid);
+		ImGui::Columns(1);
+
+		ImGui::PopID();
+
+		ImGui::PushID("Trigger");
+
+		ImGui::Columns(2);
+		ImGui::Text("Trigger");
+		ImGui::NextColumn();
+		ImGui::Checkbox("Is Trigger?", &isTrigger);
+		ImGui::Columns(1);
+
+		ImGui::PopID();
+
 		c->GetColBox().SetSize(vec2f(colBoxSize[0], colBoxSize[1]));
 		c->SetBRange(boundSize);
+		c->SetColToggle(isSolid);
+		c->SetTrigger(isTrigger);
 	}
 
 	void InspectorWidget::RenderLineColComponent(LineCollisionComp* c)
 	{
 		float point1[2] = { c->GetPoint1().x, c->GetPoint1().y };
 		float point2[2] = { c->GetPoint2().x, c->GetPoint2().y };
+		bool isSolid = c->GetColToggle();
+		bool isTrigger = c->GetTrigger();
 
 		ImGui::PushID("Point 1");
 
@@ -614,13 +640,37 @@ c->SetDepth(depth);
 
 		ImGui::PopID();
 
+		ImGui::PushID("Solid");
+
+		ImGui::Columns(2);
+		ImGui::Text("Solid");
+		ImGui::NextColumn();
+		ImGui::Checkbox("Is Solid?", &isSolid);
+		ImGui::Columns(1);
+
+		ImGui::PopID();
+
+		ImGui::PushID("Trigger");
+
+		ImGui::Columns(2);
+		ImGui::Text("Trigger");
+		ImGui::NextColumn();
+		ImGui::Checkbox("Is Trigger?", &isTrigger);
+		ImGui::Columns(1);
+
+		ImGui::PopID();
+
 		c->SetPoint1(vec2f(point1[0], point1[1]));
 		c->SetPoint2(vec2f(point2[0], point2[1]));
+		c->SetColToggle(isSolid);
+		c->SetTrigger(isTrigger);
 	}
 
 	void InspectorWidget::RenderTilemapColComponent(TilemapCollisionComp* c)
 	{
 		float boundSize = c->GetBRange();
+		bool isSolid = c->GetColToggle();
+		bool isTrigger = c->GetTrigger();
 
 		ImGui::PushID("Bounding");
 
@@ -632,7 +682,29 @@ c->SetDepth(depth);
 
 		ImGui::PopID();
 
+		ImGui::PushID("Solid");
+
+		ImGui::Columns(2);
+		ImGui::Text("Solid");
+		ImGui::NextColumn();
+		ImGui::Checkbox("Is Solid?", &isSolid);
+		ImGui::Columns(1);
+
+		ImGui::PopID();
+
+		ImGui::PushID("Trigger");
+
+		ImGui::Columns(2);
+		ImGui::Text("Trigger");
+		ImGui::NextColumn();
+		ImGui::Checkbox("Is Trigger?", &isTrigger);
+		ImGui::Columns(1);
+
+		ImGui::PopID();
+
 		c->SetBRange(boundSize);
+		c->SetColToggle(isSolid);
+		c->SetTrigger(isTrigger);
 
 		if (ImGui::Button("Refresh Collision Boxes"))
 		{

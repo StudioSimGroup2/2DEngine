@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<PROJECT>
+    <entities>
+        <gameobject name="BoxColTest">
+            <components>
+                <transform PosX="0" PosY="0" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <sprite path="Assets\Textures\Mario.png" Colour="0 0 0 0" FlipX="0" FlipY="0" />
+                <physics />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
+            </components>
+        </gameobject>
+        <gameobject name="LineColTest">
+            <components>
+                <transform PosX="0" PosY="0" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <linecol Point1X="0" Point1Y="300" Point2X="300" Point2Y="300" Bounding="300" Solid="1" Trigger="0" />
+            </components>
+        </gameobject>
+    </entities>
+</PROJECT>

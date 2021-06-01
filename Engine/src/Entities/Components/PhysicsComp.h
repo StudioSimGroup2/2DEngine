@@ -35,8 +35,6 @@ namespace Engine
 		void SetMaxSpeed(float newMaxSpeed) { mMaxSpeed = newMaxSpeed; }
 		void SetGrounded(bool newGrounded) { mGrounded = newGrounded; }
 
-		std::vector<vec2f> actingForces;
-
 		// Inherited via Component
 		virtual void Update() override;
 		virtual void Render() override;
@@ -49,6 +47,8 @@ namespace Engine
 	private:
 		void UpdateForces(float dT, vec2f accel);
 
+		std::vector<vec2f> actingForces;
+
 		bool mGrounded = false;
 		vec2f mNetForce;
 		vec2f mThrust;
@@ -58,9 +58,6 @@ namespace Engine
 		float mWeight;
 		float mGravity = 9.8f;
 		float mFriction = 0.5f;
-
-		float accumulator = 0;
-
 		float mMaxSpeed = 200.0f;
 	};
 

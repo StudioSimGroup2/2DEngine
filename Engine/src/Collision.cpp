@@ -1,5 +1,58 @@
 #include "Collision.h"
 
+bool Collision::DoCollisionChecks(Engine::GameObject* object1, Engine::GameObject* object2)
+{
+	if (object1->GetComponent<Engine::ObjectCollisionComp>() != NULL && object2->GetComponent<Engine::ObjectCollisionComp>() != NULL)
+	{
+		if (BoxBoxCheck(object1, object2))
+		{
+			return true;
+		}
+	}
+
+	if (object1->GetComponent<Engine::TilemapCollisionComp>() != NULL && object2->GetComponent<Engine::ObjectCollisionComp>() != NULL)
+	{
+		if (BoxTilemapCheck(object1, object2))
+		{
+			return true;
+		}
+	}
+
+	if (object1->GetComponent<Engine::ObjectCollisionComp>() != NULL && object2->GetComponent<Engine::TilemapCollisionComp>() != NULL)
+	{
+		if (BoxTilemapCheck(object2, object1))
+		{
+			return true;
+		}
+	}
+
+	if (object1->GetComponent<Engine::LineCollisionComp>() != NULL && object2->GetComponent<Engine::LineCollisionComp>() != NULL)
+	{
+		if (LineLineCheck(object2, object1))
+		{
+			return true;
+		}
+	}
+
+	if (object1->GetComponent<Engine::ObjectCollisionComp>() != NULL && object2->GetComponent<Engine::LineCollisionComp>() != NULL)
+	{
+		if (LineBoxCheck(object2, object1))
+		{
+			return true;
+		}
+	}
+
+	if (object1->GetComponent<Engine::LineCollisionComp>() != NULL && object2->GetComponent<Engine::ObjectCollisionComp>() != NULL)
+	{
+		if (LineBoxCheck(object1, object2))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 bool Collision::BoxBoxCheck(Engine::GameObject* object1, Engine::GameObject* object2)
 {
 	if (FindDistance(object1, object2) > object1->GetComponent<Engine::ObjectCollisionComp>()->GetBRange())
@@ -143,51 +196,53 @@ bool Collision::CheckCollision(Engine::GameObject* object1, Engine::GameObject* 
 	if (object1 == object2)
 		return false;
 
-	if (object1->GetComponent<Engine::ObjectCollisionComp>() != NULL && object2->GetComponent<Engine::ObjectCollisionComp>() != NULL)
+	if ((object1->GetComponent<Engine::ObjectCollisionComp>() != NULL && object1->GetComponent<Engine::ObjectCollisionComp>()->GetColToggle() == false) ||
+		(object1->GetComponent<Engine::TilemapCollisionComp>() != NULL && object1->GetComponent<Engine::TilemapCollisionComp>()->GetColToggle() == false) ||
+		(object1->GetComponent<Engine::LineCollisionComp>() != NULL && object1->GetComponent<Engine::LineCollisionComp>()->GetColToggle() == false))
 	{
-		if (BoxBoxCheck(object1, object2))
+		return false;
+	}
+	else if ((object2->GetComponent<Engine::ObjectCollisionComp>() != NULL && object2->GetComponent<Engine::ObjectCollisionComp>()->GetColToggle() == false) ||
+		(object2->GetComponent<Engine::TilemapCollisionComp>() != NULL && object2->GetComponent<Engine::TilemapCollisionComp>()->GetColToggle() == false) ||
+		(object2->GetComponent<Engine::LineCollisionComp>() != NULL && object2->GetComponent<Engine::LineCollisionComp>()->GetColToggle() == false))
+	{
+		return false;
+	}
+	else
+		if (DoCollisionChecks(object1, object2))
 		{
 			return true;
 		}
+		else
+			return false;
+}
+
+bool Collision::CheckTrigger(Engine::GameObject* object1, Engine::GameObject* object2)
+{
+	if (object1 == object2)
+		return false;
+
+	if ((object1->GetComponent<Engine::ObjectCollisionComp>() != NULL && object1->GetComponent<Engine::ObjectCollisionComp>()->GetTrigger() == true) ||
+		(object1->GetComponent<Engine::TilemapCollisionComp>() != NULL && object1->GetComponent<Engine::TilemapCollisionComp>()->GetTrigger() == true) ||
+		(object1->GetComponent<Engine::LineCollisionComp>() != NULL && object1->GetComponent<Engine::LineCollisionComp>()->GetTrigger() == true))
+	{
+		if (DoCollisionChecks(object1, object2))
+		{
+			return true;
+		}
+		else
+			return false;
 	}
 
-	if (object1->GetComponent<Engine::TilemapCollisionComp>() != NULL && object2->GetComponent<Engine::ObjectCollisionComp>() != NULL)
+	if ((object2->GetComponent<Engine::ObjectCollisionComp>() != NULL && object2->GetComponent<Engine::ObjectCollisionComp>()->GetTrigger() == true) ||
+		(object2->GetComponent<Engine::TilemapCollisionComp>() != NULL && object2->GetComponent<Engine::TilemapCollisionComp>()->GetTrigger() == true) ||
+		(object2->GetComponent<Engine::LineCollisionComp>() != NULL && object2->GetComponent<Engine::LineCollisionComp>()->GetTrigger() == true))
 	{
-		if (BoxTilemapCheck(object1, object2))
+		if (DoCollisionChecks(object1, object2))
 		{
 			return true;
 		}
-	}
-
-	if (object1->GetComponent<Engine::ObjectCollisionComp>() != NULL && object2->GetComponent<Engine::TilemapCollisionComp>() != NULL)
-	{
-		if (BoxTilemapCheck(object2, object1))
-		{
-			return true;
-		}
-	}
-
-	if (object1->GetComponent<Engine::LineCollisionComp>() != NULL && object2->GetComponent<Engine::LineCollisionComp>() != NULL)
-	{
-		if (LineLineCheck(object2, object1))
-		{
-			return true;
-		}
-	}
-
-	if (object1->GetComponent<Engine::ObjectCollisionComp>() != NULL && object2->GetComponent<Engine::LineCollisionComp>() != NULL)
-	{
-		if (LineBoxCheck(object2, object1))
-		{
-			return true;
-		}
-	}
-
-	if (object1->GetComponent<Engine::LineCollisionComp>() != NULL && object2->GetComponent<Engine::ObjectCollisionComp>() != NULL)
-	{
-		if (LineBoxCheck(object1, object2))
-		{
-			return true;
-		}
+		else
+			return false;
 	}
 }

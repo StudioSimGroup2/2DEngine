@@ -13,6 +13,7 @@ Engine::TilemapCollisionComp::~TilemapCollisionComp()
 void Engine::TilemapCollisionComp::CreateColBoxes()
 {
 	mTilemap = mParent->GetComponent<TileMapComp>()->GetTileMap();
+	vec2f parentPos = mParent->GetComponent<TransformComp>()->GetPosition();
 
 	int xPosVal = 0;
 	int yPosVal = 0;
@@ -26,8 +27,8 @@ void Engine::TilemapCollisionComp::CreateColBoxes()
 				Box2D tempColBox;
 
 				vec2f tempPos;
-				tempPos.x = (xPosVal * TILEWIDTH);
-				tempPos.y = (yPosVal * TILEHEIGHT);
+				tempPos.x = (parentPos.x + (xPosVal * TILEWIDTH));
+				tempPos.y = (parentPos.y + (yPosVal * TILEHEIGHT));
 
 				tempColBox.SetPosition(tempPos);
 
@@ -45,8 +46,8 @@ void Engine::TilemapCollisionComp::CreateColBoxes()
 				Box2D tempColBox;
 
 				vec2f tempPos;
-				tempPos.x = (xPosVal * TILEWIDTH);
-				tempPos.y = (yPosVal * TILEHEIGHT + (TILEHEIGHT / 2));
+				tempPos.x = (parentPos.x + (xPosVal * TILEWIDTH));
+				tempPos.y = (parentPos.y + ((yPosVal * TILEHEIGHT) + (TILEHEIGHT / 2)));
 
 				tempColBox.SetPosition(tempPos);
 
@@ -64,8 +65,8 @@ void Engine::TilemapCollisionComp::CreateColBoxes()
 				Box2D tempColBox;
 
 				vec2f tempPos;
-				tempPos.x = (xPosVal * TILEWIDTH);
-				tempPos.y = (yPosVal * TILEHEIGHT + (3 * (TILEHEIGHT / 4)));
+				tempPos.x = (parentPos.x + (xPosVal * TILEWIDTH));
+				tempPos.y = (parentPos.y + ((yPosVal * TILEHEIGHT) + (3 * (TILEHEIGHT / 4))));
 
 				tempColBox.SetPosition(tempPos);
 
@@ -83,8 +84,8 @@ void Engine::TilemapCollisionComp::CreateColBoxes()
 				Box2D tempColBox;
 
 				vec2f tempPos;
-				tempPos.x = (xPosVal * TILEWIDTH);
-				tempPos.y = (yPosVal * TILEHEIGHT);
+				tempPos.x = (parentPos.x + (xPosVal * TILEWIDTH));
+				tempPos.y = (parentPos.y + (yPosVal * TILEHEIGHT));
 
 				tempColBox.SetPosition(tempPos);
 
@@ -102,8 +103,8 @@ void Engine::TilemapCollisionComp::CreateColBoxes()
 				Box2D tempColBox;
 
 				vec2f tempPos;
-				tempPos.x = (xPosVal * TILEWIDTH + (TILEWIDTH / 2));
-				tempPos.y = (yPosVal * TILEHEIGHT);
+				tempPos.x = (parentPos.x + ((xPosVal * TILEWIDTH) + (TILEWIDTH / 2)));
+				tempPos.y = (parentPos.y + (yPosVal * TILEHEIGHT));
 
 				tempColBox.SetPosition(tempPos);
 
@@ -131,6 +132,9 @@ void Engine::TilemapCollisionComp::Init()
 	mType = COMPONENT_COLTILE;
 	//Create Collision Boxes
 	CreateColBoxes();
+
+	mRenderer = Device::CreateRenderer(AssetManager::GetInstance()->GetShaderByName("Default"));
+	mTexture = AssetManager::GetInstance()->LoadTexture("BoxColBoth", "Assets/Textures/BoxColBoth.png");
 }
 
 void Engine::TilemapCollisionComp::RefreshTileBoxes()
@@ -160,4 +164,20 @@ void Engine::TilemapCollisionComp::InternalUpdate()
 
 void Engine::TilemapCollisionComp::InternalRender()
 {
+	for (Box2D box : collisionBoxes)
+	{
+		vec2f scale;
+		scale.x = box.GetSize().x / 32.0f;
+		scale.y = box.GetSize().y / 32.0f;
+
+#if GRAPHICS_LIBRARY == 0
+		dynamic_cast<D3D11Renderer2D*>(mRenderer)->Draw(box.GetPosition(),
+			mParent->GetComponent<TransformComp>()->GetRotation(),
+			scale, mTexture);
+#elif GRAPHICS_LIBRARY == 1
+		dynamic_cast<OGLRenderer2D*>(mRenderer)->Draw(colBox.GetPosition(),
+			mParent->GetComponent<TransformComp>()->GetRotation(),
+			scale, mTexture);
+#endif
+	}
 }
