@@ -489,7 +489,7 @@ namespace Engine
 			if (ifd::FileDialog::Instance().HasResult())
 			{
 				std::string TempString = ifd::FileDialog::Instance().GetResult().u8string();
-				int startPos = TempString.find("Game");
+				int startPos = TempString.find("Assets");
 				TempString.erase(0, startPos);
 				c->SaveTileMap(TempString, vec2i(c->GetTileMap().size(), c->GetTileMap()[0].size()));
 				c->Setpath(TempString);
