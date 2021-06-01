@@ -1,10 +1,8 @@
 #include "PhysicsComp.h"
 #include "Entities/GameObject.h"
 
-Engine::PhysicsComp::PhysicsComp() : Component()
+Engine::PhysicsComp::PhysicsComp()
 {
-	Init();
-	mGrounded;
 }
 
 Engine::PhysicsComp::~PhysicsComp()
@@ -37,6 +35,11 @@ void Engine::PhysicsComp::UpdateForces(float dT, vec2f accel)
 	{
 		// When grounded, apply frictional force equal to the current velocity
 		// multiplied by a frictional coefficient
+		if (mCurrentVelocity.y > 0)
+		{
+			mCurrentVelocity.y = 0;
+		}
+
 		mNetForce.x += (mCurrentVelocity.x * -mFriction);
 	}
 	else
@@ -45,12 +48,24 @@ void Engine::PhysicsComp::UpdateForces(float dT, vec2f accel)
 		//the weight of the character multiplied by gravity
 		mNetForce.y += mWeight;
 	}
+
+	if (mCurrentVelocity.x > mMaxSpeed)
+	if (mCurrentVelocity.x < -mMaxSpeed)
+		mCurrentVelocity.x = -mMaxSpeed;
+
+	if (mCurrentVelocity.y > mMaxSpeed)
+		mCurrentVelocity.y = mMaxSpeed;
+	if (mCurrentVelocity.y < -mMaxSpeed)
+		mCurrentVelocity.y = -mMaxSpeed;
+
+
 }
 
 void Engine::PhysicsComp::Update()
 {
-	float dkfjdsf = float(0.016);
-	Update(dkfjdsf);
+	float deltaTime = DeltaTime::GetInstance()->GetDeltaTime();
+	//float dkfjdsf = float(0.016);
+	Update(deltaTime);
 }
 
 void Engine::PhysicsComp::Render()
@@ -63,6 +78,9 @@ void Engine::PhysicsComp::Start()
 
 void Engine::PhysicsComp::InternalUpdate()
 {
+	ResetForces();
+	mCurrentVelocity.x = 0.0f;
+	mCurrentVelocity.y = 0.0f;
 }
 
 void Engine::PhysicsComp::InternalRender()
@@ -91,13 +109,20 @@ void Engine::PhysicsComp::Update(float dT)
 		mNetForce.y += actingForces[i].y;
 	}
 
-	vec2f acceleration = vec2f(mNetForce.x / mWeight, mNetForce.y / mWeight);
+	vec2f acceleration = vec2f(mNetForce.x / mMass, mNetForce.y / mMass);
 	UpdateForces(dT, acceleration);
 
 	//Calculate new position using formula s = ut + 1/2at^2
 	vec2f position = mParent->GetComponent<TransformComp>()->GetPosition();
 
-	position += (mCurrentVelocity * dT) + (acceleration * 0.5f * (dT * dT));
+	position += (mCurrentVelocity * dT) /*+ (acceleration * 0.5f * (dT * dT))*/;
 	
 	mParent->GetComponent<TransformComp>()->SetPosition(position);
+
+	accumulator++;
+
+	if (accumulator > 600)
+	{
+		int a = 0;
+	}
 }

@@ -67,10 +67,28 @@ namespace Engine
 			if (!(c->GetGameObject()))
 			{
 				c->SetGameObject(this);
+				mComponentID++;
+				c->SetID(mComponentID);
+				c->Init();
 			}
 			mComponents.push_back(c);
 
 			return comp;
+		}
+		inline void RemoveComponent(Component* Comp)
+		{
+			int i = 0;
+			for (Component* Test : mComponents)
+			{
+				if (Test == Comp)
+				{
+					mComponents.erase(mComponents.begin() + i);
+					delete Test;
+					Test = nullptr;
+					break;
+				}
+				i++;
+			}
 		}
 		void AddChild(GameObject* go) { mChildren.push_back(go); }
 
@@ -79,10 +97,11 @@ namespace Engine
 		GameObject* mParent = nullptr;
 
 	private:
-
 		void InitTransformComponent();
 		
 		std::string mName;
+
+		static int mComponentID;
 
 		std::vector<Component*> mComponents;
 		std::vector<GameObject*> mChildren;

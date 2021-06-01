@@ -17,7 +17,8 @@ namespace Engine
 
 	void SceneManager::CreateScene()
 	{
-		auto camera = CameraManager::Get()->Add(vec2f(0.0f, 0.0f), true);		// Camera manager deletes its cameras, no mem leak :)         
+
+		auto camera = CameraManager::Get()->Add(vec2f((1260/2), -(677/2)), true);		// Camera manager deletes its cameras, no mem leak :)         
 		camera->SetName("Main Camera");
 		camera->SetPrimary(true);
 		camera->SetEditorCamera(true);
@@ -51,6 +52,27 @@ namespace Engine
 			for (GameObject* go : mSceneObjects)
 			{
 				go->Update();
+
+				if (go->GetComponent<Engine::PhysicsComp>() != NULL)
+				{
+					for (GameObject* compObj : mSceneObjects)
+					{
+						if (go == compObj)
+						{
+							continue;
+						}
+
+						if (Collision::CheckCollision(go, compObj))
+						{
+							go->GetComponent<Engine::PhysicsComp>()->SetGrounded(true);
+							break;
+						}
+						else
+						{
+							go->GetComponent<Engine::PhysicsComp>()->SetGrounded(false);
+						}
+					}
+				}
 			}
 		}
 	}
@@ -97,6 +119,8 @@ namespace Engine
 			// TODO:
 			// Lots of pointers left here should clean them up when done with them
 		}
+
+		mUnsavedChanges = false;
 	}
 
 	void SceneManager::LoadObject(TiXmlElement* CurrentObject, GameObject* ParentObj)
@@ -104,8 +128,7 @@ namespace Engine
 		GameObject* NewObject = CreateObject();
 		if (ParentObj != nullptr)
 		{
-			NewObject->SetParent(ParentObj);
-			ParentObj->AddChild(NewObject);
+			NewObject->Attach(ParentObj);
 		}
 
 		NewObject->SetName(CurrentObject->Attribute("name"));
@@ -116,33 +139,52 @@ namespace Engine
 			std::string CompType = CurrentComp->Value();
 			if (CompType == "transform")
 			{
+				TransformComp* Transform = NewObject->GetComponent<TransformComp>();
 				//Position / Rotation / scale
 
 				//get pos
 				vec2f Pos;
 				Pos.x = atof(CurrentComp->Attribute("PosX"));
 				Pos.y = atof(CurrentComp->Attribute("PosY"));
-				//set Pos to newobject
-				TransformComp* Transform = NewObject->GetComponent<TransformComp>();
+				//set Pos to newobject				
 				Transform->SetPosition(Pos);
 
-				//TODO add
-				//rotation
-				//scale						
+				//get rotation
+				vec2f Rot;
+				Rot.x = atof(CurrentComp->Attribute("RotX"));
+				Rot.y = atof(CurrentComp->Attribute("RotY"));
+
+				Transform->SetRotation(Rot);
+
+				vec2f Scale;
+				Scale.x = atof(CurrentComp->Attribute("ScaleX"));
+				Scale.y = atof(CurrentComp->Attribute("ScaleY"));
+
+				Transform->SetScale(Scale);				
 			}
 			else if (CompType == "sprite")
 			{
 				//Texture / colour / flip X / flip Y
-				SpriteComp* NewSprite = new SpriteComp();
+				SpriteComp* NewSprite = NewObject->AddComponent<SpriteComp>(new SpriteComp);
 				//Texture
 				std::string path = CurrentComp->Attribute("path");
 				if (path != "")
 				{
 					NewSprite->SetTexture(AssetManager::GetInstance()->LoadTexture(NewObject->GetName(), path));
-					NewSprite->Setpath(path);
 				}
 				//Colour
+				float colour[4];
+				std::string Colour = CurrentComp->Attribute("Colour");
 
+				std::stringstream ss(Colour);
+				float n; int m = 0;
+				while (ss >> n)
+				{
+					colour[m] = n;
+					m++;
+				}	
+
+				NewSprite->SetColour(colour[0], colour[1], colour[2], colour[3]);
 				//flipX
 				std::string FX = CurrentComp->Attribute("FlipX");
 				if (FX == "1")
@@ -155,33 +197,35 @@ namespace Engine
 				{
 					NewSprite->ToggleFlipY(true);
 				}
-
-				NewObject->AddComponent<SpriteComp>(NewSprite);
-			}
-			else if (CompType == "physics")
-			{
-				//mass / gravity / friction
-				PhysicsComp* NewPhysics = new PhysicsComp;
-				NewObject->AddComponent<PhysicsComp>(NewPhysics);
 			}
 			else if (CompType == "script")
 			{
 				//Path
-				ScriptComp* NewScript = new ScriptComp;
-				NewObject->AddComponent<ScriptComp>(NewScript);
+				ScriptComp* NewScript = NewObject->AddComponent<ScriptComp>(new ScriptComp);
 				std::string path = CurrentComp->Attribute("path");
 				if (path != "")
 				{
 					NewScript->AddScript(path);
 					NewScript->Setpath(path);
-
 				}
+			}
+			else if (CompType == "audio")
+			{
+				//this dont work 
+			}
+			else if (CompType == "camera")
+			{
+				int i = 0;
+				CameraComp* NewCamera = NewObject->AddComponent<CameraComp>(new CameraComp);
+				NewCamera->SetFOV(atof(CurrentComp->Attribute("FOV")));
+				NewCamera->SetNear(atof(CurrentComp->Attribute("Near")));
+				NewCamera->SetFar(atof(CurrentComp->Attribute("Far")));
+				NewCamera->SetDepth(atof(CurrentComp->Attribute("Depth")));
 			}
 			else if (CompType == "tilemap")
 			{
 				//path
-				TileMapComp* NewtileMap = new TileMapComp;
-				NewObject->AddComponent<TileMapComp>(NewtileMap);
+				TileMapComp* NewtileMap = NewObject->AddComponent<TileMapComp>(new TileMapComp);
 				std::string path = CurrentComp->Attribute("path");
 				if (path != "")
 				{
@@ -189,15 +233,42 @@ namespace Engine
 					NewtileMap->Setpath(path);
 				}
 			}
-			else if (CompType == "camera")
+			else if (CompType == "physics")
 			{
-				int i = 0;
-				CameraComp* NewCamera = new CameraComp(NewObject);
-				NewObject->AddComponent<CameraComp>(NewCamera);
-				NewCamera->SetFOV(atof(CurrentComp->Attribute("FOV")));
-				NewCamera->SetNear(atof(CurrentComp->Attribute("Near")));
-				NewCamera->SetFar(atof(CurrentComp->Attribute("Far")));
-				NewCamera->SetDepth(atof(CurrentComp->Attribute("Depth")));
+				PhysicsComp* NewPhysics = NewObject->AddComponent<PhysicsComp>(new PhysicsComp);
+				NewPhysics->SetMass(atof(CurrentComp->Attribute("Mass")));
+				NewPhysics->SetGravity(atof(CurrentComp->Attribute("Gravity")));
+				NewPhysics->SetFriction(atof(CurrentComp->Attribute("Friction")));
+				NewPhysics->SetMaxSpeed(atof(CurrentComp->Attribute("MaxSpeed")));
+
+			}
+			else if (CompType == "boxcol")
+			{
+				ObjectCollisionComp* NewBoxCol = NewObject->AddComponent<ObjectCollisionComp>(new ObjectCollisionComp);
+				float sizex, sizey;
+				sizex = atof(CurrentComp->Attribute("SizeX"));
+				sizey = atof(CurrentComp->Attribute("SizeY"));
+				NewBoxCol->GetColBox().SetSize(vec2f(sizex, sizey));
+				NewBoxCol->SetBRange(atof(CurrentComp->Attribute("Bounding")));
+
+			}
+			else if (CompType == "tilecol")
+			{
+				TilemapCollisionComp* NewTileCol = NewObject->AddComponent<TilemapCollisionComp>(new TilemapCollisionComp);
+				NewTileCol->SetBRange(atof(CurrentComp->Attribute("Bounding")));
+			}
+			else if (CompType == "linecol")
+			{
+				LineCollisionComp* NewLineCol = NewObject->AddComponent<LineCollisionComp>(new LineCollisionComp);
+				float p1x, p1y, p2x, p2y;
+				p1x = atof(CurrentComp->Attribute("Point1X"));
+				p1y = atof(CurrentComp->Attribute("Point1Y")); 
+				p2x = atof(CurrentComp->Attribute("Point2X"));
+				p2y = atof(CurrentComp->Attribute("Point2Y"));
+
+				NewLineCol->SetPoint1(vec2f(p1x, p1y));
+				NewLineCol->SetPoint2(vec2f(p2x, p2y));
+				NewLineCol->SetBRange(atof(CurrentComp->Attribute("Bounding")));
 			}
 		}
 		TiXmlElement* Children = CurrentObject->FirstChildElement("children");
@@ -209,7 +280,6 @@ namespace Engine
 				LoadObject(Child, NewObject);
 			}
 		}
-
 	}
 
 	void SceneManager::SaveScene(std::string path)
@@ -243,6 +313,8 @@ namespace Engine
 
 		// TODO:
 		// Lots of pointers left here should clean them up when done with them
+
+		mUnsavedChanges = false;
 	}
 
 	void SceneManager::SaveObject(TiXmlElement* GameObj, GameObject* CurrentGameObj)
@@ -257,14 +329,14 @@ namespace Engine
 			case  COMPONENT_TRANSFORM:
 			{
 				TiXmlElement* Transform = new TiXmlElement("transform");
-				Transform->SetAttribute("PosX", CurrentGameObj->GetComponent<TransformComp>()->GetPosition().x);
-				Transform->SetAttribute("PosY", CurrentGameObj->GetComponent<TransformComp>()->GetPosition().y);
+				Transform->SetDoubleAttribute("PosX", CurrentGameObj->GetComponent<TransformComp>()->GetPosition().x);
+				Transform->SetDoubleAttribute("PosY", CurrentGameObj->GetComponent<TransformComp>()->GetPosition().y);
 
-				Transform->SetAttribute("RotX", CurrentGameObj->GetComponent<TransformComp>()->GetRotation().x);
-				Transform->SetAttribute("RotY", CurrentGameObj->GetComponent<TransformComp>()->GetRotation().y);
+				Transform->SetDoubleAttribute("RotX", CurrentGameObj->GetComponent<TransformComp>()->GetRotation().x);
+				Transform->SetDoubleAttribute("RotY", CurrentGameObj->GetComponent<TransformComp>()->GetRotation().y);
 
-				Transform->SetAttribute("ScaleX", CurrentGameObj->GetComponent<TransformComp>()->GetScale().x);
-				Transform->SetAttribute("ScaleY", CurrentGameObj->GetComponent<TransformComp>()->GetScale().x);
+				Transform->SetDoubleAttribute("ScaleX", CurrentGameObj->GetComponent<TransformComp>()->GetScale().x);
+				Transform->SetDoubleAttribute("ScaleY", CurrentGameObj->GetComponent<TransformComp>()->GetScale().x);
 
 				components->LinkEndChild(Transform);
 				break;
@@ -272,8 +344,10 @@ namespace Engine
 			case COMPONENT_SPRITE:
 			{
 				TiXmlElement* Sprite = new TiXmlElement("sprite");
-				Sprite->SetAttribute("path", CurrentGameObj->GetComponent<SpriteComp>()->getpath().c_str());
-				Sprite->SetAttribute("Colour", "0 0 0 0");
+				Sprite->SetAttribute("path", CurrentGameObj->GetComponent<SpriteComp>()->GetTexture()->GetPath().c_str());
+				char Colour[50];
+				std::sprintf(Colour, "%f %f %f %f", CurrentGameObj->GetComponent<SpriteComp>()->GetColour()[0], CurrentGameObj->GetComponent<SpriteComp>()->GetColour()[1], CurrentGameObj->GetComponent<SpriteComp>()->GetColour()[2], CurrentGameObj->GetComponent<SpriteComp>()->GetColour()[3]);
+				Sprite->SetAttribute("Colour", Colour);
 
 				int flipX = 0, flipY = 0;
 				if (CurrentGameObj->GetComponent<SpriteComp>()->GetFlipX())
@@ -289,19 +363,27 @@ namespace Engine
 				components->LinkEndChild(Sprite);
 				break;
 			}
-			case COMPONENT_PHYSICS:
-			{
-				TiXmlElement* physics = new TiXmlElement("physics");
-
-				components->LinkEndChild(physics);
-				break;
-			}
 			case COMPONENT_SCRIPT:
 			{
 				TiXmlElement* script = new TiXmlElement("script");
 				script->SetAttribute("path", CurrentGameObj->GetComponent<ScriptComp>()->getpath().c_str());
 
 				components->LinkEndChild(script);
+				break;
+			}
+			case COMPONENT_AUDIO:
+			{
+				break;
+			}
+			case COMPONENT_CAMERA:
+			{
+				//FOV / Near / Far / Depth
+				TiXmlElement* Camera = new TiXmlElement("camera");
+				Camera->SetDoubleAttribute("FOV", CurrentGameObj->GetComponent<CameraComp>()->GetFOV());
+				Camera->SetDoubleAttribute("Near", CurrentGameObj->GetComponent<CameraComp>()->GetNear());
+				Camera->SetDoubleAttribute("Far", CurrentGameObj->GetComponent<CameraComp>()->GetFar());
+				Camera->SetDoubleAttribute("Depth", CurrentGameObj->GetComponent<CameraComp>()->GetDepth());
+				components->LinkEndChild(Camera);
 				break;
 			}
 			case COMPONENT_TILEMAP:
@@ -312,17 +394,49 @@ namespace Engine
 				components->LinkEndChild(tileMap);
 				break;
 			}
-			case COMPONENT_CAMERA:
+			case COMPONENT_PHYSICS:
 			{
-				//FOV / Near / Far / Depth
-				TiXmlElement* Camera = new TiXmlElement("camera");
-				Camera->SetAttribute("FOV", CurrentGameObj->GetComponent<CameraComp>()->GetFOV());
-				Camera->SetAttribute("Near", CurrentGameObj->GetComponent<CameraComp>()->GetNear());
-				Camera->SetAttribute("Far", CurrentGameObj->GetComponent<CameraComp>()->GetFar());
-				Camera->SetAttribute("Depth", CurrentGameObj->GetComponent<CameraComp>()->GetDepth());
-				components->LinkEndChild(Camera);
+				TiXmlElement* physics = new TiXmlElement("physics");
+				physics->SetDoubleAttribute("Mass", CurrentGameObj->GetComponent<PhysicsComp>()->GetMass());
+				physics->SetDoubleAttribute("Gravity", CurrentGameObj->GetComponent<PhysicsComp>()->GetGravity());
+				physics->SetDoubleAttribute("Friction", CurrentGameObj->GetComponent<PhysicsComp>()->GetFriction());
+				physics->SetDoubleAttribute("MaxSpeed", CurrentGameObj->GetComponent<PhysicsComp>()->GetMaxSpeed());
+
+				components->LinkEndChild(physics);
 				break;
 			}
+			case COMPONENT_COLBOX:
+			{
+				TiXmlElement* BoxCol = new TiXmlElement("boxcol");
+				BoxCol->SetDoubleAttribute("SizeX", CurrentGameObj->GetComponent<ObjectCollisionComp>()->GetColBox().GetSize().x);
+				BoxCol->SetDoubleAttribute("SizeY", CurrentGameObj->GetComponent<ObjectCollisionComp>()->GetColBox().GetSize().y);
+				BoxCol->SetDoubleAttribute("Bounding", CurrentGameObj->GetComponent<ObjectCollisionComp>()->GetBRange());
+
+				components->LinkEndChild(BoxCol);
+				break;
+			}
+			case COMPONENT_COLTILE:
+			{
+				TiXmlElement* TileCol = new TiXmlElement("tilecol");
+				TileCol->SetDoubleAttribute("Bounding", CurrentGameObj->GetComponent<TilemapCollisionComp>()->GetBRange());
+
+				components->LinkEndChild(TileCol);
+				break;
+			}
+			case COMPONENT_COLLINE:
+			{
+				TiXmlElement* LineCol = new TiXmlElement("linecol");
+				LineCol->SetDoubleAttribute("Point1X", CurrentGameObj->GetComponent<LineCollisionComp>()->GetPoint1().x);
+				LineCol->SetDoubleAttribute("Point1Y", CurrentGameObj->GetComponent<LineCollisionComp>()->GetPoint1().y);				
+				LineCol->SetDoubleAttribute("Point2X", CurrentGameObj->GetComponent<LineCollisionComp>()->GetPoint2().x);
+				LineCol->SetDoubleAttribute("Point2Y", CurrentGameObj->GetComponent<LineCollisionComp>()->GetPoint2().y);
+				LineCol->SetDoubleAttribute("Bounding", CurrentGameObj->GetComponent<LineCollisionComp>()->GetBRange());
+
+				components->LinkEndChild(LineCol);
+				break;
+			}
+			
+			
 			default:
 			{
 				break;
@@ -345,13 +459,18 @@ namespace Engine
 	void SceneManager::ClearScene()
 	{
 		mSceneObjects.clear();
+
+		mUnsavedChanges = true;
 	}
 
 	GameObject* SceneManager::CreateObject()
 	{
 		GameObject* go = new GameObject();
 		mSceneObjects.push_back(go);
-		go->SetName("Unnamed Object " + std::to_string(mSceneObjects.size()));
+		mCounter++;
+		go->SetName("Unnamed Object " + std::to_string(mCounter));
+
+		mUnsavedChanges = true;
 
 		return go;
 	}
@@ -378,6 +497,8 @@ namespace Engine
 
 			delete objectToDelete;
 			objectToDelete = nullptr;
+
+			mUnsavedChanges = true;
 		}
 	}
 

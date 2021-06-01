@@ -19,9 +19,6 @@ namespace Engine
 
 		auto hr = S_OK;
 
-		//mWidth = 10;
-		mHeight = 64;
-
 		hr = CreateTextureFromFile(device);
 
 		if (hr != S_OK)

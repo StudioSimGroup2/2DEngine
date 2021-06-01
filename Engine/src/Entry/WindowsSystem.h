@@ -2,6 +2,7 @@
 
 #include "../Engine/Window.h"
 #include "../Engine/Renderer/Context.h"
+#include "EngineTime.h"
 
 #include <Windows.h>
 #include <chrono>

@@ -10,8 +10,9 @@ namespace Engine
 	{
 	public:
 		ScriptComp();
-		ScriptComp(GameObject* parent);
 		~ScriptComp() override;
+
+		virtual void Init() override;
 
 		void Start() { mScript.CallStart(mParent); }
 		void Update() override;
@@ -26,7 +27,6 @@ namespace Engine
 		void Setpath(std::string path) { mPath = path; };
 
 	private:
-		void Init();
 
 		std::string mPath;
 

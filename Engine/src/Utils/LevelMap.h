@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <sstream>
+#include <algorithm>
 
 #include "Engine/Core.h"
 #include "Common.h"

@@ -9,7 +9,6 @@ namespace Engine
 	{
 	public:
 		CameraComp();
-		CameraComp(GameObject* parent);
 		~CameraComp() override;
 
 		void SetFOV(float fov) { mCamera->SetFOV(fov); }
@@ -23,6 +22,8 @@ namespace Engine
 		float GetDepth() { return mCamera->GetDepth(); }
 
 		// Inherited via Component
+		virtual void Init() override;
+
 		virtual void Start() override;
 
 		virtual void Update() override;
@@ -34,7 +35,6 @@ namespace Engine
 		virtual void InternalRender() override;
 
 	private:
-		void Init();
 
 		Camera* mCamera = nullptr;
 	};

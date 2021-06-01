@@ -24,6 +24,7 @@ namespace Engine
 #if GRAPHICS_LIBRARY == 0
 		static D3D11Device* GetDevice() { return D3D11Device::GetInstance(); }
 		static D3D11Renderer2D* CreateRenderer(Shader* shader) { return new D3D11Renderer2D(shader, GetDevice()); }
+		static D3D11Renderer2D* CreateSpriteSheetRenderer(Shader* shader, int cellWidth, int cellHeight, vec2i position) { return new D3D11Renderer2D(shader, GetDevice(), cellWidth, cellHeight, position); }
 		//static D3DCamera* CreateCamera() { return CameraManager::Add()}
 #elif GRAPHICS_LIBRARY == 1
 		static OGLDevice* GetDevice() { return OGLDevice::GetInstance(); }

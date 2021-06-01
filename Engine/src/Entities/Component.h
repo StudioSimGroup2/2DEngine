@@ -6,6 +6,7 @@
 
 #include "Engine/Core.h"
 #include "Common.h"
+#include "EngineTime.h"
 #include <iostream>
 
 namespace Engine
@@ -16,9 +17,10 @@ namespace Engine
 	{
 	public:
 		Component();
-		Component(GameObject* parent);
 		virtual ~Component() { mParent = nullptr; }
 
+
+		virtual void Init() = 0;
 		virtual void Start() = 0;
 		virtual void Update() = 0;
 		virtual void Render() = 0;
@@ -26,13 +28,17 @@ namespace Engine
 		virtual void InternalUpdate() = 0;
 		virtual void InternalRender() = 0;
 
+		void SetID(int id) { mID = id; }
+
 		int GetType() const { return mType; }
+		int GetID() const { return mID; }
 
 		GameObject* GetGameObject() const { return mParent; }
 		void SetGameObject(GameObject* parent) { mParent = parent; }
 
 	protected:
 		int mType = -1;
+		int mID = -1;
 		GameObject* mParent = nullptr;
 	};
 }

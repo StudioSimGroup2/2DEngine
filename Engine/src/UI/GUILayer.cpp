@@ -189,6 +189,8 @@ void GUILayer::Render()
 	ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 
 	mMenuBar.Render();
+	mProfiler.Render();
+
 
 #pragma region GUI Buttons //Fix dockspace issues
 
@@ -220,19 +222,24 @@ void GUILayer::Render()
 #pragma endregion
 
 #pragma region
-	ImGui::Begin("Game", NULL, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_MenuBar);
+	SceneManager::GetInstance()->HasUserNotSaved() ? ImGui::Begin("Game*", NULL, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_MenuBar)
+		: ImGui::Begin("Game", NULL, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_MenuBar);
 
 	if (ImGui::BeginMenuBar())
 	{
 		if (ImGui::MenuItem("Play")) 
 		{
 			SceneManager::GetInstance()->DisableEditorMode();
+			SceneManager::GetInstance()->PlayScene();
 		}
 
 		if (ImGui::MenuItem("Stop")) 
 		{
 			SceneManager::GetInstance()->EnableEditorMode();
 		}
+
+		ImGui::SameLine(ImGui::GetContentRegionAvailWidth());
+		SceneManager::GetInstance()->GetRunTime() ? ImGui::Text("Stopped") : ImGui::TextColored(ImVec4(255.0f, 0.0f, 0.0f, 1.0f), "Playing");
 	}
 	ImGui::EndMenuBar();
 
@@ -256,6 +263,11 @@ void GUILayer::Render()
 
 	if (mouseOffset.y > (gameScreenB.y - gameScreenA.y))
 		mouseOffset.y = gameScreenB.y - gameScreenA.y;
+
+	InputManager::GetInstance()->SetMouseScreenPosition(vec2f(mouseOffset.x, mouseOffset.y));
+	vec2f WindowSize = vec2f(ImGui::GetMainViewport()->Size.x, ImGui::GetMainViewport()->Size.y);
+	vec2f renderSize = vec2f(gameScreenB.x - gameScreenA.x , gameScreenB.y - gameScreenA.y);
+	InputManager::GetInstance()->SetScreenSize(WindowSize, renderSize);
 
 #if GRAPHICS_LIBRARY ==  1
 	ImGui::Image((void*)(intptr_t)SceneManager::GetInstance()->GetRenderToTexID(), ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));

@@ -24,6 +24,7 @@ namespace Engine
 		void ChangeTexture(Texture* tex, const std::string& path);
 		//static void LoadTexture(Device* device, const std::string& name, const std::string& path);
 		Texture* LoadTexture(const std::string& name, const std::string& path);
+		Texture* LoadSpriteSheet(const std::string& name, const std::string& path, int numberOfSprites);
 
 		static AssetManager* GetInstance();
 

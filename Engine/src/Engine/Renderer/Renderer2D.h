@@ -19,6 +19,8 @@ namespace Engine
 		bool GetFlipX() const { return mFlipX; }
 		bool GetFlipY() const { return mFlipY; }
 
+		virtual void UpdateBuffers(int totalWidth, int totalHeight, int posX, int posY) = 0;
+
 		void SetColour(float r, float g, float b, float a) { mColour[0] = r; mColour[1] = g; mColour[2] = b; mColour[3] = a; }
 
 		float (&GetColour())[4] { return mColour; }

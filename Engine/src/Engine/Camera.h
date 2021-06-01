@@ -45,6 +45,8 @@ namespace Engine
 		float GetFar() { return mFarPlane; }
 		float GetDepth() { return mZDepth; }
 		
+		glm::vec4 GetAt() { return mAt; };
+		
 	protected:
 		DirectX::XMMATRIX mView, mProjection;
 

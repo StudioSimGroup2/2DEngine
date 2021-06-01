@@ -7,12 +7,6 @@ namespace Engine
 {
 	ScriptComp::ScriptComp()
 	{
-		Init();
-	}
-
-	ScriptComp::ScriptComp(GameObject* parent)
-	{
-		Init();
 	}
 
 	ScriptComp::~ScriptComp()

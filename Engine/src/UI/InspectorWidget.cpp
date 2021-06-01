@@ -31,9 +31,13 @@ namespace Engine
 				ImGui::End();
 				return;
 			}
-				
+
 			for (Component* c : go->GetComponents())
 			{
+				bool close = true;
+				
+				ImGui::PushID(c->GetID());
+
 				switch (c->GetType())
 				{
 				case COMPONENT_TRANSFORM:
@@ -44,43 +48,64 @@ namespace Engine
 					break;
 
 				case COMPONENT_SPRITE:
-					if (ImGui::CollapsingHeader("Sprite"))
+					if (ImGui::CollapsingHeader("Sprite", &close))
 					{
 						RenderSpriteComponent(dynamic_cast<SpriteComp*>(c));
 					}
 					break;
 
 				case COMPONENT_PHYSICS:
-					if (ImGui::CollapsingHeader("Physics"))
+					if (ImGui::CollapsingHeader("Physics", &close))
 					{
 						RenderPhysicsComponent(dynamic_cast<PhysicsComp*>(c));
 					}
 					break;
 
 				case COMPONENT_SCRIPT:
-					if (ImGui::CollapsingHeader("Script"))
+					if (ImGui::CollapsingHeader("Script", &close))
 					{
 						RenderScriptComponent(dynamic_cast<ScriptComp*>(c));
 					}
 					break;
 
 				case COMPONENT_AUDIO:
-					if (ImGui::CollapsingHeader("Audio"))
+					if (ImGui::CollapsingHeader("Audio", &close))
 					{
 					}
 					break;
 
 				case COMPONENT_CAMERA:
-					if (ImGui::CollapsingHeader("Camera"))
+					if (ImGui::CollapsingHeader("Camera", &close))
 					{
 						RenderCameraComponent(dynamic_cast<CameraComp*>(c));
 					}
 					break;
 
 				case COMPONENT_TILEMAP:
-					if (ImGui::CollapsingHeader("TileMap"))
+					if (ImGui::CollapsingHeader("TileMap", &close))
 					{
-						TileMapComponent(dynamic_cast<TileMapComp*>(c));
+						RenderTileMapComponent(dynamic_cast<TileMapComp*>(c));
+					}
+					break;
+
+				case COMPONENT_COLBOX:
+					if (ImGui::CollapsingHeader("Box Collision", &close))
+					{
+						RenderBoxColComponent(dynamic_cast<ObjectCollisionComp*>(c));
+					}
+					break;
+
+				case COMPONENT_COLTILE:
+					if (ImGui::CollapsingHeader("Tilemap Collision", &close))
+					{
+						RenderTilemapColComponent(dynamic_cast<TilemapCollisionComp*>(c));
+					}
+					break;
+
+				case COMPONENT_COLLINE:
+					if (ImGui::CollapsingHeader("Line Collision", &close))
+					{
+						RenderLineColComponent(dynamic_cast<LineCollisionComp*>(c));
 					}
 					break;
 
@@ -90,16 +115,22 @@ namespace Engine
 						RenderParticleComponent(dynamic_cast<ParticleComp*>(c));
 					}
 					break;
-
-
 				default:
 					break;
 				}
+
+				if (!close)
+				{
+					c->GetGameObject()->RemoveComponent(c);
+					close = true;
+				}
+
+				ImGui::PopID();
 			}
 
 			ImGui::Separator();
 
-			const char* comps[] = { "UI", "Script", "Physics" };
+			const char* comps[] = { "Sprite", "Script", "Audio", "Camera", "TileMap", "Physics", "Box Collision", "Tilemap Collision", "Line Collision" };
 
 			if (ImGui::Button("Add Component..", ImVec2(ImGui::GetContentRegionAvail().x, 0.0f)))
 			{
@@ -114,7 +145,52 @@ namespace Engine
 				for (int i = 0; i < IM_ARRAYSIZE(comps); i++)
 					if (ImGui::Selectable(comps[i]))
 					{
+						switch (i + 1)
+						{
+						case COMPONENT_SPRITE:
+							SceneHierarchyWidget::GetNode()->AddComponent<SpriteComp>(new SpriteComp);
+							break;
 
+						case COMPONENT_PHYSICS:
+							SceneHierarchyWidget::GetNode()->AddComponent<PhysicsComp>(new PhysicsComp);
+							break;
+
+						case COMPONENT_SCRIPT:
+							SceneHierarchyWidget::GetNode()->AddComponent<ScriptComp>(new ScriptComp);
+							break;
+
+						case COMPONENT_AUDIO:
+
+							break;
+
+						case COMPONENT_CAMERA:
+							SceneHierarchyWidget::GetNode()->AddComponent<CameraComp>(new CameraComp);
+							break;
+
+						case COMPONENT_TILEMAP:
+							SceneHierarchyWidget::GetNode()->AddComponent<TileMapComp>(new TileMapComp);
+							break;
+
+						case COMPONENT_COLBOX:
+							SceneHierarchyWidget::GetNode()->AddComponent<ObjectCollisionComp>(new ObjectCollisionComp);
+							break;
+
+						case COMPONENT_COLTILE:
+							if (SceneHierarchyWidget::GetNode()->GetComponent<TileMapComp>() != NULL)
+							{
+								SceneHierarchyWidget::GetNode()->AddComponent<TilemapCollisionComp>(new TilemapCollisionComp);
+								break;
+							}
+							else
+								break;
+
+						case COMPONENT_COLLINE:
+							SceneHierarchyWidget::GetNode()->AddComponent<LineCollisionComp>(new LineCollisionComp);
+							break;
+
+						default:
+							break;
+						}
 					}
 				ImGui::EndPopup();
 			}
@@ -202,20 +278,13 @@ namespace Engine
 
 		if (ifd::FileDialog::Instance().IsDone("Texture File Browser"))
 		{	
-			std::string result;
-			if (ifd::FileDialog::Instance().GetResult().u8string().find_last_of('\\') != std::string::npos)
-			{
-				result = ifd::FileDialog::Instance().GetResult().u8string().find_last_of('\\');
-				
-				if (ifd::FileDialog::Instance().HasResult() && result != path)
+			if (ifd::FileDialog::Instance().HasResult())
 				{
 					std::string Texpath = ifd::FileDialog::Instance().GetResult().u8string();
-					c->SetTexture(AssetManager::GetInstance()->LoadTexture(result, Texpath));
+					c->SetTexture(AssetManager::GetInstance()->LoadTexture(c->GetTexture()->GetName(), Texpath));
 					int startPos = Texpath.find("Assets");
 					Texpath.erase(0, startPos);
-					c->Setpath(Texpath);
 				}
-			}
 
 			ifd::FileDialog::Instance().Close();
 		}
@@ -248,6 +317,10 @@ namespace Engine
 		float physMass = c->GetMass();
 		float physGrav = c->GetGravity();
 		float physFric = c->GetFriction();
+		float physMaxSpeed = c->GetMaxSpeed();
+
+		vec2f physVelocity = c->GetVelocity();
+
 
 		ImGui::PushID("mass");
 
@@ -279,9 +352,34 @@ namespace Engine
 
 		ImGui::PopID();
 
+
+		ImGui::PushID("max speed");
+
+		ImGui::Columns(2);
+		ImGui::Text("Max Speed");
+		ImGui::NextColumn();
+		ImGui::DragFloat("##max speed", &physMaxSpeed, 0.1f);
+		ImGui::Columns(1);
+
+		ImGui::PopID();
+
+
+		ImGui::PushID("velocity");
+
+		ImGui::Columns(2);
+		ImGui::Text("Velocity");
+		ImGui::NextColumn();
+		ImGui::Text("X: %f", physVelocity.x);
+		ImGui::SameLine();
+		ImGui::Text("Y: %f", physVelocity.y);
+		ImGui::Columns(1);
+
+		ImGui::PopID();
+
 		c->SetMass(physMass);
 		c->SetGravity(physGrav);
 		c->SetFriction(physFric);
+		c->SetMaxSpeed(physMaxSpeed);
 	}
 
 	void InspectorWidget::RenderScriptComponent(ScriptComp* c)
@@ -319,7 +417,7 @@ namespace Engine
 		ImGui::PopID();
 	}
 
-	void InspectorWidget::TileMapComponent(TileMapComp* c)
+	void InspectorWidget::RenderTileMapComponent(TileMapComp* c)
 	{
 		ImGui::PushID("TileMap");
 
@@ -339,12 +437,25 @@ namespace Engine
 			}
 			ImGui::SameLine();
 			ImGui::PopID();
-			if (ImGui::GetIO().MouseDown[0])
+
+			
+
+			if (ImGui::GetIO().MouseDown[1])
 			{
 				//TODO change mousepos to use world pos of camera 
-				vec2f mousePos = vec2f(InputManager::GetInstance()->GetMousePosition().x, InputManager::GetInstance()->GetMousePosition().y);
-				/*Logger::LogMsg("Mouse pos X:", int(mousePos.x / TILEHEIGHT));
-				Logger::LogMsg("Mouse pos Y:", int(mousePos.y / TILEHEIGHT));*/
+				vec2f mousePos = vec2f(InputManager::GetInstance()->GetMouseScreenPosition().x, InputManager::GetInstance()->GetMouseScreenPosition().y);
+				mousePos.x /= InputManager::GetInstance()->GetScreenSize().x;
+				mousePos.y /= InputManager::GetInstance()->GetScreenSize().y;
+
+				vec2f screenSize = InputManager::GetInstance()->GetScreenSize();
+
+				mousePos.x -= c->GetGameObject()->GetComponent<TransformComp>()->GetPosition().x;
+				mousePos.y -= c->GetGameObject()->GetComponent<TransformComp>()->GetPosition().y;
+
+				glm::vec4 CameraPos = CameraManager::Get()->GetPrimaryCamera()->GetAt();
+				mousePos.x += CameraPos.x;
+				mousePos.y -= CameraPos.y;
+
 				c->ChangeTile(TileID, vec2i((mousePos.y / TILEHEIGHT), (mousePos.x / TILEWIDTH)));
 			}
 
@@ -377,7 +488,7 @@ namespace Engine
 		//----------------------------------------------------------------------------------------------
 		if (ImGui::Button("Save TileMap"))
 		{
-			ifd::FileDialog::Instance().Save("TileMapSaver", "LoadTileMap", "Texture File, (*.xml) {.xml}, .*");
+			ifd::FileDialog::Instance().Save("TileMapSaver", "SaveTileMap", "TileMap (*.xml) {.xml}, .*");
 		}
 
 		if (ifd::FileDialog::Instance().IsDone("TileMapSaver"))
@@ -432,22 +543,108 @@ namespace Engine
 		ImGui::DragFloat("##far", &cFar, 0.1f);
 		ImGui::Columns(1);
 
-		ImGui::PopID();
+ImGui::PopID();
 
-		ImGui::PushID("depth");
+ImGui::PushID("depth");
+
+ImGui::Columns(2);
+ImGui::Text("Depth");
+ImGui::NextColumn();
+ImGui::DragFloat("##depth", &depth, 0.1f);
+ImGui::Columns(1);
+
+ImGui::PopID();
+
+if (cFar > cNear)
+c->SetFar(cFar);
+
+c->SetFOV(fov);
+
+if (cNear > 0.1f && cFar > cNear)
+c->SetNear(cNear);
+
+c->SetDepth(depth);
+	}
+
+	void InspectorWidget::RenderBoxColComponent(ObjectCollisionComp* c)
+	{
+		Box2D colBox = c->GetColBox();
+		float colBoxSize[2] = { colBox.GetSize().x, colBox.GetSize().y };
+		float boundSize = c->GetBRange();
+
+		ImGui::PushID("Size");
 
 		ImGui::Columns(2);
-		ImGui::Text("Depth");
+		ImGui::Text("Size");
 		ImGui::NextColumn();
-		ImGui::DragFloat("##depth", &depth, 0.1f);
+		ImGui::DragFloat2("##size", &colBoxSize[0], 1.0f);
 		ImGui::Columns(1);
 
 		ImGui::PopID();
 
-		c->SetFar(cFar);
-		c->SetFOV(fov);
-		c->SetNear(cNear);
-		c->SetDepth(depth);
+		ImGui::PushID("Bounding");
+
+		ImGui::Columns(2);
+		ImGui::Text("Bounding");
+		ImGui::NextColumn();
+		ImGui::DragFloat("##bounding", &boundSize, 1.0f);
+		ImGui::Columns(1);
+
+		ImGui::PopID();
+
+		c->GetColBox().SetSize(vec2f(colBoxSize[0], colBoxSize[1]));
+		c->SetBRange(boundSize);
+	}
+
+	void InspectorWidget::RenderLineColComponent(LineCollisionComp* c)
+	{
+		float point1[2] = { c->GetPoint1().x, c->GetPoint1().y };
+		float point2[2] = { c->GetPoint2().x, c->GetPoint2().y };
+
+		ImGui::PushID("Point 1");
+
+		ImGui::Columns(2);
+		ImGui::Text("Point 1");
+		ImGui::NextColumn();
+		ImGui::DragFloat2("##point 1", &point1[0], 1.0f);
+		ImGui::Columns(1);
+
+		ImGui::PopID();
+
+		ImGui::PushID("Point 2");
+
+		ImGui::Columns(2);
+		ImGui::Text("Point 2");
+		ImGui::NextColumn();
+		ImGui::DragFloat2("##point 2", &point2[0], 1.0f);
+		ImGui::Columns(1);
+
+		ImGui::PopID();
+
+		c->SetPoint1(vec2f(point1[0], point1[1]));
+		c->SetPoint2(vec2f(point2[0], point2[1]));
+	}
+
+	void InspectorWidget::RenderTilemapColComponent(TilemapCollisionComp* c)
+	{
+		float boundSize = c->GetBRange();
+
+		ImGui::PushID("Bounding");
+
+		ImGui::Columns(2);
+		ImGui::Text("Bounding");
+		ImGui::NextColumn();
+		ImGui::DragFloat("##bounding", &boundSize, 1.0f);
+		ImGui::Columns(1);
+
+		ImGui::PopID();
+
+		c->SetBRange(boundSize);
+
+		if (ImGui::Button("Refresh Collision Boxes"))
+		{
+			c->RefreshTileBoxes();
+		}
 	}
 
 	void InspectorWidget::RenderParticleComponent(ParticleComp* c)

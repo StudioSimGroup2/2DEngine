@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Component.h"
+
 #include <Utils/Math.h>
 #include <vector>
 
@@ -11,7 +12,9 @@ namespace Engine
 	public:
 		PhysicsComp();
 		~PhysicsComp();
-		void Init();
+
+		virtual void Init() override;
+
 		void Update(float dT);
 
 		void ResetForces();
@@ -22,12 +25,26 @@ namespace Engine
 		float GetMass() { return mMass; }
 		float GetGravity() { return mGravity; }
 		float GetFriction() { return mFriction; }
+		float GetMaxSpeed() { return mMaxSpeed; }
+		vec2f GetVelocity() { return mCurrentVelocity; }
+		bool GetGrounded() { return mGrounded; }
 
 		void SetMass(float newMass) { mMass = newMass; }
 		void SetGravity(float newGravity) { mGravity = newGravity; }
 		void SetFriction(float newFriction) { mFriction = newFriction; }
+		void SetMaxSpeed(float newMaxSpeed) { mMaxSpeed = newMaxSpeed; }
+		void SetGrounded(bool newGrounded) { mGrounded = newGrounded; }
 
 		std::vector<vec2f> actingForces;
+
+		// Inherited via Component
+		virtual void Update() override;
+		virtual void Render() override;
+
+		// Inherited via Component
+		virtual void Start() override;
+		virtual void InternalUpdate() override;
+		virtual void InternalRender() override;
 
 	private:
 		void UpdateForces(float dT, vec2f accel);
@@ -39,17 +56,12 @@ namespace Engine
 		vec2f* mPosition;
 		float mMass;
 		float mWeight;
-		float mGravity = 0.98f;
+		float mGravity = 9.8f;
 		float mFriction = 0.5f;
 
-		// Inherited via Component
-		virtual void Update() override;
-		virtual void Render() override;
+		float accumulator = 0;
 
-		// Inherited via Component
-		virtual void Start() override;
-		virtual void InternalUpdate() override;
-		virtual void InternalRender() override;
+		float mMaxSpeed = 200.0f;
 	};
 
 }

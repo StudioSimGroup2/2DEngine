@@ -74,5 +74,6 @@ namespace Engine
 
 	SceneHierarchyWidget::~SceneHierarchyWidget()
 	{
+		mCurrentSelectedNode = nullptr;
 	}
 }

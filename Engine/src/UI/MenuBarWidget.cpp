@@ -57,11 +57,13 @@ namespace Engine
 			//ImGui::ShowDemoWindow();
 			if (ImGui::BeginMenu("Scene"))
 			{			
+				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.0f, 0.0f));
+				
 				//Load Scene
 				//----------------------------------------------------------------------------------------------
 				if (ImGui::Button("Load scene"))
 				{
-					ifd::FileDialog::Instance().Open("SceneLoader", "Load", "Load (*.xml){.xml},.*");
+					ifd::FileDialog::Instance().Open("SceneLoader", "Load", "Load (*.lvl){.lvl},.*");
 				}
 				if (ifd::FileDialog::Instance().IsDone("SceneLoader"))
 				{
@@ -78,7 +80,7 @@ namespace Engine
 				//----------------------------------------------------------------------------------------------
 				if (ImGui::Button("Save scene"))
 				{
-					ifd::FileDialog::Instance().Save("SceneSaver", "Save", "Save (*.xml){.xml},.*");
+					ifd::FileDialog::Instance().Save("SceneSaver", "Save", "Save (*.lvl){.lvl},.*");
 				}
 				if (ifd::FileDialog::Instance().IsDone("SceneSaver"))
 				{
@@ -93,12 +95,33 @@ namespace Engine
 
 				//Clear Scene
 				//----------------------------------------------------------------------------------------------
-				if (ImGui::MenuItem("Clear scene"))
+				if (ImGui::Button("Clear scene"))
 				{
-					SceneManager::GetInstance()->ClearScene();
+					if (SceneManager::GetInstance()->HasUserNotSaved())
+						ImGui::OpenPopup("Clear Scene?");
+
+					if (ImGui::BeginPopupModal("Clear Scene?", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+					{
+						ImGui::Text("The current scene has not been saved.\n\n");
+						ImGui::Separator();
+
+						if (ImGui::Button("OK", ImVec2(120, 0))) 
+						{ 
+							ImGui::CloseCurrentPopup(); 
+							SceneManager::GetInstance()->ClearScene();
+						}
+						ImGui::SetItemDefaultFocus();
+						ImGui::SameLine();
+						if (ImGui::Button("Cancel", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
+						ImGui::EndPopup();
+					}
+					else
+						SceneManager::GetInstance()->ClearScene();
+					
+					
 				}
 				//----------------------------------------------------------------------------------------------
-
+				ImGui::PopStyleColor(1);
 				ImGui::EndMenu();
 			}
 
@@ -117,38 +140,49 @@ namespace Engine
 					}
 				}
 
+				ImGui::Separator();
+
 				if (ImGui::MenuItem("Sprite"))
 				{
-					if (SceneHierarchyWidget::GetNode() != nullptr)
+					if (SceneHierarchyWidget::GetNode() == nullptr)
 					{
-						SceneHierarchyWidget::GetNode()->AddComponent<SpriteComp>(new SpriteComp(SceneHierarchyWidget::GetNode()));
+						SceneManager::GetInstance()->CreateObject()->AddComponent<SpriteComp>(new SpriteComp);
+					}
+					else
+					{
+						auto go =  SceneManager::GetInstance()->CreateObject();
+						go->AddComponent<SpriteComp>(new SpriteComp);
+						go->Attach(SceneHierarchyWidget::GetNode());
 					}
 				}
 
 				if (ImGui::MenuItem("TileMap"))
 				{
-					if (SceneHierarchyWidget::GetNode() != nullptr)
+					if (SceneHierarchyWidget::GetNode() == nullptr)
 					{
-						SceneHierarchyWidget::GetNode()->AddComponent<TileMapComp>(new TileMapComp(SceneHierarchyWidget::GetNode()));
+						SceneManager::GetInstance()->CreateObject()->AddComponent<TileMapComp>(new TileMapComp);
+					}
+					else
+					{
+						auto go = SceneManager::GetInstance()->CreateObject();
+						go->AddComponent<TileMapComp>(new TileMapComp);
+						go->Attach(SceneHierarchyWidget::GetNode());
 					}
 				}
 
 				if (ImGui::MenuItem("Camera"))
 				{
-					if (SceneHierarchyWidget::GetNode() != nullptr)
+					if (SceneHierarchyWidget::GetNode() == nullptr)
 					{
-						SceneHierarchyWidget::GetNode()->AddComponent<CameraComp>(new CameraComp(SceneHierarchyWidget::GetNode()));
+						SceneManager::GetInstance()->CreateObject()->AddComponent<CameraComp>(new CameraComp);
+					}
+					else
+					{
+						auto go = SceneManager::GetInstance()->CreateObject();
+						go->AddComponent<CameraComp>(new CameraComp);
+						go->Attach(SceneHierarchyWidget::GetNode());
 					}
 				}
-
-				if (ImGui::MenuItem("Script"))
-				{
-					if (SceneHierarchyWidget::GetNode() != nullptr)
-					{
-						SceneHierarchyWidget::GetNode()->AddComponent<ScriptComp>(new ScriptComp);
-					}
-				}
-
 
 				if (ImGui::MenuItem("Particle system"))
 				{

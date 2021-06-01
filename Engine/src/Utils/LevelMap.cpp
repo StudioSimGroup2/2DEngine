@@ -71,7 +71,6 @@ TileMap LevelMap::LoadLevelMap(const std::string& FilePath)
 
 void LevelMap::SaveTileMap(TileMap Map, std::string Address)
 {
-
 	int MaxHeight = Map.size();
 	int MaxWidth = Map[0].size();
 	for (int q = 1; q < MaxHeight; q++)

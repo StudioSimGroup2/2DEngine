@@ -16,6 +16,7 @@ namespace Engine
 		void SetRotation(vec2f& rot) { mRotation = rot; }
 		void SetScale(vec2f& scale) { mScale = scale; }
 
+		virtual void Init() override;
 		virtual void Start() override;
 		virtual void InternalUpdate() override;
 		virtual void InternalRender() override;
@@ -28,8 +29,6 @@ namespace Engine
 		vec2f& GetScale() { return mScale; }
 
 	private:
-		void Init();
-
 		vec2f mPosition;
 		vec2f mRotation;
 		vec2f mScale;
