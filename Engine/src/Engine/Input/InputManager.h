@@ -91,8 +91,14 @@ namespace Engine
 		void SetMouseScreenPosition(const vec2f& mousePos) {  mMouseScreenPos = mousePos; }
 		vec2f GetMouseScreenPosition() const { return mMouseScreenPos; }
 
-		void SetScreenSize(vec2f Window, vec2f RenderTarget) { mScreenSize.x = RenderTarget.x / Window.x;
-																 mScreenSize.y = RenderTarget.y / Window.y;}
+		void SetScreenSizePercent(vec2f Window, vec2f RenderTarget) { mScreenSizePercent.x = RenderTarget.x / Window.x;
+																 mScreenSizePercent.y = RenderTarget.y / Window.y;}
+		vec2f GetScreenSizePercent()const { return mScreenSizePercent; }
+
+		void SetScreenSize(vec2f RenderTarget) {
+			mScreenSize.x = RenderTarget.x;
+			mScreenSize.y = RenderTarget.y;
+		}
 		vec2f GetScreenSize()const { return mScreenSize; }
 
 
@@ -123,6 +129,7 @@ namespace Engine
 		vec2f mMouseScreenPos;
 
 		vec2f mScreenSize = vec2f(1, 1);
+		vec2f mScreenSizePercent = vec2f(1, 1);
 		int mScrollWheel;
 	};
 }
