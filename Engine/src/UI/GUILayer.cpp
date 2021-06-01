@@ -34,6 +34,8 @@ bool ActivateOpenGL2(HWND hWnd);
 #include <SceneManager.h>
 #include <imgui_internal.h>
 
+#include "LightingManager.h"
+
 using namespace Engine;
 
 GUILayer::GUILayer()
@@ -221,6 +223,36 @@ void GUILayer::Render()
 
 #pragma endregion
 
+#pragma region Lighting
+	ImGui::Begin("LightingDebug", NULL, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_MenuBar);
+
+	if (ImGui::BeginMenuBar())
+	{
+		if (ImGui::MenuItem("Play"))
+		{
+			SceneManager::GetInstance()->DisableEditorMode();
+			SceneManager::GetInstance()->PlayScene();
+		}
+
+		if (ImGui::MenuItem("Stop"))
+		{
+			SceneManager::GetInstance()->EnableEditorMode();
+		}
+
+		ImGui::SameLine(ImGui::GetContentRegionAvailWidth());
+		SceneManager::GetInstance()->GetRunTime() ? ImGui::Text("Stopped") : ImGui::TextColored(ImVec4(255.0f, 0.0f, 0.0f, 1.0f), "Playing");
+	}
+	ImGui::EndMenuBar();
+
+#if GRAPHICS_LIBRARY ==  1
+	ImGui::Image((void*)(intptr_t)SceneManager::GetInstance()->GetRenderToTexID(), ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
+#elif GRAPHICS_LIBRARY == 0
+	ImGui::Image((void*)(intptr_t)LightingManager::GetInstance()->GetRenderToTexID(), ImGui::GetContentRegionAvail());
+#endif
+
+	ImGui::End();
+#pragma endregion
+
 #pragma region
 	SceneManager::GetInstance()->HasUserNotSaved() ? ImGui::Begin("Game*", NULL, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_MenuBar)
 		: ImGui::Begin("Game", NULL, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_MenuBar);
@@ -279,9 +311,7 @@ void GUILayer::Render()
 	ImGui::End();
 #pragma endregion
 
-#pragma region Profiler
 
-#pragma endregion
 
 	mSceneHierarchy.Render();
 	mInspector.Render(SceneHierarchyWidget::GetNode());

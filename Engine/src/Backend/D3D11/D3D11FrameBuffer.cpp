@@ -65,7 +65,9 @@ namespace Engine
 	void D3D11FrameBuffer::Load()
 	{
 		D3D11Device::GetInstance()->GetDeviceContext()->OMSetRenderTargets(1, &mRenderTargetView, D3D11Device::GetInstance()->GetDepthStencilView());
-		D3D11Device::GetInstance()->GetDeviceContext()->ClearRenderTargetView(mRenderTargetView, DirectX::Colors::SeaGreen);
+
+		(mColour[3] == -1) ? D3D11Device::GetInstance()->GetDeviceContext()->ClearRenderTargetView(mRenderTargetView, DirectX::Colors::SeaGreen) :
+			D3D11Device::GetInstance()->GetDeviceContext()->ClearRenderTargetView(mRenderTargetView, mColour);
 		
 	}
 
@@ -73,5 +75,13 @@ namespace Engine
 	{	
 		D3D11Device::GetInstance()->GetDeviceContext()->ClearDepthStencilView(D3D11Device::GetInstance()->GetDepthStencilView(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0u);
 		D3D11Device::GetInstance()->ClearAndSetRenderTarget();
+	}
+
+	void D3D11FrameBuffer::OverrideColour(float r, float g, float b, float a)
+	{
+		mColour[0] = r;
+		mColour[1] = g;
+		mColour[2] = b;
+		mColour[3] = a;
 	}
 }

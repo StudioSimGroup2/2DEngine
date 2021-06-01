@@ -108,6 +108,12 @@ namespace Engine
 						RenderLineColComponent(dynamic_cast<LineCollisionComp*>(c));
 					}
 					break;
+				case COMPONENT_LIGHT:
+					if (ImGui::CollapsingHeader("Light", close))
+					{
+						RenderLightComponent(dynamic_cast<LightComp*>(c));
+					}
+					break;
 				default:
 					break;
 				}
@@ -123,7 +129,7 @@ namespace Engine
 
 			ImGui::Separator();
 
-			const char* comps[] = { "Sprite", "Script", "Audio", "Camera", "TileMap", "Physics", "Box Collision", "Tilemap Collision", "Line Collision" };
+			const char* comps[] = { "Sprite", "Script", "Audio", "Camera", "TileMap", "Physics", "Box Collision", "Tilemap Collision", "Line Collision", "Light"};
 
 			if (ImGui::Button("Add Component..", ImVec2(ImGui::GetContentRegionAvail().x, 0.0f)))
 			{
@@ -180,6 +186,9 @@ namespace Engine
 						case COMPONENT_COLLINE:
 							SceneHierarchyWidget::GetNode()->AddComponent<LineCollisionComp>(new LineCollisionComp);
 							break;
+
+						case COMPONENT_LIGHT:
+							SceneHierarchyWidget::GetNode()->AddComponent<LightComp>(new LightComp);
 
 						default:
 							break;
@@ -710,6 +719,38 @@ namespace Engine
 		{
 			c->RefreshTileBoxes();
 		}
+	}
+
+	void InspectorWidget::RenderLightComponent(LightComp* c)
+	{
+		float intensity = c->GetIntensity();
+		int type = c->GetType();
+		float radius = c->GetRadius();
+		
+		ImGui::PushID("intensity");
+
+		ImGui::Columns(2);
+		ImGui::Text("Intensity");
+		ImGui::NextColumn();
+		ImGui::DragFloat("##intensity", &intensity, 0.1f);
+		ImGui::Columns(1);
+
+		ImGui::PopID();
+
+		ImGui::PushID("radius");
+
+		ImGui::Columns(2);
+		ImGui::Text("Radius");
+		ImGui::NextColumn();
+		ImGui::DragFloat("##radius", &radius, 0.1f);
+		ImGui::Columns(1);
+
+		ImGui::PopID();
+
+		if (radius >= 0.1f)
+			c->SetRadius(radius);
+		if (intensity >= 0.0f)
+			c->SetIntensity(intensity);
 	}
 
 	InspectorWidget::InspectorWidget()

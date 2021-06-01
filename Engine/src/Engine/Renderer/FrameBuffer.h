@@ -22,6 +22,8 @@ namespace Engine
 #elif GRAPHICS_LIBRARY == 1
 		void CreateFrameBuffer(unsigned int width, unsigned int height) { mFrameBuffer = new OGLFrameBuffer(width, height); mCreated = true; }
 #endif
+		void OverrideColour(float r, float g, float b, float a) { mFrameBuffer->OverrideColour(r, g, b, a); }
+
 		void Load() { if (mCreated) mFrameBuffer->Load(); }
 		void Unload() { if (mCreated) mFrameBuffer->Unload(); }
 

@@ -9,6 +9,7 @@
 #include "Components/ObjectCollisionComp.h"
 #include "Components/TilemapCollisionComp.h"
 #include "Components/LineCollisionComp.h"
+#include "Components/LightComp.h"
 
 namespace Engine
 {
@@ -23,6 +24,7 @@ namespace Engine
 		COMPONENT_PHYSICS,
 		COMPONENT_COLBOX,
 		COMPONENT_COLTILE,
-		COMPONENT_COLLINE
+		COMPONENT_COLLINE,
+		COMPONENT_LIGHT
 	};
 }

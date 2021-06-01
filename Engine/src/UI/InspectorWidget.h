@@ -24,5 +24,6 @@ namespace Engine
 		void RenderBoxColComponent(ObjectCollisionComp* c);
 		void RenderLineColComponent(LineCollisionComp* c);
 		void RenderTilemapColComponent(TilemapCollisionComp* c);
+		void RenderLightComponent(LightComp* c);
 	};
 }

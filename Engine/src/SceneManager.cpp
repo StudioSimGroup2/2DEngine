@@ -2,6 +2,7 @@
 #include "Scripting\ScriptingEngine.h"
 #include "CameraManager.h"
 #include "Collision.h"
+#include "LightingManager.h"
 
 namespace Engine
 {
@@ -18,7 +19,6 @@ namespace Engine
 
 	void SceneManager::CreateScene()
 	{
-
 		auto camera = CameraManager::Get()->Add(vec2f((1260/2), -(677/2)), true);		// Camera manager deletes its cameras, no mem leak :)         
 		camera->SetName("Main Camera");
 		camera->SetPrimary(true);
@@ -27,6 +27,8 @@ namespace Engine
 		ScriptingEngine::GetInstance()->Init();
 		
 		mRenderToTex.CreateFrameBuffer(1260, 677);
+
+		LightingManager::GetInstance()->Init();
 		mSceneLoaded = true;
 	}
 
@@ -98,9 +100,9 @@ namespace Engine
 			}
 		}
 
-        
-
         mRenderToTex.Unload();
+
+		LightingManager::GetInstance()->Render();
 	}
 
 	void SceneManager::LoadScene(std::string path)
