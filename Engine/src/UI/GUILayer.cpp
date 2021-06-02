@@ -232,11 +232,13 @@ void GUILayer::Render()
 		{
 			SceneManager::GetInstance()->DisableEditorMode();
 			SceneManager::GetInstance()->PlayScene();
+			
 		}
 
 		if (ImGui::MenuItem("Stop"))
 		{
 			SceneManager::GetInstance()->EnableEditorMode();
+			//CameraManager::Get()->SetPrimaryCamera(0);
 		}
 
 		ImGui::SameLine(ImGui::GetContentRegionAvailWidth());
@@ -263,11 +265,13 @@ void GUILayer::Render()
 		{
 			SceneManager::GetInstance()->DisableEditorMode();
 			SceneManager::GetInstance()->PlayScene();
+			
 		}
 
 		if (ImGui::MenuItem("Stop")) 
 		{
 			SceneManager::GetInstance()->EnableEditorMode();
+			
 		}
 
 		ImGui::SameLine(ImGui::GetContentRegionAvailWidth());

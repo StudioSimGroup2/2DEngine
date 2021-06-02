@@ -33,6 +33,7 @@ namespace Engine
 		void SetGravity(float newGravity) { mGravity = newGravity; }
 		void SetFriction(float newFriction) { mFriction = newFriction; }
 		void SetMaxSpeed(float newMaxSpeed) { mMaxSpeed = newMaxSpeed; }
+		void SetVelocity(vec2f NewVel) { mCurrentVelocity = NewVel; }
 		void SetGrounded(bool newGrounded) { mGrounded = newGrounded; }
 
 		// Inherited via Component
