@@ -24,6 +24,67 @@
             <components>
                 <transform PosX="0" PosY="127.1" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
                 <boxcol SizeX="32" SizeY="66" Bounding="300" Solid="0" Trigger="1" />
+                <script path="Assets\Scripts\ToHub.lua" />
+            </components>
+        </gameobject>
+        <gameobject name="Trigger1">
+            <components>
+                <transform PosX="1226.7" PosY="158.2" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
+            </components>
+        </gameobject>
+        <gameobject name="Trigger1">
+            <components>
+                <transform PosX="1588.8" PosY="574.7" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
+            </components>
+        </gameobject>
+        <gameobject name="Trigger2">
+            <components>
+                <transform PosX="863" PosY="157.8" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
+            </components>
+        </gameobject>
+        <gameobject name="Trigger2">
+            <components>
+                <transform PosX="1211" PosY="574" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
+            </components>
+        </gameobject>
+        <gameobject name="Trigger1">
+            <components>
+                <transform PosX="2365.4" PosY="574.2" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
+            </components>
+        </gameobject>
+        <gameobject name="Trigger2">
+            <components>
+                <transform PosX="1719.8" PosY="574.2" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
+            </components>
+        </gameobject>
+        <gameobject name="Trigger1">
+            <components>
+                <transform PosX="2918" PosY="158" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
+            </components>
+        </gameobject>
+        <gameobject name="Trigger2">
+            <components>
+                <transform PosX="2459.1" PosY="158.7" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
+            </components>
+        </gameobject>
+        <gameobject name="Trigger1">
+            <components>
+                <transform PosX="2906.6" PosY="383.6" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
+            </components>
+        </gameobject>
+        <gameobject name="Trigger2">
+            <components>
+                <transform PosX="2598.4" PosY="384" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
             </components>
         </gameobject>
     </entities>

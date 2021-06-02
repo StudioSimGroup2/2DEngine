@@ -71,5 +71,17 @@
                 <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
             </components>
         </gameobject>
+        <gameobject name="Trigger1">
+            <components>
+                <transform PosX="2590.5" PosY="384.9" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
+            </components>
+        </gameobject>
+        <gameobject name="Trigger2">
+            <components>
+                <transform PosX="2254.9" PosY="384.4" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
+            </components>
+        </gameobject>
     </entities>
 </PROJECT>
