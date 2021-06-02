@@ -13,7 +13,7 @@
         <gameobject name="Tilemap">
             <components>
                 <transform PosX="0" PosY="0" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
-                <tilemap path="" />
+                <tilemap path="" Coll="0"/>
                 <tilecol Bounding="300" Solid="1" Trigger="0" />
             </components>
         </gameobject>
