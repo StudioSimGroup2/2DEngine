@@ -27,6 +27,7 @@ namespace Engine
 		float GetFriction() { return mFriction; }
 		float GetMaxSpeed() { return mMaxSpeed; }
 		vec2f GetVelocity() { return mCurrentVelocity; }
+		vec2f GetPrevPos() { return mPrevPosition; }
 		bool GetGrounded() { return mGrounded; }
 
 		void SetMass(float newMass) { mMass = newMass; }
@@ -34,6 +35,7 @@ namespace Engine
 		void SetFriction(float newFriction) { mFriction = newFriction; }
 		void SetMaxSpeed(float newMaxSpeed) { mMaxSpeed = newMaxSpeed; }
 		void SetGrounded(bool newGrounded) { mGrounded = newGrounded; }
+		void SetVelocity(vec2f newVelo) { mCurrentVelocity = newVelo; }
 
 		// Inherited via Component
 		virtual void Update() override;
@@ -53,7 +55,7 @@ namespace Engine
 		vec2f mNetForce;
 		vec2f mThrust;
 		vec2f mCurrentVelocity;
-		vec2f* mPosition;
+		vec2f mPrevPosition;
 		float mMass;
 		float mWeight;
 		float mGravity = 9.8f;

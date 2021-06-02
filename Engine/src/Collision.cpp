@@ -140,7 +140,7 @@ bool Collision::LineLineCheck(vec2f point1, vec2f point2, vec2f point3, vec2f po
 
 bool Collision::LineBoxCheck(Engine::GameObject* lineObj, Engine::GameObject* boxObj)
 {
-	//Set Box positions
+	//Set Line positions
 	vec2f lineP1, lineP2;
 	lineP1 = lineObj->GetComponent<Engine::LineCollisionComp>()->GetPoint1();
 	lineP2 = lineObj->GetComponent<Engine::LineCollisionComp>()->GetPoint2();
@@ -175,6 +175,38 @@ bool Collision::LineBoxCheck(Engine::GameObject* lineObj, Engine::GameObject* bo
 		return false;
 }
 
+bool Collision::LineBoxCheck(vec2f point1, vec2f point2, Engine::GameObject* boxObj)
+{
+	//Set Box positions
+	vec2f boxPos, boxSize, boxUR, boxLL, boxLR;
+	boxPos = boxObj->GetComponent<Engine::ObjectCollisionComp>()->GetColBox().GetPosition();
+	boxSize = boxObj->GetComponent<Engine::ObjectCollisionComp>()->GetColBox().GetSize();
+
+	//Box Remaining Corners (Upper left is Pos)
+	boxUR.x = boxPos.x + boxSize.x;
+	boxUR.y = boxPos.y;
+
+	boxLL.x = boxPos.x;
+	boxLL.y = boxPos.y + boxSize.y;
+
+	boxLR.x = boxPos.x + boxSize.x;
+	boxLR.y = boxPos.y + boxSize.y;
+
+
+	bool left, up, right, down;
+	left = LineLineCheck(point1, point2, boxPos, boxLL);
+	up = LineLineCheck(point1, point2, boxPos, boxUR);
+	right = LineLineCheck(point1, point2, boxUR, boxLR);
+	down = LineLineCheck(point1, point2, boxLL, boxLR);
+
+	if (left || right || up || down)
+	{
+		return true;
+	}
+	else
+		return false;
+}
+
 float Collision::FindDistance(Engine::GameObject* object1, Engine::GameObject* object2)
 {
 	float dy = object1->GetComponent<Engine::TransformComp>()->GetPosition().y - object2->GetComponent<Engine::TransformComp>()->GetPosition().y;
@@ -189,6 +221,21 @@ float Collision::FindDistance(Box2D box1, Box2D box2)
 	float dx = box1.GetPosition().x - box2.GetPosition().x;
 
 	return sqrt((dx * dx) + (dy * dy));
+}
+
+bool Collision::CheckBox(Box2D box1, Engine::GameObject* go)
+{
+	Box2D box2 = go->GetComponent<Engine::ObjectCollisionComp>()->GetColBox();
+
+	if (box1.GetPosition().x < box2.GetPosition().x + box2.GetSize().x &&
+		box1.GetPosition().x + box1.GetSize().x > box2.GetPosition().x &&
+		box1.GetPosition().y < box2.GetPosition().y + box2.GetSize().y &&
+		box1.GetPosition().y + box1.GetSize().y > box2.GetPosition().y)
+	{
+		return true;
+	}
+	else
+		return false;
 }
 
 bool Collision::CheckCollision(Engine::GameObject* object1, Engine::GameObject* object2)
@@ -245,4 +292,124 @@ bool Collision::CheckTrigger(Engine::GameObject* object1, Engine::GameObject* ob
 		else
 			return false;
 	}
+}
+
+bool Collision::CheckLeft(Engine::GameObject* object, Box2D colBox)
+{
+	//Set Left Line of obj1
+	vec2f box1Pos, box1Size, box1UL, box1LL;
+	box1Pos = object->GetComponent<Engine::ObjectCollisionComp>()->GetColBox().GetPosition();
+	box1Size = object->GetComponent<Engine::ObjectCollisionComp>()->GetColBox().GetSize();
+
+	box1UL = box1Pos;
+
+	box1LL.x = box1Pos.x;
+	box1LL.y = box1Pos.y + box1Size.y;
+
+	//Set Right Line of obj2
+	vec2f box2Pos, box2Size, box2UR, box2LR;
+	box2Pos = colBox.GetPosition();
+	box2Size = colBox.GetSize();
+
+	box2UR.x = box2Pos.x + box2Size.x;
+	box2UR.y = box2Pos.y;
+
+	box2LR.x = box2Pos.x + box2Size.x;
+	box2LR.y = box2Pos.y + box2Size.y;
+
+	//Check if colliding
+	if (LineLineCheck(box1UL, box1LL, box2UR, box2LR))
+		return true;
+	else
+		return false;
+}
+
+bool Collision::CheckRight(Engine::GameObject* object, Box2D colBox)
+{
+	//Set Right Line of obj1
+	vec2f box1Pos, box1Size, box1UR, box1LR;
+	box1Pos = object->GetComponent<Engine::ObjectCollisionComp>()->GetColBox().GetPosition();
+	box1Size = object->GetComponent<Engine::ObjectCollisionComp>()->GetColBox().GetSize();
+
+	box1UR.x = box1Pos.x + box1Size.x;
+	box1UR.y = box1Pos.y;
+
+	box1LR.x = box1Pos.x + box1Size.x;
+	box1LR.y = box1Pos.y + box1Size.y;
+
+	//Set Left Line of obj2
+	vec2f box2Pos, box2Size, box2UL, box2LL;
+	box2Pos = colBox.GetPosition();
+	box2Size = colBox.GetSize();
+
+	box2UL = box2Pos;
+
+	box2LL.x = box2Pos.x;
+	box2LL.y = box2Pos.y + box2Size.y;
+
+	//Check if colliding
+	if (LineLineCheck(box1UR, box1LR, box2UL, box2LL))
+		return true;
+	else
+		return false;
+}
+
+bool Collision::CheckDown(Engine::GameObject* object, Box2D colBox)
+{
+	//Set Lower Line of obj1
+	vec2f box1Pos, box1Size, box1LL, box1LR;
+	box1Pos = object->GetComponent<Engine::ObjectCollisionComp>()->GetColBox().GetPosition();
+	box1Size = object->GetComponent<Engine::ObjectCollisionComp>()->GetColBox().GetSize();
+
+	box1LL.x = box1Pos.x;
+	box1LL.y = box1Pos.y + box1Size.y;
+
+	box1LR.x = box1Pos.x + box1Size.x;
+	box1LR.y = box1Pos.y + box1Size.y;
+
+	//Set Upper Line of obj2
+	vec2f box2Pos, box2Size, box2UL, box2UR;
+	box2Pos = colBox.GetPosition();
+	box2Size = colBox.GetSize();
+
+	box2UL = box2Pos;
+
+	box2UR.x = box2Pos.x + box2Size.x;
+	box2UR.y = box2Pos.y;
+
+	//Check if colliding
+	if (LineLineCheck(box1LL, box1LR, box2UL, box2UR))
+		return true;
+	else
+		return false;
+}
+
+bool Collision::CheckUp(Engine::GameObject* object, Box2D colBox)
+{
+	//Set Upper Line of obj1
+	vec2f box1Pos, box1Size, box1UL, box1UR;
+	box1Pos = object->GetComponent<Engine::ObjectCollisionComp>()->GetColBox().GetPosition();
+	box1Size = object->GetComponent<Engine::ObjectCollisionComp>()->GetColBox().GetSize();
+
+	box1UL = box1Pos;
+
+	box1UR.x = box1Pos.x + box1Size.x;
+	box1UR.y = box1Pos.y;
+
+	//Set Lower Line of obj2
+	vec2f box2Pos, box2Size, box2LL, box2LR;
+	box2Pos = colBox.GetPosition();
+	box2Size = colBox.GetSize();
+
+	box2LL.x = box2Pos.x;
+	box2LL.y = box2Pos.y + box2Size.y;
+
+	box2LR.x = box2Pos.x + box2Size.x;
+	box2LR.y = box2Pos.y + box2Size.y;
+
+	//Check if colliding
+	if (LineLineCheck(box1UL, box1UR, box2LL, box2LR))
+		return true;
+	else
+		return false;
 }

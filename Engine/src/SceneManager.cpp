@@ -67,14 +67,37 @@ namespace Engine
 
 						if (Collision::CheckCollision(go, compObj))
 						{
-							go->GetComponent<Engine::PhysicsComp>()->SetGrounded(true);
+							if (compObj->GetComponent<Engine::TilemapCollisionComp>() == NULL)
+							{
+								go->GetComponent<Engine::PhysicsComp>()->SetGrounded(true);
+							}
+							else
+							{
+								std::vector<Box2D> colBoxes = compObj->GetComponent<Engine::TilemapCollisionComp>()->GetColBoxes();
+								for (Box2D box : colBoxes)
+								{
+									if (Collision::CheckBox(box, go))
+									{
+										if (Collision::CheckDown(go, box))
+										{
+											go->GetComponent<Engine::PhysicsComp>()->SetGrounded(true);
+										}
 
+										if (Collision::CheckRight(go, box) || Collision::CheckLeft(go, box))
+										{
+											go->GetComponent<Engine::TransformComp>()->SetPosition(go->GetComponent<Engine::PhysicsComp>()->GetPrevPos());
+										}
+
+										if (Collision::CheckUp(go, box))
+										{
+											if (go->GetComponent<Engine::PhysicsComp>()->GetVelocity().y != 0.0f)
+												go->GetComponent<Engine::PhysicsComp>()->SetVelocity(vec2f(go->GetComponent<Engine::PhysicsComp>()->GetVelocity().x, 0.0f));
+											go->GetComponent<Engine::TransformComp>()->SetPosition(go->GetComponent<Engine::PhysicsComp>()->GetPrevPos());
+										}
+									}	
+								}
+							}
 						}
-
-						/*if (Collision::CheckTrigger(go, compObj))
-						{
-							Logger::LogMsg("Trigger");
-						}*/
 					}
 				}
 			}
