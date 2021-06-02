@@ -104,6 +104,11 @@ namespace Engine
 		mDeviceContext->PSSetShader(NULL, NULL, 0);
 	}
 
+	void D3D11Shader::PassTextureToPS(int pos, ID3D11ShaderResourceView* srv)
+	{
+		mDeviceContext->PSSetShaderResources(pos, 1, &srv);
+	}
+
 	HRESULT D3D11Shader::CompileShaderFromFile(const WCHAR* szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel, ID3DBlob** ppBlobOut)
 	{
 		HRESULT hr = S_OK;

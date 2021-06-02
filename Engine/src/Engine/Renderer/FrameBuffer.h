@@ -29,6 +29,12 @@ namespace Engine
 
 		void* GetTexID() { if (mCreated) return mFrameBuffer->GetTexID(); return nullptr; }
 
+#if GRAPHICS_LIBRARY == 0
+		D3D11FrameBuffer* Get() { if (mCreated) return mFrameBuffer; }
+#elif GRAPHICS_LIBRARY == 1
+		OGLFrameBuffer* Get() { if (mCreated) return mFrameBuffer; }
+#endif
+
 	private:
 		bool mCreated = false;
 

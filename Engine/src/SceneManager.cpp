@@ -27,7 +27,7 @@ namespace Engine
 		ScriptingEngine::GetInstance()->Init();
 		
 		mRenderToTex.CreateFrameBuffer(1260, 677);
-
+		
 		LightingManager::GetInstance()->Init();
 		mSceneLoaded = true;
 	}
@@ -45,6 +45,10 @@ namespace Engine
 	{
 		if (mEditorMode)
 		{
+			LightingManager::GetInstance()->GetFinalFB().OverrideColour(0.0f, 0.0f, 0.0f, -1.0f);
+			LightingManager::GetInstance()->GetLightFB().OverrideColour(0.0f, 0.0f, 0.0f, 0.0f);
+			mRenderToTex.OverrideColour(255.0f, 255.0f, 255.0f, -1.0f);
+			
 			CameraManager::Get()->SetPrimaryCamera(0);
 			for (GameObject* go : mSceneObjects)
 			{
@@ -57,6 +61,10 @@ namespace Engine
 			{
 				CameraManager::Get()->SetPrimaryCamera(1);
 			}
+			LightingManager::GetInstance()->GetFinalFB().OverrideColour(0.0f, 0.0f, 0.0f, 1.0f);
+			LightingManager::GetInstance()->GetLightFB().OverrideColour(0.0f, 0.0f, 0.0f, 1.0f);
+			mRenderToTex.OverrideColour(255.0f, 255.0f, 255.0f, 1.0f);
+
 			for (GameObject* go : mSceneObjects)
 			{
 				
@@ -108,7 +116,7 @@ namespace Engine
 
         mRenderToTex.Unload();
 
-		LightingManager::GetInstance()->Render();
+		LightingManager::GetInstance()->Render(mRenderToTex);
 	}
 
 	void SceneManager::LoadScene(std::string path)

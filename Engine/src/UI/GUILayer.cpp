@@ -309,7 +309,7 @@ void GUILayer::Render()
 #if GRAPHICS_LIBRARY ==  1
 	ImGui::Image((void*)(intptr_t)SceneManager::GetInstance()->GetRenderToTexID(), ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
 #elif GRAPHICS_LIBRARY == 0
-	ImGui::Image((void*)(intptr_t)SceneManager::GetInstance()->GetRenderToTexID(), ImGui::GetContentRegionAvail());
+	ImGui::Image((void*)(intptr_t)LightingManager::GetInstance()->GetFinalFB().GetTexID(), ImGui::GetContentRegionAvail());
 #endif
 
 	ImGui::End();

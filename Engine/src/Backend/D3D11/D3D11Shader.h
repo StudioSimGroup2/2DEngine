@@ -16,6 +16,8 @@ namespace Engine
 		void Load() const override;
 		void Unload() const override;
 
+		void PassTextureToPS(int pos, ID3D11ShaderResourceView* srv);
+
 		const std::string& GetName() const override { return mName; }
 
 	private:

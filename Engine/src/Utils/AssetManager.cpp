@@ -10,13 +10,15 @@ namespace Engine
 {
 	AssetManager* AssetManager::mInstance = nullptr;
 
-	void AssetManager::LoadShader(const std::string& name, const std::string& path)
+	Shader* AssetManager::LoadShader(const std::string& name, const std::string& path)
 	{
 #if GRAPHICS_LIBRARY == 0
 		mInstance->mShaders.push_back(new D3D11Shader(D3D11Device::GetInstance(), name, path));
 #elif GRAPHICS_LIBRARY == 1
 		mInstance->mShaders.push_back(new OGLShader(name, path));
 #endif
+
+		return mInstance->mShaders.back();
 	}
 
 	

@@ -1,6 +1,5 @@
-
 Texture2D scene : register(t0);
-Texture2D light : register(t0);
+Texture2D light : register(t1);
 
 cbuffer MatrixBuffer
 {
@@ -38,14 +37,19 @@ PS_INPUT VS(VS_INPUT input)
     output.Pos = mul(output.Pos, viewMatrix);
     output.Pos = mul(output.Pos, projectionMatrix);
     
+    output.Tex = input.Tex;
+
     return output;
 }
 
 float4 PS(PS_INPUT IN) : SV_TARGET
 {
-    float4 vColor = float4(1, 1, 1, 1);
+    float4 color1 = float4(1, 1, 1, 1);
+    float4 color2 = float4(1, 1, 1, 1);
+    float4 blendColor;
 
-    vColor = IN.Col * tx.Sample(linearSampler, IN.Tex);
-    
-    return vColor;
+    color1 = scene.Sample(linearSampler, IN.Tex);
+    color2 = light.Sample(linearSampler, IN.Tex);
+
+    return saturate(color1 * color2);
 }

@@ -13,11 +13,14 @@ namespace Engine
 
 		void Init();
 
-		void Render();
+		void Render(FrameBuffer &frameBuffer);
 
 		Light* AddLight();
 
 		static void Shutdown();
+
+		FrameBuffer& GetFinalFB() { return mFinal; }
+		FrameBuffer& GetLightFB() { return mFrameBuffer; }
 
 		void* GetRenderToTexID() { return mFrameBuffer.GetTexID(); }
 
@@ -30,8 +33,11 @@ namespace Engine
 		std::vector<Renderer2D*> mRenderers;
 
 		FrameBuffer mFrameBuffer;
+		FrameBuffer mFinal;
 
 		Texture* mTexture;
+
+		Shader* mShader;
 
 	};
 }

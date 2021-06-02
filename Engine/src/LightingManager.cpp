@@ -2,6 +2,12 @@
 #include "Engine/Renderer/Device.h"
 #include "Utils/AssetManager.h"
 
+#if GRAPHICS_LIBRARY == 0
+#include "Backend/D3D11/D3D11Shader.h"
+#elif GRAPHICS_LIBRARY == 1
+
+#endif
+
 namespace Engine
 {
 	LightingManager* LightingManager::mInstance = nullptr;
@@ -17,12 +23,16 @@ namespace Engine
 	void LightingManager::Init()
 	{
 		mFrameBuffer.CreateFrameBuffer(1260, 677);
-		mFrameBuffer.OverrideColour(0.0f, 0.0f, 0.0f, 0.0f);
+		mFinal.CreateFrameBuffer(1260, 677);
+
+		mFrameBuffer.Get()->PrepareBuffers();
 
 		mTexture = AssetManager::GetInstance()->LoadTexture("Light", "Assets/Textures/Light.png");
+
+		mShader = AssetManager::GetInstance()->LoadShader("Lighting", "Assets/Shaders/lighting.fx");
 	}
 
-	void LightingManager::Render()
+	void LightingManager::Render(FrameBuffer &frameBuffer)
 	{
 		mFrameBuffer.Load();
 
@@ -35,6 +45,17 @@ namespace Engine
 		}
 
 		mFrameBuffer.Unload();
+		
+		mShader->Load();
+
+		dynamic_cast<D3D11Shader*>(mShader)->PassTextureToPS(0, frameBuffer.Get()->GetSRV());
+		dynamic_cast<D3D11Shader*>(mShader)->PassTextureToPS(1, mFrameBuffer.Get()->GetSRV());
+
+		mFinal.Load();
+		mFrameBuffer.Get()->Draw();
+		mFinal.Unload();
+
+		mShader->Unload();
 	}
 
 	Light* LightingManager::AddLight()
