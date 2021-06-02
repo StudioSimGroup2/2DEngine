@@ -22,7 +22,7 @@
         </gameobject>
         <gameobject name="Player">
             <components>
-                <transform PosX="365" PosY="371.226" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <transform PosX="293.8" PosY="380.3" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
                 <sprite path="Assets\Textures\Mario.png" Colour="1.000000 1.000000 1.000000 1.000000" FlipX="0" FlipY="0" />
                 <script path="Assets\Scripts\Player.lua" />
                 <physics Mass="1" Gravity="9.8" Friction="0.5" MaxSpeed="200" />
@@ -45,6 +45,51 @@
             <components>
                 <transform PosX="255" PosY="320" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
                 <boxcol SizeX="15" SizeY="94" Bounding="300" Solid="0" Trigger="1" />
+            </components>
+        </gameobject>
+        <gameobject name="Trigger1">
+            <components>
+                <transform PosX="2182.6" PosY="604.1" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
+            </components>
+        </gameobject>
+        <gameobject name="Trigger2">
+            <components>
+                <transform PosX="1493.8" PosY="604.1" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
+            </components>
+        </gameobject>
+        <gameobject name="Trigger1">
+            <components>
+                <transform PosX="3017.8" PosY="608" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
+            </components>
+        </gameobject>
+        <gameobject name="Trigger2">
+            <components>
+                <transform PosX="2771" PosY="608.001" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
+            </components>
+        </gameobject>
+        <gameobject name="Trigger1">
+            <components>
+                <transform PosX="2514.2" PosY="252.9" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
+            </components>
+        </gameobject>
+        <gameobject name="Trigger2">
+            <components>
+                <transform PosX="2244" PosY="251.9" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
+            </components>
+        </gameobject>
+        <gameobject name="Enemy1">
+            <components>
+                <transform PosX="1796.34" PosY="608.271" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <sprite path="Assets\Textures\frog.png" Colour="1.000000 1.000000 1.000000 1.000000" FlipX="0" FlipY="0" />
+                <script path="Assets\Scripts\EnemyScript.lua" />
+                <physics Mass="1" Gravity="9.8" Friction="0.5" MaxSpeed="200" />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="1" Trigger="0" />
             </components>
         </gameobject>
     </entities>

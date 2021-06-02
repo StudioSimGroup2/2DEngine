@@ -23,7 +23,7 @@
         <gameobject name="Player">
             <components>
                 <transform PosX="472.1" PosY="376.202" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
-                <sprite path="C:\Users\b014629i\Documents\GitHub\2DEngine\Game\Assets\Textures\Mario.png" Colour="1.000000 1.000000 1.000000 1.000000" FlipX="0" FlipY="0" />
+                <sprite path="Assets\Textures\Mario.png" Colour="1.000000 1.000000 1.000000 1.000000" FlipX="0" FlipY="0" />
                 <script path="Assets\Scripts\Player.lua" />
                 <physics Mass="1" Gravity="9.8" Friction="0.5" MaxSpeed="200" />
                 <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="1" Trigger="0" />
