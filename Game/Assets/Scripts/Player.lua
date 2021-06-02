@@ -1,26 +1,16 @@
 local health = 100
 local speed = 2.0
 local jumpHeight = -1.0
-
+local gravity = -8.0
 local grounded = true
 local spritePos = 0
 local jumping = false
 local doubleJump = false
 local jumpCount = 0
 
-local mass = 1
-local gravity = 500
-local friction = 6
-local maxSpeed = 200
-
 function OnStart()
     -- sprite = self:MakeSprite()
     -- sprite:LoadSpriteSheet("Assets/Textures/spritesheet.png", 4)
-
-	self:GetPhysics():SetFriction(friction)
-	self:GetPhysics():SetGravity(gravity)
-	self:GetPhysics():SetMass(mass)
-	self:GetPhysics():SetMaxSpeed(maxSpeed)
 end
 
 function OnUpdate()

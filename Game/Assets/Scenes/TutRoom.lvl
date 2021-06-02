@@ -22,8 +22,8 @@
         </gameobject>
         <gameobject name="Player">
             <components>
-                <transform PosX="832.427" PosY="515.22" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
-                <sprite path="C:\Users\b014629i\Documents\GitHub\2DEngine\Game\Assets\Textures\Mario.png" Colour="1.000000 1.000000 1.000000 1.000000" FlipX="0" FlipY="0" />
+                <transform PosX="428.704" PosY="481.755" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <sprite path="Assets\Textures\Mario.png" Colour="1.000000 1.000000 1.000000 1.000000" FlipX="0" FlipY="0" />
                 <script path="Assets\Scripts\Player.lua" />
                 <physics Mass="1" Gravity="500" Friction="6" MaxSpeed="200" />
                 <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="1" Trigger="0" />
@@ -33,7 +33,6 @@
             <components>
                 <transform PosX="2000" PosY="510" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
                 <boxcol SizeX="70" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
-                <script path="Assets\Scripts\hubTrigTutRoom.lua" />
             </components>
         </gameobject>
         <gameobject name="LavaPit1">
@@ -48,13 +47,6 @@
                 <transform PosX="991.1" PosY="559.9" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
                 <boxcol SizeX="95" SizeY="100" Bounding="300" Solid="0" Trigger="1" />
                 <script path="Assets\Scripts\lavaPitTutRoom.lua" />
-            </components>
-        </gameobject>
-        <gameobject name="Camera">
-            <components>
-                <transform PosX="832.427" PosY="-515.22" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
-                <camera FOV="0" Near="0.1" Far="100" Depth="1" />
-                <script path="Assets\Scripts\Camera.lua" />
             </components>
         </gameobject>
     </entities>

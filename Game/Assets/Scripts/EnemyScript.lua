@@ -3,9 +3,11 @@ local speed = 2.0
 local gravity = -8.0
 local spritePos = 0
 
+
 function OnStart()
-    ThrustAmount = vec2f.new(40,0)
-		self:GetPhysics():AddThrust(ThrustAmount)
+		EnemVelocity = vec2f.new(self:GetPhysics():GetVelocity())
+		EnemVelocity.x = 200
+		self:GetPhysics():SetVelocity(EnemVelocity)
 end
 
 function OnUpdate()
@@ -13,11 +15,11 @@ function OnUpdate()
 
     if (CheckTrigger(self:GetName(), "Trigger1"))
 	then
-		ThrustAmount = vec2f.new(-40,0)
-		self:GetPhysics():AddThrust(ThrustAmount)
+		EnemVelocity.x = -200
+		self:GetPhysics():SetVelocity(EnemVelocity)
 	elseif (CheckTrigger(self:GetName(), "Trigger2"))
 	then
-		ThrustAmount = vec2f.new(40,0)
-		self:GetPhysics():AddThrust(ThrustAmount)
+		EnemVelocity.x = 200
+		self:GetPhysics():SetVelocity(EnemVelocity)
     end
 end
