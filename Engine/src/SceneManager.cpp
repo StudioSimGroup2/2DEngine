@@ -85,19 +85,19 @@ namespace Engine
 
 										if (Collision::CheckRight(go, box))
 										{
-											go->GetComponent<Engine::PhysicsComp>()->SetVelocity(vec2f(0.0f, go->GetComponent<Engine::PhysicsComp>()->GetVelocity().y));
+											go->GetComponent<Engine::PhysicsComp>()->SetVelocity(vec2f(-10.0f, go->GetComponent<Engine::PhysicsComp>()->GetVelocity().y));
 											Logger::LogMsg("Hit right");
 										}
 
 										if (Collision::CheckLeft(go, box))
 										{
+											go->GetComponent<Engine::PhysicsComp>()->SetVelocity(vec2f(10.0f, go->GetComponent<Engine::PhysicsComp>()->GetVelocity().y));
 											Logger::LogMsg("Hit left");
 										}
 
 										if (Collision::CheckUp(go, box))
 										{
 											go->GetComponent<Engine::PhysicsComp>()->SetVelocity(vec2f(go->GetComponent<Engine::PhysicsComp>()->GetVelocity().x, 0.0f));
-											Logger::LogMsg("Hit top");
 										}
 									}	
 								}

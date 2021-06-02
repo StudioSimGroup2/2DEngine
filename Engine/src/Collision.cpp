@@ -307,8 +307,12 @@ bool Collision::CheckLeft(Engine::GameObject* object, Box2D colBox)
 	box2Pos = colBox.GetPosition();
 	box2Size = colBox.GetSize();
 
+	//Prevent checking the floor when stood on floor
+	if (box2Pos.y > box1Pos.y)
+		return false;
+
 	//Check left of object against right of tilebox
-	if (oldBox1Pos.x > (box2Pos.x + box2Size.x) && box1Pos.x <= (box2Pos.x + box2Size.x))
+	if (oldBox1Pos.x >= (box2Pos.x + box2Size.x) && box1Pos.x < (box2Pos.x + box2Size.x))
 		return true;
 	else
 		return false;
@@ -326,6 +330,10 @@ bool Collision::CheckRight(Engine::GameObject* object, Box2D colBox)
 	vec2f box2Pos, box2Size;
 	box2Pos = colBox.GetPosition();
 	box2Size = colBox.GetSize();
+
+	//Prevent checking the floor when stood on floor
+	if (box2Pos.y > box1Pos.y && object->GetComponent<Engine::PhysicsComp>()->GetGrounded() == true)
+		return false;
 
 	//Check right of object against left of tilebox
 	if ((oldBox1Pos.x + box1Size.x) < box2Pos.x && (box1Pos.x  + box1Size.x) >= box2Pos.x)
@@ -372,8 +380,8 @@ bool Collision::CheckUp(Engine::GameObject* object, Box2D colBox)
 	box2Pos = colBox.GetPosition();
 	box2Size = colBox.GetSize();
 
-	//Check bottom of object against top of tilebox
-	if (oldBox1Pos.y > (box2Pos.y + box2Size.y) && box1Pos.y <= (box2Pos.y + box2Size.y))
+	//Check top of object against bottom of tilebox
+	if (oldBox1Pos.y >= (box2Pos.y + box2Size.y) && box1Pos.y < (box2Pos.y + box2Size.y))
 		return true;
 	else
 		return false;
