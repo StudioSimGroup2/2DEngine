@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<PROJECT>
+    <entities>
+        <gameobject name="BaseLayer">
+            <components>
+                <transform PosX="0" PosY="0" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <tilemap path="Assets\TileMaps\Sewer\SewerLevelBase.xml" />
+            </components>
+        </gameobject>
+        <gameobject name="TopLayer">
+            <components>
+                <transform PosX="0" PosY="0" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <tilemap path="Assets\TileMaps\Sewer\SewerLevelForeground.xml" />
+            </components>
+        </gameobject>
+        <gameobject name="Collision">
+            <components>
+                <transform PosX="0" PosY="0" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <tilemap path="Assets\TileMaps\Sewer\SewerColliders.xml" />
+                <tilecol Bounding="300" Solid="1" Trigger="0" />
+            </components>
+        </gameobject>
+        <gameobject name="Spawn">
+            <components>
+                <transform PosX="0" PosY="127.1" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <boxcol SizeX="32" SizeY="66" Bounding="300" Solid="0" Trigger="1" />
+            </components>
+        </gameobject>
+    </entities>
+</PROJECT>
