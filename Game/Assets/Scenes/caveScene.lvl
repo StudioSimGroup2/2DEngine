@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<PROJECT>
+    <entities>
+        <gameobject name="BaseTilemap">
+            <components>
+                <transform PosX="0" PosY="0" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <tilemap path="Assets\TileMaps\Cave\caveBase.xml" />
+            </components>
+        </gameobject>
+        <gameobject name="ForeTilemap">
+            <components>
+                <transform PosX="0" PosY="0" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <tilemap path="Assets\TileMaps\Cave\caveForeground.xml" />
+            </components>
+        </gameobject>
+        <gameobject name="CollisionTilemap">
+            <components>
+                <transform PosX="0" PosY="0" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <tilemap path="Assets\TileMaps\Cave\caveCollision.xml" />
+                <tilecol Bounding="300" Solid="1" Trigger="0" />
+            </components>
+        </gameobject>
+        <gameobject name="Player">
+            <components>
+                <transform PosX="365" PosY="371.226" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <sprite path="Assets\Textures\Mario.png" Colour="1.000000 1.000000 1.000000 1.000000" FlipX="0" FlipY="0" />
+                <script path="Assets\Scripts\Player.lua" />
+                <physics Mass="1" Gravity="9.8" Friction="0.5" MaxSpeed="200" />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="1" Trigger="0" />
+            </components>
+        </gameobject>
+        <gameobject name="LavaPit1">
+            <components>
+                <transform PosX="636.5" PosY="543.5" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <boxcol SizeX="158" SizeY="61" Bounding="300" Solid="0" Trigger="1" />
+            </components>
+        </gameobject>
+        <gameobject name="LavaPit2">
+            <components>
+                <transform PosX="835.1" PosY="544.5" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <boxcol SizeX="154" SizeY="61" Bounding="300" Solid="0" Trigger="1" />
+            </components>
+        </gameobject>
+        <gameobject name="HubTrigger">
+            <components>
+                <transform PosX="255" PosY="320" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <boxcol SizeX="15" SizeY="94" Bounding="300" Solid="0" Trigger="1" />
+            </components>
+        </gameobject>
+    </entities>
+</PROJECT>

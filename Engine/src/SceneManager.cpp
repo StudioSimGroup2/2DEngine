@@ -45,6 +45,7 @@ namespace Engine
 	{
 		if (mEditorMode)
 		{
+			CameraManager::Get()->SetPrimaryCamera(0);
 			for (GameObject* go : mSceneObjects)
 			{
 				go->InternalUpdate();
@@ -52,8 +53,13 @@ namespace Engine
 		}
 		else
 		{
+			if (CameraManager::Get()->AllCameras().size() > 1)
+			{
+				CameraManager::Get()->SetPrimaryCamera(1);
+			}
 			for (GameObject* go : mSceneObjects)
 			{
+				
 				go->Update();				
 				if (go->GetComponent<Engine::PhysicsComp>() != NULL)
 				{
@@ -492,6 +498,12 @@ namespace Engine
 	void SceneManager::ClearScene()
 	{
 		mSceneObjects.clear();
+	
+		for (int Loop = 1; Loop < CameraManager::Get()->AllCameras().size(); Loop++)
+		{
+			CameraManager::Get()->Delete(Loop);
+		}
+		CameraManager::Get()->SetPrimaryCamera(0);
 
 		mUnsavedChanges = true;
 	}

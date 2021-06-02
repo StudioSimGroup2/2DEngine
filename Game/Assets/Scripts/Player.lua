@@ -4,6 +4,9 @@ local jumpHeight = -1.0
 local gravity = -8.0
 local grounded = true
 local spritePos = 0
+local jumping = false
+local doubleJump = false
+local jumpCount = 0
 
 function OnStart()
     -- sprite = self:MakeSprite()
@@ -15,19 +18,32 @@ function OnUpdate()
 
     if (OnKeyDown(65) == true) -- A
     then
-		ThrustAmount = vec2f.new(-40,0)
-		self:GetPhysics():AddThrust(ThrustAmount)
+		Veloicty = vec2f.new(self:GetPhysics():GetVelocity())
+		Veloicty.x = -200
+		self:GetPhysics():SetVelocity(Veloicty)
     elseif (OnKeyDown(68) == true) -- D
     then
-		ThrustAmount = vec2f.new(40,0)
-		self:GetPhysics():AddThrust(ThrustAmount)
+		Veloicty = vec2f.new(self:GetPhysics():GetVelocity())
+		Veloicty.x = 200
+		self:GetPhysics():SetVelocity(Veloicty)
     end
+
+
+
+
 
     if (self:GetPhysics():GetGrounded() and OnKeyDown(32) == true) -- SPACE
     then
-        ThrustAmount = vec2f.new(0,-4000)
-		self:GetPhysics():AddThrust(ThrustAmount)
+		jumping = true
+        ThrustAmount = vec2f.new(self:GetPhysics():GetVelocity())
+		ThrustAmount.y = ThrustAmount.y - 200
+		self:GetPhysics():SetVelocity(ThrustAmount)
     end
+
+	if(jumpCount == true) then
+		self:GetPhysics():SetFriction(5)
+	end
+
 	
 	if (OnKeyDown(69) == true) -- E
 	then

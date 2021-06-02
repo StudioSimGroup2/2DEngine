@@ -22,6 +22,7 @@ namespace Engine
 		mState.set_function("OnKeyUp", [](uint32_t key) { return InputManager::GetInstance()->GetKeyUp(key); });
 		mState.set_function("ChangeScene", [](std::string Path) { return SceneManager::GetInstance()->LoadScene(Path); });
 		mState.set_function("CheckTrigger", [](std::string Obj1, std::string Obj2) { return Collision::CheckTrigger(SceneManager::GetInstance()->GetSceneObjectByName(Obj1), SceneManager::GetInstance()->GetSceneObjectByName(Obj2));});
+		mState.set_function("GetObjectByname", [](std::string Name) {return SceneManager::GetInstance()->GetSceneObjectByName(Name); });
 	}
 
 	void ScriptingEngine::Shutdown()
@@ -132,6 +133,7 @@ namespace Engine
 			"SetGravity", &PhysicsComp::SetGravity,
 			"SetFriction", &PhysicsComp::SetFriction,
 			"SetMaxSpeed", &PhysicsComp::SetMaxSpeed,
+			"SetVelocity", & PhysicsComp::SetVelocity,
 			"SetGrounded", &PhysicsComp::SetGrounded
 		);
 
