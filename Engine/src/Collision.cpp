@@ -126,7 +126,7 @@ bool Collision::LineLineCheck(Engine::GameObject* line1, Engine::GameObject* lin
 
 bool Collision::LineLineCheck(vec2f point1, vec2f point2, vec2f point3, vec2f point4)
 {
-	float uA, uB;
+	double uA, uB;
 	uA = ((point4.x - point3.x) * (point1.y - point3.y) - (point4.y - point3.y) * (point1.x - point3.x)) / ((point4.y - point3.y) * (point2.x - point1.x) - (point4.x - point3.x) * (point2.y - point1.y));
 	uB = ((point2.x - point1.x) * (point1.y - point3.y) - (point2.y - point1.y) * (point1.x - point3.x)) / ((point4.y - point3.y) * (point2.x - point1.x) - (point4.x - point3.x) * (point2.y - point1.y));
 
@@ -296,29 +296,19 @@ bool Collision::CheckTrigger(Engine::GameObject* object1, Engine::GameObject* ob
 
 bool Collision::CheckLeft(Engine::GameObject* object, Box2D colBox)
 {
-	//Set Left Line of obj1
-	vec2f box1Pos, box1Size, box1UL, box1LL;
+	//Get Current and Old box data
+	vec2f box1Pos, box1Size, oldBox1Pos;
 	box1Pos = object->GetComponent<Engine::ObjectCollisionComp>()->GetColBox().GetPosition();
 	box1Size = object->GetComponent<Engine::ObjectCollisionComp>()->GetColBox().GetSize();
+	oldBox1Pos = object->GetComponent<Engine::PhysicsComp>()->GetPrevPos();
 
-	box1UL = box1Pos;
-
-	box1LL.x = box1Pos.x;
-	box1LL.y = box1Pos.y + box1Size.y;
-
-	//Set Right Line of obj2
-	vec2f box2Pos, box2Size, box2UR, box2LR;
+	//Get tilemap Box to compare against
+	vec2f box2Pos, box2Size;
 	box2Pos = colBox.GetPosition();
 	box2Size = colBox.GetSize();
 
-	box2UR.x = box2Pos.x + box2Size.x;
-	box2UR.y = box2Pos.y;
-
-	box2LR.x = box2Pos.x + box2Size.x;
-	box2LR.y = box2Pos.y + box2Size.y;
-
-	//Check if colliding
-	if (LineLineCheck(box1UL, box1LL, box2UR, box2LR))
+	//Check left of object against right of tilebox
+	if (oldBox1Pos.x > (box2Pos.x + box2Size.x) && box1Pos.x <= (box2Pos.x + box2Size.x))
 		return true;
 	else
 		return false;
@@ -326,29 +316,19 @@ bool Collision::CheckLeft(Engine::GameObject* object, Box2D colBox)
 
 bool Collision::CheckRight(Engine::GameObject* object, Box2D colBox)
 {
-	//Set Right Line of obj1
-	vec2f box1Pos, box1Size, box1UR, box1LR;
+	//Get Current and Old box data
+	vec2f box1Pos, box1Size, oldBox1Pos;
 	box1Pos = object->GetComponent<Engine::ObjectCollisionComp>()->GetColBox().GetPosition();
 	box1Size = object->GetComponent<Engine::ObjectCollisionComp>()->GetColBox().GetSize();
+	oldBox1Pos = object->GetComponent<Engine::PhysicsComp>()->GetPrevPos();
 
-	box1UR.x = box1Pos.x + box1Size.x;
-	box1UR.y = box1Pos.y;
-
-	box1LR.x = box1Pos.x + box1Size.x;
-	box1LR.y = box1Pos.y + box1Size.y;
-
-	//Set Left Line of obj2
-	vec2f box2Pos, box2Size, box2UL, box2LL;
+	//Get tilemap Box to compare against
+	vec2f box2Pos, box2Size;
 	box2Pos = colBox.GetPosition();
 	box2Size = colBox.GetSize();
 
-	box2UL = box2Pos;
-
-	box2LL.x = box2Pos.x;
-	box2LL.y = box2Pos.y + box2Size.y;
-
-	//Check if colliding
-	if (LineLineCheck(box1UR, box1LR, box2UL, box2LL))
+	//Check right of object against left of tilebox
+	if ((oldBox1Pos.x + box1Size.x) < box2Pos.x && (box1Pos.x  + box1Size.x) >= box2Pos.x)
 		return true;
 	else
 		return false;
@@ -356,29 +336,24 @@ bool Collision::CheckRight(Engine::GameObject* object, Box2D colBox)
 
 bool Collision::CheckDown(Engine::GameObject* object, Box2D colBox)
 {
-	//Set Lower Line of obj1
-	vec2f box1Pos, box1Size, box1LL, box1LR;
+	//Get Current and Old box data
+	vec2f box1Pos, box1Size, oldBox1Pos;
 	box1Pos = object->GetComponent<Engine::ObjectCollisionComp>()->GetColBox().GetPosition();
 	box1Size = object->GetComponent<Engine::ObjectCollisionComp>()->GetColBox().GetSize();
+	oldBox1Pos = object->GetComponent<Engine::PhysicsComp>()->GetPrevPos();
 
-	box1LL.x = box1Pos.x;
-	box1LL.y = box1Pos.y + box1Size.y;
-
-	box1LR.x = box1Pos.x + box1Size.x;
-	box1LR.y = box1Pos.y + box1Size.y;
-
-	//Set Upper Line of obj2
-	vec2f box2Pos, box2Size, box2UL, box2UR;
+	//Get tilemap Box to compare against
+	vec2f box2Pos, box2Size;
 	box2Pos = colBox.GetPosition();
 	box2Size = colBox.GetSize();
 
-	box2UL = box2Pos;
+	if (oldBox1Pos.y == box1Pos.y)
+	{
+		return true;
+	}
 
-	box2UR.x = box2Pos.x + box2Size.x;
-	box2UR.y = box2Pos.y;
-
-	//Check if colliding
-	if (LineLineCheck(box1LL, box1LR, box2UL, box2UR))
+	//Check bottom of object against top of tilebox
+	if ((oldBox1Pos.y + box1Size.y) < box2Pos.y && (box1Pos.y + box1Size.y) >= box2Pos.y)
 		return true;
 	else
 		return false;
@@ -386,29 +361,19 @@ bool Collision::CheckDown(Engine::GameObject* object, Box2D colBox)
 
 bool Collision::CheckUp(Engine::GameObject* object, Box2D colBox)
 {
-	//Set Upper Line of obj1
-	vec2f box1Pos, box1Size, box1UL, box1UR;
+	//Get Current and Old box data
+	vec2f box1Pos, box1Size, oldBox1Pos;
 	box1Pos = object->GetComponent<Engine::ObjectCollisionComp>()->GetColBox().GetPosition();
 	box1Size = object->GetComponent<Engine::ObjectCollisionComp>()->GetColBox().GetSize();
+	oldBox1Pos = object->GetComponent<Engine::PhysicsComp>()->GetPrevPos();
 
-	box1UL = box1Pos;
-
-	box1UR.x = box1Pos.x + box1Size.x;
-	box1UR.y = box1Pos.y;
-
-	//Set Lower Line of obj2
-	vec2f box2Pos, box2Size, box2LL, box2LR;
+	//Get tilemap Box to compare against
+	vec2f box2Pos, box2Size;
 	box2Pos = colBox.GetPosition();
 	box2Size = colBox.GetSize();
 
-	box2LL.x = box2Pos.x;
-	box2LL.y = box2Pos.y + box2Size.y;
-
-	box2LR.x = box2Pos.x + box2Size.x;
-	box2LR.y = box2Pos.y + box2Size.y;
-
-	//Check if colliding
-	if (LineLineCheck(box1UL, box1UR, box2LL, box2LR))
+	//Check bottom of object against top of tilebox
+	if (oldBox1Pos.y > (box2Pos.y + box2Size.y) && box1Pos.y <= (box2Pos.y + box2Size.y))
 		return true;
 	else
 		return false;

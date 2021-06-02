@@ -83,16 +83,21 @@ namespace Engine
 											go->GetComponent<Engine::PhysicsComp>()->SetGrounded(true);
 										}
 
-										if (Collision::CheckRight(go, box) || Collision::CheckLeft(go, box))
+										if (Collision::CheckRight(go, box))
 										{
-											go->GetComponent<Engine::TransformComp>()->SetPosition(go->GetComponent<Engine::PhysicsComp>()->GetPrevPos());
+											go->GetComponent<Engine::PhysicsComp>()->SetVelocity(vec2f(0.0f, go->GetComponent<Engine::PhysicsComp>()->GetVelocity().y));
+											Logger::LogMsg("Hit right");
+										}
+
+										if (Collision::CheckLeft(go, box))
+										{
+											Logger::LogMsg("Hit left");
 										}
 
 										if (Collision::CheckUp(go, box))
 										{
-											if (go->GetComponent<Engine::PhysicsComp>()->GetVelocity().y != 0.0f)
-												go->GetComponent<Engine::PhysicsComp>()->SetVelocity(vec2f(go->GetComponent<Engine::PhysicsComp>()->GetVelocity().x, 0.0f));
-											go->GetComponent<Engine::TransformComp>()->SetPosition(go->GetComponent<Engine::PhysicsComp>()->GetPrevPos());
+											go->GetComponent<Engine::PhysicsComp>()->SetVelocity(vec2f(go->GetComponent<Engine::PhysicsComp>()->GetVelocity().x, 0.0f));
+											Logger::LogMsg("Hit top");
 										}
 									}	
 								}
