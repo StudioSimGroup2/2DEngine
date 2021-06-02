@@ -4,19 +4,19 @@
         <gameobject name="BaseTilemap">
             <components>
                 <transform PosX="0" PosY="0" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
-                <tilemap path="Assets\TileMaps\TutRoom\tutRoomBase.xml" />
+                <tilemap path="Assets\TileMaps\TutRoom\tutRoomBase.xml" Coll="0"/>
             </components>
         </gameobject>
         <gameobject name="ForeTilemap">
             <components>
                 <transform PosX="0" PosY="0" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
-                <tilemap path="Assets\TileMaps\TutRoom\tutRoomForeground.xml" />
+                <tilemap path="Assets\TileMaps\TutRoom\tutRoomForeground.xml" Coll="0"/>
             </components>
         </gameobject>
         <gameobject name="CollisionTilemap">
             <components>
                 <transform PosX="0" PosY="0" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
-                <tilemap path="Assets\TileMaps\TutRoom\TutCollisionMap.xml" />
+                <tilemap path="Assets\TileMaps\TutRoom\TutCollisionMap.xml" Coll="1"/>
                 <tilecol Bounding="300" Solid="1" Trigger="0" />
             </components>
         </gameobject>

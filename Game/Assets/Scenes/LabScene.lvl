@@ -10,13 +10,13 @@
         <gameobject name="FrontTileMap">
             <components>
                 <transform PosX="0" PosY="0" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
-                <tilemap path="Assets\TileMaps\Lab\LabBaseForeground.xml" />
+                <tilemap path="Assets\TileMaps\Lab\LabBaseForeground.xml" Coll="0"/>
             </components>
         </gameobject>
         <gameobject name="Colliders">
             <components>
                 <transform PosX="0" PosY="0" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
-                <tilemap path="Assets\TileMaps\Lab\LabColliders.xml" />
+                <tilemap path="Assets\TileMaps\Lab\LabColliders.xml" Coll="1"/>
                 <tilecol Bounding="300" Solid="1" Trigger="0" />
             </components>
         </gameobject>

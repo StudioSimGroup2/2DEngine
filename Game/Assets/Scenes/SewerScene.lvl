@@ -4,19 +4,19 @@
         <gameobject name="BaseLayer">
             <components>
                 <transform PosX="0" PosY="0" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
-                <tilemap path="Assets\TileMaps\Sewer\SewerLevelBase.xml" />
+                <tilemap path="Assets\TileMaps\Sewer\SewerLevelBase.xml" Coll="0" />
             </components>
         </gameobject>
         <gameobject name="TopLayer">
             <components>
                 <transform PosX="0" PosY="0" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
-                <tilemap path="Assets\TileMaps\Sewer\SewerLevelForeground.xml" />
+                <tilemap path="Assets\TileMaps\Sewer\SewerLevelForeground.xml" Coll="0" />
             </components>
         </gameobject>
         <gameobject name="Collision">
             <components>
                 <transform PosX="0" PosY="0" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
-                <tilemap path="Assets\TileMaps\Sewer\SewerColliders.xml" />
+                <tilemap path="Assets\TileMaps\Sewer\SewerColliders.xml" Coll="1" />
                 <tilecol Bounding="300" Solid="1" Trigger="0" />
             </components>
         </gameobject>
@@ -85,6 +85,22 @@
             <components>
                 <transform PosX="2598.4" PosY="384" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
                 <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
+            </components>
+        </gameobject>
+        <gameobject name="Player">
+            <components>
+                <transform PosX="276.4" PosY="345.3" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <sprite path="Assets\Textures\Mario.png" Colour="1.000000 1.000000 1.000000 1.000000" FlipX="0" FlipY="0" />
+                <script path="Assets\Scripts\Player.lua" />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="1" Trigger="0" />
+                <physics Mass="1" Gravity="9.8" Friction="0.5" MaxSpeed="200" />
+            </components>
+        </gameobject>
+        <gameobject name="Unnamed Object 16">
+            <components>
+                <transform PosX="0" PosY="0" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <camera FOV="0" Near="0.1" Far="100" Depth="1" />
+                <script path="Assets\Scripts\Camera.lua" />
             </components>
         </gameobject>
     </entities>
