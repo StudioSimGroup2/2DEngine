@@ -438,9 +438,7 @@ namespace Engine
 
 			}
 			ImGui::SameLine();
-			ImGui::PopID();
-
-			
+			ImGui::PopID();			
 
 			if (ImGui::GetIO().MouseDown[1])
 			{
@@ -459,9 +457,9 @@ namespace Engine
 				mousePos.y -= (CameraPos.y + 338);
 
 				c->ChangeTile(TileID, vec2i((mousePos.y / TILEHEIGHT), (mousePos.x / TILEWIDTH)));
-			}
-
+			}			
 		}
+
 		ImGui::End();
 
 		//Load TileMap
@@ -506,7 +504,9 @@ namespace Engine
 			ifd::FileDialog::Instance().Close();
 		}
 		//----------------------------------------------------------------------------------------------
-
+		bool Coll = c->GetColl();
+		ImGui::Checkbox("Is A collison TileMap", &Coll);
+		c->SetColl(Coll);
 		ImGui::PopID();
 	}
 

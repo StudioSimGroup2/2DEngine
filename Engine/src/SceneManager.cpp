@@ -254,6 +254,12 @@ namespace Engine
 					NewtileMap->LoadTileMap(path);
 					NewtileMap->Setpath(path);
 				}
+
+				std::string Coll = CurrentComp->Attribute("Coll");
+				if (Coll == "1")
+				{
+					NewtileMap->SetColl(true);
+				}
 			}
 			else if (CompType == "physics")
 			{
@@ -424,6 +430,25 @@ namespace Engine
 			{
 				TiXmlElement* tileMap = new TiXmlElement("tilemap");
 				tileMap->SetAttribute("path", CurrentGameObj->GetComponent<TileMapComp>()->getpath().c_str());
+				int Coll = 0;
+				if (CurrentGameObj->GetComponent<TileMapComp>()->GetColl())
+				{
+					Coll = 1;
+				}
+				tileMap->SetAttribute("Coll", Coll);
+
+				/*int flipX = 0, flipY = 0;
+				if (CurrentGameObj->GetComponent<SpriteComp>()->GetFlipX())
+				{
+					flipX = 1;
+				}
+				if (CurrentGameObj->GetComponent<SpriteComp>()->GetFlipY())
+				{
+					flipY = 1;
+				}
+				Sprite->SetAttribute("FlipX", flipX);
+				Sprite->SetAttribute("FlipY", flipY);
+				components->LinkEndChild(Sprite);*/
 
 				components->LinkEndChild(tileMap);
 				break;
