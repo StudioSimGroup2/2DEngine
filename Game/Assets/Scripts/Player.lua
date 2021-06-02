@@ -1,16 +1,14 @@
 local health = 100
 local speed = 2.0
 local jumpHeight = -1.0
-local gravity = -8.0
 local grounded = true
 local spritePos = 0
-local jumping = false
-local doubleJump = false
-local jumpCount = 0
+local doubleJump = true
+local canDoubleJump = false
 
-local mass = 1
-local gravity = 500
-local friction = 6
+local mass = 10
+local gravity = 600
+local friction = 10
 local maxSpeed = 200
 
 function OnStart()
@@ -37,30 +35,51 @@ function OnUpdate()
 		self:GetPhysics():SetVelocity(Veloicty)
     end
 
+	    if (OnKeyUp(65) == true) -- A
+    then
+		Veloicty = vec2f.new(self:GetPhysics():GetVelocity())
+		Veloicty.x = -50
+		self:GetPhysics():SetVelocity(Veloicty)
+    elseif (OnKeyUp(68) == true) -- D
+    then
+		Veloicty = vec2f.new(self:GetPhysics():GetVelocity())
+		Veloicty.x = 50
+		self:GetPhysics():SetVelocity(Veloicty)
+    end
 
 
 
 
     if (self:GetPhysics():GetGrounded() and OnKeyDown(32) == true) -- SPACE
     then
-		jumping = true
         ThrustAmount = vec2f.new(self:GetPhysics():GetVelocity())
 		ThrustAmount.y = ThrustAmount.y - 200
 		self:GetPhysics():SetVelocity(ThrustAmount)
     end
-
-	if(jumpCount == true) then
-		self:GetPhysics():SetFriction(5)
+	if(OnKeyUp(32) == true)
+	then
+		canDoubleJump = true
+	end
+	if (OnKeyDown(32) == true and doubleJump == true and canDoubleJump == true)
+    then
+        ThrustAmount = vec2f.new(self:GetPhysics():GetVelocity())
+		ThrustAmount.y = ThrustAmount.y - 200
+		self:GetPhysics():SetVelocity(ThrustAmount)
+		canDoubleJump = false
 	end
 
-	
+
 	if (OnKeyDown(69) == true) -- E
 	then
-	self:GetPhysics():SetGravity(100)
+		self:GetPhysics():SetGravity(10000)
+		Veloicty = vec2f.new(self:GetPhysics():GetVelocity())
+		Veloicty.x = 0
+		self:GetPhysics():SetVelocity(Veloicty)
+	end
+	if (OnKeyUp(69) == true) -- E
+	then
+		self:GetPhysics():SetGravity(600)
 	end
 	
-	if (OnKeyDown(82) == true) -- R
-	then
-	ChangeScene("Assets/Scenes/1234.lvl")
-	end
+	
 end
