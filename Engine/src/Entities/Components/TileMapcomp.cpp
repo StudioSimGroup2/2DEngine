@@ -87,6 +87,8 @@ namespace Engine
 
 	void TileMapComp::Render()
 	{
+		if (IsACollison)
+			return;
 		if (mRenderer.empty())
 			return;
 

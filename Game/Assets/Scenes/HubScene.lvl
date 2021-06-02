@@ -47,5 +47,12 @@
                 <boxcol SizeX="74" SizeY="45" Bounding="300" Solid="0" Trigger="1" />
             </components>
         </gameobject>
+        <gameobject name="Camera">
+            <components>
+                <transform PosX="0" PosY="0" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <camera FOV="0" Near="0.1" Far="100" Depth="1" />
+                <script path="Assets\Scripts\Camera.lua" />
+            </components>
+        </gameobject>
     </entities>
 </PROJECT>
