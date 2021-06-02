@@ -33,7 +33,7 @@
             <components>
                 <transform PosX="580.4" PosY="450" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
                 <boxcol SizeX="155" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
-                <script path="" />
+                <script path="Assets\Scripts\hubToSewer.lua" />
             </components>
         </gameobject>
         <gameobject name="LabTrig">
@@ -47,7 +47,7 @@
             <components>
                 <transform PosX="1139.2" PosY="403.3" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
                 <boxcol SizeX="74" SizeY="45" Bounding="300" Solid="0" Trigger="1" />
-                <script path="" />
+                <script path="Assets\Scripts\hubToCave.lua" />
             </components>
         </gameobject>
         <gameobject name="Camera">
