@@ -18,13 +18,7 @@ namespace Engine
 		void CallStart(GameObject* parent);
 		void CallUpdate(GameObject* parent);
 		void CallRender(GameObject* parent);
-
-		bool GetDelete() { return mDelete; }
-
-		void Delete();
 	private:
-		bool mDelete = false;
-
 		sol::protected_function mStart;
 		sol::protected_function mUpdate;
 		sol::protected_function mRender;

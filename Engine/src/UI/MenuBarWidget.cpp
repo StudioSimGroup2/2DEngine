@@ -184,17 +184,6 @@ namespace Engine
 					}
 				}
 
-				if (ImGui::MenuItem("Particle system"))
-				{
-					if (SceneHierarchyWidget::GetNode() != nullptr)
-					{
-						auto go = SceneHierarchyWidget::GetNode();
-						go->AddComponent<ParticleComp>(new ParticleComp(go));
-
-					}
-
-				}
-
 				ImGui::EndMenu();
 			}
 
