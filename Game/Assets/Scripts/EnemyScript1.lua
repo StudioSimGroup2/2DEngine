@@ -9,6 +9,7 @@ function OnStart()
 		EnemVelocity = vec2f.new(self:GetPhysics():GetVelocity())
 		EnemVelocity.x = 200
 		self:GetPhysics():SetVelocity(EnemVelocity)
+		GetObjectByname("Enemy1"):Enable()
 end
 
 function OnUpdate()
@@ -25,8 +26,8 @@ function OnUpdate()
 		direction = 1
     end
 	
-	--elseif (CheckTrigger(self:GetName(),"Sword"))
-	--then
-		--health -1
-	--end
+	if (CheckTrigger(self:GetName(),"Sword"))
+	then
+		GetObjectByname("Enemy1"):Disable()
+	end
 end

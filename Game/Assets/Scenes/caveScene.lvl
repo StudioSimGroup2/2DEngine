@@ -22,16 +22,16 @@
         </gameobject>
         <gameobject name="Player">
             <components>
-                <transform PosX="348.141" PosY="351.905" RotX="0" RotY="0" ScaleX="1" ScaleY="2" />
+                <transform PosX="379.549" PosY="351.91" RotX="0" RotY="0" ScaleX="1" ScaleY="2" />
                 <sprite path="Assets\Textures\PlayerRight.png" Colour="1.000000 1.000000 1.000000 1.000000" FlipX="0" FlipY="0" />
                 <script path="Assets\Scripts\Player.lua" />
-                <physics Mass="10" Gravity="600" Friction="10" MaxSpeed="350" />
+                <physics Mass="10" Gravity="600" Friction="10" MaxSpeed="300" />
                 <boxcol SizeX="32" SizeY="64" Bounding="300" Solid="1" Trigger="0" />
             </components>
             <children>
                 <gameobject name="Sword">
                     <components>
-                        <transform PosX="368.141" PosY="351.405" RotX="0" RotY="0" ScaleX="1.5" ScaleY="2" />
+                        <transform PosX="399.549" PosY="351.41" RotX="0" RotY="0" ScaleX="1.5" ScaleY="2" />
                         <sprite path="Assets\Textures\SWORD.png" Colour="1.000000 1.000000 1.000000 1.000000" FlipX="0" FlipY="0" />
                         <script path="Assets\Scripts\followPlayer.lua" />
                         <boxcol SizeX="32" SizeY="64" Bounding="300" Solid="0" Trigger="1" />
@@ -55,9 +55,30 @@
         </gameobject>
         <gameobject name="Camera">
             <components>
-                <transform PosX="348.141" PosY="-351.905" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <transform PosX="379.549" PosY="-351.91" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
                 <camera FOV="0" Near="0.1" Far="100" Depth="1" />
                 <script path="Assets\Scripts\Camera.lua" />
+            </components>
+        </gameobject>
+        <gameobject name="Enemy3">
+            <components>
+                <transform PosX="1649.53" PosY="575.999" RotX="0" RotY="0" ScaleX="2" ScaleY="2" />
+                <sprite path="Assets\Textures\OctopusBoss.png" Colour="1.000000 1.000000 1.000000 1.000000" FlipX="0" FlipY="0" />
+                <script path="Assets\Scripts\EnemyScript3.lua" />
+                <physics Mass="1" Gravity="9.8" Friction="0.5" MaxSpeed="400" />
+                <boxcol SizeX="64" SizeY="64" Bounding="300" Solid="1" Trigger="0" />
+            </components>
+        </gameobject>
+        <gameobject name="Trigger5">
+            <components>
+                <transform PosX="2175" PosY="600" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
+            </components>
+        </gameobject>
+        <gameobject name="Trigger6">
+            <components>
+                <transform PosX="1455" PosY="600" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
             </components>
         </gameobject>
     </entities>
