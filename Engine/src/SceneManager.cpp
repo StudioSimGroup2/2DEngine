@@ -94,14 +94,12 @@ namespace Engine
 										{
 											go->GetComponent<Engine::TransformComp>()->SetPosition(vec2f(go->GetComponent<Engine::PhysicsComp>()->GetPrevPos().x, go->GetComponent<Engine::TransformComp>()->GetPosition().y));
 											go->GetComponent<Engine::PhysicsComp>()->SetVelocity(vec2f(-50.0f, go->GetComponent<Engine::PhysicsComp>()->GetVelocity().y));
-											Logger::LogMsg("Hit right");
 										}
 
 										if (Collision::CheckLeft(go, box))
 										{
 											go->GetComponent<Engine::TransformComp>()->SetPosition(vec2f(go->GetComponent<Engine::PhysicsComp>()->GetPrevPos().x, go->GetComponent<Engine::TransformComp>()->GetPosition().y));
 											go->GetComponent<Engine::PhysicsComp>()->SetVelocity(vec2f(50.0f, go->GetComponent<Engine::PhysicsComp>()->GetVelocity().y));
-											Logger::LogMsg("Hit left");
 										}
 
 										if (Collision::CheckUp(go, box))
