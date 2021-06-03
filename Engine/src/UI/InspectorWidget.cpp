@@ -108,14 +108,6 @@ namespace Engine
 						RenderLineColComponent(dynamic_cast<LineCollisionComp*>(c));
 					}
 					break;
-
-				case COMPONENT_PARTICLE:
-					if (ImGui::CollapsingHeader("Particle system", &close))
-					{
-						RenderParticleComponent(dynamic_cast<ParticleComp*>(c));
-					}
-					break;
-
 				case COMPONENT_LIGHT:
 					if (ImGui::CollapsingHeader("Light", close))
 					{
@@ -137,7 +129,7 @@ namespace Engine
 
 			ImGui::Separator();
 
-			const char* comps[] = { "Sprite", "Script", "Audio", "Camera", "TileMap", "Physics", "Box Collision", "Tilemap Collision", "Line Collision", "Particle system", "Light" };
+			const char* comps[] = { "Sprite", "Script", "Audio", "Camera", "TileMap", "Physics", "Box Collision", "Tilemap Collision", "Line Collision", "Light"};
 
 			if (ImGui::Button("Add Component..", ImVec2(ImGui::GetContentRegionAvail().x, 0.0f)))
 			{
@@ -195,9 +187,6 @@ namespace Engine
 							SceneHierarchyWidget::GetNode()->AddComponent<LineCollisionComp>(new LineCollisionComp);
 							break;
 
-						case COMPONENT_PARTICLE:
-							SceneHierarchyWidget::GetNode()->AddComponent<ParticleComp>(new ParticleComp(SceneHierarchyWidget::GetNode()));
-							break;
 						case COMPONENT_LIGHT:
 							SceneHierarchyWidget::GetNode()->AddComponent<LightComp>(new LightComp);
 
@@ -635,7 +624,7 @@ namespace Engine
 
 	void InspectorWidget::RenderLineColComponent(LineCollisionComp* c)
 	{
-float point1[2] = { c->GetPoint1().x, c->GetPoint1().y };
+		float point1[2] = { c->GetPoint1().x, c->GetPoint1().y };
 		float point2[2] = { c->GetPoint2().x, c->GetPoint2().y };
 		bool isSolid = c->GetColToggle();
 		bool isTrigger = c->GetTrigger();
@@ -686,7 +675,6 @@ float point1[2] = { c->GetPoint1().x, c->GetPoint1().y };
 		c->SetTrigger(isTrigger);
 	}
 
-
 	void InspectorWidget::RenderTilemapColComponent(TilemapCollisionComp* c)
 	{
 		float boundSize = c->GetBRange();
@@ -731,168 +719,6 @@ float point1[2] = { c->GetPoint1().x, c->GetPoint1().y };
 		{
 			c->RefreshTileBoxes();
 		}
-	}
-	
-	void InspectorWidget::RenderParticleComponent(ParticleComp* c)
-	{
-		int count = c->GetParticleCount();
-		float rate = c->GetRate();
-		float gravity = c->GetGravity();
-		float lifetime = c->GetLifetime();
-		vec2f velocity = c->GetVelocity();
-		vec2f size = c->GetSize();
-		glm::vec4 colour = c->GetColour();
-
-
-		ImGui::PushID("texture");
-		ImGui::Columns(2);
-		ImGui::Text("Particle texture");
-		ImGui::NextColumn();
-		if (c->GetTexture()) {
-#if GRAPHICS_LIBRARY == 0
-			D3D11Texture* t = dynamic_cast<D3D11Texture*>(c->GetTexture());
-#elif GRAPHICS_LIBRARY == 1
-			OGLTexture* t = dynamic_cast<OGLTexture*>(c->GetTexture());
-#endif
-			ImGui::Image((void*)(intptr_t)t->GetTexID(), ImVec2(32.0f, 32.0f));
-		}
-		ImGui::Columns(1);
-		ImGui::PopID();
-
-		ImGui::PushID("texture style");
-		const char* textureStyles[] = { "Custom", "Circle", "Square", "Triangle" };
-		static std::string currItem = textureStyles[0];
-
-		switch (c->GetParticleTexture()) {
-			case ParticleTexture::Custom: currItem = textureStyles[0]; break;
-			case ParticleTexture::Circle: currItem = textureStyles[1]; break;
-			case ParticleTexture::Square: currItem = textureStyles[2]; break;
-			case ParticleTexture::Triangle: currItem = textureStyles[3]; break;
-		}
-
-
-		ImGui::Columns(2);
-		ImGui::Text("Texture style");
-		ImGui::NextColumn();
-
-		if (ImGui::BeginCombo("##textureStyle", currItem.c_str())) // The second parameter is the label previewed before opening the combo.
-		{
-			for (int n = 0; n < IM_ARRAYSIZE(textureStyles); n++)
-			{
-				bool is_selected = (currItem == textureStyles[n]); // You can store your selection however you want, outside or inside your objects
-				if (ImGui::Selectable(textureStyles[n], is_selected))
-					currItem = textureStyles[n];
-				if (is_selected)
-					ImGui::SetItemDefaultFocus();
-			}
-			ImGui::EndCombo();
-		}
-		ImGui::Columns(1);
-
-		if (currItem == textureStyles[0]) c->SetParticleTex(ParticleTexture::Custom);
-		else if (currItem == textureStyles[1]) c->SetParticleTex(ParticleTexture::Circle);
-		else if (currItem == textureStyles[2]) c->SetParticleTex(ParticleTexture::Square);
-		else if (currItem == textureStyles[3]) c->SetParticleTex(ParticleTexture::Triangle);
-
-		static std::string path(c->GetTexturePath());
-		ImGui::Text("Custom texture path:");
-		ImGui::InputText("##input", &path);
-		c->SetParticleTexPath(path.c_str());
-	
-		ImGui::PopID();
-
-		ImGui::Text("Color");
-		ImGui::SameLine();
-		ImGui::ColorEdit4("##colpicker", (float*)&colour, ImGuiColorEditFlags_NoDragDrop);
-
-		ImGui::PushID("count");
-		ImGui::Columns(2);
-		ImGui::Text("Particle count");
-		ImGui::NextColumn();
-		ImGui::DragInt("##Count", &count, 1, 0);
-		ImGui::Columns(1);
-		ImGui::PopID();
-
-		ImGui::PushID("rate");
-		ImGui::Columns(2);
-		ImGui::Text("Emmission rate");
-		ImGui::NextColumn();
-		ImGui::DragFloat("##Rate", &rate, 0.1f);
-		ImGui::Columns(1);
-		ImGui::PopID();
-
-		ImGui::PushID("gravity");
-		ImGui::Columns(2);
-		ImGui::Text("Gravity");
-		ImGui::NextColumn();
-		ImGui::DragFloat("##Gravity", &gravity, 0.1f);
-		ImGui::Columns(1);
-		ImGui::PopID();
-
-		ImGui::PushID("lifetime");
-		ImGui::Columns(2);
-		ImGui::Text("Lifetime");
-		ImGui::NextColumn();
-		ImGui::DragFloat("##Lifetime", &lifetime, 0.1f);
-		ImGui::Columns(1);
-		ImGui::PopID();
-
-		ImGui::PushID("velocity");
-		ImGui::Columns(2);
-		ImGui::Text("Velocity");
-		ImGui::NextColumn();
-		ImGui::DragFloat2("##Velocity", &velocity.x, 0.1f);
-		ImGui::Columns(1);
-		ImGui::PopID();
-
-		ImGui::PushID("emmitter size");
-		ImGui::Columns(2);
-		ImGui::Text("Size");
-		ImGui::NextColumn();
-		ImGui::DragFloat2("##Size", &size.x, 0.1f);
-		ImGui::Columns(1);
-		ImGui::PopID();
-
-
-		ImGui::PushID("Emmitter style");
-		const char* items[] = { "Square", "Circle"};
-		static const char* current_item = items[0];
-
-		switch (c->GetEmmiter()) {
-			case Emmitter::Square: current_item = items[0]; break;
-			case Emmitter::Circle: current_item = items[1]; break;
-		}
-		ImGui::Columns(2);
-		ImGui::Text("Emmitter");
-		ImGui::NextColumn();
-
-		if (ImGui::BeginCombo("##combo", current_item)) // The second parameter is the label previewed before opening the combo.
-		{
-			for (int n = 0; n < IM_ARRAYSIZE(items); n++)
-			{
-				bool is_selected = (current_item == items[n]); // You can store your selection however you want, outside or inside your objects
-				if (ImGui::Selectable(items[n], is_selected))
-					current_item = items[n];
-					if (is_selected)
-						ImGui::SetItemDefaultFocus(); 
-			}
-			ImGui::EndCombo();
-		}
-		ImGui::Columns(1);
-		if (current_item == "Square") c->SetEmmitter(Emmitter::Square);
-		if (current_item == "Circle") c->SetEmmitter(Emmitter::Circle);
-		ImGui::PopID();
-
-
-		if (count != c->GetParticleCount() && count >= 0)
-			c->SetParticleCount(count);
-
-		c->SetRate(rate);
-		c->SetGravity(gravity);
-		c->SetLifetime(lifetime);
-		c->SetVelocity(velocity);
-		c->SetSize(size);
-		c->SetColour(colour);
 	}
 
 	void InspectorWidget::RenderLightComponent(LightComp* c)

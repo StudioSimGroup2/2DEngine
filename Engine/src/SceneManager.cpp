@@ -1,6 +1,8 @@
 #include "SceneManager.h"
 #include "Scripting\ScriptingEngine.h"
 #include "CameraManager.h"
+#include "Collision.h"
+#include "LightingManager.h"
 
 namespace Engine
 {
@@ -17,7 +19,6 @@ namespace Engine
 
 	void SceneManager::CreateScene()
 	{
-
 		auto camera = CameraManager::Get()->Add(vec2f((1260/2), -(677/2)), true);		// Camera manager deletes its cameras, no mem leak :)         
 		camera->SetName("Main Camera");
 		camera->SetPrimary(true);
@@ -26,6 +27,8 @@ namespace Engine
 		ScriptingEngine::GetInstance()->Init();
 		
 		mRenderToTex.CreateFrameBuffer(1260, 677);
+
+		LightingManager::GetInstance()->Init();
 		mSceneLoaded = true;
 	}
 
@@ -42,6 +45,7 @@ namespace Engine
 	{
 		if (mEditorMode)
 		{
+			CameraManager::Get()->SetPrimaryCamera(0);
 			for (GameObject* go : mSceneObjects)
 			{
 				go->InternalUpdate();
@@ -49,11 +53,17 @@ namespace Engine
 		}
 		else
 		{
+			if (CameraManager::Get()->AllCameras().size() > 1)
+			{
+				CameraManager::Get()->SetPrimaryCamera(1);
+			}
 			for (GameObject* go : mSceneObjects)
 			{
-				go->Update();
+				
+				go->Update();				
 				if (go->GetComponent<Engine::PhysicsComp>() != NULL)
 				{
+					go->GetComponent<Engine::PhysicsComp>()->SetGrounded(false);
 					for (GameObject* compObj : mSceneObjects)
 					{
 						if (go == compObj)
@@ -63,33 +73,71 @@ namespace Engine
 
 						if (Collision::CheckCollision(go, compObj))
 						{
-							go->GetComponent<Engine::PhysicsComp>()->SetGrounded(true);
-							break;
-						}
-						else
-						{
-							go->GetComponent<Engine::PhysicsComp>()->SetGrounded(false);
+							if (compObj->GetComponent<Engine::TilemapCollisionComp>() == NULL)
+							{
+								go->GetComponent<Engine::PhysicsComp>()->SetGrounded(true);
+							}
+							else
+							{
+								std::vector<Box2D> colBoxes = compObj->GetComponent<Engine::TilemapCollisionComp>()->GetColBoxes();
+								for (Box2D box : colBoxes)
+								{
+									if (Collision::CheckBox(box, go))
+									{
+										if (Collision::CheckDown(go, box))
+										{
+											go->GetComponent<Engine::PhysicsComp>()->SetGrounded(true);
+											go->GetComponent<Engine::TransformComp>()->SetPosition(vec2f(go->GetComponent<Engine::TransformComp>()->GetPosition().x, go->GetComponent<Engine::PhysicsComp>()->GetPrevPos().y));
+										}
+
+										if (Collision::CheckRight(go, box))
+										{
+											go->GetComponent<Engine::TransformComp>()->SetPosition(vec2f(go->GetComponent<Engine::PhysicsComp>()->GetPrevPos().x, go->GetComponent<Engine::TransformComp>()->GetPosition().y));
+											go->GetComponent<Engine::PhysicsComp>()->SetVelocity(vec2f(-50.0f, go->GetComponent<Engine::PhysicsComp>()->GetVelocity().y));
+										}
+
+										if (Collision::CheckLeft(go, box))
+										{
+											go->GetComponent<Engine::TransformComp>()->SetPosition(vec2f(go->GetComponent<Engine::PhysicsComp>()->GetPrevPos().x, go->GetComponent<Engine::TransformComp>()->GetPosition().y));
+											go->GetComponent<Engine::PhysicsComp>()->SetVelocity(vec2f(50.0f, go->GetComponent<Engine::PhysicsComp>()->GetVelocity().y));
+										}
+
+										if (Collision::CheckUp(go, box))
+										{
+											go->GetComponent<Engine::PhysicsComp>()->SetVelocity(vec2f(go->GetComponent<Engine::PhysicsComp>()->GetVelocity().x, 0.0f));
+										}
+									}	
+								}
+							}
 						}
 					}
 				}
 			}
 		}
-
-		if (mClearScene)
-			for (auto go : mSceneObjects)
-				DestroyObject(go);
 	}
 
 	void SceneManager::RenderScene()
 	{
 		mRenderToTex.Load();
 
-        for (GameObject* go : mSceneObjects)
+		if (mEditorMode)
 		{
-			go->Render();
+			for (GameObject* go : mSceneObjects)
+			{
+				go->InternalRender();
+			}
+		}
+		else
+		{
+			for (GameObject* go : mSceneObjects)
+			{
+				go->Render();
+			}
 		}
 
         mRenderToTex.Unload();
+
+		LightingManager::GetInstance()->Render();
 	}
 
 	void SceneManager::LoadScene(std::string path)
@@ -123,7 +171,6 @@ namespace Engine
 			// Lots of pointers left here should clean them up when done with them
 		}
 
-		mClearScene = false;
 		mUnsavedChanges = false;
 	}
 
@@ -236,6 +283,12 @@ namespace Engine
 					NewtileMap->LoadTileMap(path);
 					NewtileMap->Setpath(path);
 				}
+
+				std::string Coll = CurrentComp->Attribute("Coll");
+				if (Coll == "1")
+				{
+					NewtileMap->SetColl(true);
+				}
 			}
 			else if (CompType == "physics")
 			{
@@ -254,75 +307,30 @@ namespace Engine
 				sizey = atof(CurrentComp->Attribute("SizeY"));
 				NewBoxCol->GetColBox().SetSize(vec2f(sizex, sizey));
 				NewBoxCol->SetBRange(atof(CurrentComp->Attribute("Bounding")));
-
+				NewBoxCol->SetColToggle(atof(CurrentComp->Attribute("Solid")));
+				NewBoxCol->SetTrigger(atof(CurrentComp->Attribute("Trigger")));
 			}
 			else if (CompType == "tilecol")
 			{
 				TilemapCollisionComp* NewTileCol = NewObject->AddComponent<TilemapCollisionComp>(new TilemapCollisionComp);
 				NewTileCol->SetBRange(atof(CurrentComp->Attribute("Bounding")));
+				NewTileCol->SetColToggle(atof(CurrentComp->Attribute("Solid")));
+				NewTileCol->SetTrigger(atof(CurrentComp->Attribute("Trigger")));
 			}
 			else if (CompType == "linecol")
 			{
 				LineCollisionComp* NewLineCol = NewObject->AddComponent<LineCollisionComp>(new LineCollisionComp);
 				float p1x, p1y, p2x, p2y;
 				p1x = atof(CurrentComp->Attribute("Point1X"));
-				p1y = atof(CurrentComp->Attribute("Point1Y")); 
+				p1y = atof(CurrentComp->Attribute("Point1Y"));
 				p2x = atof(CurrentComp->Attribute("Point2X"));
 				p2y = atof(CurrentComp->Attribute("Point2Y"));
 
 				NewLineCol->SetPoint1(vec2f(p1x, p1y));
 				NewLineCol->SetPoint2(vec2f(p2x, p2y));
 				NewLineCol->SetBRange(atof(CurrentComp->Attribute("Bounding")));
-			}
-			else if (CompType == "particleSystem")
-			{
-			ParticleComp* comp = NewObject->AddComponent<ParticleComp>(new ParticleComp(NewObject));
-
-			switch (atoi(CurrentComp->Attribute("Emitter"))) {
-			case 0:
-				comp->SetEmmitter(Emmitter::Square);
-				break;
-			case 1:
-				comp->SetEmmitter(Emmitter::Circle);
-				break;
-			case 2:
-				comp->SetEmmitter(Emmitter::Cone);
-				break;
-			}
-
-			switch (atoi(CurrentComp->Attribute("Style"))) {
-			case 0:
-				comp->SetParticleTex(ParticleTexture::Custom);
-				break;
-			case 1:
-				comp->SetParticleTex(ParticleTexture::Circle);
-				break;
-			case 2:
-				comp->SetParticleTex(ParticleTexture::Square);
-				break;
-			case 3:
-				comp->SetParticleTex(ParticleTexture::Triangle);
-				break;
-			}
-
-
-			comp->SetParticleCount(atof(CurrentComp->Attribute("Count")));
-			comp->SetRate(atof(CurrentComp->Attribute("Rate")));
-			comp->SetLifetime(atof(CurrentComp->Attribute("Lifetime")));
-			comp->SetGravity(atof(CurrentComp->Attribute("Gravity")));
-			vec2f vel;
-			vel.x = atof(CurrentComp->Attribute("VelocityX"));
-			vel.y = atof(CurrentComp->Attribute("VelocityY"));
-			comp->SetVelocity(vel);
-			comp->SetColour(glm::vec4{ atof(CurrentComp->Attribute("ColorR")), atof(CurrentComp->Attribute("ColorG")),  atof(CurrentComp->Attribute("ColorB")), atof(CurrentComp->Attribute("ColorA")) });
-			const char* t = CurrentComp->Attribute("TexPath");
-			comp->SetParticleTexPath(t);
-
-			vec2f size;
-			size.x = atof(CurrentComp->Attribute("SizeX"));
-			size.y = atof(CurrentComp->Attribute("SizeY"));
-			comp->SetSize(size);
-
+				NewLineCol->SetColToggle(atof(CurrentComp->Attribute("Solid")));
+				NewLineCol->SetTrigger(atof(CurrentComp->Attribute("Trigger")));
 			}
 		}
 		TiXmlElement* Children = CurrentObject->FirstChildElement("children");
@@ -390,7 +398,7 @@ namespace Engine
 				Transform->SetDoubleAttribute("RotY", CurrentGameObj->GetComponent<TransformComp>()->GetRotation().y);
 
 				Transform->SetDoubleAttribute("ScaleX", CurrentGameObj->GetComponent<TransformComp>()->GetScale().x);
-				Transform->SetDoubleAttribute("ScaleY", CurrentGameObj->GetComponent<TransformComp>()->GetScale().x);
+				Transform->SetDoubleAttribute("ScaleY", CurrentGameObj->GetComponent<TransformComp>()->GetScale().y);
 
 				components->LinkEndChild(Transform);
 				break;
@@ -398,7 +406,14 @@ namespace Engine
 			case COMPONENT_SPRITE:
 			{
 				TiXmlElement* Sprite = new TiXmlElement("sprite");
-				Sprite->SetAttribute("path", CurrentGameObj->GetComponent<SpriteComp>()->GetTexture()->GetPath().c_str());
+				if (CurrentGameObj->GetComponent<SpriteComp>()->GetTexture() != nullptr)
+				{
+					Sprite->SetAttribute("path", CurrentGameObj->GetComponent<SpriteComp>()->GetTexture()->GetPath().c_str());
+				}
+				else
+				{
+					Sprite->SetAttribute("path", "");
+				}
 				char Colour[50];
 				std::sprintf(Colour, "%f %f %f %f", CurrentGameObj->GetComponent<SpriteComp>()->GetColour()[0], CurrentGameObj->GetComponent<SpriteComp>()->GetColour()[1], CurrentGameObj->GetComponent<SpriteComp>()->GetColour()[2], CurrentGameObj->GetComponent<SpriteComp>()->GetColour()[3]);
 				Sprite->SetAttribute("Colour", Colour);
@@ -444,6 +459,25 @@ namespace Engine
 			{
 				TiXmlElement* tileMap = new TiXmlElement("tilemap");
 				tileMap->SetAttribute("path", CurrentGameObj->GetComponent<TileMapComp>()->getpath().c_str());
+				int Coll = 0;
+				if (CurrentGameObj->GetComponent<TileMapComp>()->GetColl())
+				{
+					Coll = 1;
+				}
+				tileMap->SetAttribute("Coll", Coll);
+
+				/*int flipX = 0, flipY = 0;
+				if (CurrentGameObj->GetComponent<SpriteComp>()->GetFlipX())
+				{
+					flipX = 1;
+				}
+				if (CurrentGameObj->GetComponent<SpriteComp>()->GetFlipY())
+				{
+					flipY = 1;
+				}
+				Sprite->SetAttribute("FlipX", flipX);
+				Sprite->SetAttribute("FlipY", flipY);
+				components->LinkEndChild(Sprite);*/
 
 				components->LinkEndChild(tileMap);
 				break;
@@ -465,6 +499,9 @@ namespace Engine
 				BoxCol->SetDoubleAttribute("SizeX", CurrentGameObj->GetComponent<ObjectCollisionComp>()->GetColBox().GetSize().x);
 				BoxCol->SetDoubleAttribute("SizeY", CurrentGameObj->GetComponent<ObjectCollisionComp>()->GetColBox().GetSize().y);
 				BoxCol->SetDoubleAttribute("Bounding", CurrentGameObj->GetComponent<ObjectCollisionComp>()->GetBRange());
+				BoxCol->SetAttribute("Solid", CurrentGameObj->GetComponent<ObjectCollisionComp>()->GetColToggle());
+				BoxCol->SetAttribute("Trigger", CurrentGameObj->GetComponent<ObjectCollisionComp>()->GetTrigger());
+
 
 				components->LinkEndChild(BoxCol);
 				break;
@@ -473,6 +510,8 @@ namespace Engine
 			{
 				TiXmlElement* TileCol = new TiXmlElement("tilecol");
 				TileCol->SetDoubleAttribute("Bounding", CurrentGameObj->GetComponent<TilemapCollisionComp>()->GetBRange());
+				TileCol->SetAttribute("Solid", CurrentGameObj->GetComponent<TilemapCollisionComp>()->GetColToggle());
+				TileCol->SetAttribute("Trigger", CurrentGameObj->GetComponent<TilemapCollisionComp>()->GetTrigger());
 
 				components->LinkEndChild(TileCol);
 				break;
@@ -481,45 +520,16 @@ namespace Engine
 			{
 				TiXmlElement* LineCol = new TiXmlElement("linecol");
 				LineCol->SetDoubleAttribute("Point1X", CurrentGameObj->GetComponent<LineCollisionComp>()->GetPoint1().x);
-				LineCol->SetDoubleAttribute("Point1Y", CurrentGameObj->GetComponent<LineCollisionComp>()->GetPoint1().y);				
+				LineCol->SetDoubleAttribute("Point1Y", CurrentGameObj->GetComponent<LineCollisionComp>()->GetPoint1().y);
 				LineCol->SetDoubleAttribute("Point2X", CurrentGameObj->GetComponent<LineCollisionComp>()->GetPoint2().x);
 				LineCol->SetDoubleAttribute("Point2Y", CurrentGameObj->GetComponent<LineCollisionComp>()->GetPoint2().y);
 				LineCol->SetDoubleAttribute("Bounding", CurrentGameObj->GetComponent<LineCollisionComp>()->GetBRange());
+				LineCol->SetAttribute("Solid", CurrentGameObj->GetComponent<LineCollisionComp>()->GetColToggle());
+				LineCol->SetAttribute("Trigger", CurrentGameObj->GetComponent<LineCollisionComp>()->GetTrigger());
 
 				components->LinkEndChild(LineCol);
 				break;
 			}
-			case COMPONENT_PARTICLE:
-			{
-				TiXmlElement* xml = new TiXmlElement("particleSystem");
-				ParticleComp* sys = CurrentGameObj->GetComponent<ParticleComp>();
-				xml->SetAttribute("Emitter", (int)sys->GetEmmitter());
-				xml->SetAttribute("Style", (int)sys->GetParticleTexture());
-				xml->SetAttribute("Count", sys->GetParticleCount());
-				xml->SetDoubleAttribute("Rate", sys->GetRate());
-				xml->SetDoubleAttribute("Lifetime", sys->GetLifetime());
-				xml->SetDoubleAttribute("Gravity", sys->GetGravity());
-				xml->SetDoubleAttribute("VelocityX", sys->GetVelocity().x);
-				xml->SetDoubleAttribute("VelocityY", sys->GetVelocity().y);
-				xml->SetDoubleAttribute("ColorR", sys->GetColour().r);
-				xml->SetDoubleAttribute("ColorG", sys->GetColour().g);
-				xml->SetDoubleAttribute("ColorB", sys->GetColour().b);
-				xml->SetDoubleAttribute("ColorA", sys->GetColour().a);
-
-				if (!sys->GetTexturePath().empty()) {
-					xml->SetAttribute("TexPath", sys->GetTexturePath().c_str());
-				} 
-				else
-					xml->SetAttribute("TexPath", "");
-
-				xml->SetDoubleAttribute("SizeX", sys->GetSize().x);
-				xml->SetDoubleAttribute("SizeY", sys->GetSize().y);
-
-				components->LinkEndChild(xml);
-				break;
-			}
-			
-			
 			default:
 			{
 				break;
@@ -541,17 +551,13 @@ namespace Engine
 
 	void SceneManager::ClearScene()
 	{
-		for (GameObject* go : mSceneObjects)
-			DestroyObject(go);
-
 		mSceneObjects.clear();
-
+	
 		for (int Loop = 1; Loop < CameraManager::Get()->AllCameras().size(); Loop++)
 		{
 			CameraManager::Get()->Delete(Loop);
 		}
 		CameraManager::Get()->SetPrimaryCamera(0);
-
 
 		mUnsavedChanges = true;
 	}
