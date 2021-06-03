@@ -28,6 +28,16 @@
                 <physics Mass="10" Gravity="600" Friction="10" MaxSpeed="300" />
                 <boxcol SizeX="32" SizeY="64" Bounding="300" Solid="1" Trigger="0" />
             </components>
+            <children>
+                <gameobject name="Sword">
+                    <components>
+                        <transform PosX="429.414" PosY="383.992" RotX="0" RotY="0" ScaleX="1.5" ScaleY="2" />
+                        <script path="Assets\Scripts\followPlayer.lua" />
+                        <sprite path="Assets\Textures\SWORD.png" Colour="1.000000 1.000000 1.000000 1.000000" FlipX="0" FlipY="0" />
+                        <boxcol SizeX="32" SizeY="64" Bounding="300" Solid="0" Trigger="1" />
+                    </components>
+                </gameobject>
+            </children>
         </gameobject>
         <gameobject name="LabTrig">
             <components>

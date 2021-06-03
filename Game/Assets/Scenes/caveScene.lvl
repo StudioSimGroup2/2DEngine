@@ -22,23 +22,28 @@
         </gameobject>
         <gameobject name="Player">
             <components>
-                <transform PosX="318.8" PosY="350.412" RotX="0" RotY="0" ScaleX="1" ScaleY="2" />
+                <transform PosX="348.141" PosY="351.905" RotX="0" RotY="0" ScaleX="1" ScaleY="2" />
                 <sprite path="Assets\Textures\PlayerRight.png" Colour="1.000000 1.000000 1.000000 1.000000" FlipX="0" FlipY="0" />
                 <script path="Assets\Scripts\Player.lua" />
-                <physics Mass="10" Gravity="600" Friction="10" MaxSpeed="200" />
+                <physics Mass="10" Gravity="600" Friction="10" MaxSpeed="350" />
                 <boxcol SizeX="32" SizeY="64" Bounding="300" Solid="1" Trigger="0" />
             </components>
+            <children>
+                <gameobject name="Sword">
+                    <components>
+                        <transform PosX="368.141" PosY="351.405" RotX="0" RotY="0" ScaleX="1.5" ScaleY="2" />
+                        <sprite path="Assets\Textures\SWORD.png" Colour="1.000000 1.000000 1.000000 1.000000" FlipX="0" FlipY="0" />
+                        <script path="Assets\Scripts\followPlayer.lua" />
+                        <boxcol SizeX="32" SizeY="64" Bounding="300" Solid="0" Trigger="1" />
+                    </components>
+                </gameobject>
+            </children>
         </gameobject>
-        <gameobject name="LavaPit1">
+        <gameobject name="LavaPit01">
             <components>
                 <transform PosX="636.5" PosY="543.5" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
-                <boxcol SizeX="158" SizeY="61" Bounding="300" Solid="0" Trigger="1" />
-            </components>
-        </gameobject>
-        <gameobject name="LavaPit2">
-            <components>
-                <transform PosX="835.1" PosY="544.5" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
-                <boxcol SizeX="154" SizeY="61" Bounding="300" Solid="0" Trigger="1" />
+                <boxcol SizeX="359" SizeY="61" Bounding="300" Solid="0" Trigger="1" />
+                <script path="Assets\Scripts\hubToCave.lua" />
             </components>
         </gameobject>
         <gameobject name="HubTrigger">
@@ -50,7 +55,7 @@
         </gameobject>
         <gameobject name="Camera">
             <components>
-                <transform PosX="1360.23" PosY="-543.912" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <transform PosX="348.141" PosY="-351.905" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
                 <camera FOV="0" Near="0.1" Far="100" Depth="1" />
                 <script path="Assets\Scripts\Camera.lua" />
             </components>
