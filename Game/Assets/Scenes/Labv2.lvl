@@ -22,16 +22,26 @@
         </gameobject>
         <gameobject name="Player">
             <components>
-                <transform PosX="775.947" PosY="481.254" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
-                <sprite path="Assets\Textures\Mario.png" Colour="1.000000 1.000000 1.000000 1.000000" FlipX="0" FlipY="0" />
-                <physics Mass="10" Gravity="600" Friction="10" MaxSpeed="200" />
-                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="1" Trigger="0" />
+                <transform PosX="66.5" PosY="543.935" RotX="0" RotY="0" ScaleX="1" ScaleY="2" />
+                <sprite path="Assets\Textures\PlayerRight.png" Colour="1.000000 1.000000 1.000000 1.000000" FlipX="1" FlipY="0" />
+                <physics Mass="10" Gravity="600" Friction="10" MaxSpeed="300" />
+                <boxcol SizeX="32" SizeY="64" Bounding="300" Solid="1" Trigger="0" />
                 <script path="Assets\Scripts\Player.lua" />
             </components>
+            <children>
+                <gameobject name="Sword">
+                    <components>
+                        <transform PosX="32.4" PosY="544.2" RotX="0" RotY="0" ScaleX="1.5" ScaleY="2" />
+                        <script path="Assets\Scripts\followPlayer.lua" />
+                        <sprite path="Assets\Textures\SWORD.png" Colour="1.000000 1.000000 1.000000 1.000000" FlipX="0" FlipY="0" />
+                        <boxcol SizeX="32" SizeY="64" Bounding="300" Solid="0" Trigger="1" />
+                    </components>
+                </gameobject>
+            </children>
         </gameobject>
         <gameobject name="Camera">
             <components>
-                <transform PosX="775.947" PosY="-481.254" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <transform PosX="66.5" PosY="-543.935" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
                 <script path="Assets\Scripts\Camera.lua" />
                 <camera FOV="0" Near="0.1" Far="100" Depth="1" />
             </components>
@@ -43,31 +53,10 @@
                 <boxcol SizeX="137" SizeY="46" Bounding="300" Solid="0" Trigger="1" />
             </components>
         </gameobject>
-        <gameobject name="Enemy1">
-            <components>
-                <transform PosX="832.539" PosY="128.03" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
-                <sprite path="Assets\Textures\frog.png" Colour="1.000000 1.000000 1.000000 1.000000" FlipX="0" FlipY="0" />
-                <physics Mass="1" Gravity="9.8" Friction="0.5" MaxSpeed="200" />
-                <script path="Assets\Scripts\EnemyScript1.lua" />
-                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="1" Trigger="0" />
-            </components>
-        </gameobject>
-        <gameobject name="Trigger1">
-            <components>
-                <transform PosX="1204.1" PosY="123.7" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
-                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
-            </components>
-        </gameobject>
-        <gameobject name="Trigger2">
-            <components>
-                <transform PosX="738.6" PosY="125" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
-                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
-            </components>
-        </gameobject>
         <gameobject name="Enemy2">
             <components>
-                <transform PosX="389.7" PosY="290.604" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
-                <sprite path="Assets\Textures\frog.png" Colour="1.000000 1.000000 1.000000 1.000000" FlipX="0" FlipY="0" />
+                <transform PosX="440.306" PosY="287.999" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <sprite path="Assets\Textures\Rat.png" Colour="1.000000 1.000000 1.000000 1.000000" FlipX="0" FlipY="0" />
                 <script path="Assets\Scripts\EnemyScript2.lua" />
                 <physics Mass="1" Gravity="9.8" Friction="0.5" MaxSpeed="200" />
                 <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="1" Trigger="0" />
@@ -83,6 +72,13 @@
             <components>
                 <transform PosX="113.2" PosY="285.5" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
                 <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
+            </components>
+        </gameobject>
+        <gameobject name="Death1">
+            <components>
+                <transform PosX="538.4" PosY="682.2" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <script path="Assets\Scripts\hubToLab.lua" />
+                <boxcol SizeX="5000" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
             </components>
         </gameobject>
     </entities>
