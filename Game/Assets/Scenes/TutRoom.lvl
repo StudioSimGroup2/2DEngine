@@ -22,16 +22,16 @@
         </gameobject>
         <gameobject name="Player">
             <components>
-                <transform PosX="520.96" PosY="479.995" RotX="0" RotY="0" ScaleX="1" ScaleY="2" />
+                <transform PosX="422.519" PosY="479.949" RotX="0" RotY="0" ScaleX="1" ScaleY="2" />
                 <sprite path="Assets\Textures\PlayerRight.png" Colour="1.000000 1.000000 1.000000 1.000000" FlipX="0" FlipY="0" />
                 <script path="Assets\Scripts\Player.lua" />
-                <physics Mass="10" Gravity="600" Friction="10" MaxSpeed="200" />
+                <physics Mass="10" Gravity="600" Friction="10" MaxSpeed="300" />
                 <boxcol SizeX="32" SizeY="64" Bounding="300" Solid="1" Trigger="0" />
             </components>
             <children>
                 <gameobject name="Sword">
                     <components>
-                        <transform PosX="522.557" PosY="479.495" RotX="0" RotY="0" ScaleX="1.5" ScaleY="2" />
+                        <transform PosX="442.519" PosY="479.449" RotX="0" RotY="0" ScaleX="1.5" ScaleY="2" />
                         <sprite path="Assets\Textures\SWORD.png" Colour="1.000000 1.000000 1.000000 1.000000" FlipX="0" FlipY="0" />
                         <boxcol SizeX="32" SizeY="64" Bounding="300" Solid="0" Trigger="1" />
                         <script path="Assets\Scripts\followPlayer.lua" />
@@ -49,20 +49,13 @@
         <gameobject name="LavaPit1">
             <components>
                 <transform PosX="706" PosY="557.2" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
-                <boxcol SizeX="95" SizeY="124" Bounding="300" Solid="0" Trigger="1" />
-                <script path="Assets\Scripts\lavaPitTutRoom.lua" />
-            </components>
-        </gameobject>
-        <gameobject name="LavaPit2">
-            <components>
-                <transform PosX="991.1" PosY="559.9" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
-                <boxcol SizeX="95" SizeY="100" Bounding="300" Solid="0" Trigger="1" />
+                <boxcol SizeX="390" SizeY="124" Bounding="300" Solid="0" Trigger="1" />
                 <script path="Assets\Scripts\lavaPitTutRoom.lua" />
             </components>
         </gameobject>
         <gameobject name="Camera">
             <components>
-                <transform PosX="520.96" PosY="-479.995" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <transform PosX="422.519" PosY="-479.949" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
                 <script path="Assets\Scripts\Camera.lua" />
                 <camera FOV="0" Near="0.1" Far="100" Depth="1" />
             </components>

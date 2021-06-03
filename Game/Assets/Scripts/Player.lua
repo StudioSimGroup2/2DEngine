@@ -10,7 +10,7 @@ local jumCount = 0
 local mass = 10
 local gravity = 600
 local friction = 10
-local maxSpeed = 200
+local maxSpeed = 300
 
 function OnStart()
     -- sprite = self:MakeSprite()
