@@ -308,7 +308,7 @@ bool Collision::CheckLeft(Engine::GameObject* object, Box2D colBox)
 	box2Size = colBox.GetSize();
 
 	//Prevent checking the floor when stood on floor
-	if (box2Pos.y > box1Pos.y)
+	if (box2Pos.y > ((box1Pos.y + box1Size.y) - 1.0f))
 		return false;
 
 	//Check left of object against right of tilebox
@@ -332,7 +332,7 @@ bool Collision::CheckRight(Engine::GameObject* object, Box2D colBox)
 	box2Size = colBox.GetSize();
 
 	//Prevent checking the floor when stood on floor
-	if (box2Pos.y > box1Pos.y && object->GetComponent<Engine::PhysicsComp>()->GetGrounded() == true)
+	if (box2Pos.y > ((box1Pos.y + box1Size.y) - 1.0f))
 		return false;
 
 	//Check right of object against left of tilebox
