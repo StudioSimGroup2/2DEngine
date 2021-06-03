@@ -59,7 +59,11 @@ namespace Engine
 			}
 			for (GameObject* go : mSceneObjects)
 			{
-				
+				if (go == nullptr)
+				{
+					std::cout << std::endl;
+				}
+
 				go->Update();				
 				if (go->GetComponent<Engine::PhysicsComp>() != NULL)
 				{
@@ -114,6 +118,10 @@ namespace Engine
 				}
 			}
 		}
+
+		if (mClearScene)
+			for (auto go : mSceneObjects)
+				DestroyObject(go);
 	}
 
 	void SceneManager::RenderScene()
@@ -171,6 +179,7 @@ namespace Engine
 			// Lots of pointers left here should clean them up when done with them
 		}
 
+		mClearScene = false;
 		mUnsavedChanges = false;
 	}
 
@@ -551,8 +560,11 @@ namespace Engine
 
 	void SceneManager::ClearScene()
 	{
+		for (GameObject* go : mSceneObjects)
+			DestroyObject(go);
+
 		mSceneObjects.clear();
-	
+
 		for (int Loop = 1; Loop < CameraManager::Get()->AllCameras().size(); Loop++)
 		{
 			CameraManager::Get()->Delete(Loop);

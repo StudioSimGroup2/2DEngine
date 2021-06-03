@@ -33,6 +33,9 @@ namespace Engine
 
 	void Script::CallStart(GameObject* parent)
 	{
+		if (mDelete)
+			return;
+		
 		ScriptingEngine::GetInstance()->GetState()["self"] = parent;
 		
 		mStart();
@@ -40,6 +43,7 @@ namespace Engine
 
 	void Script::CallUpdate(GameObject* parent)
 	{
+
 		ScriptingEngine::GetInstance()->GetState()["self"] = parent;
 
 		mUpdate();
@@ -47,8 +51,14 @@ namespace Engine
 
 	void Script::CallRender(GameObject* parent)
 	{
+
 		ScriptingEngine::GetInstance()->GetState()["self"] = parent;
 		
 		mRender();
+	}
+
+	void Script::Delete()
+	{
+		mDelete = true;
 	}
 }
