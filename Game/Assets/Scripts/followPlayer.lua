@@ -7,7 +7,10 @@ function OnStart()
 end
 
 function OnUpdate()
-    pos = self:GetTransform():GetPosition()
+   Pos = vec2f.new(GetObjectByname("Player"):GetTransform():GetPosition())
+   Pos.y = 0 + Pos.y
+   offset = 30
 
-    self:GetTransform():SetPosition(0,0)
+   Pos.x = Pos.x + offset
+   self:GetTransform():SetPosition(Pos)
 end
