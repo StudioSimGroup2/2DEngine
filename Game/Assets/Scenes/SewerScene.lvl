@@ -29,11 +29,11 @@
         </gameobject>
         <gameobject name="Trigger1">
             <components>
-                <transform PosX="1226.7" PosY="158.2" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <transform PosX="1228.5" PosY="158.2" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
                 <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
             </components>
         </gameobject>
-        <gameobject name="Trigger1">
+        <gameobject name="Trigger3">
             <components>
                 <transform PosX="1588.8" PosY="574.7" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
                 <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
@@ -41,66 +41,69 @@
         </gameobject>
         <gameobject name="Trigger2">
             <components>
-                <transform PosX="863" PosY="157.8" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <transform PosX="861.6" PosY="157.4" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
                 <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
             </components>
         </gameobject>
-        <gameobject name="Trigger2">
+        <gameobject name="Trigger4">
             <components>
-                <transform PosX="1211" PosY="574" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <transform PosX="1212.4" PosY="574" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
                 <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
             </components>
         </gameobject>
-        <gameobject name="Trigger1">
+        <gameobject name="Trigger5">
             <components>
                 <transform PosX="2365.4" PosY="574.2" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
                 <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
             </components>
         </gameobject>
-        <gameobject name="Trigger2">
+        <gameobject name="Trigger6">
             <components>
                 <transform PosX="1719.8" PosY="574.2" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
                 <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
             </components>
         </gameobject>
-        <gameobject name="Trigger1">
-            <components>
-                <transform PosX="2918" PosY="158" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
-                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
-            </components>
-        </gameobject>
-        <gameobject name="Trigger2">
-            <components>
-                <transform PosX="2459.1" PosY="158.7" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
-                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
-            </components>
-        </gameobject>
-        <gameobject name="Trigger1">
-            <components>
-                <transform PosX="2906.6" PosY="383.6" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
-                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
-            </components>
-        </gameobject>
-        <gameobject name="Trigger2">
-            <components>
-                <transform PosX="2598.4" PosY="384" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
-                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
-            </components>
-        </gameobject>
         <gameobject name="Player">
             <components>
-                <transform PosX="276.4" PosY="345.3" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <transform PosX="2754.66" PosY="168.23" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
                 <sprite path="Assets\Textures\Mario.png" Colour="1.000000 1.000000 1.000000 1.000000" FlipX="0" FlipY="0" />
                 <script path="Assets\Scripts\Player.lua" />
                 <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="1" Trigger="0" />
-                <physics Mass="1" Gravity="500" Friction="6" MaxSpeed="200" />
+                <physics Mass="10" Gravity="600" Friction="10" MaxSpeed="200" />
             </components>
         </gameobject>
         <gameobject name="Camera">
             <components>
-                <transform PosX="0" PosY="0" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <transform PosX="2754.66" PosY="-168.23" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
                 <camera FOV="0" Near="0.1" Far="100" Depth="1" />
                 <script path="Assets\Scripts\Camera.lua" />
+            </components>
+        </gameobject>
+        <gameobject name="Enemy1">
+            <components>
+                <transform PosX="1000" PosY="153.6" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <sprite path="Assets\Textures\frog.png" Colour="1.000000 1.000000 1.000000 1.000000" FlipX="0" FlipY="0" />
+                <script path="Assets\Scripts\EnemyScript1.lua" />
+                <physics Mass="1" Gravity="9.8" Friction="0.5" MaxSpeed="200" />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="1" Trigger="0" />
+            </components>
+        </gameobject>
+        <gameobject name="Enemy2">
+            <components>
+                <transform PosX="1254.2" PosY="573.3" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <sprite path="Assets\Textures\frog.png" Colour="1.000000 1.000000 1.000000 1.000000" FlipX="0" FlipY="0" />
+                <script path="Assets\Scripts\EnemyScript2.lua" />
+                <physics Mass="1" Gravity="9.8" Friction="0.5" MaxSpeed="200" />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="1" Trigger="0" />
+            </components>
+        </gameobject>
+        <gameobject name="Enemy3">
+            <components>
+                <transform PosX="1819.8" PosY="574.2" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <sprite path="Assets\Textures\frog.png" Colour="1.000000 1.000000 1.000000 1.000000" FlipX="0" FlipY="0" />
+                <script path="Assets\Scripts\EnemyScript3.lua" />
+                <physics Mass="1" Gravity="9.8" Friction="0.5" MaxSpeed="200" />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="1" Trigger="0" />
             </components>
         </gameobject>
     </entities>
