@@ -9,10 +9,10 @@ namespace Engine
 	{
 	public:
 		ParticleComp();
+		ParticleComp(GameObject* parent);
 		~ParticleComp() override;
 
 
-		virtual void Init() override;
 		virtual void Start() override;
 		virtual void InternalUpdate() override;
 		virtual void InternalRender() override;
@@ -30,12 +30,7 @@ namespace Engine
 		const glm::vec4& GetColour() const { return mParticleSystem->GetColour(); }
 		const Emmitter GetEmmitter() const { return mParticleSystem->GetEmmiter(); }
 		const ParticleTexture GetParticleTexture() const { return mParticleSystem->GetParticleTex(); }
-		const char* GetTexturePath() const {  
-			if (mParticleSystem->GetTexture())
-				return mParticleSystem->GetTexture()->GetPath().c_str();
-			else
-				return "\0";
-		}
+
 
 		void SetRate(float rate) { mParticleSystem->SetRate(rate); }
 		void SetGravity(float ammount) { mParticleSystem->SetGravity(ammount); }
@@ -50,10 +45,8 @@ namespace Engine
 
 
 	private:
-		
+		void Init();
 
 		ParticleSystem* mParticleSystem;
-
-		// Inherited via Component
 	};
 }

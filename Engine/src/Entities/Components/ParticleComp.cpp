@@ -5,7 +5,14 @@ namespace Engine {
 
 	ParticleComp::ParticleComp() : Component()
 	{
-		
+		Init();
+	}
+
+	ParticleComp::ParticleComp(GameObject* parent)
+	{
+		//mParent->Attach(parent);
+		mParent = parent;
+		Init();
 	}
 
 	ParticleComp::~ParticleComp()
@@ -17,28 +24,24 @@ namespace Engine {
 
 	void ParticleComp::Init()
 	{
-
-		// TODO: Loading in values is pointless as INIT overrides them...
-		// Saving is a-ok, just loading needs re-working atm
-		// We want to support default values incase youre just making a default particle system to be saved later
-
 		mType = TYPE::COMPONENT_PARTICLE;
+		
 
 		vec2f emmitterPos = mParent->GetComponent<TransformComp>()->GetPosition();
 		vec2f particleScale = mParent->GetComponent<TransformComp>()->GetScale();
 
 		// Default values
 		Particle layout;
-		layout.Lifetime = 3;
+		layout.Lifetime = 30; 
 		layout.Alive = false;
-		layout.Velocity = vec2f(0, -200);
+		layout.Velocity = vec2f(10, 10);
 		layout.Style = ParticleTexture::Circle;
 		layout.Scale = particleScale;
 		layout.TexturePath = "Assets\\Textures\\Mario.png";
 
 		mParticleSystem = new ParticleSystem(emmitterPos, layout, 150);
-		mParticleSystem->SetRate(0.1);
-		mParticleSystem->SetGravity(140.0f);
+		mParticleSystem->SetRate(3);
+		mParticleSystem->SetGravity(0.4f);
 	}
 
 	void ParticleComp::Start()
@@ -69,7 +72,5 @@ namespace Engine {
 	{
 		mParticleSystem->Render();
 	}
-
-
 
 }

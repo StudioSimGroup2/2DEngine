@@ -85,13 +85,13 @@ namespace Engine
 			}
 
 			p->Lifetime -= deltaTime;
-			p->Scale = mParticleProperties.Scale;
 
 			// If a particle is "dead"
 			if (p->Lifetime <= 0.0f) {
 				p->Alive = false;
 				p->Velocity = mParticleProperties.Velocity;
 				p->Lifetime = mParticleProperties.Lifetime;
+				p->Scale = mParticleProperties.Scale;
 				SetupTexture(p);
 
 				switch (mEmmiter) {
@@ -176,6 +176,8 @@ namespace Engine
 		}
 
 		mParticleCount = newSize;
+		Logger::LogMsg("Particle size", mParticles.size());
+		Logger::LogMsg("Particle cap", mParticles.capacity());
 	}
 
 
