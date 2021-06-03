@@ -61,11 +61,19 @@ namespace Engine {
 
 	void ParticleComp::InternalRender()
 	{
+		mParticleSystem->Render();
+
 	}
 
 	void ParticleComp::Update()
 	{
+		vec2f emmitterPos = mParent->GetComponent<TransformComp>()->GetPosition();
+		vec2f particleScale = mParent->GetComponent<TransformComp>()->GetScale();
 
+		mParticleSystem->SetPosition(emmitterPos);
+		mParticleSystem->SetParticleScale(particleScale);
+
+		mParticleSystem->Update();
 	}
 
 	void ParticleComp::Render()
