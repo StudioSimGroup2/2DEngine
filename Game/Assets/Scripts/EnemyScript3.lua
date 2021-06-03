@@ -16,10 +16,7 @@ function OnUpdate()
 	EnemVelocity.x = 80*direction
 	self:GetPhysics():SetVelocity(EnemVelocity)
 
-	if (CheckTrigger(self:GetName(),"Sword"))
-	then
-		health -1
-
+	
     if (CheckTrigger(self:GetName(), "Trigger5"))
 	then
 		direction =-1
