@@ -6,6 +6,8 @@
 #include <Engine/Renderer/Device.h>
 #include <Entities/GameObject.h>
 
+#include "Entities/Components/ParticalSystem.h"
+
 namespace Engine
 {
 	class ENGINE_API Scene
@@ -25,6 +27,8 @@ namespace Engine
 
 	private:
 		std::vector<GameObject*> mSceneObjects;
+
+
 	};
 }
 
