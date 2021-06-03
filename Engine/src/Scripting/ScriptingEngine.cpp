@@ -20,6 +20,9 @@ namespace Engine
 
 		mState.set_function("OnKeyDown", [](uint32_t key) { return InputManager::GetInstance()->GetKeyDown(key); });
 		mState.set_function("OnKeyUp", [](uint32_t key) { return InputManager::GetInstance()->GetKeyUp(key); });
+		mState.set_function("ChangeScene", [](std::string Path) { return SceneManager::GetInstance()->LoadScene(Path); });
+		mState.set_function("CheckTrigger", [](std::string Obj1, std::string Obj2) { return Collision::CheckTrigger(SceneManager::GetInstance()->GetSceneObjectByName(Obj1), SceneManager::GetInstance()->GetSceneObjectByName(Obj2));});
+		mState.set_function("GetObjectByname", [](std::string Name) {return SceneManager::GetInstance()->GetSceneObjectByName(Name); });
 	}
 
 	void ScriptingEngine::Shutdown()
@@ -107,20 +110,31 @@ namespace Engine
 		/*mState.new_usertype<CameraComp>("CameraComp",
 		sol::base_classes, sol::bases<Component>(),
 
-	);*/
-	/*mState.new_usertype<TileMapComp>("TileMapComp",
+		);*/
+
+		/*mState.new_usertype<TileMapComp>("TileMapComp",
 		sol::base_classes, sol::bases<Component>(),
 
-
-	);*/
+		);*/
 
 		mState.new_usertype<PhysicsComp>("PhysicsComp",
 			sol::base_classes, sol::bases<Component>(),
 
 			"AddThrust", &PhysicsComp::AddThrust,
 
-			"GetGrounded", &PhysicsComp::GetGrounded
+			"GetMass", &PhysicsComp::GetMass,
+			"GetGravity", &PhysicsComp::GetGravity,
+			"GetFriction", &PhysicsComp::GetFriction,
+			"GetMaxSpeed", &PhysicsComp::GetMaxSpeed,
+			"GetVelocity", &PhysicsComp::GetVelocity,
+			"GetGrounded", &PhysicsComp::GetGrounded,
 
+			"SetMass", &PhysicsComp::SetMass,
+			"SetGravity", &PhysicsComp::SetGravity,
+			"SetFriction", &PhysicsComp::SetFriction,
+			"SetMaxSpeed", &PhysicsComp::SetMaxSpeed,
+			"SetVelocity", & PhysicsComp::SetVelocity,
+			"SetGrounded", &PhysicsComp::SetGrounded
 		);
 
 		

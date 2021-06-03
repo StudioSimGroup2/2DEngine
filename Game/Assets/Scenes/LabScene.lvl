@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<PROJECT>
+    <entities>
+        <gameobject name="BaseTilemap">
+            <components>
+                <transform PosX="0" PosY="0" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <tilemap path="Assets\TileMaps\Lab\LabBase.xml" />
+            </components>
+        </gameobject>
+        <gameobject name="FrontTileMap">
+            <components>
+                <transform PosX="0" PosY="0" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <tilemap path="Assets\TileMaps\Lab\LabBaseForeground.xml" Coll="0"/>
+            </components>
+        </gameobject>
+        <gameobject name="Colliders">
+            <components>
+                <transform PosX="0" PosY="0" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <tilemap path="Assets\TileMaps\Lab\LabColliders.xml" Coll="1"/>
+                <tilecol Bounding="300" Solid="1" Trigger="0" />
+            </components>
+        </gameobject>
+        <gameobject name="Spawn">
+            <components>
+                <transform PosX="96.3" PosY="667.6" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <boxcol SizeX="126" SizeY="30" Bounding="300" Solid="0" Trigger="1" />
+                <script path="Assets\Scripts\ToHub.lua" />
+            </components>
+        </gameobject>
+        <gameobject name="Death1">
+            <components>
+                <transform PosX="1440.4" PosY="673.3" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <boxcol SizeX="132" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
+                <script path="Assets\Scripts\ToHub.lua" />
+            </components>
+        </gameobject>
+        <gameobject name="Death2">
+            <components>
+                <transform PosX="1697.2" PosY="675.1" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <boxcol SizeX="95" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
+                <script path="Assets\Scripts\ToHub.lua" />
+            </components>
+        </gameobject>
+        <gameobject name="Death3">
+            <components>
+                <transform PosX="1440.2" PosY="675.3" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <boxcol SizeX="130" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
+                <script path="Assets\Scripts\ToHub.lua" />
+            </components>
+        </gameobject>
+        <gameobject name="Trigger1">
+            <components>
+                <transform PosX="483.4" PosY="288.3" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
+            </components>
+        </gameobject>
+        <gameobject name="Trigger2">
+            <components>
+                <transform PosX="102.8" PosY="286.8" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
+            </components>
+        </gameobject>
+        <gameobject name="Trigger3">
+            <components>
+                <transform PosX="1200" PosY="125.3" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
+            </components>
+        </gameobject>
+        <gameobject name="Trigger4">
+            <components>
+                <transform PosX="643.1" PosY="125.6" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
+            </components>
+        </gameobject>
+        <gameobject name="Trigger5">
+            <components>
+                <transform PosX="2590.5" PosY="384.9" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
+            </components>
+        </gameobject>
+        <gameobject name="Trigger6">
+            <components>
+                <transform PosX="2254.9" PosY="384.4" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
+            </components>
+        </gameobject>
+        <gameobject name="camera">
+            <components>
+                <transform PosX="-23.4055" PosY="1600.76" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <camera FOV="0" Near="0.1" Far="100" Depth="1" />
+                <script path="Assets\Scripts\Camera.lua" />
+            </components>
+        </gameobject>
+    </entities>
+</PROJECT>

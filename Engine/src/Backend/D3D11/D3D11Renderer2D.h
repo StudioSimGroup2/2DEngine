@@ -3,6 +3,7 @@
 #include "Engine/Renderer/Renderer2D.h"
 
 #include <DirectXMath.h>
+#include <GLM/matrix.hpp>
 
 #include <Backend/D3D11/D3D11Shader.h>
 #include <Backend/D3D11/D3D11Texture.h>

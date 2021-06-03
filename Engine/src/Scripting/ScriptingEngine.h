@@ -4,6 +4,7 @@
 #pragma warning (disable : 4251)
 
 #include <Engine/Core.h>
+#include "Collision.h"
 
 #include <sol.hpp>
 

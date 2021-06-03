@@ -9,6 +9,9 @@
 class Collision
 {
 private:
+
+	static bool DoCollisionChecks(Engine::GameObject* object1, Engine::GameObject* object2);
+
 	//Check box against box
 	static bool BoxBoxCheck(Engine::GameObject* object1, Engine::GameObject* object2);
 
@@ -21,10 +24,18 @@ private:
 
 	//Check Box against Line
 	static bool LineBoxCheck(Engine::GameObject* lineObj, Engine::GameObject* boxObj);
+	static bool LineBoxCheck(vec2f point1, vec2f point2, Engine::GameObject* boxObj);
 
 	static float FindDistance(Engine::GameObject* object1, Engine::GameObject* object2);
 	static float FindDistance(Box2D box1, Box2D box2);
 public:
+	static bool CheckBox(Box2D box1, Engine::GameObject* go);
 	static bool CheckCollision(Engine::GameObject* object1, Engine::GameObject* object2);
+	static bool CheckTrigger(Engine::GameObject* object1, Engine::GameObject* object2);
+
+	static bool CheckLeft(Engine::GameObject* object, Box2D colBox);
+	static bool CheckRight(Engine::GameObject* object, Box2D colBox);
+	static bool CheckDown(Engine::GameObject* object, Box2D colBox);
+	static bool CheckUp(Engine::GameObject* object, Box2D colBox);
 };
 

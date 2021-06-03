@@ -22,6 +22,9 @@ namespace Engine
 		TileMap GetTileMap() { return mTileMap; };
 		std::vector<Texture*> GetTextures() { return mTexArray; };
 		void ChangeTile(int ID, vec2i Pos);
+		bool GetColl() { return IsACollison; };
+		void SetColl(bool Value) { IsACollison = Value; }
+		//void SetColl(bool IN) { IsACollison = IN; }
 
 		void ChangeTexture();
 
@@ -38,6 +41,7 @@ namespace Engine
 		std::vector<Texture*> mTexArray;
 		std::vector<Renderer2D*> mRenderer;
 		int TextureWidth = 1, TextureHeight = 1;
+		bool IsACollison = false;
 
 		std::string mFilePath;
 

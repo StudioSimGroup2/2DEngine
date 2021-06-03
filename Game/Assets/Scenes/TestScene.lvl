@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<PROJECT>
+    <entities>
+        <gameobject name="Player">
+            <components>
+                <transform PosX="0" PosY="0" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <sprite path="Assets\Textures\Mario.png" Colour="1.000000 1.000000 1.000000 1.000000" FlipX="0" FlipY="0" />
+                <script path="Assets\Scripts\Player.lua" />
+                <physics Mass="1" Gravity="9.8" Friction="0.5" MaxSpeed="200" />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="1" Trigger="0" />
+            </components>
+        </gameobject>
+        <gameobject name="Obj2">
+            <components>
+                <transform PosX="0" PosY="0" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <tilemap path="" Coll="0"/>
+                <tilecol Bounding="300" Solid="1" Trigger="0" />
+            </components>
+        </gameobject>
+        <gameobject name="Camera">
+            <components>
+                <transform PosX="0" PosY="0" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <camera FOV="0" Near="0.1" Far="100" Depth="1" />
+            </components>
+        </gameobject>
+    </entities>
+</PROJECT>

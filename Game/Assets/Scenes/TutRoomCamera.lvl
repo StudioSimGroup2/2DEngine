@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<PROJECT>
+    <entities>
+        <gameobject name="BaseTilemap">
+            <components>
+                <transform PosX="0" PosY="0" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <tilemap path="Assets\TileMaps\TutRoom\tutRoomBase.xml" Coll="0"/>
+            </components>
+        </gameobject>
+        <gameobject name="ForeTilemap">
+            <components>
+                <transform PosX="0" PosY="0" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <tilemap path="Assets\TileMaps\TutRoom\tutRoomForeground.xml" Coll="0"/>
+            </components>
+        </gameobject>
+        <gameobject name="CollisionTilemap">
+            <components>
+                <transform PosX="0" PosY="0" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <tilemap path="Assets\TileMaps\TutRoom\TutCollisionMap.xml" Coll="1"/>
+                <tilecol Bounding="300" Solid="1" Trigger="0" />
+            </components>
+        </gameobject>
+        <gameobject name="Player">
+            <components>
+                <transform PosX="428.704" PosY="481.755" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <sprite path="Assets\Textures\Stone.png" Colour="1.000000 1.000000 1.000000 1.000000" FlipX="0" FlipY="0" />
+                <script path="Assets\Scripts\Player.lua" />
+                <physics Mass="1" Gravity="500" Friction="6" MaxSpeed="200" />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="1" Trigger="0" />
+            </components>
+        </gameobject>
+        <gameobject name="HubTrigger">
+            <components>
+                <transform PosX="2000" PosY="510" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <boxcol SizeX="70" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
+            </components>
+        </gameobject>
+        <gameobject name="LavaPit1">
+            <components>
+                <transform PosX="706" PosY="557.2" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <boxcol SizeX="95" SizeY="124" Bounding="300" Solid="0" Trigger="1" />
+                <script path="Assets\Scripts\lavaPitTutRoom.lua" />
+            </components>
+        </gameobject>
+        <gameobject name="LavaPit2">
+            <components>
+                <transform PosX="991.1" PosY="559.9" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <boxcol SizeX="95" SizeY="100" Bounding="300" Solid="0" Trigger="1" />
+                <script path="Assets\Scripts\lavaPitTutRoom.lua" />
+            </components>
+        </gameobject>
+        <gameobject name="camera">
+            <components>
+                <transform PosX="713.5" PosY="-414.7" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <camera FOV="0" Near="0.1" Far="100" Depth="1" />
+                <script path="Assets\Scripts\Camera.lua" />
+            </components>
+        </gameobject>
+    </entities>
+</PROJECT>
