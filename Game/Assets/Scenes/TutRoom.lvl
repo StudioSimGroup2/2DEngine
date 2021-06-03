@@ -22,19 +22,19 @@
         </gameobject>
         <gameobject name="Player">
             <components>
-                <transform PosX="348.124" PosY="484.942" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <transform PosX="300" PosY="465.274" RotX="0" RotY="0" ScaleX="1" ScaleY="2" />
                 <sprite path="Assets\Textures\PlayerRight.png" Colour="1.000000 1.000000 1.000000 1.000000" FlipX="0" FlipY="0" />
                 <script path="Assets\Scripts\Player.lua" />
                 <physics Mass="10" Gravity="600" Friction="10" MaxSpeed="200" />
                 <boxcol SizeX="32" SizeY="64" Bounding="300" Solid="1" Trigger="0" />
             </components>
             <children>
-                <gameobject name="Unnamed Object 9">
+                <gameobject name="Sword">
                     <components>
-                        <transform PosX="378.124" PosY="484.942" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                        <transform PosX="339.749" PosY="485.674" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
                         <sprite path="Assets\Textures\Stone.png" Colour="1.000000 1.000000 1.000000 1.000000" FlipX="0" FlipY="0" />
                         <script path="Assets\Scripts\followPlayer.lua" />
-                        <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
+                        <boxcol SizeX="32" SizeY="64" Bounding="300" Solid="0" Trigger="1" />
                     </components>
                 </gameobject>
             </children>
@@ -62,7 +62,7 @@
         </gameobject>
         <gameobject name="Camera">
             <components>
-                <transform PosX="348.124" PosY="-484.942" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <transform PosX="309.749" PosY="-486.174" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
                 <script path="Assets\Scripts\Camera.lua" />
                 <camera FOV="0" Near="0.1" Far="100" Depth="1" />
             </components>

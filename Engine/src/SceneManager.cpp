@@ -397,7 +397,7 @@ namespace Engine
 				Transform->SetDoubleAttribute("RotY", CurrentGameObj->GetComponent<TransformComp>()->GetRotation().y);
 
 				Transform->SetDoubleAttribute("ScaleX", CurrentGameObj->GetComponent<TransformComp>()->GetScale().x);
-				Transform->SetDoubleAttribute("ScaleY", CurrentGameObj->GetComponent<TransformComp>()->GetScale().x);
+				Transform->SetDoubleAttribute("ScaleY", CurrentGameObj->GetComponent<TransformComp>()->GetScale().y);
 
 				components->LinkEndChild(Transform);
 				break;

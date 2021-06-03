@@ -18,6 +18,7 @@ function OnStart()
 	self:GetPhysics():SetGravity(gravity)
 	self:GetPhysics():SetMass(mass)
 	self:GetPhysics():SetMaxSpeed(maxSpeed)
+
 end
 
 function OnUpdate()
@@ -28,14 +29,16 @@ function OnUpdate()
 		Veloicty = vec2f.new(self:GetPhysics():GetVelocity())
 		Veloicty.x = -200
 		self:GetPhysics():SetVelocity(Veloicty)
+		self:GetSprite():SetFlipX(true);
     elseif (OnKeyDown(68) == true) -- D
     then
 		Veloicty = vec2f.new(self:GetPhysics():GetVelocity())
 		Veloicty.x = 200
 		self:GetPhysics():SetVelocity(Veloicty)
+		self:GetSprite():SetFlipX(false);
     end
 
-	    if (OnKeyUp(65) == true) -- A
+    if (OnKeyUp(65) == true) -- A
     then
 		Veloicty = vec2f.new(self:GetPhysics():GetVelocity())
 		Veloicty.x = -50
@@ -81,5 +84,14 @@ function OnUpdate()
 		self:GetPhysics():SetGravity(600)
 	end
 	
+
+	if (OnKeyDown(01) == true)
+	then
+        GetObjectByname("Sword"):Enable()
+	end
+		if (OnKeyUp(01) == true)
+	then
+        GetObjectByname("Sword"):Disable()
+	end
 	
 end

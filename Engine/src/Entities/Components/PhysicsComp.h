@@ -36,7 +36,6 @@ namespace Engine
 		void SetMaxSpeed(float newMaxSpeed) { mMaxSpeed = newMaxSpeed; }
 		void SetVelocity(vec2f NewVel) { mCurrentVelocity = NewVel; }
 		void SetGrounded(bool newGrounded) { mGrounded = newGrounded; }
-		void SetVelocity(vec2f newVelo) { mCurrentVelocity = newVelo; }
 
 		// Inherited via Component
 		virtual void Update() override;
