@@ -30,7 +30,7 @@ namespace Engine
 		const glm::vec4& GetColour() const { return mParticleSystem->GetColour(); }
 		const Emmitter GetEmmitter() const { return mParticleSystem->GetEmmiter(); }
 		const ParticleTexture GetParticleTexture() const { return mParticleSystem->GetParticleTex(); }
-		const char* GetTexturePath() const { return mParticleSystem->GetParticleTexPath(); }
+		const std::string& GetTexturePath() const { return mParticleSystem->GetParticleTexPath(); }
 
 		void SetRate(float rate) { mParticleSystem->SetRate(rate); }
 		void SetGravity(float ammount) { mParticleSystem->SetGravity(ammount); }
@@ -39,7 +39,7 @@ namespace Engine
 		void SetColour(glm::vec4 colour) { mParticleSystem->SetColour(colour); }
 		void SetEmmitter(Emmitter style) { mParticleSystem->SetEmmitter(style); }
 		void SetParticleTex(ParticleTexture style) { mParticleSystem->SetParticleTex(style); }
-		void SetParticleTexPath(const char* path) { mParticleSystem->SetParticleTexPath(path); }
+		void SetParticleTexPath(const std::string path) { mParticleSystem->SetParticleTexPath(path); }
 		void SetParticleCount(int newSize) { mParticleSystem->SetParticleCount(newSize); }
 		
 

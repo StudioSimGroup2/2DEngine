@@ -311,7 +311,8 @@ namespace Engine
 			vel.y = atof(CurrentComp->Attribute("VelocityY"));
 			comp->SetVelocity(vel);
 			comp->SetColour(glm::vec4{ atof(CurrentComp->Attribute("ColorR")), atof(CurrentComp->Attribute("ColorG")),  atof(CurrentComp->Attribute("ColorB")), atof(CurrentComp->Attribute("ColorA")) });
-			//comp->SetParticleTexPath(CurrentComp->Attribute("TexPath"));
+			const char* t = CurrentComp->Attribute("TexPath");
+			comp->SetParticleTexPath(t);
 
 			}
 		}
@@ -496,10 +497,11 @@ namespace Engine
 				xml->SetDoubleAttribute("ColorB", sys->GetColour().b);
 				xml->SetDoubleAttribute("ColorA", sys->GetColour().a);
 
-				//if (sys->GetTexture() != nullptr)
-				//	xml->SetAttribute("TexPath", sys->GetTexturePath());
-				//else
-				//	xml->SetAttribute("TexPath", "");
+				if (!sys->GetTexturePath().empty()) {
+					xml->SetAttribute("TexPath", sys->GetTexturePath().c_str());
+				} 
+				else
+					xml->SetAttribute("TexPath", "");
 
 
 

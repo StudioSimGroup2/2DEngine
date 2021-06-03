@@ -37,7 +37,7 @@ namespace Engine
 		vec2f Scale;
 		vec2f Velocity;
 		float Lifetime;		/* Measured in Seconds */
-		const char* TexturePath;
+		std::string TexturePath;
 		bool Alive;
 		ParticleTexture Style;
 		Texture* Texture;
@@ -71,7 +71,7 @@ namespace Engine
 		void SetColour(glm::vec4 colour) { mColour = colour; mRenderer->SetColour(mColour.r, mColour.g, mColour.b, mColour.a); }
 		void SetEmmitter(Emmitter style) { mEmmiter = style; }
 		void SetParticleTex(ParticleTexture style) { mParticleProperties.Style = style; }
-		void SetParticleTexPath(const char* path) { mParticleProperties.TexturePath = path; }
+		void SetParticleTexPath(const std::string& path) { mParticleProperties.TexturePath = path; }
 		void SetParticleCount(int newSize);
 
 
@@ -87,7 +87,7 @@ namespace Engine
 		Emmitter& GetEmmiter() { return mEmmiter; }
 		ParticleTexture GetParticleTex() { return mParticleProperties.Style; }
 		const glm::vec4& GetColour() const { return mColour; }
-		const char* GetParticleTexPath() const { return mParticleProperties.TexturePath; }
+		const std::string& GetParticleTexPath() const { return mParticleProperties.TexturePath; }
 		void ShowEmmiterIcon(bool flag) { mShowEmmiterIcon = flag; }
 
 	private:

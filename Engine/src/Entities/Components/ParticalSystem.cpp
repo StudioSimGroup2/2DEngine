@@ -87,6 +87,7 @@ namespace Engine
 
 			p->Lifetime -= deltaTime;
 				SetupTexture(p);
+				p->TexturePath = mParticleProperties.TexturePath;
 				p->Velocity = mParticleProperties.Velocity;
 				p->Scale = mParticleProperties.Scale;
 
