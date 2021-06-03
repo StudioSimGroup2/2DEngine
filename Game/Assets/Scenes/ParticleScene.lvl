@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<PROJECT>
+    <entities>
+        <gameobject name="TileMap">
+            <components>
+                <transform PosX="0" PosY="0" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <tilemap path="Assets/TileMaps/Tanvit.xml" />
+                <tilecol Bounding="300" />
+            </components>
+        </gameobject>
+        <gameobject name="Player">
+            <components>
+                <transform PosX="0" PosY="0" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <sprite path="Assets\Textures\Mario.png" Colour="1.000000 1.000000 1.000000 1.000000" FlipX="0" FlipY="0" />
+                <physics Mass="1" Gravity="9.8" Friction="0.5" MaxSpeed="200" />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" />
+                <script path="Assets\Scripts\Player.lua" />
+            </components>
+        </gameobject>
+        <gameobject name="Third GameObject">
+            <components>
+                <transform PosX="78" PosY="9" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <linecol Point1X="0" Point1Y="300" Point2X="300" Point2Y="300" Bounding="300" />
+            </components>
+        </gameobject>
+        <gameobject name="Camera">
+            <components>
+                <transform PosX="0" PosY="0" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <camera FOV="0" Near="0.1" Far="100" Depth="1" />
+            </components>
+        </gameobject>
+        <gameobject name="Unnamed Object 5">
+            <components>
+                <transform PosX="246.5" PosY="121.1" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <particleSystem Emitter="1" Style="0" Count="2" Rate="0.1" Lifetime="0.7" Gravity="4000" VelocityX="249.3" VelocityY="-200" ColorR="1" ColorG="1" ColorB="1" ColorA="1" TexPath="Assets/Textures/Mario.png" SizeX="200" SizeY="300" />
+            </components>
+        </gameobject>
+    </entities>
+</PROJECT>
