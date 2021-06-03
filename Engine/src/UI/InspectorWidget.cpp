@@ -190,7 +190,7 @@ namespace Engine
 							break;
 
 						case COMPONENT_PARTICLE:
-							SceneHierarchyWidget::GetNode()->AddComponent<ParticleComp>(new ParticleComp);
+							SceneHierarchyWidget::GetNode()->AddComponent<ParticleComp>(new ParticleComp(SceneHierarchyWidget::GetNode()));
 							break;
 
 						default:

@@ -87,6 +87,7 @@ namespace Engine
 		Emmitter& GetEmmiter() { return mEmmiter; }
 		ParticleTexture GetParticleTex() { return mParticleProperties.Style; }
 		const glm::vec4& GetColour() const { return mColour; }
+		const char* GetParticleTexPath() const { return mParticleProperties.TexturePath; }
 		void ShowEmmiterIcon(bool flag) { mShowEmmiterIcon = flag; }
 
 	private:

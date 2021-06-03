@@ -79,20 +79,21 @@ namespace Engine
 			if (!p->Alive) {
 				if (mCurrentRate >= mRate) {
 					p->Alive = true;
+					p->Lifetime = mParticleProperties.Lifetime;
 					mCurrentRate = 0;
 				}
 				continue;
 			}
 
 			p->Lifetime -= deltaTime;
+				SetupTexture(p);
+				p->Velocity = mParticleProperties.Velocity;
+				p->Scale = mParticleProperties.Scale;
 
 			// If a particle is "dead"
 			if (p->Lifetime <= 0.0f) {
 				p->Alive = false;
-				p->Velocity = mParticleProperties.Velocity;
 				p->Lifetime = mParticleProperties.Lifetime;
-				p->Scale = mParticleProperties.Scale;
-				SetupTexture(p);
 
 				switch (mEmmiter) {
 				case Emmitter::Square:
@@ -176,8 +177,6 @@ namespace Engine
 		}
 
 		mParticleCount = newSize;
-		Logger::LogMsg("Particle size", mParticles.size());
-		Logger::LogMsg("Particle cap", mParticles.capacity());
 	}
 
 
