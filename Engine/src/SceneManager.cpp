@@ -87,17 +87,20 @@ namespace Engine
 										if (Collision::CheckDown(go, box))
 										{
 											go->GetComponent<Engine::PhysicsComp>()->SetGrounded(true);
+											go->GetComponent<Engine::TransformComp>()->SetPosition(vec2f(go->GetComponent<Engine::TransformComp>()->GetPosition().x, go->GetComponent<Engine::PhysicsComp>()->GetPrevPos().y));
 										}
 
 										if (Collision::CheckRight(go, box))
 										{
-											go->GetComponent<Engine::PhysicsComp>()->SetVelocity(vec2f(-10.0f, go->GetComponent<Engine::PhysicsComp>()->GetVelocity().y));
+											go->GetComponent<Engine::TransformComp>()->SetPosition(vec2f(go->GetComponent<Engine::PhysicsComp>()->GetPrevPos().x, go->GetComponent<Engine::TransformComp>()->GetPosition().y));
+											go->GetComponent<Engine::PhysicsComp>()->SetVelocity(vec2f(-50.0f, go->GetComponent<Engine::PhysicsComp>()->GetVelocity().y));
 											Logger::LogMsg("Hit right");
 										}
 
 										if (Collision::CheckLeft(go, box))
 										{
-											go->GetComponent<Engine::PhysicsComp>()->SetVelocity(vec2f(10.0f, go->GetComponent<Engine::PhysicsComp>()->GetVelocity().y));
+											go->GetComponent<Engine::TransformComp>()->SetPosition(vec2f(go->GetComponent<Engine::PhysicsComp>()->GetPrevPos().x, go->GetComponent<Engine::TransformComp>()->GetPosition().y));
+											go->GetComponent<Engine::PhysicsComp>()->SetVelocity(vec2f(50.0f, go->GetComponent<Engine::PhysicsComp>()->GetVelocity().y));
 											Logger::LogMsg("Hit left");
 										}
 
