@@ -2,6 +2,7 @@ local health = 10
 local speed = 2.0
 local gravity = -8.0
 local spritePos = 0
+local direction = 1
 
 
 function OnStart()
@@ -12,14 +13,16 @@ end
 
 function OnUpdate()
     pos = self:GetTransform():GetPosition()
+	EnemVelocity.x = 80*direction
+	self:GetPhysics():SetVelocity(EnemVelocity)
 
-    if (CheckTrigger(self:GetName(), "Trigger1"))
+
+
+    if (CheckTrigger(self:GetName(), "Trigger3"))
 	then
-		EnemVelocity.x = -200
-		self:GetPhysics():SetVelocity(EnemVelocity)
-	elseif (CheckTrigger(self:GetName(), "Trigger2"))
+		direction =-1
+	elseif (CheckTrigger(self:GetName(), "Trigger4"))
 	then
-		EnemVelocity.x = 200
-		self:GetPhysics():SetVelocity(EnemVelocity)
+		direction = 1
     end
 end
