@@ -314,6 +314,11 @@ namespace Engine
 			const char* t = CurrentComp->Attribute("TexPath");
 			comp->SetParticleTexPath(t);
 
+			vec2f size;
+			size.x = atof(CurrentComp->Attribute("SizeX"));
+			size.y = atof(CurrentComp->Attribute("SizeY"));
+			comp->SetSize(size);
+
 			}
 		}
 		TiXmlElement* Children = CurrentObject->FirstChildElement("children");
@@ -503,7 +508,8 @@ namespace Engine
 				else
 					xml->SetAttribute("TexPath", "");
 
-
+				xml->SetDoubleAttribute("SizeX", sys->GetSize().x);
+				xml->SetDoubleAttribute("SizeY", sys->GetSize().y);
 
 				components->LinkEndChild(xml);
 				break;

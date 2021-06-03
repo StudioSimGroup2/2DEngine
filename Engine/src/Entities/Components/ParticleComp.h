@@ -31,6 +31,7 @@ namespace Engine
 		const Emmitter GetEmmitter() const { return mParticleSystem->GetEmmiter(); }
 		const ParticleTexture GetParticleTexture() const { return mParticleSystem->GetParticleTex(); }
 		const std::string& GetTexturePath() const { return mParticleSystem->GetParticleTexPath(); }
+		vec2f GetSize() { return mParticleSystem->GetSize(); }
 
 		void SetRate(float rate) { mParticleSystem->SetRate(rate); }
 		void SetGravity(float ammount) { mParticleSystem->SetGravity(ammount); }
@@ -41,7 +42,7 @@ namespace Engine
 		void SetParticleTex(ParticleTexture style) { mParticleSystem->SetParticleTex(style); }
 		void SetParticleTexPath(const std::string path) { mParticleSystem->SetParticleTexPath(path); }
 		void SetParticleCount(int newSize) { mParticleSystem->SetParticleCount(newSize); }
-		
+		void SetSize(vec2f size) { mParticleSystem->SetSize(size); }
 
 
 	private:

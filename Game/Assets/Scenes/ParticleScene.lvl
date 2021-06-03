@@ -32,7 +32,7 @@
         <gameobject name="Unnamed Object 5">
             <components>
                 <transform PosX="246.5" PosY="121.1" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
-                <particleSystem Emitter="1" Style="0" Count="2" Rate="0.1" Lifetime="0.7" Gravity="4000" VelocityX="249.3" VelocityY="-200" ColorR="1" ColorG="1" ColorB="1" ColorA="1" TexPath="Assets/Textures/Mario.png" />
+                <particleSystem Emitter="1" Style="0" Count="2" Rate="0.1" Lifetime="0.7" Gravity="4000" VelocityX="249.3" VelocityY="-200" ColorR="1" ColorG="1" ColorB="1" ColorA="1" TexPath="Assets/Textures/Mario.png" SizeX="200" SizeY="300" />
             </components>
         </gameobject>
     </entities>

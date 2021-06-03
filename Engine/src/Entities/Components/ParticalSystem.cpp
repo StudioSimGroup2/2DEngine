@@ -81,15 +81,16 @@ namespace Engine
 					p->Alive = true;
 					p->Lifetime = mParticleProperties.Lifetime;
 					mCurrentRate = 0;
+					SetupTexture(p);
+					p->TexturePath = mParticleProperties.TexturePath;
+					p->Velocity = mParticleProperties.Velocity;
+					p->Scale = mParticleProperties.Scale;
+					
 				}
 				continue;
 			}
 
 			p->Lifetime -= deltaTime;
-				SetupTexture(p);
-				p->TexturePath = mParticleProperties.TexturePath;
-				p->Velocity = mParticleProperties.Velocity;
-				p->Scale = mParticleProperties.Scale;
 
 			// If a particle is "dead"
 			if (p->Lifetime <= 0.0f) {
@@ -159,14 +160,18 @@ namespace Engine
 						p->Position = vec2f(rand() % (int)mSize.x + mPosition.x, rand() % (int)mSize.y + mPosition.y);
 
 						SetupTexture(p);
-
 						mParticles.push_back(p);
+						break;
+					}
+					case Emmitter::Circle: {
+						Particle* p = new Particle(mParticleProperties);
+						float rad = mSize.x * sqrtf(rand() % 11 * 0.1f);	// Returns a value between 0 - 1
+						float theta = (rand() % 11 * 0.1f) * 2 * 3.14159265359;
+						p->Position.x = mPosition.x + rad * cos(theta);
+						p->Position.y = mPosition.y + rad * sin(theta);
 
-						// Setup the Emmiter icon
-						//Texture* icon = AssetManager::GetInstance()->LoadTexture("SquareIcon", "Assets\\Textures\\Particle System Inbuilt\\SquareEmmiterIcon.dds");
-						//D3D11Renderer2D* re = new D3D11Renderer2D(static_cast<D3D11Shader*>(AssetManager::GetInstance()->GetShaderByName("Default")), mDevice);
-						//mEmmiterIcon = new Sprite("Partical system:", &mPosition, icon);
-						//mEmmiterIcon->AddRendererComponent();
+						SetupTexture(p);
+						mParticles.push_back(p);
 						break;
 					}
 				}
@@ -177,7 +182,7 @@ namespace Engine
 			mParticles.erase(mParticles.begin(), mParticles.begin() + diff);
 		}
 
-		mParticleCount = newSize;
+		mParticleCount = mParticles.size();
 	}
 
 

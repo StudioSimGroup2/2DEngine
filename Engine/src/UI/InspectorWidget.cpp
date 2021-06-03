@@ -659,6 +659,7 @@ c->SetDepth(depth);
 		float gravity = c->GetGravity();
 		float lifetime = c->GetLifetime();
 		vec2f velocity = c->GetVelocity();
+		vec2f size = c->GetSize();
 		glm::vec4 colour = c->GetColour();
 
 
@@ -766,6 +767,14 @@ c->SetDepth(depth);
 		ImGui::Columns(1);
 		ImGui::PopID();
 
+		ImGui::PushID("emmitter size");
+		ImGui::Columns(2);
+		ImGui::Text("Size");
+		ImGui::NextColumn();
+		ImGui::DragFloat2("##Size", &size.x, 0.1f);
+		ImGui::Columns(1);
+		ImGui::PopID();
+
 
 		ImGui::PushID("Emmitter style");
 		const char* items[] = { "Square", "Circle"};
@@ -804,6 +813,7 @@ c->SetDepth(depth);
 		c->SetGravity(gravity);
 		c->SetLifetime(lifetime);
 		c->SetVelocity(velocity);
+		c->SetSize(size);
 		c->SetColour(colour);
 	}
 
