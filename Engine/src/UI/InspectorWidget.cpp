@@ -329,7 +329,7 @@ namespace Engine
 		ImGui::Columns(2);
 		ImGui::Text("Mass");
 		ImGui::NextColumn();
-		ImGui::DragFloat("##mass", &physMass, 0.1f);
+		ImGui::DragFloat("##mass", &physMass, 0.01f, 0.01f, 100.0f);
 		ImGui::Columns(1);
 
 		ImGui::PopID();

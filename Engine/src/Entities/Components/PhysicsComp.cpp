@@ -112,9 +112,9 @@ void Engine::PhysicsComp::Update(float dT)
 	UpdateForces(dT, acceleration);
 
 	//Calculate new position using formula s = ut + 1/2at^2
-	vec2f position = mParent->GetComponent<TransformComp>()->GetPosition();
+	mPrevPosition = mParent->GetComponent<TransformComp>()->GetPosition();
 
-	position += (mCurrentVelocity * dT) /*+ (acceleration * 0.5f * (dT * dT))*/;
+	vec2f newPos = mPrevPosition + (mCurrentVelocity * dT) + (acceleration * 0.5f * (dT * dT));
 	
-	mParent->GetComponent<TransformComp>()->SetPosition(position);
+	mParent->GetComponent<TransformComp>()->SetPosition(newPos);
 }
