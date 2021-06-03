@@ -581,6 +581,19 @@ namespace Engine
 		}
 	}
 
+	GameObject* SceneManager::GetSceneObjectByName(std::string Name)
+	{
+		for (GameObject* GO : GetSceneObjects())
+		{
+			if (GO->GetName() == Name)
+			{
+				return GO;
+			}
+		}
+
+		return nullptr;
+	}
+
 	void SceneManager::Shutdown()
 	{
 		if (mInstance == nullptr)
