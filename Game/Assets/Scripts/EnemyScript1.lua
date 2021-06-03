@@ -1,4 +1,4 @@
-local health = 10
+local health = 3
 local speed = 2.0
 local gravity = -8.0
 local spritePos = 0
@@ -16,7 +16,9 @@ function OnUpdate()
 	EnemVelocity.x = 80*direction
 	self:GetPhysics():SetVelocity(EnemVelocity)
 
-
+	if (CheckTrigger(self:GetName(),"Sword"))
+	then
+		health -1
 
     if (CheckTrigger(self:GetName(), "Trigger1"))
 	then
