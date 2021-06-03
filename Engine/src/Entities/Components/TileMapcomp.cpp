@@ -101,6 +101,11 @@ namespace Engine
 			{
 				if (secondPass < mTexArray.size())
 				{
+					if (secondPass == 0)
+					{
+						ForY++;
+						continue;
+					}
 #if GRAPHICS_LIBRARY == 0
 					dynamic_cast<D3D11Renderer2D*>(mRenderer[0])->Draw(vec2f(ForY * TILEHEIGHT, ForX * TILEWIDTH) + mParent->GetComponent<TransformComp>()->GetPosition(), vec2f(0.0f), vec2f(1.0f), mTexArray[secondPass]);
 #elif GRAPHICS_LIBRARY == 1
@@ -115,7 +120,6 @@ namespace Engine
 					dynamic_cast<OGLRenderer2D*>(mRenderer[0])->Draw(vec2f(ForY * TILEHEIGHT, ForX * TILEWIDTH) + mParent->GetComponent<TransformComp>()->GetPosition(), vec2f(0.0f), vec2f(1.0f), mTexArray[0]);
 #endif
 				}
-
 				ForY++;
 			}
 			ForY = 0;
@@ -323,6 +327,11 @@ namespace Engine
 			{
 				if (secondPass < mTexArray.size())
 				{
+					if (secondPass == 0)
+					{
+						ForY++;
+						continue;
+					}
 #if GRAPHICS_LIBRARY == 0
 					dynamic_cast<D3D11Renderer2D*>(mRenderer[0])->Draw(vec2f(ForY * TILEHEIGHT, ForX * TILEWIDTH) + mParent->GetComponent<TransformComp>()->GetPosition(), vec2f(0.0f), vec2f(1.0f), mTexArray[secondPass]);
 #elif GRAPHICS_LIBRARY == 1
