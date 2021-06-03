@@ -24,6 +24,10 @@ namespace Engine
 		}
 
 		mSceneObjects.shrink_to_fit();
+
+		//for (ParticleSystem* ps : mParticleSystems)
+		//	delete ps;
+		//mParticleSystems.clear();
 	}
 
 	void Scene::Init()
@@ -44,6 +48,9 @@ namespace Engine
 		{
 			go->Update();
 		}
+
+		//for (ParticleSystem* ps : mParticleSystems)
+		//	ps->Update(0.16f); // No dt?
 	}
 
 	void Scene::FixedUpdate()
@@ -68,6 +75,9 @@ namespace Engine
 		{
 			go->Render();
 		}
+
+		//for (ParticleSystem* ps : mParticleSystems)
+		//	ps->Render();
 	}
 
 }

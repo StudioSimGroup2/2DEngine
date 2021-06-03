@@ -1,6 +1,6 @@
 function OnUpdate()
 	if (CheckTrigger(self:GetName(), "Player"))
 	then
-	ChangeScene("Assets/Scenes/SewerScene.lvl")
+	ChangeScene("Assets/Scenes/SewerV2.lvl")
 	end	
 end

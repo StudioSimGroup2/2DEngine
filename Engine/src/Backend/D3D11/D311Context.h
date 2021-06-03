@@ -10,7 +10,7 @@
 #include "Engine/Renderer/Context.h"
 
 //Can be removed added for testing
-#include "ParticalSystem.h"
+//#include "ParticalSystem.h"
 //----------------------------------
 
 using namespace DirectX;

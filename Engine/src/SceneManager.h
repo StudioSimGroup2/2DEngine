@@ -32,6 +32,8 @@ namespace Engine
 
 		bool GetRunTime() { return mEditorMode; }
 
+		bool GetClearSceneCall() { return mClearScene; }
+
 		GameObject* CreateObject();
 
 		void DestroyObject(GameObject* go);
@@ -58,6 +60,8 @@ namespace Engine
 		bool mUnsavedChanges = false;
 
 		bool mEditorMode = true;
+
+		bool mClearScene = false;
 		FrameBuffer mRenderToTex;
 
 		static int mCounter;

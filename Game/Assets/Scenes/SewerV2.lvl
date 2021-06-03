@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<PROJECT>
+    <entities>
+        <gameobject name="TileBase">
+            <components>
+                <transform PosX="0" PosY="0" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <tilemap path="Assets\TileMaps\Sewer\SewerLevelBase.xml" Coll="0" />
+            </components>
+        </gameobject>
+        <gameobject name="TileFore">
+            <components>
+                <transform PosX="0" PosY="0" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <tilemap path="Assets\TileMaps\Sewer\SewerLevelForeground.xml" Coll="0" />
+            </components>
+        </gameobject>
+        <gameobject name="TileCol">
+            <components>
+                <transform PosX="0" PosY="0" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <tilemap path="Assets\TileMaps\Sewer\SewerColliders.xml" Coll="1" />
+                <tilecol Bounding="300" Solid="1" Trigger="0" />
+            </components>
+        </gameobject>
+        <gameobject name="Player">
+            <components>
+                <transform PosX="1347.73" PosY="230.122" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <sprite path="Assets\Textures\PlayerRight.png" Colour="1.000000 1.000000 1.000000 1.000000" FlipX="1" FlipY="0" />
+                <physics Mass="10" Gravity="600" Friction="10" MaxSpeed="200" />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="1" Trigger="0" />
+                <script path="Assets\Scripts\Player.lua" />
+            </components>
+        </gameobject>
+        <gameobject name="Camera">
+            <components>
+                <transform PosX="1347.73" PosY="-230.122" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <script path="Assets\Scripts\Camera.lua" />
+                <camera FOV="0" Near="0.1" Far="100" Depth="1" />
+            </components>
+        </gameobject>
+        <gameobject name="HubTrigger">
+            <components>
+                <transform PosX="91.6" PosY="650" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <script path="Assets\Scripts\ToHub.lua" />
+                <boxcol SizeX="137" SizeY="46" Bounding="300" Solid="0" Trigger="1" />
+            </components>
+        </gameobject>
+        <gameobject name="Enemy1">
+            <components>
+                <transform PosX="945.644" PosY="159.999" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <sprite path="Assets\Textures\frog.png" Colour="1.000000 1.000000 1.000000 1.000000" FlipX="0" FlipY="0" />
+                <physics Mass="1" Gravity="9.8" Friction="0.5" MaxSpeed="200" />
+                <script path="Assets\Scripts\EnemyScript1.lua" />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="1" Trigger="0" />
+            </components>
+        </gameobject>
+        <gameobject name="Trigger1">
+            <components>
+                <transform PosX="1206.1" PosY="157.3" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
+            </components>
+        </gameobject>
+        <gameobject name="Trigger2">
+            <components>
+                <transform PosX="860.8" PosY="156.8" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
+            </components>
+        </gameobject>
+        <gameobject name="Enemy2">
+            <components>
+                <transform PosX="1442.83" PosY="575.998" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <sprite path="Assets\Textures\frog.png" Colour="1.000000 1.000000 1.000000 1.000000" FlipX="0" FlipY="0" />
+                <script path="Assets\Scripts\EnemyScript2.lua" />
+                <physics Mass="1" Gravity="9.8" Friction="0.5" MaxSpeed="200" />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="1" Trigger="0" />
+            </components>
+        </gameobject>
+        <gameobject name="Trigger3">
+            <components>
+                <transform PosX="1552.5" PosY="573.1" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
+            </components>
+        </gameobject>
+        <gameobject name="Trigger4">
+            <components>
+                <transform PosX="1198.2" PosY="573.2" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
+            </components>
+        </gameobject>
+    </entities>
+</PROJECT>

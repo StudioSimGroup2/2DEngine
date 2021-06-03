@@ -14,6 +14,8 @@ namespace Engine
 		mPath.clear();
 
 		mParent = nullptr;
+
+		mScript.Delete();
 	}
 
 	void ScriptComp::Update()
@@ -21,13 +23,19 @@ namespace Engine
 		if (mPath.empty())
 			return;
 
-		mScript.CallUpdate(mParent);
+		if (!mScript.GetDelete())
+			mScript.CallUpdate(mParent);
 	}
 
 	void ScriptComp::Render()
 	{
 		if (mPath.empty())
 			return;
+
+
+		if (mScript.GetDelete())
+			return;
+
 
 		mScript.CallRender(mParent);
 	}
