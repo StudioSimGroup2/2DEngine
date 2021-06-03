@@ -50,6 +50,7 @@ void Engine::PhysicsComp::UpdateForces(float dT, vec2f accel)
 	}
 
 	if (mCurrentVelocity.x > mMaxSpeed)
+		mCurrentVelocity.x = mMaxSpeed;
 	if (mCurrentVelocity.x < -mMaxSpeed)
 		mCurrentVelocity.x = -mMaxSpeed;
 

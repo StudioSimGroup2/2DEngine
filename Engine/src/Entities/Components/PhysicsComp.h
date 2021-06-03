@@ -60,7 +60,7 @@ namespace Engine
 		float mWeight;
 		float mGravity = 9.8f;
 		float mFriction = 0.5f;
-		float mMaxSpeed = 200.0f;
+		float mMaxSpeed = 400.0f;
 	};
 
 }

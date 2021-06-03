@@ -3,8 +3,9 @@ local speed = 2.0
 local jumpHeight = -1.0
 local grounded = true
 local spritePos = 0
-local doubleJump = true
+local doubleJumpEnabled = true
 local canDoubleJump = false
+local jumCount = 0
 
 local mass = 10
 local gravity = 600
@@ -51,25 +52,24 @@ function OnUpdate()
     end
 
 
-
-
-    if (self:GetPhysics():GetGrounded() and OnKeyDown(32) == true) -- SPACE
+	--jump
+	 if (self:GetPhysics():GetGrounded() and OnKeyDown(32) == true) -- SPACE
     then
         ThrustAmount = vec2f.new(self:GetPhysics():GetVelocity())
-		ThrustAmount.y = ThrustAmount.y - 200
+		ThrustAmount.y = ThrustAmount.y - 400
 		self:GetPhysics():SetVelocity(ThrustAmount)
-    end
-	if(OnKeyUp(32) == true)
-	then
 		canDoubleJump = true
-	end
-	if (OnKeyDown(32) == true and doubleJump == true and canDoubleJump == true)
+    end
+
+	--Double jump
+	if (OnKeyDown(02) == true and canDoubleJump == true and self:GetPhysics():GetGrounded() == false)
     then
         ThrustAmount = vec2f.new(self:GetPhysics():GetVelocity())
-		ThrustAmount.y = ThrustAmount.y - 200
+		ThrustAmount.y = ThrustAmount.y - 400
 		self:GetPhysics():SetVelocity(ThrustAmount)
 		canDoubleJump = false
 	end
+
 
 
 	if (OnKeyDown(69) == true) -- E
