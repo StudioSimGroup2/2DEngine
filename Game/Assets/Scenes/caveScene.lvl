@@ -22,11 +22,11 @@
         </gameobject>
         <gameobject name="Player">
             <components>
-                <transform PosX="438.051" PosY="422.535" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
-                <sprite path="Assets\Textures\Mario.png" Colour="1.000000 1.000000 1.000000 1.000000" FlipX="0" FlipY="0" />
+                <transform PosX="318.8" PosY="350.412" RotX="0" RotY="0" ScaleX="1" ScaleY="2" />
+                <sprite path="Assets\Textures\PlayerRight.png" Colour="1.000000 1.000000 1.000000 1.000000" FlipX="0" FlipY="0" />
                 <script path="Assets\Scripts\Player.lua" />
-                <physics Mass="1" Gravity="500" Friction="6" MaxSpeed="200" />
-                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="1" Trigger="0" />
+                <physics Mass="10" Gravity="600" Friction="10" MaxSpeed="200" />
+                <boxcol SizeX="32" SizeY="64" Bounding="300" Solid="1" Trigger="0" />
             </components>
         </gameobject>
         <gameobject name="LavaPit1">
@@ -50,7 +50,7 @@
         </gameobject>
         <gameobject name="Camera">
             <components>
-                <transform PosX="438.051" PosY="-422.535" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <transform PosX="1360.23" PosY="-543.912" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
                 <camera FOV="0" Near="0.1" Far="100" Depth="1" />
                 <script path="Assets\Scripts\Camera.lua" />
             </components>

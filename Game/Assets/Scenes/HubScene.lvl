@@ -22,18 +22,11 @@
         </gameobject>
         <gameobject name="Player">
             <components>
-                <transform PosX="472.1" PosY="418.181" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
-                <sprite path="Assets\Textures\Mario.png" Colour="1.000000 1.000000 1.000000 1.000000" FlipX="0" FlipY="0" />
+                <transform PosX="462.414" PosY="383.992" RotX="0" RotY="0" ScaleX="1" ScaleY="2" />
+                <sprite path="Assets\Textures\PlayerRight.png" Colour="1.000000 1.000000 1.000000 1.000000" FlipX="1" FlipY="0" />
                 <script path="Assets\Scripts\Player.lua" />
-                <physics Mass="1" Gravity="500" Friction="6" MaxSpeed="200" />
-                <boxcol SizeX="32" SizeY="32" Bounding="300" Solid="1" Trigger="0" />
-            </components>
-        </gameobject>
-        <gameobject name="SewerTrigger">
-            <components>
-                <transform PosX="580.4" PosY="450" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
-                <boxcol SizeX="155" SizeY="32" Bounding="300" Solid="0" Trigger="1" />
-                <script path="Assets\Scripts\hubToSewer.lua" />
+                <physics Mass="10" Gravity="600" Friction="10" MaxSpeed="300" />
+                <boxcol SizeX="32" SizeY="64" Bounding="300" Solid="1" Trigger="0" />
             </components>
         </gameobject>
         <gameobject name="LabTrig">
@@ -52,7 +45,7 @@
         </gameobject>
         <gameobject name="Camera">
             <components>
-                <transform PosX="472.1" PosY="-418.181" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
+                <transform PosX="462.414" PosY="-383.992" RotX="0" RotY="0" ScaleX="1" ScaleY="1" />
                 <camera FOV="0" Near="0.1" Far="100" Depth="1" />
                 <script path="Assets\Scripts\Camera.lua" />
             </components>
